@@ -7,7 +7,7 @@
 	<artifactId>spring-hibernate-utility</artifactId>
 	<version>1.0.0.CI-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>Spring Hibernate Utility</name>
+	<name>NeoPortal-Service</name>
 	<url>http://www.springframework.org</url>
 	<description>
 		<![CDATA[This project is a minimal jar utility with Spring configuration for Hibernate.]]>
@@ -89,12 +89,12 @@
 			<version>1.8.0.10</version>
 		</dependency>
 		<dependency>
-			<groupId>aspectj</groupId>
+			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
 			<version>1.5.4</version>
 		</dependency>
 		<dependency>
-			<groupId>aspectj</groupId>
+			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
 			<version>1.5.4</version>
 		</dependency>
