@@ -11,7 +11,7 @@
 
 <body onload="initPage('${pageContext.request.contextPath}');">
 
-  <h1>Search Home Page"</h1>
+  <h1>Search Home Page [Esto es un hola mundo!]</h1>
   
   <div id="searchCriteriaPanel" class="searchPanel" >
   	<input id="searchInput" type="text" value="">

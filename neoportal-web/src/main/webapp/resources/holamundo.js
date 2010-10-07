@@ -8,6 +8,7 @@ function initPage(urlContextValue){
  if(urlContextValue != "")
   urlContext = urlContextValue;
 }
+
 /**
  * Gets an XML text
  * 
@@ -17,6 +18,7 @@ function initPage(urlContextValue){
 var handleCallbackSuccess = function(oResponse){
 
     window.alert("todo bien: "+oResponse.responseText);
+    
 }
 
 
@@ -34,9 +36,11 @@ var yuiCallback = {
 
 
 function holaMundo(){
+
+	var searchString = document.getElementById('searchInput').value;
 	
   //get all the dc elements
   YAHOO.util.Connect.asyncRequest('GET', 
-    urlContext+'/simple', 
+    urlContext+'//search/simple?searchString='+searchString, 
     yuiCallback);
 }
