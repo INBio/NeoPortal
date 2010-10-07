@@ -19,7 +19,7 @@
 package org.inbio.neoportal.dao;
 
 import java.util.List;
-import org.inbio.m3s.model.LogGenericEntity;
+import org.inbio.neoportal.entity.LogGenericEntity;
 
 
 /**

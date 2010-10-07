@@ -4,7 +4,6 @@ package org.inbio.neoportal.dto;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.transform.ResultTransformer;
-import org.inbio.m3s.dto.BaseDTOFactory;
 import org.inbio.neoportal.entity.DarwinCore;
 
 

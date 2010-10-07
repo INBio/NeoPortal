@@ -5,8 +5,6 @@
 
 package org.inbio.neoportal.dto;
 
-import org.inbio.m3s.dto.BaseDTO;
-
 /**
  *
  * @author asanabria

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.inbio.m3s.dto;
+package org.inbio.neoportal.dto;
 
 import java.io.Serializable;
 

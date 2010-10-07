@@ -20,8 +20,8 @@ package org.inbio.neoportal.dao.impl;
 
 import java.io.Serializable;
 import java.util.List;
-import org.inbio.m3s.model.LogGenericEntity;
 import org.inbio.neoportal.dao.GenericBaseDAO;
+import org.inbio.neoportal.entity.LogGenericEntity;
 
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;

@@ -16,12 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.inbio.m3s.dto;
+package org.inbio.neoportal.dto;
+
 
 import java.util.ArrayList;
 import java.util.List;
+import org.inbio.neoportal.entity.LogGenericEntity;
 
-import org.inbio.m3s.model.LogGenericEntity;
 
 /**
  *
