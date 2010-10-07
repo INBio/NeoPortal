@@ -11,15 +11,16 @@
 
 <body onload="initPage('${pageContext.request.contextPath}');">
 
-<h1>
-	Hola Mundo!
-</h1>
-
-
-<input id="txt" type="text" value="">
-<a id="simple" class="textLink" href="javascript:holaMundo();">GET /simple with YUI javascript</a>
-
-<div id="txtFromServer"></div>
+  <h1>Search Home Page"</h1>
+  
+  <div id="searchCriteriaPanel" class="searchPanel" >
+  	<input id="searchInput" type="text" value="">
+  	<a id="simple" class="textLink" href="javascript:holaMundo();">Search</a>
+  </div>
+  
+  <div id="resultsPanel" class="content">
+  <p>Resultados</p>
+  </div>
 
 </body>
 </html>

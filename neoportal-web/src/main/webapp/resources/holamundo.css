@@ -1,0 +1,26 @@
+
+.searchPanel{
+	position: relative;
+	width: 100%; 
+	text-align: center;
+	/*border: 2px black solid;*/
+	margin-top: 50px;
+	pading: 10px;
+}
+.searchPanel input {
+  width: 300px; 
+  height: 25px;
+  pading: 10px;
+}
+.searchPanel input:focus {
+  border: 2px blue solid;
+}
+
+
+.content {
+	position: relative;
+	width: 100%; 
+	text-align: center;
+	margin-top: 30px;
+	border: 2px black solid;
+}
