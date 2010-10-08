@@ -17,8 +17,12 @@ function initPage(urlContextValue){
  */
 var handleCallbackSuccess = function(oResponse){
 
-    window.alert("todo bien: "+oResponse.responseText);
+  //  window.alert("todo bien: "+oResponse.responseText);
+    var element = document.createElement('p');
+    element.textContent = oResponse.responseText;
     
+    var resultsContaines = document.getElementById('resultsPanel');
+    resultsContaines.appendChild(element,null);   
 }
 
 

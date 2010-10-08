@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class SimpleController {
+public class HelloWorldController {
 
 	@RequestMapping("/simple")
 	public @ResponseBody String simple() {
@@ -16,7 +16,7 @@ public class SimpleController {
 	
 	@RequestMapping(value="/search/simple", method=RequestMethod.GET, params="searchString")
 	public @ResponseBody String searchSimple(@RequestParam String searchString) {
-		return "A simple search for "+searchString+" using Lucene will be done...[todo].";
+		return "A simple search for '"+searchString+"' using Lucene will be done...[todo].";
 	}
 
 }

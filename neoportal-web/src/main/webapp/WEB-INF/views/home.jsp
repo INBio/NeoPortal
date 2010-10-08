@@ -18,8 +18,9 @@
   	<a id="simple" class="textLink" href="javascript:holaMundo();">Search</a>
   </div>
   
+  
   <div id="resultsPanel" class="content">
-  <p>Resultados</p>
+ 	<p>Resultados:</p>
   </div>
 
 </body>
