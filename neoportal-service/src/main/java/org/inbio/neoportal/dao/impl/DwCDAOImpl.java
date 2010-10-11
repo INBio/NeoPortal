@@ -35,8 +35,8 @@ public class DwCDAOImpl extends GenericBaseDAOImpl<DarwinCore,Integer> implement
         return (List<MinimalOccurrenceInfoDTO>) template.execute(new HibernateCallback() {
             public Object doInHibernate(Session session) {
 
-                FullTextSession fullTextSession = Search.createFullTextSession(session);
-//                        getFullTextSession(session);
+//                FullTextSession fullTextSession = Search.createFullTextSession(session);
+                FullTextSession fullTextSession = Search.getFullTextSession(session);
                 
                 // create native Lucene query
                 MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new StandardAnalyzer());
@@ -55,10 +55,10 @@ public class DwCDAOImpl extends GenericBaseDAOImpl<DarwinCore,Integer> implement
                 hsQuery.setMaxResults(quantity);
                 hsQuery.setResultTransformer(new MinimalOccurrenceInfoDTOFactory());
                 
-                // execute search
-                System.out.println("#-> Result Count "+ hsQuery.getResultSize());
 
                 int totalAmount = hsQuery.getResultSize();
+                // execute search
+                System.out.println("#-> Result Count "+ totalAmount);
 
                 return hsQuery.list();
             }
