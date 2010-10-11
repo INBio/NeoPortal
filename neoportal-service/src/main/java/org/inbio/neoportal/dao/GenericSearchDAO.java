@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.inbio.m3s.dao;
+package org.inbio.neoportal.dao;
 
 import java.util.List;
 

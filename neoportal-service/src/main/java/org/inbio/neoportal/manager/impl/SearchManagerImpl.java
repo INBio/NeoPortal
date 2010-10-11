@@ -5,17 +5,24 @@
 
 package org.inbio.neoportal.manager.impl;
 
+import java.util.List;
 import org.apache.lucene.queryParser.ParseException;
 import org.inbio.neoportal.dao.DwCDAO;
+import org.inbio.neoportal.dto.MinimalOccurrenceInfoDTO;
 import org.inbio.neoportal.manager.SearchManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 
 /**
  *
  * @author asanabria
  */
+@Service
 public class SearchManagerImpl implements SearchManager{
 
+    @Autowired
     private DwCDAO dwcDAO;
 
 
@@ -38,7 +45,7 @@ public class SearchManagerImpl implements SearchManager{
                                 "county" };
         dwcDAO.search(fields, searchText, 0, 20);
     }
-    public void searchByAll(String searchText) throws ParseException{
+    public List<MinimalOccurrenceInfoDTO> searchByAll(String searchText) throws ParseException{
 
 
         String[] fields =
@@ -47,7 +54,7 @@ public class SearchManagerImpl implements SearchManager{
                                 "country",
                                 "stateprovince",
                                 "county" };
-        dwcDAO.search(fields, searchText, 0, 20);
+        return dwcDAO.search(fields, searchText, 0, 20);
 
     }
 

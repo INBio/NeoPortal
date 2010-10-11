@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-  <session-factory>
-    <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-    <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-    <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/NeoPortal</property>
-    <property name="hibernate.connection.username">postgres</property>
-    <property name="hibernate.connection.password">postgres</property>
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/NeoPortal</property>
+        <property name="hibernate.connection.username">postgres</property>
+        <property name="hibernate.connection.password">postgres</property>
 
-<property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
+        <property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
+        <property name="hibernate.search.default.indexBase">/tmp/LuceneIndex/</property>
+        <property name="hibernate.search.default.locking_strategy">simple</property>
 
-<property name="hibernate.search.default.indexBase">/home/asanabria/LuceneIndex/</property>
+        <mapping resource="DarwinCore.hbm.xml"/>
 
-
-    <mapping resource="DarwinCore.hbm.xml"/>
-  </session-factory>
+        <event type="post-update">
+            <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
+        </event>
+        <event type="post-insert">
+            <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
+        </event>
+        <event type="post-delete">
+            <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
+        </event>
+    </session-factory>
 </hibernate-configuration>

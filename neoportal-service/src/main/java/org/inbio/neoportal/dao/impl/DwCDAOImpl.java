@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
@@ -16,6 +15,7 @@ import org.inbio.neoportal.dto.MinimalOccurrenceInfoDTOFactory;
 import org.inbio.neoportal.entity.DarwinCore;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Repository;
 
 /**
  * 
@@ -25,6 +25,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
  * @author jgutierrez
  *
  */
+@Repository
 public class DwCDAOImpl extends GenericBaseDAOImpl<DarwinCore,Integer> implements DwCDAO {
 
     public List<MinimalOccurrenceInfoDTO> search(final String[] fields, final String searchText, final int offset, final int quantity) {
@@ -34,8 +35,8 @@ public class DwCDAOImpl extends GenericBaseDAOImpl<DarwinCore,Integer> implement
         return (List<MinimalOccurrenceInfoDTO>) template.execute(new HibernateCallback() {
             public Object doInHibernate(Session session) {
 
-
-                FullTextSession fullTextSession = Search.getFullTextSession(session);
+                FullTextSession fullTextSession = Search.createFullTextSession(session);
+//                        getFullTextSession(session);
                 
                 // create native Lucene query
                 MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new StandardAnalyzer());
@@ -71,7 +72,8 @@ public class DwCDAOImpl extends GenericBaseDAOImpl<DarwinCore,Integer> implement
         return (Integer) template.execute(new HibernateCallback() {
             public Object doInHibernate(Session session) {
 
-                FullTextSession fullTextSession = Search.getFullTextSession(session);
+//                FullTextSession fullTextSession = Search.getFullTextSession(session);
+                FullTextSession fullTextSession = Search.createFullTextSession(session);
 
                 // create native Lucene query
                 MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new StandardAnalyzer());

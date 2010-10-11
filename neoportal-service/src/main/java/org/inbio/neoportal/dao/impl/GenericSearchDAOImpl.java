@@ -1,13 +1,13 @@
 /**
  * 
  */
-package org.inbio.m3s.dao.impl;
+package org.inbio.neoportal.dao.impl;
 
 import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.inbio.m3s.dao.GenericSearchDAO;
+import org.inbio.neoportal.dao.GenericSearchDAO;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;

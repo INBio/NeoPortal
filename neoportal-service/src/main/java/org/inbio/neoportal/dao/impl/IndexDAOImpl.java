@@ -1,7 +1,7 @@
 package org.inbio.neoportal.dao.impl;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
@@ -9,15 +9,17 @@ import org.inbio.neoportal.dao.IndexDAO;
 import org.inbio.neoportal.entity.DarwinCore;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Repository;
 
 /**
- * 
+ *
  */
 
 /**
  * @author jgutierrez
  *
  */
+@Repository
 public class IndexDAOImpl extends GenericBaseDAOImpl<DarwinCore,Integer> implements IndexDAO {
 
     public void createIndex(){
@@ -27,19 +29,34 @@ public class IndexDAOImpl extends GenericBaseDAOImpl<DarwinCore,Integer> impleme
         template.execute(new HibernateCallback() {
             public Object doInHibernate(Session session) {
 
-                System.out.println("Creando el <Indice>\n");
+                int begin = 0;
 
-                FullTextSession fullTextSession = Search.getFullTextSession(session);
+                FullTextSession fullTextSession = Search.createFullTextSession(session);
+                Query query = session.createQuery("from DarwinCore");
 
-                try {
-                    fullTextSession.createIndexer(DarwinCore.class).startAndWait();
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(IndexDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+                query.setMaxResults(1000);
+
+                while(begin < 10000){
+
+                    query.setFirstResult(begin);
+                    List<DarwinCore> listDwC = query.list();
+
+                    for(DarwinCore dwc: listDwC){
+                        fullTextSession.index(dwc);
+                        System.out.println("dwc: "+dwc.getScientificname() );
+                    }
+                    begin +=1000;
                 }
+
+
+                //                try {
+                //createIndexer(DarwinCore.class).startAndWait();
+                //                } catch (InterruptedException ex) {
+                //                    Logger.getLogger(IndexDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+                //                }
 
                 return null;
             }
         });
-
     }
 }
