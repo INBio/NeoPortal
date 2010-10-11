@@ -1,29 +1,51 @@
 package org.inbio.neoportal.messagebean;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
 @RooToString
-@XmlRootElement(name="specimenlite")
 public class SpecimenLiteBean {
-	
+
 	@XmlElement(name="catalognumber")
-	private String catalogNumber = "007";
+	private String catalogNumber;
 	
 	@XmlElement(name="institutioncode")
-	private String institutionCode = "INB";
+	private String institutionCode;
 	
 	@XmlElement(name="scientificname")
-	private String scientificName = "Homo sapiens sapiens";
+	private String scientificName;
 	
 	@XmlElement(name="latitude")
-	private String latitude = "9.7425";
+	private String latitude;
 
 	@XmlElement(name="longitude")
-	private String longitude = "-84.376667";
+	private String longitude;
+
+	
+	/**
+	 * 
+	 */
+	public SpecimenLiteBean() {
+		super();
+	}
+
+	/**
+	 * @param catalogNumber
+	 * @param institutionCode
+	 * @param scientificName
+	 * @param latitude
+	 * @param longitude
+	 */
+	public SpecimenLiteBean(String catalogNumber, String institutionCode,
+			String scientificName, String latitude, String longitude) {
+		this.catalogNumber = catalogNumber;
+		this.institutionCode = institutionCode;
+		this.scientificName = scientificName;
+		this.latitude = latitude;
+		this.longitude = longitude;
+	}
 	
 }

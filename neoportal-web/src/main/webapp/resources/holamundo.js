@@ -1,5 +1,6 @@
 //where to sent the requests?
 var urlContext = 'http://localhost:8082/neoportal-web';
+var singleSelectDataTable;
 
 
 /*
@@ -11,104 +12,44 @@ function initPage(urlContextValue) {
 		urlContext = urlContextValue;
 }
 
-/**
- * Gets an XML text
- * 
- * @param oResponse
- * @return
- */
-var handleCallbackSuccess = function(oResponse) {
-
-	// window.alert("todo bien: "+oResponse.responseText);
-	var element = document.createElement('p');
-	element.textContent = oResponse.responseText;
-
-	var resultsContaines = document.getElementById('resultsPanel');
-	resultsContaines.appendChild(element, null);
-
-	/* revisar el reload! */
-	initTable();
-}
-
-/**/
-var handleCallbackFailure = function(o) {
-	window.alert("Ha ocurrido un error, por favor intentelo de nuevo");
-}
-/*
- * the async callback with the resources associated to a given user
- */
-var yuiCallback = {
-	success : handleCallbackSuccess,
-	failure : handleCallbackFailure
-};
 
 function holaMundo() {
 
 	var searchString = document.getElementById('searchInput').value;
-
-	// get all the dc elements
-	YAHOO.util.Connect.asyncRequest('GET', urlContext
-			+ '//search/simple?searchString=' + searchString, yuiCallback);
-}
-
-// Código original de esmata
-function initTable() {
-	// Example data
-	YAHOO.example.Data = {
-		specimens : {
-			spList : [ {
-				Catalog : "3385445",
-				Inst : "INB",
-				ScientificName : "Neurolaena lobata",
-				Latitude : "8.58187",
-				Longitude : "-83.49861"
-			}, {
-				Catalog : "3107701",
-				Inst : "INB",
-				ScientificName : "Mollinedia costaricensis",
-				Latitude : "9.67361",
-				Longitude : "-83.026389"
-			}, {
-				Catalog : "3101956",
-				Inst : "INB",
-				ScientificName : "Cymbopetalum torulosum",
-				Latitude : "9.7425",
-				Longitude : "-84.376667"
-			} ]
-		}
-	}
-
-	// Building the table
+	
 	var myColumnDefs = [ {
-		key : "Catalog",
+		key : "catalognumber",
 		sortable : true,
 		label : "Catálogo"
 	}, {
-		key : "Inst",
+		key : "institutioncode",
 		sortable : true,
 		label : "Insti."
 	}, {
-		key : "ScientificName",
-		sortable : true,
-		label : "Nombre cient."
+	    key : "scientificname",
+	    sortable : true,
+	    label : "Nombre cient."
 	}, {
-		key : "Latitude",
-		sortable : true,
-		label : "Lat."
-	}, {
-		key : "Longitude",
-		sortable : true,
-		label : "Long."
-	} ];
-
-	var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.specimens);
-	myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
+		key : "latitude",
+	    sortable : true,
+	    label : "Lat."
+	 }, {
+		 key : "longitude",
+		 sortable : true,
+		 label : "Long."
+	 } ];
+	
+	var myDataSource = new YAHOO.util.DataSource("search/simple?searchString=' + searchString+'&format=xml");
+	myDataSource.responseType = YAHOO.util.DataSource.TYPE_XML;
+	myDataSource.useXPath = true;
 	myDataSource.responseSchema = {
-		resultsList : "spList",
-		fields : [ "Catalog", "Inst", "ScientificName", "Latitude", "Longitude" ]
-	};
-
-	singleSelectDataTable = new YAHOO.widget.DataTable("tablePanel",
+			//metaFields: {rootatt:"/neoportal-response/@rootatt", topnode:"//top", nestedatt:"//second/@nested"},
+	        resultNode: "element",
+	        fields: [{key:"catalognumber"},{key:"institutioncode"},{key:"scientificname"},
+	                 {key:"latitude", parser:"number"},{key:"longitude", parser:"number"}]
+	        };
+	
+	var singleSelectDataTable = new YAHOO.widget.DataTable("tablePanel", 
 			myColumnDefs, myDataSource, {
 				selectionMode : "single"
 			});

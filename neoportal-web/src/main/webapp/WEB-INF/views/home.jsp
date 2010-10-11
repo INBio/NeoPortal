@@ -2,19 +2,20 @@
 <%@ page session="false"%>
 <html>
 <head>
-<title>Home</title>
-<!-- neoportal js and css -->
-<link href="<c:url value="/resources/holamundo.css"/>" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="<c:url value="/resources/holamundo.js" />"></script>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Home</title>
+  <!-- neoportal js and css -->
+  <link href="<c:url value="/resources/holamundo.css"/>" rel="stylesheet" type="text/css" />
+  <script type="text/javascript" src="<c:url value="/resources/holamundo.js" />"></script>
 
-<!-- yui js and css -->
-<link rel="stylesheet" type="text/css" href="resources/yui/datatable/assets/skins/sam/datatable.css">
-<link rel="stylesheet" type="text/css" href="resources/yui/fonts/fonts-min.css">
-<script type="text/javascript" src="<c:url value="/resources/yui/yahoo-dom-event/yahoo-dom-event.js" />"></script>
-<script type="text/javascript" src="<c:url value="/resources/yui/connection/connection-min.js" />"></script>
-<script type="text/javascript" src="<c:url value="/resources/yui/element/element-min.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/yui/datasource/datasource-min.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/yui/datatable/datatable-min.js"/>"></script>
+  <!-- yui js and css -->
+  <link rel="stylesheet" type="text/css" href="resources/yui/datatable/assets/skins/sam/datatable.css">
+  <link rel="stylesheet" type="text/css" href="resources/yui/fonts/fonts-min.css">
+  <script type="text/javascript" src="<c:url value="/resources/yui/yahoo-dom-event/yahoo-dom-event.js" />"></script>
+  <script type="text/javascript" src="<c:url value="/resources/yui/connection/connection-min.js" />"></script>
+  <script type="text/javascript" src="<c:url value="/resources/yui/element/element-min.js"/>"></script>
+  <script type="text/javascript" src="<c:url value="/resources/yui/datasource/datasource-min.js"/>"></script>
+  <script type="text/javascript" src="<c:url value="/resources/yui/datatable/datatable-min.js"/>"></script>
 
 
 </head>

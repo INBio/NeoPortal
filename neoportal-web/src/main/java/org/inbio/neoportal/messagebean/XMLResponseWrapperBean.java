@@ -10,14 +10,31 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.tostring.RooToString;
 
+/**
+ * TODO: hacer este wrapper reutilizable. Intenté hacerlo con generics pero me 
+ * dio problemas.
+ * 
+ * @author jgutierrez
+ *
+ */
+
 @RooJavaBean
 @RooToString
 @XmlRootElement(name="neoportal-response")
-public class SpecimenLiteWrapperBean {
+public class XMLResponseWrapperBean {
 	
-	@XmlElementWrapper(name="elements", nillable=true)
-	@XmlElement(name="specimenlite")
+	@XmlElementWrapper(name="response-elements", nillable=true)
+	@XmlElement(name="element")
 	private List<SpecimenLiteBean> elements = new ArrayList<SpecimenLiteBean>();
+	
+	/**
+	 * 
+	 * @param responseType
+	 */
+	public XMLResponseWrapperBean() {
+		super();
+	}
+	
 	
 	/**
 	 * 
@@ -26,6 +43,6 @@ public class SpecimenLiteWrapperBean {
 	 */
 	public boolean addElement(SpecimenLiteBean slb){
 		return elements.add(slb);
-		
 	}
+	
 }

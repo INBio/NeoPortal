@@ -1,7 +1,7 @@
 package org.inbio.neoportal.controller;
 
 import org.inbio.neoportal.messagebean.SpecimenLiteBean;
-import org.inbio.neoportal.messagebean.SpecimenLiteWrapperBean;
+import org.inbio.neoportal.messagebean.XMLResponseWrapperBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,11 +20,11 @@ public class SearchController {
 	*/
 
 	@RequestMapping(value="/simple", method=RequestMethod.GET, params={"format=xml","searchString"})
-	public @ResponseBody SpecimenLiteWrapperBean searchSimpleWriteXml(@RequestParam String searchString) {
-		SpecimenLiteWrapperBean slwb = new SpecimenLiteWrapperBean();
-		slwb.addElement(new SpecimenLiteBean());
-		slwb.addElement(new SpecimenLiteBean());
-		slwb.addElement(new SpecimenLiteBean());
+	public @ResponseBody XMLResponseWrapperBean searchSimpleWriteXml(@RequestParam String searchString) {
+		XMLResponseWrapperBean slwb = new XMLResponseWrapperBean();
+		slwb.addElement(new SpecimenLiteBean("007", "INB","Homo sapiens sapiens","9.7425","-84.376667"));
+		slwb.addElement(new SpecimenLiteBean("070", "INB","Homo sapiens sapiens","9.2545","-84.376767"));
+		slwb.addElement(new SpecimenLiteBean("700", "INB","Homo sapiens sapiens","9.4725","-84.373667"));
 		return slwb;
 	}
 		
