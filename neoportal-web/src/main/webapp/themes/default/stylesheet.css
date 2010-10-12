@@ -1,0 +1,113 @@
+/* 
+    Document   : stylesheet
+    Created on : 12/10/2010, 04:33:39 PM
+    Author     : esmata
+    Description:
+        CSS to customize the GUI of portal project
+*/
+
+html {
+    height:100%
+}
+
+body {
+    height: 100%;
+    width:100%;
+    margin:0;
+    padding:0;
+}
+
+/* The content of each .jsp*/
+#contenido {
+    text-align:justify;
+    margin: 3px 5% 0 5%;
+    display: block;
+    margin-bottom: 3em;
+    border-left:1px solid #A8A87E;
+    border-right:1px solid #A8A87E;
+}
+
+#contenido h2{
+    margin:0;
+    text-align:justify;
+    padding: 5px 0 5px 0;
+}
+
+#banner {
+	height: 80px;
+	background-color:#124A21;
+	background-repeat: no-repeat;
+}
+
+#banner-rep {
+	height:80px;
+	background-color: #124A21;
+	background-position: 0;
+}
+
+#title h1 {
+	/*position:absolute;*/
+	font-family:arial, helvetica, sans-serif;
+	text-align:center;
+	font-size: 28px;
+	margin:0;
+	width:100%;
+	padding: 40px 0 0 0px;
+	color:white;
+}
+
+#header_links {
+	width: 100%;
+	height:17px;
+	padding: 10px 0 0 0;
+	background-color:#72A045;
+	vertical-align: middle;
+    margin-top:3px;
+}
+
+#tablePanel{
+    padding:0 10px 10px 10px;
+}
+
+#resultsPanel {
+	width: 100%;
+	text-align: center;
+	margin-top: 30px;
+}
+
+#searchPanel{
+	width: 100%;
+	text-align: center;
+	margin-top: 40px;
+}
+
+#searchPanel input {
+  width: 300px;
+  height: 25px;
+}
+
+#searchPanel input:focus {
+  border: 1px blue solid;
+}
+
+/*------------------------------- Footer by Cristian Granados --------------------------------*/
+#footer {
+        margin:0;
+        background: #CCCC99;
+        width: 100%;
+        left: 0;
+        right: 0;
+        text-align:center;
+        color:#354B20;
+        line-height:24px;
+    }
+
+<[if gte IE 5.5]><![if lt IE 7]>
+#footer {
+top: expression( ( 0 - footer.offsetHeight + ( document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight ) + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop ) ) + 'px' );
+position:absolute;
+}
+<![endif]><![endif]>
+
+/*------------------------------- Footer by Cristian Granados --------------------------------*/
+

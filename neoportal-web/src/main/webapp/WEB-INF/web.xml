@@ -28,9 +28,24 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 		
-	<servlet-mapping>
-		<servlet-name>appServlet</servlet-name>
-		<url-pattern>/</url-pattern>
-	</servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>appServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <!-- Define the basename for a resource bundle -->
+    <context-param>
+        <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+        <param-value>messages</param-value>
+    </context-param>
+    <!-- Define the default locale to resource bundle -->
+    <context-param>
+        <param-name>
+        javax.servlet.jsp.jstl.fmt.locale
+        </param-name>
+        <param-value>
+        es
+        </param-value>
+    </context-param>
 
 </web-app>
