@@ -7,50 +7,27 @@
       http://www.springframework.org/schema/context
       http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-	<!-- Data Source
-		 Algunas propiedades de este bean serán sobre escritas en el m3s-web utilizando el archivo
-		 de configuración '/WEB-INF/classes/config.properties'.
-		 Sin embargo para uso dentro del m3s-service deben ser configuradas acá
-	-->
-		<!-- Estas propiedad serán sobre escritas por el archivo /WEB-INF/classes/config.properties -->
-		<!-- coffea config
-		<property name="url" value="jdbc:postgresql://localhost:5432/m3s_fornax"/>
-		-->
-	<!--bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-		<property name="driverClassName" value="org.postgresql.Driver"/>
-		<property name="initialSize" value="1"/>
-		<property name="maxActive" value="25"/>
-		<property name="maxIdle" value="10"/>
-		<property name="maxWait" value="10000"/>
-		<property name="poolPreparedStatements" value="true"/>
-
-		<property name="url" value="jdbc:postgresql://localhost:5432/NeoPortal"/>
-		<property name="username" value="postgres"/>
-		<property name="password" value="postgres"/>
-
-	</bean-->
 
 	<!-- Hibernate SessionFactory
 		 Algunas propiedades de este bean serán sobre escritas en el m3s-web utilizando el archivo
 		 de configuración '/WEB-INF/classes/config.properties'.
 		 Sin embargo para uso dentro del m3s-service deben ser configuradas acá
 	-->
-
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean" scope="prototype">
+
         <!-- Estas propiedad serán sobre escritas por el archivo /WEB-INF/classes/config.properties -->
 		<property name="configLocation" value="classpath:hibernate.cfg.xml"/>
 	</bean>
 
-    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager" scope="prototype">
+    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager" >
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
 
 	<!-- Root Context: defines shared resources visible to all other web components -->
-    <bean id="superDAO" abstract="true"  scope="prototype">
+    <bean id="superDAO" abstract="true">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
 
-    <bean id="dwCDAOImpl" class="org.inbio.neoportal.dao.impl.DwCDAOImpl" parent="superDAO"  scope="prototype"/>
-    <bean id="indexDAOImpl" class="org.inbio.neoportal.dao.impl.IndexDAOImpl" parent="superDAO" scope="prototype"/>
+    <bean id="dwCDAOImpl" class="org.inbio.neoportal.dao.impl.DwCDAOImpl" parent="superDAO"/>
 
 </beans>

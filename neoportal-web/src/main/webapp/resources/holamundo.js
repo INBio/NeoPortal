@@ -39,7 +39,7 @@ function holaMundo() {
 		 label : "Long."
 	 } ];
 	
-	var myDataSource = new YAHOO.util.DataSource("search/simple?searchString=' + searchString+'&format=xml");
+	var myDataSource = new YAHOO.util.DataSource("search/simple?searchString="+ searchString+"&format=xml");
 	myDataSource.responseType = YAHOO.util.DataSource.TYPE_XML;
 	myDataSource.useXPath = true;
 	myDataSource.responseSchema = {
