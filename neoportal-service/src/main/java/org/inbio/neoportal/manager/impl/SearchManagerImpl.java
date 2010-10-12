@@ -1,8 +1,19 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *  Copyright (C) 2010 INBio - Instituto Nacional de Biodiversidad, Costa Rica
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.inbio.neoportal.manager.impl;
 
 import java.util.List;
@@ -16,7 +27,7 @@ import org.springframework.stereotype.Service;
 
 /**
  *
- * @author asanabria
+ * @author asanabria <asanabria@inbio.ac.cr>
  */
 @Service
 public class SearchManagerImpl implements SearchManager{
@@ -26,7 +37,8 @@ public class SearchManagerImpl implements SearchManager{
 
 
 
-    public List<OcurrenceLiteDTO> fullSearch(String searchText) throws ParseException{
+    public List<OcurrenceLiteDTO> fullPaginatedSearch(String searchText, int offset, int quantity)
+            throws ParseException{
 
         // All the indexed fields
         String[] fields =
@@ -35,11 +47,12 @@ public class SearchManagerImpl implements SearchManager{
                                 "country",
                                 "stateprovince",
                                 "county" };
-        return dwcDAO.search(fields, searchText, 0, 20);
+        return dwcDAO.search(fields, searchText, offset, quantity);
 
     }
 
-    public Integer fullSearchCount(String searchText) throws ParseException {
+    public Integer fullSearchCount(String searchText)
+            throws ParseException {
         // All the indexed fields
         String[] fields =
                 new String[]{ "scientificname",
@@ -53,6 +66,7 @@ public class SearchManagerImpl implements SearchManager{
 
 
 
+    /* Getters & Setters */
     public DwCDAO getDwcDAO() {
         return dwcDAO;
     }

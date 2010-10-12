@@ -1,5 +1,4 @@
-/* M3S - multimedia management system
-*
+/*
 * Copyright (C) 2009  INBio - Instituto Nacional de Biodiversidad, Costa Rica
 *
 * This program is free software: you can redistribute it and/or modify
@@ -15,7 +14,6 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 package org.inbio.neoportal.dao.impl;
 
 import java.io.Serializable;
@@ -31,7 +29,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
  * @author jgutierrez
- *
+ * @author asanabria <asanabria@inbio.ac.cr>
  */
 @Configuration
 public class GenericBaseDAOImpl<E extends LogGenericEntity,I extends Object> extends HibernateDaoSupport implements GenericBaseDAO<E, I> {

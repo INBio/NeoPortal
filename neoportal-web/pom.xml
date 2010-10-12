@@ -14,6 +14,7 @@
 		<org.aspectj-version>1.6.8</org.aspectj-version>
 		<org.slf4j-version>1.5.10</org.slf4j-version>
 	 <netbeans.hint.deploy.server>Tomcat60</netbeans.hint.deploy.server>
+	 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
 		<!-- Spring -->
@@ -41,14 +42,14 @@
 			<version>${org.springframework.roo-version}</version>
 			<scope>provided</scope>
 		</dependency>
-				
+
 		<!-- AspectJ -->
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
 			<version>${org.aspectj-version}</version>
-		</dependency>	
-		
+		</dependency>
+
 		<!-- Logging -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -98,7 +99,7 @@
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
 		</dependency>
-				
+
 		<!-- Servlet -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -117,7 +118,7 @@
 			<artifactId>jstl</artifactId>
 			<version>1.2</version>
 		</dependency>
-	
+
 		<!-- Test -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -132,7 +133,7 @@
 			<artifactId>neoportal-service</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
-        
+
 	</dependencies>
 	<repositories>
 		<!-- For testing against latest Spring snapshots -->
@@ -161,8 +162,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>${java-version}</source>
-					<target>${java-version}</target>
+					<source>1.7</source>
+					<target>1.7</target>
+				 <encoding>${project.build.sourceEncoding}</encoding>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -231,7 +233,15 @@
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>tomcat-maven-plugin</artifactId>
 				<version>1.0-beta-1</version>
-			</plugin>						
+			</plugin>
+		 <plugin>
+		  <groupId>org.apache.maven.plugins</groupId>
+		  <artifactId>maven-resources-plugin</artifactId>
+		  <version>2.2</version>
+		  <configuration>
+		   <encoding>${project.build.sourceEncoding}</encoding>
+		  </configuration>
+		 </plugin>
 		</plugins>
 	</build>
 </project>

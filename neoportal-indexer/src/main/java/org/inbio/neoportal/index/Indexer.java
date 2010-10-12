@@ -1,8 +1,19 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *  Copyright (C) 2010 INBio - Instituto Nacional de Biodiversidad, Costa Rica
+ *
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.inbio.neoportal.index;
 
 import java.util.ArrayList;
@@ -15,15 +26,15 @@ import org.hibernate.Transaction;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.transform.ResultTransformer;
+import org.inbio.neoportal.dto.OcurrenceLiteDTO;
 import org.inbio.neoportal.entity.DarwinCore;
 import org.inbio.neoportal.util.HibernateUtil;
-import org.inbio.neoportal.dto.MinimalOccurrenceInfoDTO;
 
 
 
 /**
  *
- * @author asanabria
+ * @author asanabria <asanabria@inbio.ac.cr>
  */
 public class Indexer {
 
@@ -32,26 +43,31 @@ public class Indexer {
         super();
     }
 
-    public void createIndex() throws InterruptedException{
-        System.out.println("Creando el <Indice>\n");
+    /**
+     * Create the Lucene index for the DarwinCore class
+     * @throws InterruptedException
+     */
+    public void createIndex() 
+            throws InterruptedException{
+
+        System.out.println("Creating Lucene index\n");
         HibernateUtil.getSessionFactory();
         Session session = HibernateUtil.getSessionFactory().openSession();
-/*
-session.beginTransaction();
-        Query q = session.createQuery("From DarwinCore");
-        q.setMaxResults(10);
-        List resultList = q.list();
-        System.out.println("#-> count = "+resultList.size());
-session.getTransaction().commit();
-*/
+
         FullTextSession fullTextSession = Search.getFullTextSession(session);
         fullTextSession.createIndexer(DarwinCore.class).startAndWait();
-
     }
 
-    public void processArguments(String[] args) throws ParseException, InterruptedException{
+    /**
+     * Process the arguments that comes from the console.
+     * @param args [action, search terms]
+     * @throws ParseException
+     * @throws InterruptedException
+     */
+    public void processArguments(String[] args)
+            throws ParseException, InterruptedException{
 
-        String type = null;
+        String searchType = null;
         String searchText = null;
 
         if(args.length == 1)
@@ -60,48 +76,73 @@ session.getTransaction().commit();
                 return;
             }
 
-
         if(args.length < 2){
             System.out.println("Error: argumentos insuficientes");
             return;
         }
 
-        type = args[0];
+        searchType = args[0];
         searchText = args[1];
 
-        if(type.equals("taxon"))
+        if(searchType.equals("taxon"))
             this.searchByTaxon(searchText);
-        else if (type.equals("locality"))
+        else if (searchType.equals("locality"))
             this.searchByLocality(searchText);
-        else if (type.equals("area"))
+        else if (searchType.equals("area"))
             this.searchByArea(searchText);
-        else if (type.equals("all"))
+        else if (searchType.equals("all"))
             this.searchByAll(searchText);
         else
             System.out.println("Error: unrecognized option");
 }
 
-    public void searchByTaxon(String searchText) throws ParseException{
+    /**
+     * Search using only the Scientific Name field
+     * @param searchText
+     * @throws ParseException
+     */
+    public void searchByTaxon(String searchText)
+            throws ParseException{
         String[] fields =
                 new String[]{ "scientificname" };
         this.executeSearch(fields, searchText);
     }
 
-    public void searchByLocality(String searchText) throws ParseException{
+    /**
+     * Search using only the Locality field
+     * @param searchText
+     * @throws ParseException
+     */
+    public void searchByLocality(String searchText)
+            throws ParseException{
          String[] fields =
                 new String[]{ "locality" };
         this.executeSearch(fields, searchText);
 
     }
-    public void searchByArea(String searchText) throws ParseException{
+
+    /**
+     * Search using only the country, stateprovince and county fields
+     * @param searchText
+     * @throws ParseException
+     */
+    public void searchByArea(String searchText) 
+            throws ParseException{
+
          String[] fields =
                 new String[]{   "country",
                                 "stateprovince",
                                 "county" };
         this.executeSearch(fields, searchText);
     }
-    public void searchByAll(String searchText) throws ParseException{
 
+    /**
+     * Search using all the indexed fields
+     * @param searchText
+     * @throws ParseException
+     */
+    public void searchByAll(String searchText) 
+            throws ParseException{
 
         String[] fields =
                 new String[]{ "scientificname",
@@ -114,7 +155,14 @@ session.getTransaction().commit();
 
     }
 
-    private void executeSearch(String[] fields, String searchText) throws ParseException{
+    /**
+     * Look for searchText in the index using the <code>fields</code> argument
+     * @param fields
+     * @param searchText
+     * @throws ParseException
+     */
+    private void executeSearch(String[] fields, String searchText)
+            throws ParseException{
 
         HibernateUtil.getSessionFactory();
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -123,39 +171,51 @@ session.getTransaction().commit();
         Transaction tx = fullTextSession.beginTransaction();
 
         // create native Lucene query
-        MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new StandardAnalyzer());
+        MultiFieldQueryParser parser = 
+                new MultiFieldQueryParser(fields, new StandardAnalyzer());
+
         org.apache.lucene.search.Query query = parser.parse(searchText);
 
         // wrap Lucene query in a org.hibernate.Query
-        // org.hibernate.Query hibQuery = fullTextSession.createFullTextQuery(query, DarwinCore.class);
-        org.hibernate.search.FullTextQuery hsQuery = fullTextSession.createFullTextQuery(query, DarwinCore.class);
+        org.hibernate.search.FullTextQuery hsQuery = 
+                fullTextSession.createFullTextQuery(query, DarwinCore.class);
+
+        // for paginated search
         hsQuery.setMaxResults(20);
-        hsQuery.setResultTransformer(new DwCEntityMapper());
+        hsQuery.setResultTransformer(new OccurrenceResultTransformer());
 
         int totalAmount = hsQuery.getResultSize();
         // execute search
         System.out.println("#-> Result Count "+ hsQuery.getResultSize());
 
-        List<MinimalOccurrenceInfoDTO> result = null;
+        List<OcurrenceLiteDTO> result = null;
 
+        // Show the results page by page (20 items each).
         for(int i = 0; i <=totalAmount; ){
 
             result = hsQuery.list();
 
-            for(MinimalOccurrenceInfoDTO res : result)
-                System.out.println("#-> "+res.getGui()+ " => "+res.getName()+" : "+res.getLocality());
+            for(OcurrenceLiteDTO res : result)
+                System.out.println("#-> "+res.getGlobalUniqueIdentifier()
+                                         +" => "+res.getInstitutionCode()
+                                         +" : "+res.getScientificName());
 
             i+=20;
             hsQuery.setFirstResult(i);
-            System.out.println("#=================================#");
+            System.out.println("#end page =================================#");
         }
         tx.commit();
         session.close();
     }
 
-    public static void main(String[] args) throws InterruptedException, ParseException{
-
-        System.out.println("args "  +args.length);
+    /**
+     * Entry point fot the application
+     * @param args
+     * @throws InterruptedException
+     * @throws ParseException
+     */
+    public static void main(String[] args)
+            throws InterruptedException, ParseException{
 
         String[] localArgs = new String[2];
         localArgs[0] = "all";
@@ -167,24 +227,21 @@ session.getTransaction().commit();
 
     }
 
-    private class DwCEntityMapper implements ResultTransformer{
+    private class OccurrenceResultTransformer implements ResultTransformer {
 
         @Override
         public List transformList(List list) {
             List<DarwinCore> dwcList = (List<DarwinCore>) list;
-            List<MinimalOccurrenceInfoDTO> newList = new ArrayList<MinimalOccurrenceInfoDTO>();
+            List<OcurrenceLiteDTO> newList = new ArrayList<OcurrenceLiteDTO>();
 
-            MinimalOccurrenceInfoDTO ro = null;
-
-            for(DarwinCore dwc: dwcList){
-
-                ro = new MinimalOccurrenceInfoDTO();
-                ro.setGui(dwc.getGlobaluniqueidentifier());
-                ro.setName(dwc.getScientificname());
-                ro.setLocality(dwc.getLocality());
-                newList.add(ro);
-            }
-
+            for(DarwinCore dwc: dwcList)
+                newList.add(
+                    new OcurrenceLiteDTO(dwc.getGlobaluniqueidentifier(),
+                                         dwc.getCatalognumber(),
+                                         dwc.getInstitutioncode(),
+                                         dwc.getScientificname(),
+                                         dwc.getDecimallatitude(),
+                                         dwc.getDecimallongitude()));
             return newList;
         }
 
