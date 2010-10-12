@@ -3,6 +3,7 @@ package org.inbio.neoportal.controller;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.inject.Qualifier;
 import org.apache.lucene.queryParser.ParseException;
 import org.inbio.neoportal.dto.OcurrenceLiteDTO;
 import org.inbio.neoportal.manager.SearchManager;
