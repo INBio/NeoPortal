@@ -37,7 +37,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 public abstract class GenericBaseDAOImpl<E extends LogGenericEntity,I extends Object> extends HibernateDaoSupport implements GenericBaseDAO<E, I> {
 
     @Autowired
-    private void initFactory(SessionFactory sessionFactory){
+    public void initFactory(SessionFactory sessionFactory){
         this.setSessionFactory(sessionFactory);
     }
 
