@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <!-- Hibernate specific configuration -->
+    <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+    <!-- Hibernate search configuration -->
+    <property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
+    <property name="hibernate.search.default.indexBase">/home/asanabria/LuceneIndex/</property>
+    <property name="hibernate.search.default.locking_strategy">simple</property>
+    <!-- Mappings -->
+    <mapping class="" file="" jar="" package="" resource="META-INF/hibernate/DarwinCore.hbm.xml"/>
+    <!-- Hibernate search event listeners -->
+    <event type="post-update">
+      <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
+    </event>
+    <event type="post-insert">
+      <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
+    </event>
+    <event type="post-delete">
+      <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
+    </event>
+  </session-factory>
+</hibernate-configuration>

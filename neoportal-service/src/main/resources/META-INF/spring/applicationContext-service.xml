@@ -12,7 +12,7 @@
         <property name="dataSource" ref="dataSource" />
         <property name="packagesToScan" value="org.inbio.neoportal" />
         <property name="schemaUpdate" value="true" />
-		<property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+		<property name="configLocation" value="classpath:/META-INF/hibernate/hibernate.cfg.xml"/>
 	</bean>
 
 	<!-- Data Source
