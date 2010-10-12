@@ -20,6 +20,7 @@ package org.inbio.neoportal.dao;
 
 import java.util.List;
 import org.inbio.neoportal.entity.LogGenericEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 /**
@@ -27,7 +28,7 @@ import org.inbio.neoportal.entity.LogGenericEntity;
  *
  */
 public interface GenericBaseDAO<E extends LogGenericEntity,I extends Object> {
- 
+
  /**
     *
     * @param entity

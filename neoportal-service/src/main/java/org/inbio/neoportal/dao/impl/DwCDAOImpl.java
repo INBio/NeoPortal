@@ -14,6 +14,7 @@ import org.hibernate.transform.ResultTransformer;
 import org.inbio.neoportal.dao.DwCDAO;
 import org.inbio.neoportal.dto.OcurrenceLiteDTO;
 import org.inbio.neoportal.entity.DarwinCore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;

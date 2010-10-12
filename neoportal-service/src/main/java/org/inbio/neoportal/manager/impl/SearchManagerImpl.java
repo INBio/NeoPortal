@@ -11,7 +11,6 @@ import org.inbio.neoportal.dao.DwCDAO;
 import org.inbio.neoportal.dto.OcurrenceLiteDTO;
 import org.inbio.neoportal.manager.SearchManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
  * @author asanabria
  */
 @Service
-@Qualifier
 public class SearchManagerImpl implements SearchManager{
 
     @Autowired

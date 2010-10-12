@@ -2,18 +2,18 @@
 <!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
+        <!-- Hibernate specific configuration -->
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/NeoPortal</property>
-        <property name="hibernate.connection.username">postgres</property>
-        <property name="hibernate.connection.password">postgres</property>
 
+        <!-- Hibernate search configuration -->
         <property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
-        <property name="hibernate.search.default.indexBase">/tmp/LuceneIndex/</property>
+        <property name="hibernate.search.default.indexBase">/home/asanabria/LuceneIndex/</property>
         <property name="hibernate.search.default.locking_strategy">simple</property>
 
+        <!-- Mappings -->
         <mapping resource="DarwinCore.hbm.xml"/>
 
+        <!-- Hibernate search event listeners -->
         <event type="post-update">
             <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
         </event>

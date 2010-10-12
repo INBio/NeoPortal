@@ -24,16 +24,22 @@ import org.hibernate.SessionFactory;
 import org.inbio.neoportal.dao.GenericBaseDAO;
 import org.inbio.neoportal.entity.LogGenericEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 
 import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.orm.hibernate3.LocalSessionFactoryBean;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
  * @author jgutierrez
  *
  */
-public class GenericBaseDAOImpl<E extends LogGenericEntity,I extends Object> extends HibernateDaoSupport implements GenericBaseDAO<E, I> {
+@Configuration
+public abstract class GenericBaseDAOImpl<E extends LogGenericEntity,I extends Object> extends HibernateDaoSupport implements GenericBaseDAO<E, I> {
+
+    @Autowired
+    private void initFactory(SessionFactory sessionFactory){
+        this.setSessionFactory(sessionFactory);
+    }
 
 	/*
 	 * (non-Javadoc)
@@ -86,19 +92,4 @@ public class GenericBaseDAOImpl<E extends LogGenericEntity,I extends Object> ext
 		HibernateTemplate template = getHibernateTemplate();
 		return template.loadAll(entityClass);
 	}
-
-	/*
-	public List<E> findAllPaginated(Class<E> entityClass, int firstResult,
-			int maxResults) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
-	public Long count(Class<E> entityClass) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	*/
-
 }
