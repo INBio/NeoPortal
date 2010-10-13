@@ -30,6 +30,7 @@ import org.hibernate.transform.ResultTransformer;
 import org.inbio.neoportal.dao.DwCDAO;
 import org.inbio.neoportal.dto.OcurrenceLiteDTO;
 import org.inbio.neoportal.entity.DarwinCore;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -43,13 +44,16 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository
+@Configuration
 public class DwCDAOImpl extends GenericBaseDAOImpl<DarwinCore,Integer> implements DwCDAO {
 
+    @Override
     public List<OcurrenceLiteDTO> search(final String[] fields, final String searchText, final int offset, final int quantity) {
 
         HibernateTemplate template = getHibernateTemplate();
 
         return (List<OcurrenceLiteDTO>) template.execute(new HibernateCallback() {
+            @Override
             public Object doInHibernate(Session session) {
 
                 FullTextSession fullTextSession = Search.getFullTextSession(session);
@@ -79,11 +83,13 @@ public class DwCDAOImpl extends GenericBaseDAOImpl<DarwinCore,Integer> implement
         });
     }
 
+    @Override
     public Integer searchCount(final String[] fields, final String searchText) {
 
         HibernateTemplate template = getHibernateTemplate();
 
         return (Integer) template.execute(new HibernateCallback() {
+            @Override
             public Object doInHibernate(Session session) {
 
                 FullTextSession fullTextSession = Search.getFullTextSession(session);

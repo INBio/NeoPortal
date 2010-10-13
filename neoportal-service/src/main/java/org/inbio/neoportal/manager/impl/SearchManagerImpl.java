@@ -37,6 +37,7 @@ public class SearchManagerImpl implements SearchManager{
 
 
 
+    @Override
     public List<OcurrenceLiteDTO> fullPaginatedSearch(String searchText, int offset, int quantity)
             throws ParseException{
 
@@ -51,6 +52,7 @@ public class SearchManagerImpl implements SearchManager{
 
     }
 
+    @Override
     public Integer fullSearchCount(String searchText)
             throws ParseException {
         // All the indexed fields
