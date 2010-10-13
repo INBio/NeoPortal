@@ -1,5 +1,5 @@
 //where to sent the requests?
-var urlContext = 'http://localhost:8082/neoportal-web';
+var urlContext;
 var singleSelectDataTable;
 
 
