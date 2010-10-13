@@ -13,7 +13,7 @@ function initPage(urlContextValue) {
 }
 
 
-function holaMundo() {
+function homeSearch() {
 
 	var searchString = document.getElementById('searchInput').value;
 	

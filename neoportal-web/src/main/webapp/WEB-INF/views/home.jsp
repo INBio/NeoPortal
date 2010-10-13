@@ -8,7 +8,7 @@
         <!-- neoportal js and css -->
         <link rel="stylesheet" type="text/css"
               href="<c:out value="${pageContext.request.contextPath}"/><spring:theme code='styleSheet'/>"/>
-        <script type="text/javascript" src="<c:url value="/resources/holamundo.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/home.js" />"></script>
 
         <!-- yui js and css -->
         <link rel="stylesheet" type="text/css" href="resources/yui/datatable/assets/skins/sam/datatable.css">
@@ -31,7 +31,7 @@
             <!-- Search panel -->
             <div id="searchPanel">
                 <input id="searchInput" type="text" value=""> 
-                <a id="simple" href="javascript:holaMundo();">Search</a>
+                <a id="simple" href="javascript:homeSearch();"><fmt:message key="search"/></a>
             </div>
 
             <!-- Results panel -->

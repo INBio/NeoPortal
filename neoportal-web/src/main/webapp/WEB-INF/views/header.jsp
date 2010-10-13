@@ -13,7 +13,7 @@
                     <div id="banner">
                         <div id="title">
                             <h1>
-                                <fmt:message key="applicationName"/>
+                                <fmt:message key="app_name"/>
                             </h1>
                         </div>
                     </div>
