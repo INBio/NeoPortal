@@ -28,17 +28,19 @@ public class OcurrenceLiteDTO extends BaseDTO {
 	private String scientificName;
 	private String latitude;
 	private String longitude;
+    private String locality;
 
     public OcurrenceLiteDTO() {
     }
 
-    public OcurrenceLiteDTO(String globalUniqueIdentifier, String catalogNumber, String institutionCode, String scientificName, String latitude, String longitude) {
+    public OcurrenceLiteDTO(String globalUniqueIdentifier, String catalogNumber, String institutionCode, String scientificName, String latitude, String longitude, String locality) {
         this.globalUniqueIdentifier = globalUniqueIdentifier;
         this.catalogNumber = catalogNumber;
         this.institutionCode = institutionCode;
         this.scientificName = scientificName;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.locality = locality;
     }
 
     public String getCatalogNumber() {
@@ -87,5 +89,13 @@ public class OcurrenceLiteDTO extends BaseDTO {
 
     public void setScientificName(String scientificName) {
         this.scientificName = scientificName;
+    }
+
+    public String getLocality() {
+        return locality;
+    }
+
+    public void setLocality(String locality) {
+        this.locality = locality;
     }
 }

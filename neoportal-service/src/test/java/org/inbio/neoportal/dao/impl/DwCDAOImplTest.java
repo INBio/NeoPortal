@@ -17,7 +17,6 @@
 
 package org.inbio.neoportal.dao.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.util.List;
@@ -57,6 +56,7 @@ public class DwCDAOImplTest{
 
     @After
     public void tearDown() {
+        instance = null;
     }
 
     /**

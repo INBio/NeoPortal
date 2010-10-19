@@ -16,7 +16,10 @@
  */
 package org.inbio.neoportal.manager.impl;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.apache.lucene.queryParser.ParseException;
 import org.inbio.neoportal.dao.DwCDAO;
 import org.inbio.neoportal.dto.OcurrenceLiteDTO;
@@ -35,6 +38,51 @@ public class SearchManagerImpl implements SearchManager{
     @Autowired
     private DwCDAO dwcDAO;
 
+    @Override
+    public List<OcurrenceLiteDTO> speciesListPaginatedSearch(String searchText, int offset, int quantity)
+            throws ParseException{
+
+        List<OcurrenceLiteDTO> occurrenceList = null;
+        List<OcurrenceLiteDTO> speciesList = null;
+
+
+        Set<String> scientificNames = new HashSet<String>();
+        boolean     entered         = false;
+        boolean     next            = true;
+        int         maxQuantity     = quantity + 50;
+        int         nextStartItem   = offset;
+
+        // All the indexed fields
+        String[] fields =
+                new String[]{ "scientificname",
+                "locality",
+                "country",
+                "stateprovince",
+                "county" };
+
+        occurrenceList = dwcDAO.search(fields, searchText, offset, quantity);
+        speciesList = new ArrayList<OcurrenceLiteDTO>();
+
+        while(next){
+            occurrenceList = dwcDAO.search(fields, searchText, nextStartItem, maxQuantity);
+
+            for(OcurrenceLiteDTO ol : occurrenceList){
+                // ignore duplictes scientificNames
+                entered = scientificNames.add(ol.getScientificName());
+
+                if(entered)
+                    speciesList.add(ol);
+
+                if(speciesList.size() >= quantity){
+                    next = false;
+                    break;
+                }
+            }
+            nextStartItem += maxQuantity;
+        }
+
+        return speciesList;
+    }
 
 
     @Override
@@ -44,10 +92,10 @@ public class SearchManagerImpl implements SearchManager{
         // All the indexed fields
         String[] fields =
                 new String[]{ "scientificname",
-                                "locality",
-                                "country",
-                                "stateprovince",
-                                "county" };
+                "locality",
+                "country",
+                "stateprovince",
+                "county" };
         return dwcDAO.search(fields, searchText, offset, quantity);
 
     }
@@ -58,10 +106,10 @@ public class SearchManagerImpl implements SearchManager{
         // All the indexed fields
         String[] fields =
                 new String[]{ "scientificname",
-                                "locality",
-                                "country",
-                                "stateprovince",
-                                "county" };
+                "locality",
+                "country",
+                "stateprovince",
+                "county" };
 
         return dwcDAO.searchCount(fields, searchText);
     }

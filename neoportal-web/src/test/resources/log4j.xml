@@ -12,7 +12,7 @@
 	
 	<!-- Application Loggers -->
 	<logger name="org.inbio.neoportal">
-		<level value="info" />
+		<level value="all" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->
@@ -34,7 +34,7 @@
 
 	<!-- Root Logger -->
 	<root>
-		<priority value="info" />
+		<priority value="all" />
 		<appender-ref ref="console" />
 	</root>
 	

@@ -23,7 +23,10 @@ import java.util.logging.Logger;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.util.Version;
 import org.hibernate.Session;
+import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.transform.ResultTransformer;
@@ -34,10 +37,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
-
-/**
- * 
- */
 
 /**
  * @author jgutierrez
@@ -56,11 +55,13 @@ public class DwCDAOImpl extends GenericBaseDAOImpl<DarwinCore,Integer> implement
             @Override
             public Object doInHibernate(Session session) {
 
+                Query query = null;
                 FullTextSession fullTextSession = Search.getFullTextSession(session);
                 
                 // create native Lucene query
-                MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new StandardAnalyzer());
-                org.apache.lucene.search.Query query = null;
+                MultiFieldQueryParser parser = 
+                        new MultiFieldQueryParser(Version.LUCENE_29, fields, new StandardAnalyzer(Version.LUCENE_29));
+
 
                 //FIXME Manejo de errores
                 try {
@@ -71,13 +72,14 @@ public class DwCDAOImpl extends GenericBaseDAOImpl<DarwinCore,Integer> implement
                 }
                 
                 // Wrap Lucene query in a org.hibernate.Query
-                org.hibernate.search.FullTextQuery hsQuery = fullTextSession.createFullTextQuery(query, DarwinCore.class);
+                FullTextQuery hsQuery =
+                        fullTextSession.createFullTextQuery(query, DarwinCore.class);
 
                 // Configure the result list
                 hsQuery.setResultTransformer(new OccurrenceResultTransformer());
                 hsQuery.setFirstResult(offset);
                 hsQuery.setMaxResults(quantity);
-                
+
                 return hsQuery.list();
             }
         });
@@ -92,11 +94,12 @@ public class DwCDAOImpl extends GenericBaseDAOImpl<DarwinCore,Integer> implement
             @Override
             public Object doInHibernate(Session session) {
 
+                Query query = null;
                 FullTextSession fullTextSession = Search.getFullTextSession(session);
 
-                // Create native Lucene query
-                MultiFieldQueryParser parser = new MultiFieldQueryParser(fields, new StandardAnalyzer());
-                org.apache.lucene.search.Query query = null;
+                // create native Lucene query
+                MultiFieldQueryParser parser =
+                        new MultiFieldQueryParser(Version.LUCENE_29, fields, new StandardAnalyzer(Version.LUCENE_29));
 
                 try {
                     query = parser.parse(searchText);
@@ -105,7 +108,8 @@ public class DwCDAOImpl extends GenericBaseDAOImpl<DarwinCore,Integer> implement
                 }
 
                 // Wrap Lucene query in a org.hibernate.Query
-                org.hibernate.search.FullTextQuery hsQuery = fullTextSession.createFullTextQuery(query, DarwinCore.class);
+                FullTextQuery hsQuery =
+                    fullTextSession.createFullTextQuery(query, DarwinCore.class);
 
                 return new Integer(hsQuery.getResultSize());
             }
@@ -126,7 +130,8 @@ public class DwCDAOImpl extends GenericBaseDAOImpl<DarwinCore,Integer> implement
                                          dwc.getInstitutioncode(),
                                          dwc.getScientificname(),
                                          dwc.getDecimallatitude(),
-                                         dwc.getDecimallongitude()));
+                                         dwc.getDecimallongitude(),
+                                         dwc.getLocality()));
             return newList;
         }
 

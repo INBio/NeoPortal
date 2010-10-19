@@ -38,6 +38,19 @@ public interface SearchManager {
             throws ParseException;
 
     /**
+     * Search <code>searchText</code> in the lucene index, this method return only
+     * differents species (scientificNames).
+     * @param searchText
+     * @param offset
+     * @param quantity
+     * @return
+     * @throws ParseException
+     */
+    public List<OcurrenceLiteDTO> speciesListPaginatedSearch(String searchText, int offset, int quantity)
+            throws ParseException;
+
+
+    /**
      * Return the amount of items returned by a Lucene search
      * @param searchText
      * @return

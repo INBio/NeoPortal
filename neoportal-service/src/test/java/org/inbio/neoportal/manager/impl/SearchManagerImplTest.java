@@ -17,6 +17,8 @@
 
 package org.inbio.neoportal.manager.impl;
 
+import org.inbio.neoportal.dao.DwCDAO;
+import org.inbio.neoportal.dao.impl.DwCDAOImpl;
 import org.inbio.neoportal.manager.SearchManager;
 import java.util.ArrayList;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -34,7 +36,7 @@ import static org.junit.Assert.*;
  */
 public class SearchManagerImplTest {
 
-    SearchManager instance;
+    private SearchManager instance;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -56,6 +58,7 @@ public class SearchManagerImplTest {
 
     @After
     public void tearDown() {
+        instance = null;
     }
 
     /**
@@ -83,34 +86,4 @@ public class SearchManagerImplTest {
         Integer result = instance.fullSearchCount(searchText);
         assertEquals(expResult, result);
     }
-
-    /**
-     * Test of getDwcDAO method, of class SearchManagerImpl.
-     */
-    /*
-    @Test
-    public void testGetDwcDAO() {
-        System.out.println("getDwcDAO");
-        SearchManagerImpl instance = new SearchManagerImpl();
-        DwCDAO expResult = null;
-        DwCDAO result = instance.getDwcDAO();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-*/
-    /**
-     * Test of setDwcDAO method, of class SearchManagerImpl.
-     */
-    /*
-    @Test
-    public void testSetDwcDAO() {
-        System.out.println("setDwcDAO");
-        DwCDAO dwcDAO = null;
-        SearchManagerImpl instance = new SearchManagerImpl();
-        instance.setDwcDAO(dwcDAO);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-     */
 }

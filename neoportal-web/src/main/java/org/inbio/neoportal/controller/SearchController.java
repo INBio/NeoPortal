@@ -48,7 +48,7 @@ public class SearchController {
 
         XMLResponseWrapperBean slwb = new XMLResponseWrapperBean();
         try {
-            occurrenceList = searchManagerImpl.fullPaginatedSearch(searchString, 0 ,20);
+            occurrenceList = searchManagerImpl.speciesListPaginatedSearch(searchString, 0 ,20);
 
             for(OcurrenceLiteDTO olDTO : occurrenceList)
                 slwb.addElement(new SpecimenLiteBean(

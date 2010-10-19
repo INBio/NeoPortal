@@ -18,14 +18,19 @@ package org.inbio.neoportal.index;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.search.DuplicateFilter;
+import org.apache.lucene.util.Version;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.transform.ResultTransformer;
+import org.inbio.neoportal.dao.impl.DwCDAOImpl;
 import org.inbio.neoportal.dto.OcurrenceLiteDTO;
 import org.inbio.neoportal.entity.DarwinCore;
 import org.inbio.neoportal.util.HibernateUtil;
@@ -170,19 +175,27 @@ public class Indexer {
         FullTextSession fullTextSession = Search.getFullTextSession(session);
         Transaction tx = fullTextSession.beginTransaction();
 
-        // create native Lucene query
-        MultiFieldQueryParser parser = 
-                new MultiFieldQueryParser(fields, new StandardAnalyzer());
+                // create native Lucene query
+                MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_29, fields, new StandardAnalyzer(Version.LUCENE_29));
+                org.apache.lucene.search.Query query = null;
 
-        org.apache.lucene.search.Query query = parser.parse(searchText);
+                //FIXME Manejo de errores
+                try {
+                    query = parser.parse(searchText);
+                } catch (ParseException ex) {
+                    Logger.getLogger(DwCDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
-        // wrap Lucene query in a org.hibernate.Query
-        org.hibernate.search.FullTextQuery hsQuery = 
-                fullTextSession.createFullTextQuery(query, DarwinCore.class);
+                // Wrap Lucene query in a org.hibernate.Query
+                org.hibernate.search.FullTextQuery hsQuery = fullTextSession.createFullTextQuery(query, DarwinCore.class);
+
+                // Configure the result list
+                hsQuery.setFilter(new DuplicateFilter("scientificname"));
+                hsQuery.setResultTransformer(new OccurrenceResultTransformer());
+
 
         // for paginated search
         hsQuery.setMaxResults(20);
-        hsQuery.setResultTransformer(new OccurrenceResultTransformer());
 
         int totalAmount = hsQuery.getResultSize();
         // execute search
@@ -198,7 +211,8 @@ public class Indexer {
             for(OcurrenceLiteDTO res : result)
                 System.out.println("#-> "+res.getGlobalUniqueIdentifier()
                                          +" => "+res.getInstitutionCode()
-                                         +" : "+res.getScientificName());
+                                         +" : "+res.getScientificName()
+                                         +" { "+res.getLocality()+ " }");
 
             i+=20;
             hsQuery.setFirstResult(i);
@@ -241,7 +255,8 @@ public class Indexer {
                                          dwc.getInstitutioncode(),
                                          dwc.getScientificname(),
                                          dwc.getDecimallatitude(),
-                                         dwc.getDecimallongitude()));
+                                         dwc.getDecimallongitude(),
+                                         dwc.getLocality()));
             return newList;
         }
 

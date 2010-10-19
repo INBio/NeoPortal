@@ -95,6 +95,29 @@
 			<artifactId>slf4j-simple</artifactId>
 			<version>1.5.10</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-queries</artifactId>
+            <version>2.9.3</version>
+		</dependency>
+        <dependency>
+            <artifactId>lucene-analyzers</artifactId>
+            <groupId>org.apache.lucene</groupId>
+            <type>jar</type>
+            <version>2.9.3</version>
+        </dependency>
+        <dependency>
+            <artifactId>lucene-core</artifactId>
+            <groupId>org.apache.lucene</groupId>
+            <type>jar</type>
+            <version>2.9.3</version>
+        </dependency>
+        <dependency>
+            <artifactId>lucene-snowball</artifactId>
+            <groupId>org.apache.lucene</groupId>
+            <type>jar</type>
+            <version>2.9.3</version>
+        </dependency>
     </dependencies>
     <pluginRepositories>
 
