@@ -17,9 +17,9 @@
 
 package org.inbio.neoportal.manager.impl;
 
-import org.inbio.neoportal.dao.DwCDAO;
-import org.inbio.neoportal.dao.impl.DwCDAOImpl;
-import org.inbio.neoportal.manager.SearchManager;
+import org.inbio.neoportal.service.dao.DwCDAO;
+import org.inbio.neoportal.service.dao.impl.DwCDAOImpl;
+import org.inbio.neoportal.service.manager.SearchManager;
 import java.util.ArrayList;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.util.List;

@@ -17,6 +17,7 @@
 
 package org.inbio.neoportal.dao.impl;
 
+import org.inbio.neoportal.service.dao.impl.DwCDAOImpl;
 import java.util.ArrayList;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.util.List;

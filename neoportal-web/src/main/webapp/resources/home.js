@@ -18,34 +18,26 @@ function homeSearch() {
 	var searchString = document.getElementById('searchInput').value;
 	
 	var myColumnDefs = [ {
-		key : "catalognumber",
-		sortable : true,
-		label : "Catálogo"
-	}, {
-		key : "institutioncode",
-		sortable : true,
-		label : "Insti."
+	    key : "image",
+	    sortable : true,
+	    label : "Image"
 	}, {
 	    key : "scientificname",
 	    sortable : true,
 	    label : "Nombre cient."
 	}, {
-		key : "latitude",
+	    key : "services",
 	    sortable : true,
-	    label : "Lat."
-	 }, {
-		 key : "longitude",
-		 sortable : true,
-		 label : "Long."
+	    label : "Servicios"
 	 } ];
 	
-	var myDataSource = new YAHOO.util.DataSource("search/simple?searchString="+ searchString+"&format=xml");
+	var myDataSource = new YAHOO.util.DataSource("search/species?searchString="+ searchString+"&format=xml");
 	myDataSource.responseType = YAHOO.util.DataSource.TYPE_XML;
 	myDataSource.useXPath = true;
 	myDataSource.responseSchema = {
 			//metaFields: {rootatt:"/neoportal-response/@rootatt", topnode:"//top", nestedatt:"//second/@nested"},
 	        resultNode: "element",
-	        fields: [{key:"catalognumber"},{key:"institutioncode"},{key:"scientificname"},
+	        fields: [{key:"gui"},{key:"scientificname"},{key:"country"},{key:"province"},{key:"county"},{key:"locality"},
 	                 {key:"latitude", parser:"number"},{key:"longitude", parser:"number"}]
 	        };
 	

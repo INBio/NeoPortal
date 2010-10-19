@@ -6,7 +6,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     <description>Example configuration to get you started.</description>
 
 	<context:annotation-config />
-    <context:component-scan base-package="org.inbio.neoportal" />
+    <context:component-scan base-package="org.inbio.neoportal.service" />
 
 	<!-- Data Source
 		 Algunas propiedades de este bean serán sobre escritas en el m3s-web utilizando el archivo

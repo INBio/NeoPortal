@@ -16,24 +16,22 @@
  */
 package org.inbio.neoportal.index;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.search.DuplicateFilter;
 import org.apache.lucene.util.Version;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
-import org.hibernate.transform.ResultTransformer;
-import org.inbio.neoportal.dao.impl.DwCDAOImpl;
-import org.inbio.neoportal.dto.OcurrenceLiteDTO;
-import org.inbio.neoportal.entity.DarwinCore;
-import org.inbio.neoportal.util.HibernateUtil;
+import org.inbio.neoportal.service.dao.impl.DwCDAOImpl;
+import org.inbio.neoportal.service.dto.OccurrenceLiteDTO;
+import org.inbio.neoportal.service.entity.DarwinCore;
+import org.inbio.neoportal.service.transformers.OccurrenceResultTransformer;
+import org.inbio.neoportal.index.util.HibernateUtil;
 
 
 
@@ -190,7 +188,6 @@ public class Indexer {
                 org.hibernate.search.FullTextQuery hsQuery = fullTextSession.createFullTextQuery(query, DarwinCore.class);
 
                 // Configure the result list
-                hsQuery.setFilter(new DuplicateFilter("scientificname"));
                 hsQuery.setResultTransformer(new OccurrenceResultTransformer());
 
 
@@ -201,16 +198,16 @@ public class Indexer {
         // execute search
         System.out.println("#-> Result Count "+ hsQuery.getResultSize());
 
-        List<OcurrenceLiteDTO> result = null;
+        List<OccurrenceLiteDTO> result = null;
 
         // Show the results page by page (20 items each).
         for(int i = 0; i <=totalAmount; ){
 
             result = hsQuery.list();
 
-            for(OcurrenceLiteDTO res : result)
+            for(OccurrenceLiteDTO res : result)
                 System.out.println("#-> "+res.getGlobalUniqueIdentifier()
-                                         +" => "+res.getInstitutionCode()
+                                         +" => "+res.getCountry()
                                          +" : "+res.getScientificName()
                                          +" { "+res.getLocality()+ " }");
 
@@ -239,30 +236,5 @@ public class Indexer {
         //index.processArguments(localArgs);
         index.processArguments(args);
 
-    }
-
-    private class OccurrenceResultTransformer implements ResultTransformer {
-
-        @Override
-        public List transformList(List list) {
-            List<DarwinCore> dwcList = (List<DarwinCore>) list;
-            List<OcurrenceLiteDTO> newList = new ArrayList<OcurrenceLiteDTO>();
-
-            for(DarwinCore dwc: dwcList)
-                newList.add(
-                    new OcurrenceLiteDTO(dwc.getGlobaluniqueidentifier(),
-                                         dwc.getCatalognumber(),
-                                         dwc.getInstitutioncode(),
-                                         dwc.getScientificname(),
-                                         dwc.getDecimallatitude(),
-                                         dwc.getDecimallongitude(),
-                                         dwc.getLocality()));
-            return newList;
-        }
-
-        @Override
-        public Object transformTuple(Object[] os, String[] strings) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
     }
 }
