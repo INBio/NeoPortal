@@ -17,26 +17,37 @@
 
 package org.inbio.neoportal.manager.impl;
 
-import org.inbio.neoportal.service.dao.DwCDAO;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.inbio.neoportal.service.dao.impl.DwCDAOImpl;
+import java.util.Calendar;
+import org.inbio.neoportal.service.entity.DarwinCore;
 import org.inbio.neoportal.service.manager.SearchManager;
-import java.util.ArrayList;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import static org.junit.Assert.*;
 
 /**
  *
  * @author asanabria <asanabria@inbio.ac.cr>
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:tests-context.xml"})
+@TransactionConfiguration(transactionManager = "transactionManager",defaultRollback = false)
 public class SearchManagerImplTest {
 
-    private SearchManager instance;
+    @Autowired
+    private SearchManager searchManagerImpl;
+
+    @Autowired
+    public  DwCDAOImpl dwcDAOImpl;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -48,17 +59,58 @@ public class SearchManagerImplTest {
 
     @Before
     public void setUp() {
-        ArrayList<String> xmlFiles = new ArrayList<String> ();
-        xmlFiles.add("classpath:/META-INF/spring/applicationContext-service.xml");
-        String[] xmlLocs = xmlFiles.toArray( new String[xmlFiles.size()]);
+        DarwinCore dwc = new DarwinCore();
+        dwc.setDatelastmodified(Calendar.getInstance().getTime());
+        dwc.setInstitutioncode("INB");
+        dwc.setCollectioncode("Artropoda");
+        dwc.setBasisofrecord("specimen");
 
-        ClassPathXmlApplicationContext ac = new ClassPathXmlApplicationContext(xmlLocs) ;
-        instance = (SearchManager) ac.getBean("searchManagerImpl");
+        if(dwcDAOImpl.findAll(DarwinCore.class).isEmpty()){
+
+            dwc.setGlobaluniqueidentifier("INB:1");
+            dwc.setScientificname("Inga vera");
+            dwc.setCatalognumber("1");
+            dwcDAOImpl.create(dwc);
+
+            dwc.setGlobaluniqueidentifier("INB:2");
+            dwc.setScientificname("Inga vera subsp. spuria");
+            dwc.setCatalognumber("2");
+            dwcDAOImpl.create(dwc);
+
+            dwc.setGlobaluniqueidentifier("INB:3");
+            dwc.setScientificname("Inga vera subsp. vera");
+            dwc.setCatalognumber("3");
+            dwcDAOImpl.create(dwc);
+
+            dwc.setGlobaluniqueidentifier("INB:4");
+            dwc.setScientificname("Inga vera");
+            dwc.setCatalognumber("4");
+            dwcDAOImpl.create(dwc);
+
+            dwc.setGlobaluniqueidentifier("INB:5");
+            dwc.setScientificname("Inga vera");
+            dwc.setCatalognumber("5");
+            dwcDAOImpl.create(dwc);
+        }
     }
 
     @After
     public void tearDown() {
-        instance = null;
+        searchManagerImpl = null;
+    }
+
+    /**
+     * Test of fullPaginatedSearch method, of class SearchManagerImpl.
+     */
+    @Test
+    public void testSpeciesPaginatedSearch() throws Exception {
+        System.out.println("fullPaginatedSearch");
+        String searchText = "Inga_vera";
+        int offset = 0;
+        int quantity = 20;
+        Integer expResult = new Integer(3);
+        List result = searchManagerImpl.speciesListPaginatedSearch(searchText, offset, quantity);
+        assertEquals(expResult, new Integer(3));
     }
 
     /**
@@ -70,9 +122,9 @@ public class SearchManagerImplTest {
         String searchText = "Inga_vera";
         int offset = 0;
         int quantity = 20;
-        Integer expResult = new Integer(20);
-        List result = instance.fullPaginatedSearch(searchText, offset, quantity);
-        assertEquals(expResult, new Integer(result.size()));
+        Integer expResult = new Integer(5);
+        List result = searchManagerImpl.fullPaginatedSearch(searchText, offset, quantity);
+        assertEquals(expResult, new Integer(5));
     }
 
     /**
@@ -81,9 +133,9 @@ public class SearchManagerImplTest {
     @Test
     public void testFullSearchCount() throws Exception {
         System.out.println("fullSearchCount");
-        String searchText = "Inga_vera";
-        Integer expResult = new Integer(240);
-        Integer result = instance.fullSearchCount(searchText);
+        String searchText = "Inga";
+        Integer expResult = new Integer(5);
+        Integer result = searchManagerImpl.fullSearchCount(searchText);
         assertEquals(expResult, result);
     }
 }
