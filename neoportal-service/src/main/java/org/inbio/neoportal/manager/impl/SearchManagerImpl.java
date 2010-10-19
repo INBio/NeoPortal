@@ -16,8 +16,8 @@
  */
 package org.inbio.neoportal.manager.impl;
 
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.apache.lucene.queryParser.ParseException;
@@ -45,6 +45,8 @@ public class SearchManagerImpl implements SearchManager{
         List<OcurrenceLiteDTO> occurrenceList = null;
 
         Set<OcurrenceLiteDTO> scientificNames = new HashSet<OcurrenceLiteDTO>();
+        OcurrenceLiteDTO ol = null;
+        int lastResult = 0;
 
         boolean     next            = true;
         int         maxQuantity     = 1000;
@@ -58,20 +60,28 @@ public class SearchManagerImpl implements SearchManager{
                 "stateprovince",
                 "county" };
 
-        while(next && nextStartItem < 10000){
+        do{
+            // Search the results of the query
             occurrenceList = dwcDAO.search(fields, searchText, nextStartItem, maxQuantity);
 
-            for(OcurrenceLiteDTO ol : occurrenceList){
-                // ignore duplictes scientificNames
+            // iterate over the results an leave only distinct scientific Names
+            for (Iterator<OcurrenceLiteDTO> iter = occurrenceList.iterator(); iter.hasNext(); lastResult++ ) {
+
+                ol = iter.next();
+                // ignore duplictes scientificNames by inserting them in a java.util.Set.
                 scientificNames.add(ol);
 
-                if(scientificNames.size() >= quantity){
+                // if the resultSet reach the required quantity then quits
+                if(scientificNames.size() == quantity){
                     next = false;
                     break;
                 }
             }
+
             nextStartItem += maxQuantity;
-        }
+
+        } while(next && nextStartItem < 10000 && occurrenceList.size() < maxQuantity);
+
         occurrenceList.clear();
         occurrenceList.addAll(scientificNames);
 

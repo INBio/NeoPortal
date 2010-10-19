@@ -40,7 +40,7 @@ public class DarwinCore  extends LogGenericEntity implements Serializable {
      private String collectioncode;
      private String catalognumber;
      private BigDecimal catalognumbernumeric;
-     @Field(index=Index.UN_TOKENIZED, store=Store.NO)
+     @Field(index=Index.TOKENIZED, store=Store.NO)
      private String scientificname;
      private String basisofrecord;
      private String informationwithheld;
