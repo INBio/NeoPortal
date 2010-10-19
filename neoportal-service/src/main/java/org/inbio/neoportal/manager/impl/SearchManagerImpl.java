@@ -43,13 +43,11 @@ public class SearchManagerImpl implements SearchManager{
             throws ParseException{
 
         List<OcurrenceLiteDTO> occurrenceList = null;
-        List<OcurrenceLiteDTO> speciesList = null;
 
+        Set<OcurrenceLiteDTO> scientificNames = new HashSet<OcurrenceLiteDTO>();
 
-        Set<String> scientificNames = new HashSet<String>();
-        boolean     entered         = false;
         boolean     next            = true;
-        int         maxQuantity     = quantity + 50;
+        int         maxQuantity     = 1000;
         int         nextStartItem   = offset;
 
         // All the indexed fields
@@ -60,28 +58,24 @@ public class SearchManagerImpl implements SearchManager{
                 "stateprovince",
                 "county" };
 
-        occurrenceList = dwcDAO.search(fields, searchText, offset, quantity);
-        speciesList = new ArrayList<OcurrenceLiteDTO>();
-
-        while(next){
+        while(next && nextStartItem < 10000){
             occurrenceList = dwcDAO.search(fields, searchText, nextStartItem, maxQuantity);
 
             for(OcurrenceLiteDTO ol : occurrenceList){
                 // ignore duplictes scientificNames
-                entered = scientificNames.add(ol.getScientificName());
+                scientificNames.add(ol);
 
-                if(entered)
-                    speciesList.add(ol);
-
-                if(speciesList.size() >= quantity){
+                if(scientificNames.size() >= quantity){
                     next = false;
                     break;
                 }
             }
             nextStartItem += maxQuantity;
         }
+        occurrenceList.clear();
+        occurrenceList.addAll(scientificNames);
 
-        return speciesList;
+        return occurrenceList;
     }
 
 

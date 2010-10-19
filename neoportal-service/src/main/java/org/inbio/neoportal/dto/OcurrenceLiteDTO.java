@@ -20,7 +20,7 @@ package org.inbio.neoportal.dto;
  *
  * @author asanabria <asanabria@inbio.ac.cr>
  */
-public class OcurrenceLiteDTO extends BaseDTO {
+public class OcurrenceLiteDTO extends BaseDTO implements Comparable {
 
     private String globalUniqueIdentifier;
 	private String catalogNumber;
@@ -97,5 +97,32 @@ public class OcurrenceLiteDTO extends BaseDTO {
 
     public void setLocality(String locality) {
         this.locality = locality;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final OcurrenceLiteDTO other = (OcurrenceLiteDTO) obj;
+        if ((this.scientificName == null) ? (other.scientificName != null) : !this.scientificName.equals(other.scientificName)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 23 * hash + (this.scientificName != null ? this.scientificName.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return this.scientificName.compareTo(((OcurrenceLiteDTO)o).getScientificName());
     }
 }
