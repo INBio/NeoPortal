@@ -33,6 +33,10 @@ body {
     padding: 5px 0 5px 0;
 }
 
+#content{
+    padding:0 2% 0 2%;
+}
+
 #banner {
 	height: 80px;
 	background-color:#124A21;
@@ -88,6 +92,50 @@ body {
 
 #searchPanel input:focus {
   border: 1px blue solid;
+}
+
+#tablePanelContainer {
+    text-align:center;
+    float:left;
+    width: 490px;
+}
+
+#occuPanel{
+    padding:0 3% 0 0;
+}
+
+#mapPanel {
+    margin: 0 0 0 490px;
+}
+
+#extraPanel {
+    clear:both;
+    font-size:12px;
+    margin:15px 0 15px 0;
+    width:1090px;
+    height:45px;
+    border:solid 1px #E07000;
+    text-align:center;
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
+}
+
+#map {
+    position:relative;
+    width: 100%;
+    height: 400px;
+    border: 1px solid silver;
+    border-style:solid;
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
+}
+
+#wrapper {
+    width: 100%;
+}
+
+#location {
+    float: right;
 }
 
 /*------------------------------- Footer by Cristian Granados --------------------------------*/

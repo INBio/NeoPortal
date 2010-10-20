@@ -1,34 +1,105 @@
-function initTable() {
-    //Example data
-    YAHOO.example.Data = {
-        specimens: {
-            spList: [
-                {Catalog: "3385445",Inst:"INB",ScientificName:"Neurolaena lobata",Latitude:"8.58187",Longitude:"-83.49861"},
-                {Catalog: "3107701",Inst:"INB",ScientificName:"Mollinedia costaricensis",Latitude:"9.67361",Longitude:"-83.026389"},
-                {Catalog: "3101956",Inst:"INB",ScientificName:"Cymbopetalum torulosum",Latitude:"9.7425",Longitude:"-84.376667"}
-            ]
+//To determine and define table columns
+var myColumnDefs = [ {
+    key : "catalog",
+    sortable : true,
+    label : "# Catálogo"
+}, {
+    key : "institution",
+    sortable : true,
+    label : "Institución"
+}, {
+    key : "scientificname",
+    sortable : true,
+    label : "Nombre científico."
+}, {
+    key : "country",
+    sortable : true,
+    label : "País"
+}, {
+    key : "province",
+    sortable : true,
+    label : "Provincia"
+}, {
+    key : "county",
+    sortable : true,
+    label : "Condado"
+}, {
+    key : "locality",
+    sortable : true,
+    label : "Localidad"
+}, {
+    key : "latitude",
+    sortable : true,
+    label : "Lat."
+}, {
+    key : "longitude",
+    sortable : true,
+    label : "Long."
+} ];
+//Ocurrences table
+var singleSelectDataTable;
+
+// ----------------------------------------------------------------------------
+//--------------------- Function that listen the YUI events -------------------
+function globalListener(e) {
+    //If the event comes from tablePanel
+    if(this.id == 'occuPanel'){
+        //Clear map pop ups
+        clearPopups();
+        //If there is some selected row
+        if(singleSelectDataTable != null){
+            var selectedArray = singleSelectDataTable.getSelectedTrEls();
+            var selectedRow = selectedArray[0];
+            var content = selectedRow.getElementsByTagName('div');
+            var nc='',lati='',longi='',cata='',inst='';
+            cata = content[0].innerHTML;
+            inst = content[1].innerHTML;
+            nc = content[2].innerHTML;
+            lati = content[3].innerHTML;
+            longi = content[4].innerHTML;
+            //Set the values on "selectedFeature" variable
+            var attributes = createAttrib(nc,lati,longi,cata,inst);
+            selectedFeature = new OpenLayers.Feature.Vector(
+                new OpenLayers.Geometry.Point(longi,lati), attributes);
+
+            //Show pop up on map
+            onFeatureSelectFromTable(selectedFeature);
         }
+        return;
     }
+    //If the event comes from mapPanel
+    if(this.id == 'mapPanel'){
+        var mapCatalog = '';
+        if(selectedFeature.attributes != null){
+            mapCatalog = selectedFeature.attributes.Catalog;
+        }
+        alert('Comes from map \n'+'Catalog = '+mapCatalog);
+        return;
+    }
+    //If the event comes from another DOM element
+    else{
+        alert('Comes from other -> '+this.id);
+    }
+}
 
-    //Building the table
-    var myColumnDefs = [
-        {key:"Catalog", sortable:true,label:"Catálogo"},
-        {key:"Inst", sortable:true,label:"Insti."},
-        {key:"ScientificName", sortable:true,label:"Nombre cient."},
-        {key:"Latitude", sortable:true,label:"Lat."},
-        {key:"Longitude", sortable:true,label:"Long."}
-    ];
+// ----------------------------------------------------------------------------
+//--------------------- To nnitialize the table -------------------------------
+function initTable(searchString) {
+    //Data source to get the information for filling the table
+	var myDataSource = new YAHOO.util.DataSource("../search/occurrences?searchString="+ searchString+"&format=xml");
+	myDataSource.responseType = YAHOO.util.DataSource.TYPE_XML;
+	myDataSource.useXPath = true;
+	myDataSource.responseSchema = {
+	        resultNode: "element",
+	        fields: [{key:"gui"},{key:"scientificname"},{key:"country"},{key:"province"},{key:"county"},{key:"locality"},
+	                 {key:"latitude", parser:"number"},{key:"longitude", parser:"number"},{key:"catalog"},
+                     {key:"institution"}]
+	        };
 
-    var myDataSource = new YAHOO.util.DataSource(YAHOO.example.Data.specimens);
-    myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSON;
-    myDataSource.responseSchema = {
-        resultsList: "spList",
-        fields: ["Catalog","Inst","ScientificName","Latitude","Longitude"]
-    };
-
-    singleSelectDataTable = new YAHOO.widget.DataTable("tablePanel",
+    singleSelectDataTable = new YAHOO.widget.DataTable("occuPanel",
         myColumnDefs, myDataSource, {
-            selectionMode:"single"
+            selectionMode:"single",
+            scrollable:true
         });
 
     // Subscribe to events for row selection
@@ -44,9 +115,9 @@ function initTable() {
         else {
             this._handleStandardSelectionByMouse(oArgs);
         }
-        //------------- Taken from original function ---------------------
-        //My new code
-        var fromObj = document.getElementById('tablePanel');
+        //-------------
+        //Subscribe the event to the global listener
+        var fromObj = document.getElementById('occuPanel');
         var myEvent = new YAHOO.util.CustomEvent("myEvent", fromObj);
         myEvent.subscribe(globalListener, fromObj);
         myEvent.fire();

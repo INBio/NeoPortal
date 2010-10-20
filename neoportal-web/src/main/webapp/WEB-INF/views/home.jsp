@@ -11,7 +11,7 @@
         <script type="text/javascript" src="<c:url value="/resources/home.js" />"></script>
 
         <!-- yui js and css -->
-        <link rel="stylesheet" type="text/css" href="<c:url value="/resources/yui/datatable/assets/skins/sam/datatable.css"/>">
+        <!--<link rel="stylesheet" type="text/css" href="<c:url value="/resources/yui/datatable/assets/skins/sam/datatable.css"/>">-->
         <link rel="stylesheet" type="text/css" href="<c:url value="/resources/yui/fonts/fonts-min.css"/>">
         <script type="text/javascript" src="<c:url value="/resources/yui/yahoo-dom-event/yahoo-dom-event.js"/>"></script>
         <script type="text/javascript" src="<c:url value="/resources/yui/connection/connection-min.js"/>"></script>
@@ -21,8 +21,7 @@
 
     </head>
 
-    <body onload="initPage('${pageContext.request.contextPath}');"
-          class="yui-skin-sam">
+    <body class="yui-skin-sam">
               
         <div id="contenido">
             <!-- Header -->

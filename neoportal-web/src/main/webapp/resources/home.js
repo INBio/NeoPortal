@@ -1,47 +1,35 @@
-//where to sent the requests?
-var urlContext;
+//YUI data table
 var singleSelectDataTable;
-
-
-/*
- * Sets the initial values for the page
- */
-function initPage(urlContextValue) {
-
-	if (urlContextValue != "")
-		urlContext = urlContextValue;
-}
-
+//To determine and define table columns
+var myColumnDefs = [ {
+    key : "image",
+    sortable : true,
+    label : "Imagen"
+}, {
+    key : "scientificname",
+    sortable : true,
+    label : "Nombre científico"
+}, {
+	key : "services",
+    sortable : true,
+    label : "Servicios"
+ } ];
 
 function homeSearch() {
 
 	var searchString = document.getElementById('searchInput').value;
 	
-	var myColumnDefs = [ {
-	    key : "image",
-	    sortable : true,
-	    label : "Image"
-	}, {
-	    key : "scientificname",
-	    sortable : true,
-	    label : "Nombre cient."
-	}, {
-	    key : "services",
-	    sortable : true,
-	    label : "Servicios"
-	 } ];
-	
 	var myDataSource = new YAHOO.util.DataSource("search/species?searchString="+ searchString+"&format=xml");
 	myDataSource.responseType = YAHOO.util.DataSource.TYPE_XML;
 	myDataSource.useXPath = true;
 	myDataSource.responseSchema = {
-			//metaFields: {rootatt:"/neoportal-response/@rootatt", topnode:"//top", nestedatt:"//second/@nested"},
 	        resultNode: "element",
 	        fields: [{key:"gui"},{key:"scientificname"},{key:"country"},{key:"province"},{key:"county"},{key:"locality"},
-	                 {key:"latitude", parser:"number"},{key:"longitude", parser:"number"}]
+	                 {key:"latitude", parser:"number"},{key:"longitude", parser:"number"},{key:"catalog"},
+                     {key:"institution"}]
 	        };
 	
-	var singleSelectDataTable = new YAHOO.widget.DataTable("tablePanel", 
+	singleSelectDataTable = new YAHOO.widget.DataTable("tablePanel", 
 			myColumnDefs, myDataSource, {
 				selectionMode : "single"
 			});
@@ -60,7 +48,13 @@ function homeSearch() {
 		} else {
 			this._handleStandardSelectionByMouse(oArgs);
 		}
-		// ------------- Taken from original function ---------------------
+		// -------------
+        //Get the scientific name of selected row
+        var selectedArray = this.getSelectedTrEls();
+        var selectedRow = selectedArray[0];
+        var content = selectedRow.getElementsByTagName('div');
+        var nc= content[2].innerHTML;
+        alert(nc);
 	}
 	// Also subscribe the overwrite method
 	singleSelectDataTable.subscribe("rowClickEvent",

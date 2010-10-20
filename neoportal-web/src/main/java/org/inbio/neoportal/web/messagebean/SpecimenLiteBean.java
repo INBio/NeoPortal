@@ -52,6 +52,12 @@ public class SpecimenLiteBean {
 
 	@XmlElement(name="longitude")
 	private String longitude;
+
+	@XmlElement(name="catalog")
+	private String catalog;
+
+	@XmlElement(name="institution")
+	private String institution;
 	
 	/**
 	 * 
@@ -78,7 +84,9 @@ public class SpecimenLiteBean {
             String county,
             String locality,
             String latitude,
-            String longitude) {
+            String longitude,
+            String catalog,
+            String institution) {
 
         this.globalUniqueIdentifier = globalUniqueIdentifier;
         this.scientificName = scientificName;
@@ -88,5 +96,7 @@ public class SpecimenLiteBean {
         this.locality = locality;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.catalog = catalog;
+        this.institution = institution;
     }
 }

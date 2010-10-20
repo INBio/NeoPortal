@@ -48,7 +48,7 @@ public class SearchController {
 
         XMLResponseWrapperBean slwb = new XMLResponseWrapperBean();
         try {
-            occurrenceList = searchManagerImpl.fullPaginatedSearch(searchString, 0, 20);
+            occurrenceList = searchManagerImpl.fullPaginatedSearch(searchString, 0, 10);
 
             for(OccurrenceLiteDTO olDTO : occurrenceList)
                 slwb.addElement(new SpecimenLiteBean(
@@ -59,7 +59,9 @@ public class SearchController {
                 olDTO.getCounty(),
                 olDTO.getLocality(),
                 olDTO.getLatitude(),
-                olDTO.getLongitude()));
+                olDTO.getLongitude(),
+                olDTO.getCatalog(),
+                olDTO.getInstitution()));
 
         } catch (ParseException ex) {
             Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
@@ -86,7 +88,9 @@ public class SearchController {
                 olDTO.getCounty(),
                 olDTO.getLocality(),
                 olDTO.getLatitude(),
-                olDTO.getLongitude()));
+                olDTO.getLongitude(),
+                olDTO.getCatalog(),
+                olDTO.getInstitution()));
 
         } catch (ParseException ex) {
             Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);

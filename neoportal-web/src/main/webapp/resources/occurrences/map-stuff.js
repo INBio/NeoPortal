@@ -1,3 +1,18 @@
+//Use a proxy for GeoServer requesting
+OpenLayers.ProxyHost = "cgi-bin/proxy.cgi/?url=";
+//Pink tile avoidance
+OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
+//Make OL compute scale according to WMS spec
+OpenLayers.DOTS_PER_INCH = 25.4 / 0.28;
+//GLOBAL VARIABLES DECLARATION
+var map;
+//Control to manage pop ups on the map
+var selectControl;
+//Current selected especimen point into the map
+var selectedFeature;
+//Layer to show specimens points
+var vectorLayer;
+
 //Initialazing the gis functionality
 function initMap(divId){
     var initialbounds = new OpenLayers.Bounds(
@@ -31,9 +46,9 @@ function initMap(divId){
     //Add a simpgle point
     var attributes = createAttrib('Neurolaena lobata','8.58187','-83.49861','3385445','INB');
     addPoint('-83.49861','8.58187',attributes);
-    var attributes = createAttrib('Mollinedia costaricensis','9.67361','-83.026389','3107701','INB');
+    attributes = createAttrib('Mollinedia costaricensis','9.67361','-83.026389','3107701','INB');
     addPoint('-83.026389','9.67361',attributes);
-    var attributes = createAttrib('Cymbopetalum torulosum','9.7425','-84.376667','3101956','INB');
+    attributes = createAttrib('Cymbopetalum torulosum','9.7425','-84.376667','3101956','INB');
     addPoint('-84.376667','9.7425',attributes);
     //Set up a control for specimens pop ups
     selectControl = new OpenLayers.Control.SelectFeature(vectorLayer,
