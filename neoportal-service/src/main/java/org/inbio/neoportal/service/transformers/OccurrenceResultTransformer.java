@@ -43,7 +43,9 @@ public class OccurrenceResultTransformer implements ResultTransformer {
             dwc.getCounty(),
             dwc.getLocality(),
             dwc.getDecimallatitude(),
-            dwc.getDecimallongitude()
+            dwc.getDecimallongitude(),
+            dwc.getCatalognumber(),
+            dwc.getInstitutioncode()
             ));
         return newList;
     }

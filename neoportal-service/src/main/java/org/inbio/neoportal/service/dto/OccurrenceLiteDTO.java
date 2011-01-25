@@ -30,6 +30,8 @@ public class OccurrenceLiteDTO extends BaseDTO implements Comparable {
     private String locality;
 	private String latitude;
 	private String longitude;
+    private String catalog;
+    private String institution;
 
     public OccurrenceLiteDTO() {
     }
@@ -41,7 +43,9 @@ public class OccurrenceLiteDTO extends BaseDTO implements Comparable {
                             String county,
                             String locality,
                             String latitude,
-                            String longitude) {
+                            String longitude,
+                            String catalog,
+                            String institution) {
 
         this.globalUniqueIdentifier = globalUniqueIdentifier;
         this.scientificName = scientificName;
@@ -51,6 +55,8 @@ public class OccurrenceLiteDTO extends BaseDTO implements Comparable {
         this.locality = locality;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.catalog = catalog;
+        this.institution = institution;
     }
 
     /**
@@ -157,6 +163,34 @@ public class OccurrenceLiteDTO extends BaseDTO implements Comparable {
 
     public void setScientificName(String scientificName) {
         this.scientificName = scientificName;
+    }
+
+    /**
+     * @return the catalog
+     */
+    public String getCatalog() {
+        return catalog;
+    }
+
+    /**
+     * @param catalog the catalog to set
+     */
+    public void setCatalog(String catalog) {
+        this.catalog = catalog;
+    }
+
+    /**
+     * @return the institution
+     */
+    public String getInstitution() {
+        return institution;
+    }
+
+    /**
+     * @param institution the institution to set
+     */
+    public void setInstitution(String institution) {
+        this.institution = institution;
     }
 
 }
