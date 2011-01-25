@@ -1,20 +1,57 @@
+//ContextPath
+var contextPath;
 //YUI data table
 var singleSelectDataTable;
 //To determine and define table columns
 var myColumnDefs = [ {
     key : "image",
-    sortable : true,
+    sortable : false,
     label : "Imagen"
 }, {
     key : "scientificname",
     sortable : true,
     label : "Nombre científico"
-}, {
-	key : "services",
-    sortable : true,
-    label : "Servicios"
- } ];
+} ];
 
+// ----------------------------------------------------------------------------
+//--------------------- To initialize the page --------------------------------
+function initSearch(context){
+    //Sets the focus over search input
+    document.getElementById("searchInput").focus();
+    //Set the variable that contains the context path
+    contextPath = context;
+    //Inits yui panel support
+    initYUIPanel();
+}
+
+//--------------------- To initialize YUI panel -------------------------------
+function initYUIPanel(){
+    if (!YAHOO.example.container.wait) {
+        YAHOO.example.container.wait =
+        new YAHOO.widget.Panel("wait",
+        {
+            width:"300px",
+            fixedcenter:true,
+            close:true,
+            draggable:true,
+            zindex:999,
+            modal:true,
+            visible:false
+        });
+    }
+}
+//---------------- To show specific service on the YUI panel ------------------
+function showOnPanel(spName,occuUrl,imageUrl){
+    YAHOO.example.container.wait.setHeader('<b> -- '+spName+' -- </b>');
+    var content = '<br><a href="'+contextPath+occuUrl+'" class="occurrences">Ver ocurrencias</a><br><br>';
+    content+='<a href="'+contextPath+imageUrl+'" class="multimedia">Ver imágenes</a><br><br>';
+    YAHOO.example.container.wait.setBody(content);
+    YAHOO.example.container.wait.render(document.getElementById('contenido'));
+    YAHOO.example.container.wait.show();
+}
+
+// ----------------------------------------------------------------------------
+//------------------------- Procced the search --------------------------------
 function homeSearch() {
 
 	var searchString = document.getElementById('searchInput').value;
@@ -53,8 +90,9 @@ function homeSearch() {
         var selectedArray = this.getSelectedTrEls();
         var selectedRow = selectedArray[0];
         var content = selectedRow.getElementsByTagName('div');
-        var nc= content[2].innerHTML;
-        alert(nc);
+        var scName= content[1].innerHTML;
+        var occuUrl = '/occurrences/'+scName;
+        showOnPanel(scName,occuUrl, occuUrl);
 	}
 	// Also subscribe the overwrite method
 	singleSelectDataTable.subscribe("rowClickEvent",

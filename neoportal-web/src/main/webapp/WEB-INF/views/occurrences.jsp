@@ -14,7 +14,7 @@
         <script type="text/JavaScript" src="http://openlayers.org/api/OpenLayers.js"></script>
 
         <!-- YUI -->
-        <!--<link rel="stylesheet" type="text/css" href="<c:url value="/resources/yui/datatable/assets/skins/sam/datatable.css"/>">-->
+        <link rel="stylesheet" type="text/css" href="<c:url value="/resources/yui/datatable/assets/skins/sam/datatable.css"/>">
         <link rel="stylesheet" type="text/css" href="<c:url value="/resources/yui/fonts/fonts-min.css"/>">
         <script type="text/javascript" src="<c:url value="/resources/yui/yahoo/yahoo-min.js" />"></script>
         <script type="text/javascript" src="<c:url value="/resources/yui/event/event-min.js" />"></script>
@@ -35,10 +35,10 @@
             //Init function called in the body onload method
             function initOccurrences(){
                 //To attach an event handler to multiple DOM elements
-                var domElements = ["extraPanel"];
-                YAHOO.util.Event.addListener(domElements, "click", globalListener);
+                /*var domElements = ["extraPanel",...];
+                YAHOO.util.Event.addListener(domElements, "click", globalListener);*/
                 //Initialize open layers map
-                initMap('map');
+                initMap('map','${scientificname}');
                 //Initialize ocurrences table
                 initTable('${scientificname}');
             }
@@ -68,9 +68,7 @@
                     </div>
                 </div>
                 <!-- Extra Panel -->
-                <div id="extraPanel">
-                    <h4>Panel de prueba</h4>
-                </div>
+                <div id="extraPanel"></div>
             </div>
             
             <!-- Footer -->

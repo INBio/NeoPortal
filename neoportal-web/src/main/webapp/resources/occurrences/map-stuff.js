@@ -13,8 +13,9 @@ var selectedFeature;
 //Layer to show specimens points
 var vectorLayer;
 
-//Initialazing the gis functionality
-function initMap(divId){
+// ----------------------------------------------------------------------------
+//--------------------- Initialazing the gis functionality --------------------
+function initMap(divId,searchString){
     var initialbounds = new OpenLayers.Bounds(
         -86.109, 8.377,
         -82.555, 11.221
@@ -43,13 +44,8 @@ function initMap(divId){
     map.addControl(new OpenLayers.Control.Navigation());
     map.addControl(new OpenLayers.Control.Scale($('scale')));
     map.addControl(new OpenLayers.Control.MousePosition({element: $('location')}));
-    //Add a simpgle point
-    var attributes = createAttrib('Neurolaena lobata','8.58187','-83.49861','3385445','INB');
-    addPoint('-83.49861','8.58187',attributes);
-    attributes = createAttrib('Mollinedia costaricensis','9.67361','-83.026389','3107701','INB');
-    addPoint('-83.026389','9.67361',attributes);
-    attributes = createAttrib('Cymbopetalum torulosum','9.7425','-84.376667','3101956','INB');
-    addPoint('-84.376667','9.7425',attributes);
+    //Add occurrences points into the map
+    showSpecimenPoints(searchString);
     //Set up a control for specimens pop ups
     selectControl = new OpenLayers.Control.SelectFeature(vectorLayer,
     {onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});
@@ -133,4 +129,110 @@ function clearPopups(){
     for (var i=0; i<map.popups.length; i++) {
         map.removePopup(map.popups[i]);
     }
+}
+
+// ----------------------------------------------------------------------------
+//------------------ Ajax request to show specimens on the map ----------------
+function showSpecimenPoints(searchString)  {
+    var ssws = searchString.replace(' ','_'); //search string without spaces
+    //Prepare URL for XHR request:
+    var sUrl = "../search/occurrences?searchString=scientificname:"+ ssws+"&format=xml";
+
+    //Prepare callback object
+    var callback = {
+
+        //If XHR call is successful
+        success: function(oResponse) {
+            //Root element -> response
+            var xmlDoc = oResponse.responseXML.documentElement;
+            //Get the list of specimens
+            var specimenList = xmlDoc.getElementsByTagName("element");
+            //List of coordinates (to determine the posible bounderies)
+            var latArray = new Array();
+            var longArray = new Array();
+            //Add all the specimen point
+            for(var i = 0;i<specimenList.length;i++){
+                var node = specimenList[i];
+                var catalog = node.getElementsByTagName("catalog")[0].childNodes[0].nodeValue;
+                var latitude = node.getElementsByTagName("latitude")[0].childNodes[0].nodeValue;
+                var longitude = node.getElementsByTagName("longitude")[0].childNodes[0].nodeValue;
+                var scientificname = node.getElementsByTagName("scientificname")[0].childNodes[0].nodeValue;
+                var institution = node.getElementsByTagName("institution")[0].childNodes[0].nodeValue;
+                attributes = createAttrib(scientificname,latitude,longitude,catalog,institution);
+                addPoint(longitude,latitude,attributes);
+                latArray.push(parseFloat(latitude));
+                longArray.push(parseFloat(longitude));
+            }
+
+            //Zooming on the correct geographical area (deppending on results)
+            var minX = getMinX(longArray);
+            var minY = getMinY(latArray);
+            var maxX = getMaxX(longArray);
+            var maxY = getMaxY(latArray);
+            var bounds = new OpenLayers.Bounds(
+                minX, minY, maxX, maxY);
+            map.zoomToExtent(bounds);
+        },
+
+        //If XHR call is not successful
+        failure: function(oResponse) {
+            YAHOO.log("Failed to process XHR transaction.", "info", "example");
+        }
+    };
+
+    //Make our XHR call using Connection Manager's
+    YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
+}
+//------------------ Ajax request ends -----------------------------------------
+//
+//To get the minimun longitude
+function getMinX(longitudeList) {
+    // Lets assume we are working with validated geographical coordinates, so -180 <= longitude <= l80
+    var minX = 180.0;
+    for (var i = 0;i<longitudeList.length;i++) {
+        var x = longitudeList[i];
+        if (x < minX) {
+            minX = x;
+        }
+    }
+    return minX;
+}
+
+//To get the minimun latitud
+function getMinY(latitudeList) {
+    // Lets assume we are working with validated geographical coordinates, so -90 <= latitude <= 90
+    var minY = 90.0;
+    for (var i = 0;i<latitudeList.length;i++) {
+        var y = latitudeList[i];
+        if (y < minY) {
+            minY = y;
+        }
+    }
+    return minY;
+}
+
+//To get the maximun longitude
+function getMaxX(longitudList) {
+    // Lets assume we are working with validated geographical coordinates, so -180 <= longitude <= l80
+    var maxX = -180.0;
+    for (var i = 0;i<longitudList.length;i++) {
+        var x = longitudList[i];
+        if (x > maxX) {
+            maxX = x;
+        }
+    }
+    return maxX;
+}
+
+//To get the maximun latitude
+function getMaxY(latitudeList) {
+    // Lets assume we are working with validated geographical coordinates, so -90 <= latitude <= 90
+    var maxY = -90.0;
+    for (var i = 0;i<latitudeList.length;i++) {
+        var y = latitudeList[i];
+        if (y > maxY) {
+            maxY = y;
+        }
+    }
+    return maxY;
 }

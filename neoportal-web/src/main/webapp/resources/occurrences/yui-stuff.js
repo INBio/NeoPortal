@@ -6,7 +6,7 @@ var myColumnDefs = [ {
 }, {
     key : "institution",
     sortable : true,
-    label : "Institución"
+    label : "Inst."
 }, {
     key : "scientificname",
     sortable : true,
@@ -23,17 +23,17 @@ var myColumnDefs = [ {
     key : "county",
     sortable : true,
     label : "Condado"
-}, {
+}, /*{
     key : "locality",
     sortable : true,
     label : "Localidad"
-}, {
+},*/ {
     key : "latitude",
-    sortable : true,
-    label : "Lat."
+    sortable : false,
+    label : "Lati."
 }, {
     key : "longitude",
-    sortable : true,
+    sortable : false,
     label : "Long."
 } ];
 //Ocurrences table
@@ -55,8 +55,8 @@ function globalListener(e) {
             cata = content[0].innerHTML;
             inst = content[1].innerHTML;
             nc = content[2].innerHTML;
-            lati = content[3].innerHTML;
-            longi = content[4].innerHTML;
+            lati = content[6].innerHTML;
+            longi = content[7].innerHTML;
             //Set the values on "selectedFeature" variable
             var attributes = createAttrib(nc,lati,longi,cata,inst);
             selectedFeature = new OpenLayers.Feature.Vector(
@@ -69,11 +69,11 @@ function globalListener(e) {
     }
     //If the event comes from mapPanel
     if(this.id == 'mapPanel'){
-        var mapCatalog = '';
+        /*var mapCatalog = '';
         if(selectedFeature.attributes != null){
             mapCatalog = selectedFeature.attributes.Catalog;
         }
-        alert('Comes from map \n'+'Catalog = '+mapCatalog);
+        alert('Comes from map \n'+'Catalog = '+mapCatalog);*/
         return;
     }
     //If the event comes from another DOM element
@@ -83,23 +83,24 @@ function globalListener(e) {
 }
 
 // ----------------------------------------------------------------------------
-//--------------------- To nnitialize the table -------------------------------
+//--------------------- To initialize the table -------------------------------
 function initTable(searchString) {
     //Data source to get the information for filling the table
-	var myDataSource = new YAHOO.util.DataSource("../search/occurrences?searchString="+ searchString+"&format=xml");
+    var ssws = searchString.replace(' ','_'); //search string without spaces
+	var myDataSource = new YAHOO.util.DataSource("../search/occurrences?searchString=scientificname:"+ ssws+"&format=xml");
 	myDataSource.responseType = YAHOO.util.DataSource.TYPE_XML;
 	myDataSource.useXPath = true;
 	myDataSource.responseSchema = {
 	        resultNode: "element",
 	        fields: [{key:"gui"},{key:"scientificname"},{key:"country"},{key:"province"},{key:"county"},{key:"locality"},
-	                 {key:"latitude", parser:"number"},{key:"longitude", parser:"number"},{key:"catalog"},
+	                 {key:"latitude", parser:"number"},{key:"longitude", parser:"number"},{key:"catalog", parser:"number"},
                      {key:"institution"}]
 	        };
 
-    singleSelectDataTable = new YAHOO.widget.DataTable("occuPanel",
+    singleSelectDataTable = new YAHOO.widget.ScrollingDataTable("occuPanel",
         myColumnDefs, myDataSource, {
             selectionMode:"single",
-            scrollable:true
+            width: "100%"
         });
 
     // Subscribe to events for row selection

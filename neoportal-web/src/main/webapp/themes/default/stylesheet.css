@@ -91,30 +91,28 @@ body {
 }
 
 #searchPanel input:focus {
-  border: 1px blue solid;
+  border: 2px #CCCC99 solid;
 }
 
 #tablePanelContainer {
     text-align:center;
     float:left;
-    width: 490px;
+    width: 580px;
 }
 
 #occuPanel{
     padding:0 3% 0 0;
+    width: 570px;
 }
 
 #mapPanel {
-    margin: 0 0 0 490px;
+    margin: 0 0 0 580px;
 }
 
 #extraPanel {
     clear:both;
     font-size:12px;
-    margin:15px 0 15px 0;
-    width:1090px;
-    height:45px;
-    border:solid 1px #E07000;
+    margin:10px 0 10px 0;
     text-align:center;
    -moz-border-radius: 5px;
    -webkit-border-radius: 5px;
@@ -136,6 +134,22 @@ body {
 
 #location {
     float: right;
+}
+
+.occurrences{
+    margin:10px 0 10px 10px;
+    padding: 3px 0 0 45px;
+    background: url(images/occurrences.png);
+    background-repeat:no-repeat;
+    background-position: 10px 3px;
+}
+
+.multimedia{
+    margin:10px 0 10px 10px;
+    padding: 3px 0 0 45px;
+    background: url(images/multimedia.png);
+    background-repeat:no-repeat;
+    background-position: 10px 3px;
 }
 
 /*------------------------------- Footer by Cristian Granados --------------------------------*/
