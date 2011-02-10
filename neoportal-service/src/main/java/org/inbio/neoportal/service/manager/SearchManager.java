@@ -18,7 +18,8 @@ package org.inbio.neoportal.service.manager;
 
 import java.util.List;
 import org.apache.lucene.queryParser.ParseException;
-import org.inbio.neoportal.service.dto.OccurrenceLiteDTO;
+import org.inbio.neoportal.service.dto.occurrence.OccurrenceLiteDTO;
+import org.inbio.neoportal.service.dto.species.SpeciesLiteDTO;
 
 
 /**
@@ -46,7 +47,7 @@ public interface SearchManager {
      * @return
      * @throws ParseException
      */
-    public List<OccurrenceLiteDTO> speciesListPaginatedSearch(String searchText, int offset, int quantity)
+    public List<SpeciesLiteDTO> speciesListPaginatedSearch(String searchText, int offset, int quantity)
             throws ParseException;
 
 

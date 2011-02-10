@@ -29,7 +29,7 @@ import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.inbio.neoportal.service.dao.DwCDAO;
-import org.inbio.neoportal.service.dto.OccurrenceLiteDTO;
+import org.inbio.neoportal.service.dto.occurrence.OccurrenceLiteDTO;
 import org.inbio.neoportal.service.entity.DarwinCore;
 import org.inbio.neoportal.service.transformers.OccurrenceResultTransformer;
 import org.springframework.context.annotation.Configuration;

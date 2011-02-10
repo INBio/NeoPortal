@@ -16,13 +16,15 @@
  */
 package org.inbio.neoportal.service.manager.impl;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.apache.lucene.queryParser.ParseException;
 import org.inbio.neoportal.service.dao.DwCDAO;
-import org.inbio.neoportal.service.dto.OccurrenceLiteDTO;
+import org.inbio.neoportal.service.dto.occurrence.OccurrenceLiteDTO;
+import org.inbio.neoportal.service.dto.species.SpeciesLiteDTO;
 import org.inbio.neoportal.service.manager.SearchManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,14 +41,16 @@ public class SearchManagerImpl implements SearchManager{
     private DwCDAO dwcDAO;
 
     @Override
-    public List<OccurrenceLiteDTO> speciesListPaginatedSearch(String searchText, int offset, int quantity)
+    public List<SpeciesLiteDTO> speciesListPaginatedSearch(String searchText, int offset, int quantity)
             throws ParseException{
 
         List<OccurrenceLiteDTO> occurrenceList = null;
-
-        Set<OccurrenceLiteDTO> scientificNames = new HashSet<OccurrenceLiteDTO>();
-        OccurrenceLiteDTO ol = null;
+        OccurrenceLiteDTO ol = null; //Used to iterate over occurrenceList
+        //Set to store all the diferent scientific names
+        Set<SpeciesLiteDTO> scientificNames = new HashSet<SpeciesLiteDTO>();
         int lastResult = 0;
+        //Result List of SpeciesLiteDTO Objects
+        List<SpeciesLiteDTO> result = new ArrayList<SpeciesLiteDTO>();
 
         boolean     next            = true;
         int         maxQuantity     = 1000;
@@ -64,12 +68,16 @@ public class SearchManagerImpl implements SearchManager{
             // Search the results of the query
             occurrenceList = dwcDAO.search(fields, searchText, nextStartItem, maxQuantity);
 
-            // iterate over the results an leave only distinct scientific Names
+            // Iterate over the results an leave only distinct scientific Names
             for (Iterator<OccurrenceLiteDTO> iter = occurrenceList.iterator(); iter.hasNext(); lastResult++ ) {
 
                 ol = iter.next();
-                // ignore duplictes scientificNames by inserting them in a java.util.Set.
-                scientificNames.add(ol);
+                // Ignore duplictes scientificNames by inserting them in a java.util.Set.
+                SpeciesLiteDTO sp = new SpeciesLiteDTO();
+                sp.setImageURL("http://pulsatrix.inbio.ac.cr/projects/atta2/chrome/site/test.JPG");
+                sp.setCommonName("Nombre común X");
+                sp.setScientificName(ol.getScientificName());
+                scientificNames.add(sp);
 
                 // if the resultSet reach the required quantity then quits
                 if(scientificNames.size() == quantity){
@@ -83,9 +91,9 @@ public class SearchManagerImpl implements SearchManager{
         } while(next && nextStartItem < 10000 && occurrenceList.size() < maxQuantity);
 
         occurrenceList.clear();
-        occurrenceList.addAll(scientificNames);
+        result.addAll(scientificNames);
 
-        return occurrenceList;
+        return result;
     }
 
 

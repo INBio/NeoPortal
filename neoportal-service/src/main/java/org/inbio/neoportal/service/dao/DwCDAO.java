@@ -17,7 +17,7 @@
 package org.inbio.neoportal.service.dao;
 
 import java.util.List;
-import org.inbio.neoportal.service.dto.OccurrenceLiteDTO;
+import org.inbio.neoportal.service.dto.occurrence.OccurrenceLiteDTO;
 import org.inbio.neoportal.service.entity.DarwinCore;
 
 /**
