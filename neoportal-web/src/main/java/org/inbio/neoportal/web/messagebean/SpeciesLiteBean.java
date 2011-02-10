@@ -16,49 +16,45 @@
  */
 package org.inbio.neoportal.web.messagebean;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
 
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.tostring.RooToString;
 
-/**
- * TODO: hacer este wrapper reutilizable. Intenté hacerlo con generics pero me 
- * dio problemas.
- * 
- * @author jgutierrez
- *
+/*
+ * @author esmata
  */
-
 @RooJavaBean
 @RooToString
-@XmlRootElement(name="neoportal-response")
-public class XMLResponseWrapperBean {
-	
-	@XmlElementWrapper(name="response-elements", nillable=true)
-	@XmlElement(name="element")
-	private List<SpecimenLiteBean> elements = new ArrayList<SpecimenLiteBean>();
+public class SpeciesLiteBean {
+
+
+	@XmlElement(name="url")
+    private String imageURL;
+
+	@XmlElement(name="cname")
+	private String commonName;
+
+	@XmlElement(name="scname")
+	private String scientificName;
+
 	
 	/**
 	 * 
-	 * @param responseType
 	 */
-	public XMLResponseWrapperBean() {
+	public SpeciesLiteBean() {
 		super();
 	}
-	
-	
-	/**
-	 * 
-	 * @param slb
-	 * @return
-	 */
-	public boolean addElement(SpecimenLiteBean slb){
-		return elements.add(slb);
-	}
-	
+
+    /**
+     * Constructor
+     */
+    public SpeciesLiteBean(String imageURL,
+            String commonName,
+            String scientificName) {
+
+        this.imageURL = imageURL;
+        this.commonName = commonName;
+        this.scientificName = scientificName;
+    }
 }

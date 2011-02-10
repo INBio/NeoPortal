@@ -26,7 +26,7 @@ import org.springframework.roo.addon.tostring.RooToString;
  */
 @RooJavaBean
 @RooToString
-public class SpecimenLiteBean {
+public class OccurrenceLiteBean {
 
 
 	@XmlElement(name="gui")
@@ -62,7 +62,7 @@ public class SpecimenLiteBean {
 	/**
 	 * 
 	 */
-	public SpecimenLiteBean() {
+	public OccurrenceLiteBean() {
 		super();
 	}
 
@@ -77,7 +77,7 @@ public class SpecimenLiteBean {
      * @param latitude
      * @param longitude
      */
-    public SpecimenLiteBean(String globalUniqueIdentifier,
+    public OccurrenceLiteBean(String globalUniqueIdentifier,
             String scientificName,
             String country,
             String province,

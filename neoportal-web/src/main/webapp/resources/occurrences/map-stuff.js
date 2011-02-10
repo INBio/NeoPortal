@@ -13,8 +13,9 @@ var selectedFeature;
 //Layer to show specimens points
 var vectorLayer;
 
-// ----------------------------------------------------------------------------
-//--------------------- Initialazing the gis functionality --------------------
+/*
+ * This function initializes the gis functionality for occurrences page
+ */
 function initMap(divId,searchString){
     var initialbounds = new OpenLayers.Bounds(
         -86.109, 8.377,
@@ -39,21 +40,25 @@ function initMap(divId,searchString){
     map.addLayer(googleLayer);
     //Build up all controls
     map.zoomToExtent(initialbounds);
-    map.addControl(new OpenLayers.Control.PanZoomBar({position: new OpenLayers.Pixel(2, 15)}));
-    map.addControl(new OpenLayers.Control.LayerSwitcher({'ascending':false},{'position':OpenLayers.Control}));
+    map.addControl(new OpenLayers.Control.PanZoomBar
+    ({position: new OpenLayers.Pixel(2, 15)}));
+    map.addControl(new OpenLayers.Control.LayerSwitcher
+    ({'ascending':false},{'position':OpenLayers.Control}));
     map.addControl(new OpenLayers.Control.Navigation());
     map.addControl(new OpenLayers.Control.Scale($('scale')));
     map.addControl(new OpenLayers.Control.MousePosition({element: $('location')}));
     //Add occurrences points into the map
     showSpecimenPoints(searchString);
-    //Set up a control for specimens pop ups
+    /*/Set up a control for specimens pop ups
     selectControl = new OpenLayers.Control.SelectFeature(vectorLayer,
     {onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});
     map.addControl(selectControl);
-    selectControl.activate();
+    selectControl.activate();*/
 }
 
-//Creates a new atributes array for each speciemns point
+/*
+ * Creates a new atributes array for each speciemns point
+ */
 function createAttrib(scientificName,latitude,longitude,catalog,institution) {
     attrib = {
         ScientificName: scientificName,
@@ -65,14 +70,20 @@ function createAttrib(scientificName,latitude,longitude,catalog,institution) {
     return attrib;
 }
 
-//This function adds a new point to the specimens Layer
+/*
+ * This function adds a new point to the specimens Layer
+ */
 function addPoint(x, y, attribute) {
     var feature = new OpenLayers.Feature.Vector(
     new OpenLayers.Geometry.Point(x, y), attribute);
     vectorLayer.addFeatures(feature);
 }
 
-// Event onFeatureSelect (When especific specimen point was selected)
+/*
+ * Event onFeatureSelect (When especific specimen point was selected)
+ * Momentarily this functionallity is disable because of the occurrences
+ * selectable row option, that shows the pop up too
+ */
 function onFeatureSelect(feature) {
     selectedFeature = feature;
     popup = new OpenLayers.Popup.FramedCloud("point",
@@ -94,7 +105,9 @@ function onFeatureSelect(feature) {
     myEvent.fire();
 }
 
-// When ocurrence is selected from table
+/*
+ * When ocurrence is selected from table insted of map
+ */
 function onFeatureSelectFromTable(feature) {
     popup = new OpenLayers.Popup.FramedCloud("point",
     feature.geometry.getBounds().getCenterLonLat(),
@@ -110,12 +123,16 @@ function onFeatureSelectFromTable(feature) {
     map.addPopup(popup);
 }
 
-//Event on specimen Popup Close
+/*
+ * Event on specimen Popup Close
+ */
 function onPopupClose(evt) {
     selectControl.unselect(selectedFeature);
 }
 
-//Event onFeatureUnselect
+/*
+ * Event onFeatureUnselect
+ */
 function onFeatureUnselect(feature) {
     map.removePopup(feature.popup);
     feature.popup.destroy();
@@ -131,12 +148,13 @@ function clearPopups(){
     }
 }
 
-// ----------------------------------------------------------------------------
-//------------------ Ajax request to show specimens on the map ----------------
+/*
+ * Ajax request to show occurrences on the map
+ */
 function showSpecimenPoints(searchString)  {
-    var ssws = searchString.replace(' ','_'); //search string without spaces
     //Prepare URL for XHR request:
-    var sUrl = "../search/occurrences?searchString=scientificname:"+ ssws+"&format=xml";
+    var sUrl = "../search/occurrences?searchString=scientificname:"+searchString+
+        "&format=xml&sort=gui&dir=asc&startIndex=0&results=20";
 
     //Prepare callback object
     var callback = {
@@ -152,12 +170,23 @@ function showSpecimenPoints(searchString)  {
             var longArray = new Array();
             //Add all the specimen point
             for(var i = 0;i<specimenList.length;i++){
+                var catalog,latitude,longitude,scientificname,institution;
                 var node = specimenList[i];
-                var catalog = node.getElementsByTagName("catalog")[0].childNodes[0].nodeValue;
-                var latitude = node.getElementsByTagName("latitude")[0].childNodes[0].nodeValue;
-                var longitude = node.getElementsByTagName("longitude")[0].childNodes[0].nodeValue;
-                var scientificname = node.getElementsByTagName("scientificname")[0].childNodes[0].nodeValue;
-                var institution = node.getElementsByTagName("institution")[0].childNodes[0].nodeValue;
+                if(node.getElementsByTagName("catalog")[0] != null){
+                    catalog = node.getElementsByTagName("catalog")[0].childNodes[0].nodeValue;
+                }
+                if(node.getElementsByTagName("latitude")[0] != null){
+                    latitude = node.getElementsByTagName("latitude")[0].childNodes[0].nodeValue;
+                }
+                if(node.getElementsByTagName("longitude")[0] != null){
+                    longitude = node.getElementsByTagName("longitude")[0].childNodes[0].nodeValue;
+                }
+                if(node.getElementsByTagName("scientificname")[0] != null){
+                    scientificname = node.getElementsByTagName("scientificname")[0].childNodes[0].nodeValue;
+                }
+                if(node.getElementsByTagName("institution")[0] != null){
+                    institution = node.getElementsByTagName("institution")[0].childNodes[0].nodeValue;
+                } 
                 attributes = createAttrib(scientificname,latitude,longitude,catalog,institution);
                 addPoint(longitude,latitude,attributes);
                 latArray.push(parseFloat(latitude));
@@ -183,9 +212,10 @@ function showSpecimenPoints(searchString)  {
     //Make our XHR call using Connection Manager's
     YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
 }
-//------------------ Ajax request ends -----------------------------------------
-//
-//To get the minimun longitude
+
+/*
+ * To get the minimun longitude
+ */
 function getMinX(longitudeList) {
     // Lets assume we are working with validated geographical coordinates, so -180 <= longitude <= l80
     var minX = 180.0;
@@ -198,7 +228,9 @@ function getMinX(longitudeList) {
     return minX;
 }
 
-//To get the minimun latitud
+/*
+ * To get the minimun latitud
+ */
 function getMinY(latitudeList) {
     // Lets assume we are working with validated geographical coordinates, so -90 <= latitude <= 90
     var minY = 90.0;
@@ -211,7 +243,9 @@ function getMinY(latitudeList) {
     return minY;
 }
 
-//To get the maximun longitude
+/*
+ * To get the maximun longitude
+ */
 function getMaxX(longitudList) {
     // Lets assume we are working with validated geographical coordinates, so -180 <= longitude <= l80
     var maxX = -180.0;
@@ -224,7 +258,9 @@ function getMaxX(longitudList) {
     return maxX;
 }
 
-//To get the maximun latitude
+/*
+ * To get the maximun latitude
+ */
 function getMaxY(latitudeList) {
     // Lets assume we are working with validated geographical coordinates, so -90 <= latitude <= 90
     var maxY = -90.0;

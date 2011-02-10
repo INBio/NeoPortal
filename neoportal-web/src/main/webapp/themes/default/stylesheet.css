@@ -7,7 +7,7 @@
 */
 
 html {
-    height:100%
+    height:100%;
 }
 
 body {
@@ -15,6 +15,7 @@ body {
     width:100%;
     margin:0;
     padding:0;
+    background-color:#F6F6F5;
 }
 
 /* The content of each .jsp*/
@@ -23,8 +24,13 @@ body {
     margin: 3px 5% 0 5%;
     display: block;
     margin-bottom: 3em;
-    border-left:1px solid #A8A87E;
-    border-right:1px solid #A8A87E;
+    border-left:1px solid #D7DAA9;
+    border-right:1px solid #D7DAA9;
+    background-color:white;
+    /* CSS 3 */
+    -moz-box-shadow: 0 0 5px 5px #B7B990;
+    -webkit-box-shadow: 0 0 5px 5px #B7B990;
+    box-shadow: 0 0 5px 5px #B7B990;
 }
 
 #contenido h2{
@@ -37,27 +43,19 @@ body {
     padding:0 2% 0 2%;
 }
 
-#banner {
-	height: 80px;
-	background-color:#124A21;
-	background-repeat: no-repeat;
-}
-
-#banner-rep {
-	height:80px;
-	background-color: #124A21;
-	background-position: 0;
-}
+#banner {background: url(images/banner.jpg) no-repeat 0 0; height: 123px;}
+#banner-rep { background: url(images/banner-rep.png) repeat-x 960px 0; height: 123px; }
 
 #title h1 {
 	/*position:absolute;*/
 	font-family:arial, helvetica, sans-serif;
 	text-align:center;
-	font-size: 28px;
+	font-size: 36px;
 	margin:0;
 	width:100%;
-	padding: 40px 0 0 0px;
-	color:white;
+	padding: 25px 0 0 0px;
+	color:#5E6B2D;
+    text-shadow: 2px 2px 2px #000;
 }
 
 #header_links {
@@ -69,20 +67,19 @@ body {
     margin-top:3px;
 }
 
-#tablePanel{
-    padding:0 10px 10px 10px;
-}
-
 #resultsPanel {
 	width: 100%;
-	text-align: center;
-	margin-top: 30px;
+	margin-top: 20px;
+}
+
+#tablePanel{
+    margin:0 5% 0 5%;
 }
 
 #searchPanel{
 	width: 100%;
 	text-align: center;
-	margin-top: 40px;
+	margin-top: 20px;
 }
 
 #searchPanel input {
@@ -97,16 +94,15 @@ body {
 #tablePanelContainer {
     text-align:center;
     float:left;
-    width: 580px;
+    width: 50%;
 }
 
 #occuPanel{
-    padding:0 3% 0 0;
-    width: 570px;
+    width: 98%;
 }
 
 #mapPanel {
-    margin: 0 0 0 580px;
+    margin: 0 0 0 50%;
 }
 
 #extraPanel {
@@ -121,7 +117,7 @@ body {
 #map {
     position:relative;
     width: 100%;
-    height: 400px;
+    height: 420px;
     border: 1px solid silver;
     border-style:solid;
    -moz-border-radius: 5px;
@@ -136,26 +132,121 @@ body {
     float: right;
 }
 
-.occurrences{
-    margin:10px 0 10px 10px;
-    padding: 3px 0 0 45px;
-    background: url(images/occurrences.png);
+/* Styles for search explanation panel */
+#moduleExplanation .hd{
+    margin:25px 20% 0 20%;
+    text-align:justify;
+    background: url(images/find.png);
     background-repeat:no-repeat;
-    background-position: 10px 3px;
+    background-position: 0 3px;
+    padding: 12px 0 0 40px;
+    height:32px;
+    font-weight:bold;
+    font-size:18px;
+    font-style:italic;
+    color:#545F28;
+}
+#moduleExplanation .bd{
+    border:solid 2px #839299;
+    background-color:#F9F9FB;
+    margin:10px 20% 25px 20%;
+    padding:10px;
+    text-align:center;
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
 }
 
-.multimedia{
-    margin:10px 0 10px 10px;
-    padding: 3px 0 0 45px;
-    background: url(images/multimedia.png);
+.service{
+    margin-top:10px;
+    padding: 2px 0 0 40px;
+    background: url(images/tabs.png);
     background-repeat:no-repeat;
-    background-position: 10px 3px;
+    background-position: 10px 2px;    
+    font-size:14px;
+}
+.flickr{
+    margin-top:10px;
+    padding: 2px 0 0 40px;
+    background: url(images/flickr.png);
+    background-repeat:no-repeat;
+    background-position: 10px 2px;
+    font-size:14px;
+}
+.picasa{
+    margin-top:10px;
+    padding: 2px 0 0 40px;
+    background: url(images/picasa.png);
+    background-repeat:no-repeat;
+    background-position: 10px 2px;
+    font-size:14px;
+}
+.gbif{
+    margin-top:10px;
+    padding: 2px 0 0 40px;
+    background: url(images/gbif.png);
+    background-repeat:no-repeat;
+    background-position: 10px 2px;
+    font-size:14px;
+}
+.eol{
+    margin-top:10px;
+    padding: 2px 0 0 40px;
+    background: url(images/eol.png);
+    background-repeat:no-repeat;
+    background-position: 10px 2px;
+    font-size:14px;
+}
+.wikis{
+    margin-top:10px;
+    padding: 2px 0 0 40px;
+    background: url(images/wiki.png);
+    background-repeat:no-repeat;
+    background-position: 10px 2px;
+    font-size:14px;
+}
+
+a.service:link,a.service:visited,a.wikis:link,a.wikis:visited,a.eol:link,a.eol:visited,a.gbif:link,a.gbif:visited,a.picasa:link,a.picasa:visited,a.flickr:link,a.flickr:visited{
+    color:#5E6B30;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+/* Style for images shown on species list */
+.imagePreview{
+    border:solid 2px #A4A680;
+   -moz-border-radius: 5px;
+   -webkit-border-radius: 5px;
+}
+
+.searchButton{
+   background-color:#dff4ff;
+   border:1px solid #767c87;
+   border-top:1px solid #eee;
+   border-left:1px solid #eee;
+   font-family:sans-serif;
+   font-size:100%;
+   line-height:130%;
+   text-decoration:none;
+   font-weight:bold;
+   color:#334563;
+   cursor:pointer;
+   padding:3px 3px 3px 3px;
+   -moz-border-radius: 3px;
+   -webkit-border-radius: 3px;
+}
+
+.searchButton:hover{
+    background-color:#B7D9ED;
+    border:1px solid #456C84;
+    color:#336699;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
 }
 
 /*------------------------------- Footer by Cristian Granados --------------------------------*/
 #footer {
         margin:0;
-        background: #CCCC99;
+        background: #D2D8A5;
         width: 100%;
         left: 0;
         right: 0;

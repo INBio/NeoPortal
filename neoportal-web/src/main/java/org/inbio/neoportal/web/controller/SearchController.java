@@ -20,10 +20,14 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.lucene.queryParser.ParseException;
-import org.inbio.neoportal.service.dto.OccurrenceLiteDTO;
+import org.inbio.neoportal.service.dto.occurrence.OccurrenceLiteDTO;
+import org.inbio.neoportal.service.dto.species.SpeciesLiteDTO;
 import org.inbio.neoportal.service.manager.SearchManager;
-import org.inbio.neoportal.web.messagebean.SpecimenLiteBean;
-import org.inbio.neoportal.web.messagebean.XMLResponseWrapperBean;
+import org.inbio.neoportal.web.messagebean.SpeciesLiteBean;
+import org.inbio.neoportal.web.messagebean.OccurrenceLiteBean;
+import org.inbio.neoportal.web.messagebean.wrapper.XMLCountWrapper;
+import org.inbio.neoportal.web.messagebean.wrapper.XMLSpeciesWrapper;
+import org.inbio.neoportal.web.messagebean.wrapper.XMLSpecimenWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,17 +45,22 @@ public class SearchController {
     @Autowired
     private SearchManager searchManagerImpl;
 
+    /**
+     * Get a well formated xml containing paginated occurrences
+     * @param searchString
+     * @return
+     */
     @RequestMapping(value="/occurrences", method=RequestMethod.GET, params={"format=xml","searchString"})
-    public @ResponseBody XMLResponseWrapperBean searchOccurrencesWriteXml(@RequestParam String searchString) {
+    public @ResponseBody XMLSpecimenWrapper searchOccurrencesWriteXml(@RequestParam String searchString) {
 
         List<OccurrenceLiteDTO> occurrenceList = null;
 
-        XMLResponseWrapperBean slwb = new XMLResponseWrapperBean();
+        XMLSpecimenWrapper rw = new XMLSpecimenWrapper();
         try {
-            occurrenceList = searchManagerImpl.fullPaginatedSearch(searchString, 0, 10);
+            occurrenceList = searchManagerImpl.fullPaginatedSearch(searchString, 0, 15); //TODO
 
             for(OccurrenceLiteDTO olDTO : occurrenceList)
-                slwb.addElement(new SpecimenLiteBean(
+                rw.addElement(new OccurrenceLiteBean(
                 olDTO.getGlobalUniqueIdentifier(),
                 olDTO.getScientificName(),
                 olDTO.getCountry(),
@@ -66,37 +75,59 @@ public class SearchController {
         } catch (ParseException ex) {
             Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        return slwb;
+        
+        return rw;
     }
 
+     /**
+     * Get a string containing the total count of occurrences by searchString
+     * @param searchString
+     * @return
+     */
+    @RequestMapping(value="/countOcurrences", method=RequestMethod.GET, params={"format=xml","searchString"})
+    public @ResponseBody XMLCountWrapper countOccurrencesWriteXml(@RequestParam String searchString) {
+        XMLCountWrapper cw = new XMLCountWrapper();
+        cw.setCount(50L); //TODO
+        return cw;
+    }
+
+    /**
+     * Get a well formated xml containing paginated species
+     * @param searchString
+     * @return
+     */
     @RequestMapping(value="/species", method=RequestMethod.GET, params={"format=xml","searchString"})
-    public @ResponseBody XMLResponseWrapperBean searchSpeciesWriteXml(@RequestParam String searchString) {
+    public @ResponseBody XMLSpeciesWrapper searchSpeciesWriteXml(@RequestParam String searchString) {
 
-        List<OccurrenceLiteDTO> occurrenceList = null;
+        List<SpeciesLiteDTO> speciesList = null;
 
-        XMLResponseWrapperBean slwb = new XMLResponseWrapperBean();
+        XMLSpeciesWrapper rw = new XMLSpeciesWrapper();
         try {
-            occurrenceList = searchManagerImpl.speciesListPaginatedSearch(searchString, 0 ,15);
+            speciesList = searchManagerImpl.speciesListPaginatedSearch(searchString, 0 ,10); //TODO
 
-            for(OccurrenceLiteDTO olDTO : occurrenceList)
-                slwb.addElement(new SpecimenLiteBean(
-                olDTO.getGlobalUniqueIdentifier(),
-                olDTO.getScientificName(),
-                olDTO.getCountry(),
-                olDTO.getProvince(),
-                olDTO.getCounty(),
-                olDTO.getLocality(),
-                olDTO.getLatitude(),
-                olDTO.getLongitude(),
-                olDTO.getCatalog(),
-                olDTO.getInstitution()));
+            for(SpeciesLiteDTO spDTO : speciesList)
+                rw.addElement(new SpeciesLiteBean(
+                spDTO.getImageURL(),
+                spDTO.getCommonName(),
+                spDTO.getScientificName()));
 
         } catch (ParseException ex) {
             Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return slwb;
+        return rw;
+    }
+
+    /**
+     * Get a string containing the total count of species by searchString
+     * @param searchString
+     * @return
+     */
+    @RequestMapping(value="/countSpecies", method=RequestMethod.GET, params={"format=xml","searchString"})
+    public @ResponseBody XMLCountWrapper countSpeciesWriteXml(@RequestParam String searchString) {
+        XMLCountWrapper cw = new XMLCountWrapper();
+        cw.setCount(50L); //TODO
+        return cw;
     }
 
     public SearchManager getSearchManagerImpl() {
