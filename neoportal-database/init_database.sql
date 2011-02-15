@@ -1,0 +1,736 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Started on 2011-02-15 08:49:49 CST
+
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = off;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET escape_string_warning = off;
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 1505 (class 1259 OID 874097)
+-- Dependencies: 6
+-- Name: ASSOCIATED_ATTRIBUTE; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE "ASSOCIATED_ATTRIBUTE" (
+    "ASSOCIATED_ATTRIBUTE_ID" numeric NOT NULL,
+    "NAME" text,
+    "DESCRIPTION" text
+);
+
+
+--
+-- TOC entry 1506 (class 1259 OID 874103)
+-- Dependencies: 6
+-- Name: COMMON_NAME; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE "COMMON_NAME" (
+    "COMMON_NAME_ID" numeric NOT NULL,
+    "TAXON_ID" numeric,
+    "NAME" text,
+    "LANGUAGE" text,
+    "TEMPORALITY" text,
+    "LOCALITY" text,
+    "SEX" text,
+    "LIFE_STAGE" text,
+    "USED_BY" text
+);
+
+
+--
+-- TOC entry 1507 (class 1259 OID 874109)
+-- Dependencies: 6
+-- Name: DATA_PROVIDER; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE "DATA_PROVIDER" (
+    "DATA_PROVIDER_ID" numeric NOT NULL,
+    "NAME" text,
+    "DISPLAY_NAME" text,
+    "WEBSITE_URL" text,
+    "CONTACT_EMAIL" text
+);
+
+
+--
+-- TOC entry 1508 (class 1259 OID 874115)
+-- Dependencies: 6
+-- Name: OCCURRENCE; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE "OCCURRENCE" (
+    "OCCURRENCE_ID" numeric NOT NULL,
+    "DATA_PROVIDER_ID" numeric NOT NULL,
+    "TAXON_ID" numeric NOT NULL,
+    "GLOBAL_UNIQUE_IDENTIFIER" text,
+    "DATE_LAST_MODIFIED" text,
+    "INSTITUTION_CODE" text,
+    "COLLECTION_CODE" text,
+    "CATALOG_NUMBER" text,
+    "SCIENTIFIC_NAME" text,
+    "BASIS_OF_RECORD" text,
+    "INFORMATION_WITHHELD" text,
+    "HIGHER_TAXON" text,
+    "KINGDOM" text,
+    "PHYLUM" text,
+    "CLASS" text,
+    "ORDERS" text,
+    "FAMILY" text,
+    "GENUS" text,
+    "SPECIFIC_EPITHET" text,
+    "INFRASPECIFIC_EPITHET" text,
+    "INFRASPECIFIC_RANK" text,
+    "AUTHOR_YEAR_OF_SCIENTIFIC_NAME" text,
+    "NOMENCLATURAL_CODE" text,
+    "IDENTIFICATION_QUALIFIER" text,
+    "COLLECTING_METHOD" text,
+    "VALID_DISTRIBUTION_FLAG" text,
+    "COLLECTOR" text,
+    "EARLIEST_DATE_COLLECTED" text,
+    "LATEST_DATE_COLLECTED" text,
+    "DAY_OF_YEAR" numeric,
+    "HIGHER_GEOGRAPHY" text,
+    "CONTINENT" text,
+    "WATER_BODY" text,
+    "ISLAND_GROUP" text,
+    "ISLAND" text,
+    "COUNTRY" text,
+    "STATE_PROVINCE" text,
+    "COUNTY" text,
+    "LOCALITY" text,
+    "MINIMUM_ELEVATION_IN_METERS" text,
+    "MAXIMUM_ELEVATION_IN_METERS" text,
+    "MINIMUM_DEPTH_INMETERS" text,
+    "MAXIMUM_DEPTH_INMETERS" text,
+    "SEX" text,
+    "LIFE_STAGE" text,
+    "REMARKS" text,
+    "ATTRIBUTES" text,
+    "IMAGE_URL" text,
+    "RELATED_INFORMATION" text
+);
+
+
+--
+-- TOC entry 1509 (class 1259 OID 874121)
+-- Dependencies: 6
+-- Name: OCCURRENCE_CURATORIAL_EXTENSION; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE "OCCURRENCE_CURATORIAL_EXTENSION" (
+    "OCCURRENCE_CURATORIAL_EXTENSION_ID" numeric NOT NULL,
+    "OCCURRENCE_ID" numeric NOT NULL,
+    "CATALOG_NUMBER_NUMERIC" text,
+    "IDENTIFIED_BY" text,
+    "DATE_IDENTIFIED" text,
+    "COLLECTOR_NUMBER" text,
+    "FIELD_NUMBER" text,
+    "FIELD_NOTES" text,
+    "VERBATIM_COLLECTING_DATE" text,
+    "VERBATIM_ELEVATION" text,
+    "VERBATIM_DEPTH" text,
+    "PREPARATIONS" text,
+    "TYPE_STATUS" text,
+    "GEN_BANK_NUMBER" text,
+    "OTHER_CATALOG_NUMBERS" text,
+    "RELATED_CATALOG_ITEMS" text,
+    "DISPOSITION" text,
+    "INDIVIDUAL_COUNT" text
+);
+
+
+--
+-- TOC entry 1510 (class 1259 OID 874127)
+-- Dependencies: 6
+-- Name: OCCURRENCE_GEOSPATIAL_EXTENSION; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE "OCCURRENCE_GEOSPATIAL_EXTENSION" (
+    "OCCURRENCE_GEOSPATIAL_EXTENSION_ID" numeric NOT NULL,
+    "OCCURRENCE_ID" numeric NOT NULL,
+    "DECIMAL_LATITUDE" text,
+    "DECIMAL_LONGITUDE" text,
+    "GEODETIC_DATUM" text,
+    "COORDINATE_UNCERTAINTY_IN_METERS" text,
+    "POINT_RADIUS_SPATIAL_FIT" text,
+    "FOOTPRINT_WKT" text,
+    "FOOT_PRINT_SPATIAL_FIT" text,
+    "VERBATIM_COORDINATES" text,
+    "VERBATIM_LATITUDE" text,
+    "VERBATIM_LONGITUDE" text,
+    "VERBATIM_COORDINATE_SYSTEM" text,
+    "GEOREFERENCE_PROTOCOL" text,
+    "GEOREFERENCE_SOURCES" text,
+    "GEOREFERENCE_VERIFICATION_STATUS" text,
+    "GEOREFERENCE_REMARKS" text
+);
+
+
+--
+-- TOC entry 1511 (class 1259 OID 874133)
+-- Dependencies: 6
+-- Name: OCCURRENCE_HAS_REFERENCE_ELEMENT; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE "OCCURRENCE_HAS_REFERENCE_ELEMENT" (
+    "OCCURRENCE_ID" numeric NOT NULL,
+    "REFERENCE_ELEMENT_ID" numeric NOT NULL,
+    "VALUE" text
+);
+
+
+--
+-- TOC entry 1512 (class 1259 OID 874139)
+-- Dependencies: 6
+-- Name: REFERENCE_ELEMENT; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE "REFERENCE_ELEMENT" (
+    "REFERENCE_ELEMENT_ID" numeric NOT NULL,
+    "NAME" text,
+    "LABEL" text,
+    "DESCRIPTION" text,
+    "GUIDE_LINES" text,
+    "EXAMPLES" text
+);
+
+
+--
+-- TOC entry 1513 (class 1259 OID 874145)
+-- Dependencies: 6
+-- Name: SERVICE; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE "SERVICE" (
+    "SERVICE_ID" numeric NOT NULL,
+    "NAME" text,
+    "DESCRIPTION" text,
+    "URL" text,
+    "URL_CONNECTION_FORMAT" text
+);
+
+
+--
+-- TOC entry 1514 (class 1259 OID 874151)
+-- Dependencies: 6
+-- Name: TAXON; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE "TAXON" (
+    "TAXON_ID" numeric NOT NULL,
+    "ANCESTOR_TAXON_ID" numeric,
+    "SINONYM_TAXON_ID" numeric,
+    "TAXONOMICAL_RANGE_ID" numeric,
+    "DEFAULT_NAME" text,
+    "KINGDOM" text,
+    "DIVISION" text,
+    "CLASS" text,
+    "ORDER" text,
+    "FAMILY" text,
+    "GENUS" text,
+    "SPECIES" text,
+    "DOMINIUM_ID" numeric,
+    "KINGDOM_ID" numeric,
+    "DIVISION_ID" numeric,
+    "SUBDIVISION_ID" numeric,
+    "CLASS_ID" numeric,
+    "SUBCLASS_ID" numeric,
+    "ORDER_ID" numeric,
+    "SUB_ORDER_ID" numeric,
+    "SUPER_FAMILY_ID" numeric,
+    "FAMILY_ID" numeric,
+    "SUB_FAMILY_ID" numeric,
+    "TRIBE_ID" numeric,
+    "SUB_TRIBE_ID" numeric,
+    "GENUS_ID" numeric,
+    "SUB_GENUS_ID" numeric,
+    "SECTION_ID" numeric,
+    "SUB_SECTION_ID" numeric,
+    "RACE_ID" numeric,
+    "SPECIES_ID" numeric,
+    "SUB_SPECIES_ID" numeric,
+    "VARIETY_ID" numeric,
+    "FORM_ID" numeric
+);
+
+
+--
+-- TOC entry 1515 (class 1259 OID 874157)
+-- Dependencies: 6
+-- Name: TAXON_ASSOCIATED_ATTRIBUTE_HAS_REFERENCE_ELEMENT; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE "TAXON_ASSOCIATED_ATTRIBUTE_HAS_REFERENCE_ELEMENT" (
+    "ASSOCIATED_ATTRIBUTE_ID" numeric NOT NULL,
+    "REFERENCE_ELEMENT_ID" numeric NOT NULL,
+    "VALUE" text,
+    "TAXON_ID" numeric NOT NULL
+);
+
+
+--
+-- TOC entry 1516 (class 1259 OID 874163)
+-- Dependencies: 6
+-- Name: TAXON_DESCRIPTION; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE "TAXON_DESCRIPTION" (
+    "TAXON_DESCRIPTION_ID" numeric NOT NULL,
+    "PROVIDER_ID" numeric NOT NULL,
+    "TAXON_ID" numeric NOT NULL,
+    "GLOBAL_UNIQUE_IDENTIFIER" text,
+    "SCIENTIFIC_NAME" text,
+    "INSTITUTION_CODE" text,
+    "DATE_LAST_MODIFIED" date,
+    "TAXON_RECORD_ID" text,
+    "LANGUAGE" text,
+    "CREATORS" text,
+    "DISTRIBUTION" text,
+    "ABSTRACT" text,
+    "KINGDOM_TAXON" text,
+    "PHYLUM_TAXON" text,
+    "CLASS_TAXON" text,
+    "ORDER_TAXON" text,
+    "FAMILY_TAXON" text,
+    "GENUS_TAXON" text,
+    "SYNONYMS" text,
+    "AUTHOR_YEAR_OF_SCIENTIFIC_NAME" text,
+    "SPECIES_PUBLICATION_REFERENCE" text,
+    "COMMON_NAMES" text,
+    "TYPIFICATION" text,
+    "CONTRIBUTORS" text,
+    "DATE_CREATED" date,
+    "HABIT" text,
+    "LIFE_CYCLE" text,
+    "REPRODUCTION" text,
+    "ANNUAL_CYCLE" text,
+    "SCIENTIFIC_DESCRIPTION" text,
+    "BRIEF_DESCRIPTION" text,
+    "FEEDING" text,
+    "BEHAVIOR" text,
+    "INTERACTIONS" text,
+    "CHROMOSOMIC_NUMBER_N" text,
+    "MOLECULAR_DATA" text,
+    "POPULATION_BIOLOGY" text,
+    "THREAT_STATUS" text,
+    "LEGISLATION" text,
+    "HABITAT" text,
+    "TERRITORY" text,
+    "ENDEMICITY" text,
+    "THE_USES" text,
+    "THE_MANAGEMENT" text,
+    "FOLKLORE" text,
+    "THE_REFERENCES" text,
+    "UNSTRUCTURED_DOCUMENTATION" text,
+    "OTHER_INFORMATION_SOURCES" text,
+    "PAPERS" text,
+    "IDENTIFICATION_KEYS" text,
+    "MIGRATORY_DATA" text,
+    "ECOLOGICAL_SIGNIFICANCE" text,
+    "UNSTRUCTURED_NATURAL_HISTORY" text,
+    "INVASIVENESS_DATA" text,
+    "TARGET_AUDIENCES" text,
+    "VERSION" text
+);
+
+
+--
+-- TOC entry 1517 (class 1259 OID 874169)
+-- Dependencies: 6
+-- Name: TAXON_DESCRIPTION_HAS_REFERENCE_ELEMENT; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE "TAXON_DESCRIPTION_HAS_REFERENCE_ELEMENT" (
+    "TAXON_DESCRIPTION_ID" numeric NOT NULL,
+    "REFERENCE_ELEMENT_ID" numeric NOT NULL,
+    "VALUE" text
+);
+
+
+--
+-- TOC entry 1518 (class 1259 OID 874175)
+-- Dependencies: 6
+-- Name: TAXON_HAS_ASSOCIATED_ATTRIBUTE; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE "TAXON_HAS_ASSOCIATED_ATTRIBUTE" (
+    "TAXON_ID" numeric NOT NULL,
+    "ASSOCIATED_ATTRIBUTE_ID" numeric NOT NULL,
+    "CERTAINTY_LEVEL" text,
+    "EVALUATION_CRITERIA" text,
+    "REGIONALITY" text
+);
+
+
+--
+-- TOC entry 1519 (class 1259 OID 874181)
+-- Dependencies: 6
+-- Name: TAXON_HAS_REFERENCE_ELEMENT; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE "TAXON_HAS_REFERENCE_ELEMENT" (
+    "TAXON_ID" numeric NOT NULL,
+    "REFERENCE_ELEMENT_ID" numeric NOT NULL,
+    "VALUE" text
+);
+
+
+--
+-- TOC entry 1787 (class 2606 OID 874188)
+-- Dependencies: 1505 1505
+-- Name: ASSOCIATED_ATTRIBUTE_PKEY; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY "ASSOCIATED_ATTRIBUTE"
+    ADD CONSTRAINT "ASSOCIATED_ATTRIBUTE_PKEY" PRIMARY KEY ("ASSOCIATED_ATTRIBUTE_ID");
+
+
+--
+-- TOC entry 1789 (class 2606 OID 874190)
+-- Dependencies: 1506 1506
+-- Name: COMMON_NAME_PKEY; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY "COMMON_NAME"
+    ADD CONSTRAINT "COMMON_NAME_PKEY" PRIMARY KEY ("COMMON_NAME_ID");
+
+
+--
+-- TOC entry 1791 (class 2606 OID 874192)
+-- Dependencies: 1507 1507
+-- Name: DATA_PROVIDER_PKEY; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY "DATA_PROVIDER"
+    ADD CONSTRAINT "DATA_PROVIDER_PKEY" PRIMARY KEY ("DATA_PROVIDER_ID");
+
+
+--
+-- TOC entry 1795 (class 2606 OID 874194)
+-- Dependencies: 1509 1509
+-- Name: OCCURRENCE_CURATORIAL_EXTENSION_PKEY; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY "OCCURRENCE_CURATORIAL_EXTENSION"
+    ADD CONSTRAINT "OCCURRENCE_CURATORIAL_EXTENSION_PKEY" PRIMARY KEY ("OCCURRENCE_CURATORIAL_EXTENSION_ID");
+
+
+--
+-- TOC entry 1797 (class 2606 OID 874196)
+-- Dependencies: 1510 1510
+-- Name: OCCURRENCE_GEOSPATIAL_EXTENSION_PKEY; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY "OCCURRENCE_GEOSPATIAL_EXTENSION"
+    ADD CONSTRAINT "OCCURRENCE_GEOSPATIAL_EXTENSION_PKEY" PRIMARY KEY ("OCCURRENCE_GEOSPATIAL_EXTENSION_ID");
+
+
+--
+-- TOC entry 1799 (class 2606 OID 874198)
+-- Dependencies: 1511 1511 1511
+-- Name: OCCURRENCE_HAS_REFERENCE_ELEMENT_PKEY; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY "OCCURRENCE_HAS_REFERENCE_ELEMENT"
+    ADD CONSTRAINT "OCCURRENCE_HAS_REFERENCE_ELEMENT_PKEY" PRIMARY KEY ("OCCURRENCE_ID", "REFERENCE_ELEMENT_ID");
+
+
+--
+-- TOC entry 1793 (class 2606 OID 874200)
+-- Dependencies: 1508 1508
+-- Name: OCCURRENCE_PKEY; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY "OCCURRENCE"
+    ADD CONSTRAINT "OCCURRENCE_PKEY" PRIMARY KEY ("OCCURRENCE_ID");
+
+
+--
+-- TOC entry 1801 (class 2606 OID 874202)
+-- Dependencies: 1512 1512
+-- Name: REFERENCE_ELEMENT_PKEY; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY "REFERENCE_ELEMENT"
+    ADD CONSTRAINT "REFERENCE_ELEMENT_PKEY" PRIMARY KEY ("REFERENCE_ELEMENT_ID");
+
+
+--
+-- TOC entry 1803 (class 2606 OID 874204)
+-- Dependencies: 1513 1513
+-- Name: SERVICE_PKEY; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY "SERVICE"
+    ADD CONSTRAINT "SERVICE_PKEY" PRIMARY KEY ("SERVICE_ID");
+
+
+--
+-- TOC entry 1807 (class 2606 OID 874216)
+-- Dependencies: 1515 1515 1515 1515
+-- Name: TAXON_ASSOCIATED_ATTRIBUTE_HAS_REFERENCE_ELEMENT_PKEY; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY "TAXON_ASSOCIATED_ATTRIBUTE_HAS_REFERENCE_ELEMENT"
+    ADD CONSTRAINT "TAXON_ASSOCIATED_ATTRIBUTE_HAS_REFERENCE_ELEMENT_PKEY" PRIMARY KEY ("ASSOCIATED_ATTRIBUTE_ID", "REFERENCE_ELEMENT_ID", "TAXON_ID");
+
+
+--
+-- TOC entry 1811 (class 2606 OID 874206)
+-- Dependencies: 1517 1517 1517
+-- Name: TAXON_DESCRIPTION_HAS_REFERENCE_ELEMENT_PKEY; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY "TAXON_DESCRIPTION_HAS_REFERENCE_ELEMENT"
+    ADD CONSTRAINT "TAXON_DESCRIPTION_HAS_REFERENCE_ELEMENT_PKEY" PRIMARY KEY ("TAXON_DESCRIPTION_ID", "REFERENCE_ELEMENT_ID");
+
+
+--
+-- TOC entry 1809 (class 2606 OID 874208)
+-- Dependencies: 1516 1516
+-- Name: TAXON_DESCRIPTION_PKEY; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY "TAXON_DESCRIPTION"
+    ADD CONSTRAINT "TAXON_DESCRIPTION_PKEY" PRIMARY KEY ("TAXON_DESCRIPTION_ID");
+
+
+--
+-- TOC entry 1813 (class 2606 OID 874210)
+-- Dependencies: 1518 1518 1518
+-- Name: TAXON_HAS_ASSOCIATED_ATTRIBUTE_PKEY; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY "TAXON_HAS_ASSOCIATED_ATTRIBUTE"
+    ADD CONSTRAINT "TAXON_HAS_ASSOCIATED_ATTRIBUTE_PKEY" PRIMARY KEY ("TAXON_ID", "ASSOCIATED_ATTRIBUTE_ID");
+
+
+--
+-- TOC entry 1815 (class 2606 OID 874212)
+-- Dependencies: 1519 1519 1519
+-- Name: TAXON_HAS_REFERENCE_ELEMENT_PKEY; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY "TAXON_HAS_REFERENCE_ELEMENT"
+    ADD CONSTRAINT "TAXON_HAS_REFERENCE_ELEMENT_PKEY" PRIMARY KEY ("TAXON_ID", "REFERENCE_ELEMENT_ID");
+
+
+--
+-- TOC entry 1805 (class 2606 OID 874214)
+-- Dependencies: 1514 1514
+-- Name: TAXON_PKEY; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY "TAXON"
+    ADD CONSTRAINT "TAXON_PKEY" PRIMARY KEY ("TAXON_ID");
+
+
+--
+-- TOC entry 1830 (class 2606 OID 874252)
+-- Dependencies: 1518 1505 1786
+-- Name: FROM_THIS_TO_ASSOCIATED_ATTRIBUTE_FKEY; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "TAXON_HAS_ASSOCIATED_ATTRIBUTE"
+    ADD CONSTRAINT "FROM_THIS_TO_ASSOCIATED_ATTRIBUTE_FKEY" FOREIGN KEY ("ASSOCIATED_ATTRIBUTE_ID") REFERENCES "ASSOCIATED_ATTRIBUTE"("ASSOCIATED_ATTRIBUTE_ID");
+
+
+--
+-- TOC entry 1818 (class 2606 OID 874237)
+-- Dependencies: 1508 1507 1790
+-- Name: FROM_THIS_TO_DATA_PROVIDER_FKEY; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "OCCURRENCE"
+    ADD CONSTRAINT "FROM_THIS_TO_DATA_PROVIDER_FKEY" FOREIGN KEY ("DATA_PROVIDER_ID") REFERENCES "DATA_PROVIDER"("DATA_PROVIDER_ID");
+
+
+--
+-- TOC entry 1826 (class 2606 OID 874297)
+-- Dependencies: 1507 1516 1790
+-- Name: FROM_THIS_TO_DATA_PROVIDER_FKEY; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "TAXON_DESCRIPTION"
+    ADD CONSTRAINT "FROM_THIS_TO_DATA_PROVIDER_FKEY" FOREIGN KEY ("PROVIDER_ID") REFERENCES "DATA_PROVIDER"("DATA_PROVIDER_ID");
+
+
+--
+-- TOC entry 1821 (class 2606 OID 874227)
+-- Dependencies: 1508 1511 1792
+-- Name: FROM_THIS_TO_OCCURRENCE_FKEY; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "OCCURRENCE_HAS_REFERENCE_ELEMENT"
+    ADD CONSTRAINT "FROM_THIS_TO_OCCURRENCE_FKEY" FOREIGN KEY ("OCCURRENCE_ID") REFERENCES "OCCURRENCE"("OCCURRENCE_ID");
+
+
+--
+-- TOC entry 1819 (class 2606 OID 874242)
+-- Dependencies: 1792 1509 1508
+-- Name: FROM_THIS_TO_OCCURRENCE_FKEY; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "OCCURRENCE_CURATORIAL_EXTENSION"
+    ADD CONSTRAINT "FROM_THIS_TO_OCCURRENCE_FKEY" FOREIGN KEY ("OCCURRENCE_ID") REFERENCES "OCCURRENCE"("OCCURRENCE_ID");
+
+
+--
+-- TOC entry 1820 (class 2606 OID 874247)
+-- Dependencies: 1508 1510 1792
+-- Name: FROM_THIS_TO_OCCURRENCE_FKEY; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "OCCURRENCE_GEOSPATIAL_EXTENSION"
+    ADD CONSTRAINT "FROM_THIS_TO_OCCURRENCE_FKEY" FOREIGN KEY ("OCCURRENCE_ID") REFERENCES "OCCURRENCE"("OCCURRENCE_ID");
+
+
+--
+-- TOC entry 1832 (class 2606 OID 874262)
+-- Dependencies: 1519 1800 1512
+-- Name: FROM_THIS_TO_REFERENCE_ELEMENT; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "TAXON_HAS_REFERENCE_ELEMENT"
+    ADD CONSTRAINT "FROM_THIS_TO_REFERENCE_ELEMENT" FOREIGN KEY ("REFERENCE_ELEMENT_ID") REFERENCES "REFERENCE_ELEMENT"("REFERENCE_ELEMENT_ID");
+
+
+--
+-- TOC entry 1822 (class 2606 OID 874232)
+-- Dependencies: 1511 1512 1800
+-- Name: FROM_THIS_TO_REFERENCE_ELEMENT_FKEY; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "OCCURRENCE_HAS_REFERENCE_ELEMENT"
+    ADD CONSTRAINT "FROM_THIS_TO_REFERENCE_ELEMENT_FKEY" FOREIGN KEY ("REFERENCE_ELEMENT_ID") REFERENCES "REFERENCE_ELEMENT"("REFERENCE_ELEMENT_ID");
+
+
+--
+-- TOC entry 1829 (class 2606 OID 874292)
+-- Dependencies: 1517 1512 1800
+-- Name: FROM_THIS_TO_REFERENCE_ELEMENT_FKEY; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "TAXON_DESCRIPTION_HAS_REFERENCE_ELEMENT"
+    ADD CONSTRAINT "FROM_THIS_TO_REFERENCE_ELEMENT_FKEY" FOREIGN KEY ("REFERENCE_ELEMENT_ID") REFERENCES "REFERENCE_ELEMENT"("REFERENCE_ELEMENT_ID");
+
+
+--
+-- TOC entry 1833 (class 2606 OID 874267)
+-- Dependencies: 1519 1514 1804
+-- Name: FROM_THIS_TO_TAXON; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "TAXON_HAS_REFERENCE_ELEMENT"
+    ADD CONSTRAINT "FROM_THIS_TO_TAXON" FOREIGN KEY ("TAXON_ID") REFERENCES "TAXON"("TAXON_ID");
+
+
+--
+-- TOC entry 1828 (class 2606 OID 874287)
+-- Dependencies: 1808 1516 1517
+-- Name: FROM_THIS_TO_TAXON_DESCRIPTION_FKEY; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "TAXON_DESCRIPTION_HAS_REFERENCE_ELEMENT"
+    ADD CONSTRAINT "FROM_THIS_TO_TAXON_DESCRIPTION_FKEY" FOREIGN KEY ("TAXON_DESCRIPTION_ID") REFERENCES "TAXON_DESCRIPTION"("TAXON_DESCRIPTION_ID");
+
+
+--
+-- TOC entry 1816 (class 2606 OID 874217)
+-- Dependencies: 1804 1514 1506
+-- Name: FROM_THIS_TO_TAXON_FKEY; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "COMMON_NAME"
+    ADD CONSTRAINT "FROM_THIS_TO_TAXON_FKEY" FOREIGN KEY ("TAXON_ID") REFERENCES "TAXON"("TAXON_ID");
+
+
+--
+-- TOC entry 1817 (class 2606 OID 874222)
+-- Dependencies: 1508 1804 1514
+-- Name: FROM_THIS_TO_TAXON_FKEY; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "OCCURRENCE"
+    ADD CONSTRAINT "FROM_THIS_TO_TAXON_FKEY" FOREIGN KEY ("TAXON_ID") REFERENCES "TAXON"("TAXON_ID");
+
+
+--
+-- TOC entry 1831 (class 2606 OID 874257)
+-- Dependencies: 1514 1804 1518
+-- Name: FROM_THIS_TO_TAXON_FKEY; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "TAXON_HAS_ASSOCIATED_ATTRIBUTE"
+    ADD CONSTRAINT "FROM_THIS_TO_TAXON_FKEY" FOREIGN KEY ("TAXON_ID") REFERENCES "TAXON"("TAXON_ID");
+
+
+--
+-- TOC entry 1827 (class 2606 OID 874302)
+-- Dependencies: 1514 1516 1804
+-- Name: FROM_THIS_TO_TAXON_FKEY; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "TAXON_DESCRIPTION"
+    ADD CONSTRAINT "FROM_THIS_TO_TAXON_FKEY" FOREIGN KEY ("TAXON_ID") REFERENCES "TAXON"("TAXON_ID");
+
+
+--
+-- TOC entry 1823 (class 2606 OID 874272)
+-- Dependencies: 1804 1514 1514
+-- Name: FROM_THIS_TO_TAXON_FKEY_1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "TAXON"
+    ADD CONSTRAINT "FROM_THIS_TO_TAXON_FKEY_1" FOREIGN KEY ("ANCESTOR_TAXON_ID") REFERENCES "TAXON"("TAXON_ID");
+
+
+--
+-- TOC entry 1824 (class 2606 OID 874277)
+-- Dependencies: 1514 1514 1804
+-- Name: FROM_THIS_TO_TAXON_FKEY_2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "TAXON"
+    ADD CONSTRAINT "FROM_THIS_TO_TAXON_FKEY_2" FOREIGN KEY ("SINONYM_TAXON_ID") REFERENCES "TAXON"("TAXON_ID");
+
+
+--
+-- TOC entry 1825 (class 2606 OID 874282)
+-- Dependencies: 1518 1515 1515 1518 1812
+-- Name: FROM_THIS_TO_TAXON_HAS_ASSOCIATED_ATTRIBUTE_FKEY; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY "TAXON_ASSOCIATED_ATTRIBUTE_HAS_REFERENCE_ELEMENT"
+    ADD CONSTRAINT "FROM_THIS_TO_TAXON_HAS_ASSOCIATED_ATTRIBUTE_FKEY" FOREIGN KEY ("TAXON_ID", "ASSOCIATED_ATTRIBUTE_ID") REFERENCES "TAXON_HAS_ASSOCIATED_ATTRIBUTE"("TAXON_ID", "ASSOCIATED_ATTRIBUTE_ID");
+
+
+--
+-- TOC entry 1838 (class 0 OID 0)
+-- Dependencies: 6
+-- Name: public; Type: ACL; Schema: -; Owner: -
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2011-02-15 08:49:49 CST
+
+--
+-- PostgreSQL database dump complete
+--
+
