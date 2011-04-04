@@ -20,33 +20,26 @@ package org.inbio.neoportal.core.transformers;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.transform.ResultTransformer;
-import org.inbio.neoportal.core.dto.occurrence.OccurrenceLiteDTO;
-import org.inbio.neoportal.core.entity.DarwinCore;
+import org.inbio.neoportal.core.dto.occurrence.TaxonLiteDTO;
+import org.inbio.neoportal.core.entity.Taxon;
+
 
 /**
- * Transfrom a list of DarwinCore entities to OccurrenceLiteDTO
+ * Transfrom a list of Taxon entities to OccurrenceLiteDTO
  * @author asanabria <asanabria@inbio.ac.cr>
  */
-public class OccurrenceResultTransformer implements ResultTransformer {
+public class TaxonResultTransformer implements ResultTransformer {
 
     @Override
     public List transformList(List list) {
-        List<DarwinCore> dwcList = (List<DarwinCore>) list;
-        List<OccurrenceLiteDTO> newList = new ArrayList<OccurrenceLiteDTO>();
+        List<Taxon> taxonList = (List<Taxon>) list;
+        List<TaxonLiteDTO> newList = new ArrayList<TaxonLiteDTO>();
 
-        for(DarwinCore dwc: dwcList)
+        for(Taxon taxon: taxonList)
             newList.add(
-            new OccurrenceLiteDTO(dwc.getGlobaluniqueidentifier(),
-            dwc.getScientificname(),
-            dwc.getCountry(),
-            dwc.getStateprovince(),
-            dwc.getCounty(),
-            dwc.getLocality(),
-            dwc.getDecimallatitude(),
-            dwc.getDecimallongitude(),
-            dwc.getCatalognumber(),
-            dwc.getInstitutioncode()
-            ));
+                new TaxonLiteDTO(taxon.getDefaultName())
+                );
+        
         return newList;
     }
 
