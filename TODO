@@ -1,7 +1,6 @@
- * Add gpl headers.
  - Better Index.
  - Return CommonNames for the main search of taxons.
- - Re-write testcases for portal-core and portal-indexer.
+ * Re-write testcases for portal-core and portal-indexer.
  - Refactor occurrences result window.
  - Add Images support for the main window.
  - Add audit tables on the database
