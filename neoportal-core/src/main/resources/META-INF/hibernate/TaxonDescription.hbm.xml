@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 02/03/2011 05:06:43 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+  <class name="org.inbio.neoportal.core.entity.TaxonDescription" schema="public" table="TAXON_DESCRIPTION">
+    <id name="taxonDescriptionId" type="big_decimal">
+      <column name="TAXON_DESCRIPTION_ID" precision="131089" scale="0"/>
+      <generator class="assigned"/>
+    </id>
+    <many-to-one class="org.inbio.neoportal.core.entity.DataProvider" fetch="select" name="dataProvider">
+      <column name="PROVIDER_ID" not-null="true" precision="131089" scale="0"/>
+    </many-to-one>
+    <many-to-one class="org.inbio.neoportal.core.entity.Taxon" fetch="select" name="taxon">
+      <column name="TAXON_ID" not-null="true" precision="131089" scale="0"/>
+    </many-to-one>
+    <property name="globalUniqueIdentifier" type="string">
+      <column name="GLOBAL_UNIQUE_IDENTIFIER"/>
+    </property>
+    <property name="scientificName" type="string">
+      <column name="SCIENTIFIC_NAME"/>
+    </property>
+    <property name="institutionCode" type="string">
+      <column name="INSTITUTION_CODE"/>
+    </property>
+    <property name="dateLastModified" type="date">
+      <column length="13" name="DATE_LAST_MODIFIED"/>
+    </property>
+    <property name="taxonRecordId" type="string">
+      <column name="TAXON_RECORD_ID"/>
+    </property>
+    <property name="language" type="string">
+      <column name="LANGUAGE"/>
+    </property>
+    <property name="creators" type="string">
+      <column name="CREATORS"/>
+    </property>
+    <property name="distribution" type="string">
+      <column name="DISTRIBUTION"/>
+    </property>
+    <property name="abstract_" type="string">
+      <column name="ABSTRACT"/>
+    </property>
+    <property name="kingdomTaxon" type="string">
+      <column name="KINGDOM_TAXON"/>
+    </property>
+    <property name="phylumTaxon" type="string">
+      <column name="PHYLUM_TAXON"/>
+    </property>
+    <property name="classTaxon" type="string">
+      <column name="CLASS_TAXON"/>
+    </property>
+    <property name="orderTaxon" type="string">
+      <column name="ORDER_TAXON"/>
+    </property>
+    <property name="familyTaxon" type="string">
+      <column name="FAMILY_TAXON"/>
+    </property>
+    <property name="genusTaxon" type="string">
+      <column name="GENUS_TAXON"/>
+    </property>
+    <property name="synonyms" type="string">
+      <column name="SYNONYMS"/>
+    </property>
+    <property name="authorYearOfScientificName" type="string">
+      <column name="AUTHOR_YEAR_OF_SCIENTIFIC_NAME"/>
+    </property>
+    <property name="speciesPublicationReference" type="string">
+      <column name="SPECIES_PUBLICATION_REFERENCE"/>
+    </property>
+    <property name="commonNames" type="string">
+      <column name="COMMON_NAMES"/>
+    </property>
+    <property name="typification" type="string">
+      <column name="TYPIFICATION"/>
+    </property>
+    <property name="contributors" type="string">
+      <column name="CONTRIBUTORS"/>
+    </property>
+    <property name="dateCreated" type="date">
+      <column length="13" name="DATE_CREATED"/>
+    </property>
+    <property name="habit" type="string">
+      <column name="HABIT"/>
+    </property>
+    <property name="lifeCycle" type="string">
+      <column name="LIFE_CYCLE"/>
+    </property>
+    <property name="reproduction" type="string">
+      <column name="REPRODUCTION"/>
+    </property>
+    <property name="annualCycle" type="string">
+      <column name="ANNUAL_CYCLE"/>
+    </property>
+    <property name="scientificDescription" type="string">
+      <column name="SCIENTIFIC_DESCRIPTION"/>
+    </property>
+    <property name="briefDescription" type="string">
+      <column name="BRIEF_DESCRIPTION"/>
+    </property>
+    <property name="feeding" type="string">
+      <column name="FEEDING"/>
+    </property>
+    <property name="behavior" type="string">
+      <column name="BEHAVIOR"/>
+    </property>
+    <property name="interactions" type="string">
+      <column name="INTERACTIONS"/>
+    </property>
+    <property name="chromosomicNumberN" type="string">
+      <column name="CHROMOSOMIC_NUMBER_N"/>
+    </property>
+    <property name="molecularData" type="string">
+      <column name="MOLECULAR_DATA"/>
+    </property>
+    <property name="populationBiology" type="string">
+      <column name="POPULATION_BIOLOGY"/>
+    </property>
+    <property name="threatStatus" type="string">
+      <column name="THREAT_STATUS"/>
+    </property>
+    <property name="legislation" type="string">
+      <column name="LEGISLATION"/>
+    </property>
+    <property name="habitat" type="string">
+      <column name="HABITAT"/>
+    </property>
+    <property name="territory" type="string">
+      <column name="TERRITORY"/>
+    </property>
+    <property name="endemicity" type="string">
+      <column name="ENDEMICITY"/>
+    </property>
+    <property name="theUses" type="string">
+      <column name="THE_USES"/>
+    </property>
+    <property name="theManagement" type="string">
+      <column name="THE_MANAGEMENT"/>
+    </property>
+    <property name="folklore" type="string">
+      <column name="FOLKLORE"/>
+    </property>
+    <property name="theReferences" type="string">
+      <column name="THE_REFERENCES"/>
+    </property>
+    <property name="unstructuredDocumentation" type="string">
+      <column name="UNSTRUCTURED_DOCUMENTATION"/>
+    </property>
+    <property name="otherInformationSources" type="string">
+      <column name="OTHER_INFORMATION_SOURCES"/>
+    </property>
+    <property name="papers" type="string">
+      <column name="PAPERS"/>
+    </property>
+    <property name="identificationKeys" type="string">
+      <column name="IDENTIFICATION_KEYS"/>
+    </property>
+    <property name="migratoryData" type="string">
+      <column name="MIGRATORY_DATA"/>
+    </property>
+    <property name="ecologicalSignificance" type="string">
+      <column name="ECOLOGICAL_SIGNIFICANCE"/>
+    </property>
+    <property name="unstructuredNaturalHistory" type="string">
+      <column name="UNSTRUCTURED_NATURAL_HISTORY"/>
+    </property>
+    <property name="invasivenessData" type="string">
+      <column name="INVASIVENESS_DATA"/>
+    </property>
+    <property name="targetAudiences" type="string">
+      <column name="TARGET_AUDIENCES"/>
+    </property>
+    <property name="version" type="string">
+      <column name="VERSION"/>
+    </property>
+    <set inverse="true" name="taxonDescriptionHasReferenceElements">
+      <key>
+        <column name="TAXON_DESCRIPTION_ID" not-null="true" precision="131089" scale="0"/>
+      </key>
+      <one-to-many class="org.inbio.neoportal.core.entity.TaxonDescriptionHasReferenceElement"/>
+    </set>
+  </class>
+</hibernate-mapping>

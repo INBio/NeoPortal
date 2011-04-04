@@ -9,7 +9,21 @@
     <property name="hibernate.search.default.indexBase">/home/asanabria/Resources/LuceneIndex/</property>
     <property name="hibernate.search.default.locking_strategy">simple</property>
     <!-- Mappings -->
-    <mapping class="" file="" jar="" package="" resource="META-INF/hibernate/DarwinCore.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/TaxonHasAssociatedAttribute.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/ReferenceElement.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/Taxon.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/Occurrence.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/DataProvider.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/TaxonHasReferenceElement.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/OccurrenceCuratorialExtension.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/OccurrenceGeospatialExtension.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/TaxonDescription.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/AssociatedAttribute.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/Service.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/OccurrenceHasReferenceElement.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/TaxonDescriptionHasReferenceElement.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/CommonName.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/TaxonAssociatedAttributeHasReferenceElement.hbm.xml"/>
     <!-- Hibernate search event listeners -->
     <event type="post-update">
       <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>

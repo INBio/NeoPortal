@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 02/03/2011 05:06:43 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+  <class name="org.inbio.neoportal.core.entity.Taxon" schema="public" table="TAXON">
+    <id name="taxonId" type="big_decimal">
+      <column name="TAXON_ID" precision="131089" scale="0"/>
+      <generator class="assigned"/>
+    </id>
+    <many-to-one class="org.inbio.neoportal.core.entity.Taxon" fetch="select" name="taxonBySinonymTaxonId">
+      <column name="SINONYM_TAXON_ID" precision="131089" scale="0"/>
+    </many-to-one>
+    <many-to-one class="org.inbio.neoportal.core.entity.Taxon" fetch="select" name="taxonByAncestorTaxonId">
+      <column name="ANCESTOR_TAXON_ID" precision="131089" scale="0"/>
+    </many-to-one>
+    <property name="taxonomicalRangeId" type="big_decimal">
+      <column name="TAXONOMICAL_RANGE_ID" precision="131089" scale="0"/>
+    </property>
+    <property name="defaultName" type="string">
+      <column name="DEFAULT_NAME"/>
+    </property>
+    <property name="kingdom" type="string">
+      <column name="KINGDOM"/>
+    </property>
+    <property name="division" type="string">
+      <column name="DIVISION"/>
+    </property>
+    <property name="class_" type="string">
+      <column name="CLASS"/>
+    </property>
+    <property name="order" type="string">
+      <column name="ORDER_"/>
+    </property>
+    <property name="family" type="string">
+      <column name="FAMILY"/>
+    </property>
+    <property name="genus" type="string">
+      <column name="GENUS"/>
+    </property>
+    <property name="species" type="string">
+      <column name="SPECIES"/>
+    </property>
+    <property name="dominiumId" type="big_decimal">
+      <column name="DOMINIUM_ID" precision="131089" scale="0"/>
+    </property>
+    <property name="kingdomId" type="big_decimal">
+      <column name="KINGDOM_ID" precision="131089" scale="0"/>
+    </property>
+    <property name="divisionId" type="big_decimal">
+      <column name="DIVISION_ID" precision="131089" scale="0"/>
+    </property>
+    <property name="subdivisionId" type="big_decimal">
+      <column name="SUBDIVISION_ID" precision="131089" scale="0"/>
+    </property>
+    <property name="classId" type="big_decimal">
+      <column name="CLASS_ID" precision="131089" scale="0"/>
+    </property>
+    <property name="subclassId" type="big_decimal">
+      <column name="SUBCLASS_ID" precision="131089" scale="0"/>
+    </property>
+    <property name="orderId" type="big_decimal">
+      <column name="ORDER_ID" precision="131089" scale="0"/>
+    </property>
+    <property name="subOrderId" type="big_decimal">
+      <column name="SUB_ORDER_ID" precision="131089" scale="0"/>
+    </property>
+    <property name="superFamilyId" type="big_decimal">
+      <column name="SUPER_FAMILY_ID" precision="131089" scale="0"/>
+    </property>
+    <property name="familyId" type="big_decimal">
+      <column name="FAMILY_ID" precision="131089" scale="0"/>
+    </property>
+    <property name="subFamilyId" type="big_decimal">
+      <column name="SUB_FAMILY_ID" precision="131089" scale="0"/>
+    </property>
+    <property name="tribeId" type="big_decimal">
+      <column name="TRIBE_ID" precision="131089" scale="0"/>
+    </property>
+    <property name="subTribeId" type="big_decimal">
+      <column name="SUB_TRIBE_ID" precision="131089" scale="0"/>
+    </property>
+    <property name="genusId" type="big_decimal">
+      <column name="GENUS_ID" precision="131089" scale="0"/>
+    </property>
+    <property name="subGenusId" type="big_decimal">
+      <column name="SUB_GENUS_ID" precision="131089" scale="0"/>
+    </property>
+    <property name="sectionId" type="big_decimal">
+      <column name="SECTION_ID" precision="131089" scale="0"/>
+    </property>
+    <property name="subSectionId" type="big_decimal">
+      <column name="SUB_SECTION_ID" precision="131089" scale="0"/>
+    </property>
+    <property name="raceId" type="big_decimal">
+      <column name="RACE_ID" precision="131089" scale="0"/>
+    </property>
+    <property name="speciesId" type="big_decimal">
+      <column name="SPECIES_ID" precision="131089" scale="0"/>
+    </property>
+    <property name="subSpeciesId" type="big_decimal">
+      <column name="SUB_SPECIES_ID" precision="131089" scale="0"/>
+    </property>
+    <property name="varietyId" type="big_decimal">
+      <column name="VARIETY_ID" precision="131089" scale="0"/>
+    </property>
+    <property name="formId" type="big_decimal">
+      <column name="FORM_ID" precision="131089" scale="0"/>
+    </property>
+    <set inverse="true" name="taxonHasReferenceElements">
+      <key>
+        <column name="TAXON_ID" not-null="true" precision="131089" scale="0"/>
+      </key>
+      <one-to-many class="org.inbio.neoportal.core.entity.TaxonHasReferenceElement"/>
+    </set>
+    <set inverse="true" name="occurrences">
+      <key>
+        <column name="TAXON_ID" not-null="true" precision="131089" scale="0"/>
+      </key>
+      <one-to-many class="org.inbio.neoportal.core.entity.Occurrence"/>
+    </set>
+    <set inverse="true" name="taxonsForSinonymTaxonId">
+      <key>
+        <column name="SINONYM_TAXON_ID" precision="131089" scale="0"/>
+      </key>
+      <one-to-many class="org.inbio.neoportal.core.entity.Taxon"/>
+    </set>
+    <set inverse="true" name="commonNames">
+      <key>
+        <column name="TAXON_ID" precision="131089" scale="0"/>
+      </key>
+      <one-to-many class="org.inbio.neoportal.core.entity.CommonName"/>
+    </set>
+    <set inverse="true" name="taxonsForAncestorTaxonId">
+      <key>
+        <column name="ANCESTOR_TAXON_ID" precision="131089" scale="0"/>
+      </key>
+      <one-to-many class="org.inbio.neoportal.core.entity.Taxon"/>
+    </set>
+    <set inverse="true" name="taxonDescriptions">
+      <key>
+        <column name="TAXON_ID" not-null="true" precision="131089" scale="0"/>
+      </key>
+      <one-to-many class="org.inbio.neoportal.core.entity.TaxonDescription"/>
+    </set>
+    <set inverse="true" name="taxonHasAssociatedAttributes">
+      <key>
+        <column name="TAXON_ID" not-null="true" precision="131089" scale="0"/>
+      </key>
+      <one-to-many class="org.inbio.neoportal.core.entity.TaxonHasAssociatedAttribute"/>
+    </set>
+  </class>
+</hibernate-mapping>

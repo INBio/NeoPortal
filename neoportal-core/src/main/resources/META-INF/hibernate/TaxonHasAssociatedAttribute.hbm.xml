@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 02/03/2011 05:06:42 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+  <class name="org.inbio.neoportal.core.entity.TaxonHasAssociatedAttribute" schema="public" table="TAXON_HAS_ASSOCIATED_ATTRIBUTE">
+    <composite-id class="org.inbio.neoportal.core.entity.TaxonHasAssociatedAttributeId" name="id">
+      <key-property name="taxonId" type="big_decimal">
+        <column name="TAXON_ID" precision="131089" scale="0"/>
+      </key-property>
+      <key-property name="associatedAttributeId" type="big_decimal">
+        <column name="ASSOCIATED_ATTRIBUTE_ID" precision="131089" scale="0"/>
+      </key-property>
+    </composite-id>
+    <many-to-one class="org.inbio.neoportal.core.entity.Taxon" fetch="select" insert="false" name="taxon" update="false">
+      <column name="TAXON_ID" not-null="true" precision="131089" scale="0"/>
+    </many-to-one>
+    <many-to-one class="org.inbio.neoportal.core.entity.AssociatedAttribute" fetch="select" insert="false" name="associatedAttribute" update="false">
+      <column name="ASSOCIATED_ATTRIBUTE_ID" not-null="true" precision="131089" scale="0"/>
+    </many-to-one>
+    <property name="certaintyLevel" type="string">
+      <column name="CERTAINTY_LEVEL"/>
+    </property>
+    <property name="evaluationCriteria" type="string">
+      <column name="EVALUATION_CRITERIA"/>
+    </property>
+    <property name="regionality" type="string">
+      <column name="REGIONALITY"/>
+    </property>
+    <set inverse="true" name="taxonAssociatedAttributeHasReferenceElements">
+      <key>
+        <column name="TAXON_ID" not-null="true" precision="131089" scale="0"/>
+        <column name="ASSOCIATED_ATTRIBUTE_ID" not-null="true" precision="131089" scale="0"/>
+      </key>
+      <one-to-many class="org.inbio.neoportal.core.entity.TaxonAssociatedAttributeHasReferenceElement"/>
+    </set>
+  </class>
+</hibernate-mapping>

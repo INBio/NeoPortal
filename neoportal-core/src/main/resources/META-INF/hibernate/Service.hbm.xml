@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 02/03/2011 05:06:44 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+  <class name="org.inbio.neoportal.core.entity.Service" schema="public" table="SERVICE">
+    <id name="serviceId" type="big_decimal">
+      <column name="SERVICE_ID" precision="131089" scale="0"/>
+      <generator class="assigned"/>
+    </id>
+    <property name="name" type="string">
+      <column name="NAME"/>
+    </property>
+    <property name="description" type="string">
+      <column name="DESCRIPTION"/>
+    </property>
+    <property name="url" type="string">
+      <column name="URL"/>
+    </property>
+    <property name="urlConnectionFormat" type="string">
+      <column name="URL_CONNECTION_FORMAT"/>
+    </property>
+  </class>
+</hibernate-mapping>

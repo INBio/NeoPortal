@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 02/03/2011 05:06:43 PM by Hibernate Tools 3.1.0.beta4 -->
+<hibernate-mapping>
+  <class name="org.inbio.neoportal.core.entity.OccurrenceCuratorialExtension" schema="public" table="OCCURRENCE_CURATORIAL_EXTENSION">
+    <id name="occurrenceCuratorialExtensionId" type="big_decimal">
+      <column name="OCCURRENCE_CURATORIAL_EXTENSION_ID" precision="131089" scale="0"/>
+      <generator class="assigned"/>
+    </id>
+    <many-to-one class="org.inbio.neoportal.core.entity.Occurrence" fetch="select" name="occurrence">
+      <column name="OCCURRENCE_ID" not-null="true" precision="131089" scale="0"/>
+    </many-to-one>
+    <property name="catalogNumberNumeric" type="string">
+      <column name="CATALOG_NUMBER_NUMERIC"/>
+    </property>
+    <property name="identifiedBy" type="string">
+      <column name="IDENTIFIED_BY"/>
+    </property>
+    <property name="dateIdentified" type="string">
+      <column name="DATE_IDENTIFIED"/>
+    </property>
+    <property name="collectorNumber" type="string">
+      <column name="COLLECTOR_NUMBER"/>
+    </property>
+    <property name="fieldNumber" type="string">
+      <column name="FIELD_NUMBER"/>
+    </property>
+    <property name="fieldNotes" type="string">
+      <column name="FIELD_NOTES"/>
+    </property>
+    <property name="verbatimCollectingDate" type="string">
+      <column name="VERBATIM_COLLECTING_DATE"/>
+    </property>
+    <property name="verbatimElevation" type="string">
+      <column name="VERBATIM_ELEVATION"/>
+    </property>
+    <property name="verbatimDepth" type="string">
+      <column name="VERBATIM_DEPTH"/>
+    </property>
+    <property name="preparations" type="string">
+      <column name="PREPARATIONS"/>
+    </property>
+    <property name="typeStatus" type="string">
+      <column name="TYPE_STATUS"/>
+    </property>
+    <property name="genBankNumber" type="string">
+      <column name="GEN_BANK_NUMBER"/>
+    </property>
+    <property name="otherCatalogNumbers" type="string">
+      <column name="OTHER_CATALOG_NUMBERS"/>
+    </property>
+    <property name="relatedCatalogItems" type="string">
+      <column name="RELATED_CATALOG_ITEMS"/>
+    </property>
+    <property name="disposition" type="string">
+      <column name="DISPOSITION"/>
+    </property>
+    <property name="individualCount" type="string">
+      <column name="INDIVIDUAL_COUNT"/>
+    </property>
+  </class>
+</hibernate-mapping>
