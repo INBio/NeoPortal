@@ -1,4 +1,6 @@
 /*
+ *  NeoPortal - New implementation of the INBio Species and Occurrences portal.
+ *  
  *  Copyright (C) 2010 INBio - Instituto Nacional de Biodiversidad, Costa Rica
  * 
  *  This program is free software: you can redistribute it and/or modify
@@ -14,7 +16,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.inbio.neoportal.dao.impl;
 
 import org.inbio.neoportal.core.entity.Taxon;
