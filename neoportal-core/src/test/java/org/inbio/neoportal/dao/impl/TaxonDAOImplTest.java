@@ -17,15 +17,14 @@
 
 package org.inbio.neoportal.dao.impl;
 
-import java.util.Calendar;
+import org.inbio.neoportal.core.entity.Taxon;
+import org.inbio.neoportal.core.dao.TaxonDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.junit.runner.RunWith;
-import org.inbio.neoportal.core.dao.impl.DwCDAOImpl;
 import java.util.List;
-import org.inbio.neoportal.core.entity.DarwinCore;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -41,10 +40,10 @@ import static org.junit.Assert.*;
 @ContextConfiguration(locations = {"classpath:tests-context.xml"})
 @TransactionConfiguration(transactionManager = "transactionManager",defaultRollback = false)
 
-public class DwCDAOImplTest{
+public class TaxonDAOImplTest{
 
     @Autowired
-    public  DwCDAOImpl dwcDAOImpl;
+    public  TaxonDAO taxonDAOImpl;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -57,38 +56,28 @@ public class DwCDAOImplTest{
     @Before
     public void setUp() {
 
-        DarwinCore dwc = new DarwinCore();
-        dwc.setDatelastmodified(Calendar.getInstance().getTime());
-        dwc.setInstitutioncode("INB");
-        dwc.setCollectioncode("Artropoda");
-        dwc.setBasisofrecord("specimen");
+        Taxon taxon = new Taxon();
+        
+        if(taxonDAOImpl.findAll(Taxon.class).isEmpty()){
 
-        if(dwcDAOImpl.findAll(DarwinCore.class).isEmpty()){
+            taxon.setDefaultName("Inga vera");
+            taxonDAOImpl.create(taxon);
 
-            dwc.setGlobaluniqueidentifier("INB:1");
-            dwc.setScientificname("Inga vera");
-            dwc.setCatalognumber("1");
-            dwcDAOImpl.create(dwc);
+            
+            taxon.setDefaultName("Inga vera subsp. spuria");
+            taxonDAOImpl.create(taxon);
 
-            dwc.setGlobaluniqueidentifier("INB:2");
-            dwc.setScientificname("Inga vera subsp. spuria");
-            dwc.setCatalognumber("2");
-            dwcDAOImpl.create(dwc);
+            
+            taxon.setDefaultName("Inga vera subsp. vera");
+            taxonDAOImpl.create(taxon);
 
-            dwc.setGlobaluniqueidentifier("INB:3");
-            dwc.setScientificname("Inga vera subsp. vera");
-            dwc.setCatalognumber("3");
-            dwcDAOImpl.create(dwc);
+            
+            taxon.setDefaultName("Inga vera");
+            taxonDAOImpl.create(taxon);
 
-            dwc.setGlobaluniqueidentifier("INB:4");
-            dwc.setScientificname("Inga vera");
-            dwc.setCatalognumber("4");
-            dwcDAOImpl.create(dwc);
-
-            dwc.setGlobaluniqueidentifier("INB:5");
-            dwc.setScientificname("Inga vera");
-            dwc.setCatalognumber("5");
-            dwcDAOImpl.create(dwc);
+            
+            taxon.setDefaultName("Inga vera");
+            taxonDAOImpl.create(taxon);
         }
     }
 
@@ -102,12 +91,12 @@ public class DwCDAOImplTest{
     @Test
     public void testSearch() {
         System.out.println("search");
-        String[] fields = {"scientificname"};
+        String[] fields = {"defaultName"};
         String searchText = "Inga_vera";
         int offset = 0;
         int quantity = 20;
         Integer expResult = new Integer(5);
-        List result = dwcDAOImpl.search(fields, searchText, offset, quantity);
+        List result = taxonDAOImpl.search(fields, searchText, offset, quantity);
         assertEquals(expResult, new Integer(result.size()));
     }
 
@@ -117,10 +106,10 @@ public class DwCDAOImplTest{
     @Test
     public void testSearchCount() {
         System.out.println("searchCount");
-        String[] fields = {"scientificname"};
+        String[] fields = {"defaultName"};
         String searchText = "Inga_vera";
         Integer expResult = new Integer(5);
-        Integer result = dwcDAOImpl.searchCount(fields, searchText);
+        Integer result = taxonDAOImpl.searchCount(fields, searchText);
         assertEquals(expResult, result);
     }
 }
