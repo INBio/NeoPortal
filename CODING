@@ -1,0 +1,120 @@
+                          NeoPortal Coding Conventions
+                          ----------------------------
+
+Conventions 
+-----------
+
+    1. Identation to 4 spaces.
+    2. A tab is 8 characters long and its a tab.
+    3. Every line to 80 characters long. (see Spliting lines examples).
+    4. Braces in the line of the sentence. (see Braces usage examples).
+    5. Use at least @author for javadoc class level comments.
+    6. GPLv3 Header on every java file.
+    7. All names on camel case.
+    8. Always a empty line after the funcion definition.
+    9. extends sentences on class definitions on a separate line. (see class definition).
+    10. implements sentences on class definitios on a separate line. (see class definition).
+    11. Throws sentences on method definition on a separate line. (see throws). 
+    12. A line before and after every splitted line.
+
+
+                            Spliting lines examples 
+                            -----------------------
+
+Annotations 
+-----------
+
+@TransactionConfiguration(
+    transactionManager  "transactionManager",
+    defaultRollback  false)
+  
+
+Methods names and parameters 
+----------------------------
+
+    public List<TaxonDescriptionLiteDTO> 
+        speciesListPaginatedSearch(String searchText, int offset, int quantity)
+        throws ParseException{
+        
+    public List<TaxonDescriptionLiteDTO> speciesListPaginatedSearch
+        (String searchText, int offset, int quantity)
+            throws ParseException{
+
+    public TaxonHasReferenceElement(
+        TaxonHasReferenceElementId id, 
+        ReferenceElement referenceElement, 
+        Taxon taxon) {
+                
+                
+Asignations 
+-----------
+
+    sessionFactory 
+       new AnnotationConfiguration()
+          .configure("/META-INF/hibernate/hibernate.cfg.xml")
+          .buildSessionFactory();
+
+    private Set<TaxonHasReferenceElement> taxonHasReferenceElements 
+        new HashSet<TaxonHasReferenceElement>(0);
+                  
+
+Class definition 
+----------------
+                
+
+  public class TaxonDescriptionDAOImpl 
+      extends GenericBaseDAOImpl<TaxonDescription, BigDecimal>
+          implements TaxonDescriptionDAO{  ... }
+                  
+
+Throws 
+------
+
+  public Integer getTotalResults(final String HSQL) 
+      throws IllegalArgumentException {
+                          
+
+
+                                     Header 
+                                     ------
+
+/*
+*  NeoPortal - New implementation of the INBio Species and Occurrences portal.
+*  
+*  Copyright (C) 2010 INBio - Instituto Nacional de Biodiversidad, Costa Rica
+* 
+*  This program is free software: you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation, either version 3 of the License, or
+*  (at your option) any later version.
+* 
+*  This program is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+* 
+*  You should have received a copy of the GNU General Public License
+*  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+                      
+                             Braces usage examples
+                             ---------------------
+
+    if ( var == true ){
+        ...
+    }else{
+        ...
+    }
+
+    ---
+
+    while(true){
+        ...
+    }
+
+    ---
+
+    for(Class c: classList) {
+        ...
+    }
+
