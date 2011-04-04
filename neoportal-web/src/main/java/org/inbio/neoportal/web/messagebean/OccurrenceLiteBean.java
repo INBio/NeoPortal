@@ -60,12 +60,19 @@ public class OccurrenceLiteBean {
 	private String institution;
 	
 	/**
-	 * 
+	 * No argument contructor
 	 */
 	public OccurrenceLiteBean() {
 		super();
 	}
-
+   /**
+     * Argument constructor
+     * @param scientificName 
+     */
+    public OccurrenceLiteBean(String scientificName) {
+        this.scientificName = scientificName;
+    }
+   
     /**
      * Argument constructor
      * @param globalUniqueIdentifier

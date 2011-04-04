@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.lucene.queryParser.ParseException;
-import org.inbio.neoportal.core.dto.occurrence.OccurrenceLiteDTO;
-import org.inbio.neoportal.core.dto.species.SpeciesLiteDTO;
+import org.inbio.neoportal.core.dto.occurrence.TaxonLiteDTO;
+import org.inbio.neoportal.core.dto.taxon.description.TaxonDescriptionLiteDTO;
 import org.inbio.neoportal.service.manager.SearchManager;
 import org.inbio.neoportal.web.messagebean.SpeciesLiteBean;
 import org.inbio.neoportal.web.messagebean.OccurrenceLiteBean;
@@ -53,24 +53,25 @@ public class SearchController {
     @RequestMapping(value="/occurrences", method=RequestMethod.GET, params={"format=xml","searchString"})
     public @ResponseBody XMLSpecimenWrapper searchOccurrencesWriteXml(@RequestParam String searchString) {
 
-        List<OccurrenceLiteDTO> occurrenceList = null;
+        List<TaxonLiteDTO> occurrenceList = null;
 
         XMLSpecimenWrapper rw = new XMLSpecimenWrapper();
         try {
             occurrenceList = searchManagerImpl.fullPaginatedSearch(searchString, 0, 15); //TODO
-
-            for(OccurrenceLiteDTO olDTO : occurrenceList)
+            
+            for(TaxonLiteDTO olDTO : occurrenceList)
                 rw.addElement(new OccurrenceLiteBean(
-                olDTO.getGlobalUniqueIdentifier(),
-                olDTO.getScientificName(),
-                olDTO.getCountry(),
-                olDTO.getProvince(),
-                olDTO.getCounty(),
-                olDTO.getLocality(),
-                olDTO.getLatitude(),
-                olDTO.getLongitude(),
-                olDTO.getCatalog(),
-                olDTO.getInstitution()));
+              //  olDTO.getGlobalUniqueIdentifier(),
+                olDTO.getScientificName()
+           //     olDTO.getCountry(),
+            //    olDTO.getProvince(),
+            //    olDTO.getCounty(),
+            //    olDTO.getLocality(),
+            //    olDTO.getLatitude(),
+            //    olDTO.getLongitude(),
+           //     olDTO.getCatalog(),
+           //     olDTO.getInstitution()
+                    ));
 
         } catch (ParseException ex) {
             Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
@@ -99,13 +100,13 @@ public class SearchController {
     @RequestMapping(value="/species", method=RequestMethod.GET, params={"format=xml","searchString"})
     public @ResponseBody XMLSpeciesWrapper searchSpeciesWriteXml(@RequestParam String searchString) {
 
-        List<SpeciesLiteDTO> speciesList = null;
+        List<TaxonDescriptionLiteDTO> speciesList = null;
 
         XMLSpeciesWrapper rw = new XMLSpeciesWrapper();
         try {
             speciesList = searchManagerImpl.speciesListPaginatedSearch(searchString, 0 ,10); //TODO
 
-            for(SpeciesLiteDTO spDTO : speciesList)
+            for(TaxonDescriptionLiteDTO spDTO : speciesList)
                 rw.addElement(new SpeciesLiteBean(
                 spDTO.getImageURL(),
                 spDTO.getCommonName(),

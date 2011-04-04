@@ -132,6 +132,12 @@
 			<groupId>org.inbio.neoportal</groupId>
 			<artifactId>neoportal-service</artifactId>
 			<version>1.0-SNAPSHOT</version>
+		 <exclusions>
+		  <exclusion>
+		   <artifactId>cglib</artifactId>
+		   <groupId>cglib</groupId>
+		  </exclusion>
+		 </exclusions>
 		</dependency>
 
 	</dependencies>
