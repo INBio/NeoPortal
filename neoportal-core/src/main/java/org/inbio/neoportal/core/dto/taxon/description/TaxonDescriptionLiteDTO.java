@@ -14,7 +14,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.core.dto.species;
+package org.inbio.neoportal.core.dto.taxon.description;
 
 import org.inbio.neoportal.core.dto.*;
 
@@ -22,16 +22,16 @@ import org.inbio.neoportal.core.dto.*;
  *
  * @author esmata
  */
-public class SpeciesLiteDTO extends BaseDTO implements Comparable {
+public class TaxonDescriptionLiteDTO extends BaseDTO implements Comparable {
 
     private String imageURL;
 	private String commonName;
     private String scientificName;
 
-    public SpeciesLiteDTO() {
+    public TaxonDescriptionLiteDTO() {
     }
 
-    public SpeciesLiteDTO(String imageURL,
+    public TaxonDescriptionLiteDTO(String imageURL,
                             String commonName,
                             String scientificName) {
 
@@ -63,7 +63,7 @@ public class SpeciesLiteDTO extends BaseDTO implements Comparable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final SpeciesLiteDTO other = (SpeciesLiteDTO) obj;
+        final TaxonDescriptionLiteDTO other = (TaxonDescriptionLiteDTO) obj;
         if ((this.getScientificName() == null) ? (other.getScientificName() != null) : !this.scientificName.equals(other.scientificName)) {
             return false;
         }
@@ -77,7 +77,7 @@ public class SpeciesLiteDTO extends BaseDTO implements Comparable {
     @Override
     public int compareTo(Object o) {
 
-        SpeciesLiteDTO ol = (SpeciesLiteDTO)o;
+        TaxonDescriptionLiteDTO ol = (TaxonDescriptionLiteDTO)o;
         return this.getScientificName().compareTo(ol.getScientificName());
     }
 
