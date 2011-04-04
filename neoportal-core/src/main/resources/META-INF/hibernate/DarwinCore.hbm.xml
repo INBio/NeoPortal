@@ -2,7 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 <!-- Generated 06/10/2010 11:22:51 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-  <class name="org.inbio.neoportal.core.core.DarwinCore" schema="public" table="darwin_core">
+  <class name="org.inbio.neoportal.core.entity.DarwinCore" schema="public" table="darwin_core">
     <id name="globaluniqueidentifier" type="string">
       <column name="globaluniqueidentifier"/>
       <generator class="assigned"/>

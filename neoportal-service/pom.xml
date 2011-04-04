@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.inbio.neoportal</groupId>
     <artifactId>neoportal-service</artifactId>
@@ -25,6 +25,21 @@
     </profiles>
 
     <dependencies>
+
+        <!-- Service project -->
+        <dependency>
+            <groupId>org.inbio.neoportal</groupId>
+            <artifactId>neoportal-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- Service project -->
+        <dependency>
+            <groupId>org.inbio.neoportal</groupId>
+            <artifactId>neoportal-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>test</scope>
+            <type>test-jar</type>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
@@ -146,16 +161,16 @@
             <artifactId>log4j</artifactId>
             <version>1.2.14</version>
         </dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>1.5.10</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.lucene</groupId>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>1.5.10</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-queries</artifactId>
             <version>2.9.3</version>
-		</dependency>
+        </dependency>
         <dependency>
             <artifactId>lucene-analyzers</artifactId>
             <groupId>org.apache.lucene</groupId>
@@ -174,7 +189,7 @@
             <type>jar</type>
             <version>2.9.3</version>
         </dependency>
-       <dependency>
+        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>1.2.127</version>
@@ -251,6 +266,19 @@
             </plugins>
         </pluginManagement>
         <plugins>
+            <!--plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin-->
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

@@ -157,6 +157,7 @@
 		<url>http://informatics.inbio.ac.cr/projects.html</url>
 	</organization>
 	<build>
+        <finalName>neoportal</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

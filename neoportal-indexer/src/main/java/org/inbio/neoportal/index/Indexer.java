@@ -27,11 +27,11 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
-import org.inbio.neoportal.service.dao.impl.DwCDAOImpl;
-import org.inbio.neoportal.service.dto.OccurrenceLiteDTO;
-import org.inbio.neoportal.service.entity.DarwinCore;
-import org.inbio.neoportal.service.transformers.OccurrenceResultTransformer;
+import org.inbio.neoportal.core.dao.impl.DwCDAOImpl;
+import org.inbio.neoportal.core.entity.DarwinCore;
+import org.inbio.neoportal.core.transformers.OccurrenceResultTransformer;
 import org.inbio.neoportal.index.util.HibernateUtil;
+import org.inbio.neoportal.core.dto.occurrence.OccurrenceLiteDTO;
 
 
 

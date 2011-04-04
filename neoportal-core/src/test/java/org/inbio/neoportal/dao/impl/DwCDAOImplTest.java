@@ -15,23 +15,22 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.inbio.neoportal.manager.impl;
+package org.inbio.neoportal.dao.impl;
 
-import org.junit.runner.RunWith;
+import java.util.Calendar;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.junit.runner.RunWith;
 import org.inbio.neoportal.core.dao.impl.DwCDAOImpl;
-import java.util.Calendar;
-import org.inbio.neoportal.core.entity.DarwinCore;
-import org.inbio.neoportal.service.manager.SearchManager;
 import java.util.List;
+import org.inbio.neoportal.core.entity.DarwinCore;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import static org.junit.Assert.*;
 
 /**
@@ -41,10 +40,8 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:tests-context.xml"})
 @TransactionConfiguration(transactionManager = "transactionManager",defaultRollback = false)
-public class SearchManagerImplTest {
 
-    @Autowired
-    private SearchManager searchManagerImpl;
+public class DwCDAOImplTest{
 
     @Autowired
     public  DwCDAOImpl dwcDAOImpl;
@@ -59,6 +56,7 @@ public class SearchManagerImplTest {
 
     @Before
     public void setUp() {
+
         DarwinCore dwc = new DarwinCore();
         dwc.setDatelastmodified(Calendar.getInstance().getTime());
         dwc.setInstitutioncode("INB");
@@ -96,46 +94,33 @@ public class SearchManagerImplTest {
 
     @After
     public void tearDown() {
-        searchManagerImpl = null;
     }
 
     /**
-     * Test of fullPaginatedSearch method, of class SearchManagerImpl.
+     * Test of search method, of class DwCDAOImpl.
      */
     @Test
-    public void testSpeciesPaginatedSearch() throws Exception {
-        System.out.println("fullPaginatedSearch");
-        String searchText = "Inga_vera";
-        int offset = 0;
-        int quantity = 20;
-        Integer expResult = new Integer(3);
-        List result = searchManagerImpl.speciesListPaginatedSearch(searchText, offset, quantity);
-        assertEquals(expResult, new Integer(3));
-    }
-
-    /**
-     * Test of fullPaginatedSearch method, of class SearchManagerImpl.
-     */
-    @Test
-    public void testFullPaginatedSearch() throws Exception {
-        System.out.println("fullPaginatedSearch");
+    public void testSearch() {
+        System.out.println("search");
+        String[] fields = {"scientificname"};
         String searchText = "Inga_vera";
         int offset = 0;
         int quantity = 20;
         Integer expResult = new Integer(5);
-        List result = searchManagerImpl.fullPaginatedSearch(searchText, offset, quantity);
-        assertEquals(expResult, new Integer(5));
+        List result = dwcDAOImpl.search(fields, searchText, offset, quantity);
+        assertEquals(expResult, new Integer(result.size()));
     }
 
     /**
-     * Test of fullSearchCount method, of class SearchManagerImpl.
+     * Test of searchCount method, of class DwCDAOImpl.
      */
     @Test
-    public void testFullSearchCount() throws Exception {
-        System.out.println("fullSearchCount");
-        String searchText = "Inga";
+    public void testSearchCount() {
+        System.out.println("searchCount");
+        String[] fields = {"scientificname"};
+        String searchText = "Inga_vera";
         Integer expResult = new Integer(5);
-        Integer result = searchManagerImpl.fullSearchCount(searchText);
+        Integer result = dwcDAOImpl.searchCount(fields, searchText);
         assertEquals(expResult, result);
     }
 }

@@ -18,8 +18,8 @@ package org.inbio.neoportal.service.manager;
 
 import java.util.List;
 import org.apache.lucene.queryParser.ParseException;
-import org.inbio.neoportal.service.dto.occurrence.OccurrenceLiteDTO;
-import org.inbio.neoportal.service.dto.species.SpeciesLiteDTO;
+import org.inbio.neoportal.core.dto.occurrence.OccurrenceLiteDTO;
+import org.inbio.neoportal.core.dto.species.SpeciesLiteDTO;
 
 
 /**
