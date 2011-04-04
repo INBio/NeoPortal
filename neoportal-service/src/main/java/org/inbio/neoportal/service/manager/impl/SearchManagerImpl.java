@@ -17,14 +17,15 @@
 package org.inbio.neoportal.service.manager.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.apache.lucene.queryParser.ParseException;
-import org.inbio.neoportal.core.dao.DwCDAO;
-import org.inbio.neoportal.core.dto.occurrence.OccurrenceLiteDTO;
-import org.inbio.neoportal.core.dto.species.SpeciesLiteDTO;
+import org.inbio.neoportal.core.dao.TaxonDAO;
+import org.inbio.neoportal.core.dto.occurrence.TaxonLiteDTO;
+import org.inbio.neoportal.core.dto.taxon.description.TaxonDescriptionLiteDTO;
 import org.inbio.neoportal.service.manager.SearchManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,59 +39,53 @@ import org.springframework.stereotype.Service;
 public class SearchManagerImpl implements SearchManager{
 
     @Autowired
-    private DwCDAO dwcDAO;
+    private TaxonDAO taxonDAO;
 
     @Override
-    public List<SpeciesLiteDTO> speciesListPaginatedSearch(String searchText, int offset, int quantity)
+    public List<TaxonDescriptionLiteDTO> 
+        speciesListPaginatedSearch(String searchText, int offset, int quantity)
             throws ParseException{
 
-        List<OccurrenceLiteDTO> occurrenceList = null;
-        OccurrenceLiteDTO ol = null; //Used to iterate over occurrenceList
+        List<TaxonLiteDTO> occurrenceList = null;
+        
+        TaxonLiteDTO ol = null; //Used to iterate over occurrenceList
+        
         //Set to store all the diferent scientific names
-        Set<SpeciesLiteDTO> scientificNames = new HashSet<SpeciesLiteDTO>();
+        Set<TaxonDescriptionLiteDTO> scientificNames = 
+            new HashSet<TaxonDescriptionLiteDTO>();
+        
+        TaxonDescriptionLiteDTO sp = null;
+        
         int lastResult = 0;
+        
         //Result List of SpeciesLiteDTO Objects
-        List<SpeciesLiteDTO> result = new ArrayList<SpeciesLiteDTO>();
+        List<TaxonDescriptionLiteDTO> result = 
+            new ArrayList<TaxonDescriptionLiteDTO>();
 
-        boolean     next            = true;
-        int         maxQuantity     = 1000;
+        int         maxQuantity     = 10;
         int         nextStartItem   = offset;
 
-        // All the indexed fields
-        String[] fields =
-                new String[]{ "scientificname",
-                "locality",
-                "country",
-                "stateprovince",
-                "county" };
+       String[] taxon =
+                new String[]{ "defaultName", "kingdom", "division", "class_",
+                                 "order", "family", "genus", "species"};
 
-        do{
-            // Search the results of the query
-            occurrenceList = dwcDAO.search(fields, searchText, nextStartItem, maxQuantity);
+        ArrayList<String> fieldList = new ArrayList<String>();
 
-            // Iterate over the results an leave only distinct scientific Names
-            for (Iterator<OccurrenceLiteDTO> iter = occurrenceList.iterator(); iter.hasNext(); lastResult++ ) {
+        fieldList.addAll(Arrays.asList(taxon));
 
-                ol = iter.next();
-                // Ignore duplictes scientificNames by inserting them in a java.util.Set.
-                SpeciesLiteDTO sp = new SpeciesLiteDTO();
-                sp.setImageURL("http://pulsatrix.inbio.ac.cr/projects/atta2/chrome/site/test.JPG");
-                sp.setCommonName("Nombre común X");
-                sp.setScientificName(ol.getScientificName());
-                scientificNames.add(sp);
+        // Search the results of the query
+        occurrenceList = taxonDAO.search(
+            fieldList.toArray(new String[fieldList.size()]), 
+            searchText, nextStartItem, maxQuantity);
+        
+        for (TaxonLiteDTO tldto: occurrenceList ){
+             sp = new TaxonDescriptionLiteDTO();
+             sp.setImageURL("http://pulsatrix.inbio.ac.cr/projects/atta2/chrome/site/test.JPG");
+             sp.setCommonName("Nombre común X");
+             sp.setScientificName(tldto.getScientificName());
+             scientificNames.add(sp);
+        }
 
-                // if the resultSet reach the required quantity then quits
-                if(scientificNames.size() == quantity){
-                    next = false;
-                    break;
-                }
-            }
-
-            nextStartItem += maxQuantity;
-
-        } while(next && nextStartItem < 10000 && occurrenceList.size() < maxQuantity);
-
-        occurrenceList.clear();
         result.addAll(scientificNames);
 
         return result;
@@ -98,42 +93,62 @@ public class SearchManagerImpl implements SearchManager{
 
 
     @Override
-    public List<OccurrenceLiteDTO> fullPaginatedSearch(String searchText, int offset, int quantity)
+    public List<TaxonLiteDTO> fullPaginatedSearch(String searchText, int offset, int quantity)
             throws ParseException{
 
-        // All the indexed fields
-        String[] fields =
-                new String[]{ "scientificname",
-                "locality",
-                "country",
-                "stateprovince",
-                "county" };
-        return dwcDAO.search(fields, searchText, offset, quantity);
+        
+        
+        String[] taxon =
+                new String[]{ "defaultName", "kingdom", "division", "class_",
+                                 "order", "family", "genus", "species"};
+
+        String[] occurrence =
+                new String[]{"scientificName", "higherTaxon", "kingdom",
+                                 "phylum", "class_", "orders", "family",
+                                   "genus", "specificEpithet", "country",
+                                     "stateProvince", "county", "locality"};
+
+        String[] taxonDescription =
+                new String[]{ "scientificName", "kingdomTaxon", "phylumTaxon",
+                             "classTaxon", "orderTaxon", "familyTaxon",
+                             "genusTaxon", "synonyms", "commonNames"};
+
+         ArrayList<String> fieldList = new ArrayList<String>();
+
+        fieldList.addAll(Arrays.asList(taxon));
+        fieldList.addAll(Arrays.asList(occurrence));
+        fieldList.addAll(Arrays.asList(taxonDescription));
+
+        return taxonDAO.search(fieldList.toArray(new String[fieldList.size()]), searchText, offset, quantity);
 
     }
 
     @Override
     public Integer fullSearchCount(String searchText)
             throws ParseException {
-        // All the indexed fields
-        String[] fields =
-                new String[]{ "scientificname",
-                "locality",
-                "country",
-                "stateprovince",
-                "county" };
 
-        return dwcDAO.searchCount(fields, searchText);
-    }
+                String[] taxon =
+                new String[]{ "defaultName", "kingdom", "division", "class_",
+                                 "order", "family", "genus", "species"};
+
+        String[] occurrence =
+                new String[]{"scientificName", "higherTaxon", "kingdom",
+                                 "phylum", "class_", "orders", "family",
+                                   "genus", "specificEpithet", "country",
+                                     "stateProvince", "county", "locality"};
+
+        String[] taxonDescription =
+                new String[]{ "scientificName", "kingdomTaxon", "phylumTaxon",
+                             "classTaxon", "orderTaxon", "familyTaxon",
+                             "genusTaxon", "synonyms", "commonNames"};
+
+         ArrayList<String> fieldList = new ArrayList<String>();
+
+        fieldList.addAll(Arrays.asList(taxon));
+        fieldList.addAll(Arrays.asList(occurrence));
+        fieldList.addAll(Arrays.asList(taxonDescription));
 
 
-
-    /* Getters & Setters */
-    public DwCDAO getDwcDAO() {
-        return dwcDAO;
-    }
-
-    public void setDwcDAO(DwCDAO dwcDAO) {
-        this.dwcDAO = dwcDAO;
+        return taxonDAO.searchCount(fieldList.toArray(new String[fieldList.size()]), searchText);
     }
 }

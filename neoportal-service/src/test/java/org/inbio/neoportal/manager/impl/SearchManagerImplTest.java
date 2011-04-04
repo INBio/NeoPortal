@@ -17,13 +17,13 @@
 
 package org.inbio.neoportal.manager.impl;
 
+import org.inbio.neoportal.core.entity.Taxon;
+import org.inbio.neoportal.core.dao.TaxonDAO;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.inbio.neoportal.core.dao.impl.DwCDAOImpl;
 import java.util.Calendar;
-import org.inbio.neoportal.core.entity.DarwinCore;
 import org.inbio.neoportal.service.manager.SearchManager;
 import java.util.List;
 import org.junit.After;
@@ -47,7 +47,7 @@ public class SearchManagerImplTest {
     private SearchManager searchManagerImpl;
 
     @Autowired
-    public  DwCDAOImpl dwcDAOImpl;
+    public  TaxonDAO taxonDAOImpl;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -59,38 +59,28 @@ public class SearchManagerImplTest {
 
     @Before
     public void setUp() {
-        DarwinCore dwc = new DarwinCore();
-        dwc.setDatelastmodified(Calendar.getInstance().getTime());
-        dwc.setInstitutioncode("INB");
-        dwc.setCollectioncode("Artropoda");
-        dwc.setBasisofrecord("specimen");
+        Taxon taxon = new Taxon();
+        
+        if(taxonDAOImpl.findAll(Taxon.class).isEmpty()){
 
-        if(dwcDAOImpl.findAll(DarwinCore.class).isEmpty()){
+            taxon.setDefaultName("Inga vera");
+            taxonDAOImpl.create(taxon);
 
-            dwc.setGlobaluniqueidentifier("INB:1");
-            dwc.setScientificname("Inga vera");
-            dwc.setCatalognumber("1");
-            dwcDAOImpl.create(dwc);
+            
+            taxon.setDefaultName("Inga vera subsp. spuria");
+            taxonDAOImpl.create(taxon);
 
-            dwc.setGlobaluniqueidentifier("INB:2");
-            dwc.setScientificname("Inga vera subsp. spuria");
-            dwc.setCatalognumber("2");
-            dwcDAOImpl.create(dwc);
+            
+            taxon.setDefaultName("Inga vera subsp. vera");
+            taxonDAOImpl.create(taxon);
 
-            dwc.setGlobaluniqueidentifier("INB:3");
-            dwc.setScientificname("Inga vera subsp. vera");
-            dwc.setCatalognumber("3");
-            dwcDAOImpl.create(dwc);
+            
+            taxon.setDefaultName("Inga vera");
+            taxonDAOImpl.create(taxon);
 
-            dwc.setGlobaluniqueidentifier("INB:4");
-            dwc.setScientificname("Inga vera");
-            dwc.setCatalognumber("4");
-            dwcDAOImpl.create(dwc);
-
-            dwc.setGlobaluniqueidentifier("INB:5");
-            dwc.setScientificname("Inga vera");
-            dwc.setCatalognumber("5");
-            dwcDAOImpl.create(dwc);
+            
+            taxon.setDefaultName("Inga vera");
+            taxonDAOImpl.create(taxon);
         }
     }
 
