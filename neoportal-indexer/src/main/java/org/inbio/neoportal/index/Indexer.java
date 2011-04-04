@@ -16,6 +16,8 @@
  */
 package org.inbio.neoportal.index;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,11 +29,10 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
-import org.inbio.neoportal.core.dao.impl.DwCDAOImpl;
-import org.inbio.neoportal.core.entity.DarwinCore;
-import org.inbio.neoportal.core.transformers.OccurrenceResultTransformer;
+import org.inbio.neoportal.core.entity.Occurrence;
 import org.inbio.neoportal.index.util.HibernateUtil;
-import org.inbio.neoportal.core.dto.occurrence.OccurrenceLiteDTO;
+import org.inbio.neoportal.core.entity.Taxon;
+import org.inbio.neoportal.core.entity.TaxonDescription;
 
 
 
@@ -58,7 +59,19 @@ public class Indexer {
         Session session = HibernateUtil.getSessionFactory().openSession();
 
         FullTextSession fullTextSession = Search.getFullTextSession(session);
-        fullTextSession.createIndexer(DarwinCore.class).startAndWait();
+
+        System.out.println("# - Inicio de la indexación \n");
+
+        System.out.println("# - Taxon");
+        fullTextSession.createIndexer(Taxon.class).startAndWait();
+
+        System.out.println("# - TaxonDescription");
+        fullTextSession.createIndexer(TaxonDescription.class).startAndWait();
+
+        System.out.println("# - Occurrence");
+        fullTextSession.createIndexer(Occurrence.class).startAndWait();
+
+        System.out.println("# - Fin de la indexación \n");
     }
 
     /**
@@ -87,56 +100,7 @@ public class Indexer {
         searchType = args[0];
         searchText = args[1];
 
-        if(searchType.equals("taxon"))
-            this.searchByTaxon(searchText);
-        else if (searchType.equals("locality"))
-            this.searchByLocality(searchText);
-        else if (searchType.equals("area"))
-            this.searchByArea(searchText);
-        else if (searchType.equals("all"))
-            this.searchByAll(searchText);
-        else
-            System.out.println("Error: unrecognized option");
-}
-
-    /**
-     * Search using only the Scientific Name field
-     * @param searchText
-     * @throws ParseException
-     */
-    public void searchByTaxon(String searchText)
-            throws ParseException{
-        String[] fields =
-                new String[]{ "scientificname" };
-        this.executeSearch(fields, searchText);
-    }
-
-    /**
-     * Search using only the Locality field
-     * @param searchText
-     * @throws ParseException
-     */
-    public void searchByLocality(String searchText)
-            throws ParseException{
-         String[] fields =
-                new String[]{ "locality" };
-        this.executeSearch(fields, searchText);
-
-    }
-
-    /**
-     * Search using only the country, stateprovince and county fields
-     * @param searchText
-     * @throws ParseException
-     */
-    public void searchByArea(String searchText) 
-            throws ParseException{
-
-         String[] fields =
-                new String[]{   "country",
-                                "stateprovince",
-                                "county" };
-        this.executeSearch(fields, searchText);
+        this.searchByAll(searchText);
     }
 
     /**
@@ -147,14 +111,30 @@ public class Indexer {
     public void searchByAll(String searchText) 
             throws ParseException{
 
-        String[] fields =
-                new String[]{ "scientificname",
-                                "locality",
-                                "country",
-                                "stateprovince",
-                                "county"
-                    };
-        this.executeSearch(fields, searchText);
+
+
+        String[] taxon =
+                new String[]{ "defaultName", "kingdom", "division", "class_",
+                                 "order", "family", "genus", "species"};
+
+        String[] occurrence =
+                new String[]{"scientificName", "higherTaxon", "kingdom",
+                                 "phylum", "class_", "orders", "family",
+                                   "genus", "specificEpithet", "country",
+                                     "stateProvince", "county", "locality"};
+
+        String[] taxonDescription =
+                new String[]{ "scientificName", "kingdomTaxon", "phylumTaxon",
+                             "classTaxon", "orderTaxon", "familyTaxon",
+                             "genusTaxon", "synonyms", "commonNames"};
+
+         ArrayList<String> fieldList = new ArrayList<String>();
+
+        fieldList.addAll(Arrays.asList(taxon));
+        fieldList.addAll(Arrays.asList(occurrence));
+        fieldList.addAll(Arrays.asList(taxonDescription));
+
+        this.executeSearch(fieldList.toArray(new String[fieldList.size()]), searchText);
 
     }
 
@@ -173,43 +153,45 @@ public class Indexer {
         FullTextSession fullTextSession = Search.getFullTextSession(session);
         Transaction tx = fullTextSession.beginTransaction();
 
-                // create native Lucene query
-                MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_29, fields, new StandardAnalyzer(Version.LUCENE_29));
-                org.apache.lucene.search.Query query = null;
+        // create native Lucene query
+        MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_29, fields, new StandardAnalyzer(Version.LUCENE_29));
+        org.apache.lucene.search.Query query = null;
 
-                //FIXME Manejo de errores
-                try {
-                    query = parser.parse(searchText);
-                } catch (ParseException ex) {
-                    Logger.getLogger(DwCDAOImpl.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        //FIXME Manejo de errores
+        try {
+            System.out.println("Buscando: " +searchText);
+            query = parser.parse(searchText);
+        } catch (ParseException ex) {
+            Logger.getLogger(Taxon.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-                // Wrap Lucene query in a org.hibernate.Query
-                org.hibernate.search.FullTextQuery hsQuery = fullTextSession.createFullTextQuery(query, DarwinCore.class);
-
-                // Configure the result list
-                hsQuery.setResultTransformer(new OccurrenceResultTransformer());
-
+        // Wrap Lucene query in a org.hibernate.Query
+        org.hibernate.search.FullTextQuery hsQuery = fullTextSession.createFullTextQuery(query, Taxon.class);
 
         // for paginated search
         hsQuery.setMaxResults(20);
+        hsQuery.setFirstResult(0);
 
         int totalAmount = hsQuery.getResultSize();
         // execute search
         System.out.println("#-> Result Count "+ hsQuery.getResultSize());
 
-        List<OccurrenceLiteDTO> result = null;
+        List<Taxon> result = null;
 
         // Show the results page by page (20 items each).
         for(int i = 0; i <=totalAmount; ){
 
             result = hsQuery.list();
+/*
+            for(Taxon res : result)
+                System.out.println("#-> "+res.getSynonyms()
+                                         +" => "+res.getScientificName());
+             */
+            
+            
+            for(Taxon res : result)
+                System.out.println("#-> "+res.getDefaultName());
 
-            for(OccurrenceLiteDTO res : result)
-                System.out.println("#-> "+res.getGlobalUniqueIdentifier()
-                                         +" => "+res.getCountry()
-                                         +" : "+res.getScientificName()
-                                         +" { "+res.getLocality()+ " }");
 
             i+=20;
             hsQuery.setFirstResult(i);
@@ -228,9 +210,9 @@ public class Indexer {
     public static void main(String[] args)
             throws InterruptedException, ParseException{
 
-        String[] localArgs = new String[2];
-        localArgs[0] = "all";
-        localArgs[1] = "country:Costa_Rica";
+        //String[] localArgs = new String[2];
+        //localArgs[0] = "all";
+        //localArgs[1] = "country:Costa_Rica";
 
         Indexer index = new Indexer();
         //index.processArguments(localArgs);
