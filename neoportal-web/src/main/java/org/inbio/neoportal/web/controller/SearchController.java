@@ -37,8 +37,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-/*
- *@autor jgutierrez
+/**
+ * @author jgutierrez
+ * @author esmata
+ * @author asanabria
  */
 @Controller
 @RequestMapping("search/*")
@@ -52,14 +54,20 @@ public class SearchController {
      * @param searchString
      * @return
      */
-    @RequestMapping(value="/occurrences", method=RequestMethod.GET, params={"format=xml","searchString"})
-    public @ResponseBody XMLSpecimenWrapper searchOccurrencesWriteXml(@RequestParam String searchString) {
+    @RequestMapping(
+        value="/occurrences", 
+        method=RequestMethod.GET, 
+        params={"format=xml","searchString"})
+    
+    public @ResponseBody XMLSpecimenWrapper searchOccurrencesWriteXml
+        (@RequestParam String searchString) {
 
         List<TaxonLiteDTO> occurrenceList = null;
 
         XMLSpecimenWrapper rw = new XMLSpecimenWrapper();
         try {
-            occurrenceList = searchManagerImpl.fullPaginatedSearch(searchString, 0, 15); //TODO
+            occurrenceList 
+                = searchManagerImpl.fullPaginatedSearch(searchString, 0, 15); 
             
             for(TaxonLiteDTO olDTO : occurrenceList)
                 rw.addElement(new OccurrenceLiteBean(
@@ -76,7 +84,8 @@ public class SearchController {
                     ));
 
         } catch (ParseException ex) {
-            Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(
+                SearchController.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return rw;
@@ -87,8 +96,13 @@ public class SearchController {
      * @param searchString
      * @return
      */
-    @RequestMapping(value="/countOcurrences", method=RequestMethod.GET, params={"format=xml","searchString"})
-    public @ResponseBody XMLCountWrapper countOccurrencesWriteXml(@RequestParam String searchString) {
+    @RequestMapping(
+        value="/countOcurrences",
+        method=RequestMethod.GET,
+        params={"format=xml","searchString"})
+    
+    public @ResponseBody XMLCountWrapper countOccurrencesWriteXml
+        (@RequestParam String searchString) {
         XMLCountWrapper cw = new XMLCountWrapper();
         cw.setCount(50L); //TODO
         return cw;
@@ -99,14 +113,20 @@ public class SearchController {
      * @param searchString
      * @return
      */
-    @RequestMapping(value="/species", method=RequestMethod.GET, params={"format=xml","searchString"})
-    public @ResponseBody XMLSpeciesWrapper searchSpeciesWriteXml(@RequestParam String searchString) {
+    @RequestMapping(
+        value="/species", 
+        method=RequestMethod.GET, 
+        params={"format=xml","searchString"})
+    
+    public @ResponseBody XMLSpeciesWrapper searchSpeciesWriteXml
+        (@RequestParam String searchString) {
 
         List<TaxonDescriptionLiteDTO> speciesList = null;
 
         XMLSpeciesWrapper rw = new XMLSpeciesWrapper();
         try {
-            speciesList = searchManagerImpl.speciesListPaginatedSearch(searchString, 0 ,10); //TODO
+            speciesList 
+                = searchManagerImpl.speciesListPaginatedSearch(searchString, 0 ,10); //TODO
 
             for(TaxonDescriptionLiteDTO spDTO : speciesList)
                 rw.addElement(new SpeciesLiteBean(
@@ -115,7 +135,8 @@ public class SearchController {
                 spDTO.getScientificName()));
 
         } catch (ParseException ex) {
-            Logger.getLogger(SearchController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(
+                SearchController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return rw;
@@ -126,8 +147,14 @@ public class SearchController {
      * @param searchString
      * @return
      */
-    @RequestMapping(value="/countSpecies", method=RequestMethod.GET, params={"format=xml","searchString"})
-    public @ResponseBody XMLCountWrapper countSpeciesWriteXml(@RequestParam String searchString) {
+    @RequestMapping(
+        value="/countSpecies",
+        method=RequestMethod.GET, 
+        params={"format=xml","searchString"})
+    
+    public @ResponseBody XMLCountWrapper countSpeciesWriteXml
+        (@RequestParam String searchString) {
+        
         XMLCountWrapper cw = new XMLCountWrapper();
         cw.setCount(50L); //TODO
         return cw;

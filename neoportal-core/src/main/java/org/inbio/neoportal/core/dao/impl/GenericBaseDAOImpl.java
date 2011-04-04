@@ -23,7 +23,6 @@ import java.util.List;
 import org.hibernate.SessionFactory;
 import org.inbio.neoportal.core.dao.GenericBaseDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;

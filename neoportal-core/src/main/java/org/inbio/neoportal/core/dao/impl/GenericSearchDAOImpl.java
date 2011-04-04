@@ -40,14 +40,19 @@ public class GenericSearchDAOImpl
 	 * 
 	 * @return number of results
 	 */
-	public Integer getTotalResults(final String HSQL) throws IllegalArgumentException {
+	public Integer getTotalResults(final String HSQL) 
+        throws IllegalArgumentException {
+        
 		logger.debug("query: " + HSQL);
 		HibernateTemplate template = getHibernateTemplate();
+        
 		return (Integer) template.execute(new HibernateCallback() {
 			public Object doInHibernate(Session session) {
 				Query query = session.createQuery(HSQL);
 				query.setCacheable(false);
-				logger.debug("result: " + new Integer ( query.uniqueResult().toString()));
+				logger.debug("result: " 
+                    + new Integer ( query.uniqueResult().toString()));
+                
 				return new Integer ( query.uniqueResult().toString());
 			}
 		});		
@@ -63,10 +68,13 @@ public class GenericSearchDAOImpl
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Integer> getResults(final String HSQL, final int first, final int last) throws IllegalArgumentException {
+	public List<Integer> getResults
+        (final String HSQL, final int first, final int last) 
+            throws IllegalArgumentException {
 
 		logger.debug("query getResults: " + HSQL);
 		HibernateTemplate template = getHibernateTemplate();
+        
 		return (List<Integer>) template.execute(new HibernateCallback() {
 			public Object doInHibernate(Session session) {
 				Query query = session.createQuery(HSQL);

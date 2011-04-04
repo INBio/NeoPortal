@@ -27,7 +27,7 @@ import org.inbio.neoportal.core.entity.Taxon;
 
 /**
  * Transfrom a list of Taxon entities to OccurrenceLiteDTO
- * @author asanabria <asanabria@inbio.ac.cr>
+ * @author asanabria
  */
 public class TaxonResultTransformer implements ResultTransformer {
 

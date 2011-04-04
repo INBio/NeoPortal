@@ -35,11 +35,13 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author asanabria <asanabria@inbio.ac.cr>
+ * @author asanabria 
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:tests-context.xml"})
-@TransactionConfiguration(transactionManager = "transactionManager",defaultRollback = false)
+@TransactionConfiguration(
+    transactionManager = "transactionManager"
+    ,defaultRollback = false)
 
 public class TaxonDAOImplTest{
 

@@ -26,7 +26,8 @@ import java.io.Serializable;
  * @author jgutierrez
  *
  */
-public class BaseDTO implements Serializable {
+public class BaseDTO 
+    implements Serializable {
 
 	/**
 	 * 

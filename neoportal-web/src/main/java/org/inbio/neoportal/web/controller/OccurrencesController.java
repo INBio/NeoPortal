@@ -29,7 +29,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class OccurrencesController {
 
     @RequestMapping(value = "/{scientificname}", method = RequestMethod.GET)
-    public String prepareSN(Model model, @PathVariable(value = "scientificname") String scientificName) {
+    public String prepareSN
+        (Model model, @PathVariable(value = "scientificname") String scientificName) {
+        
         model.addAttribute("scientificname", scientificName);
         return "occurrences"; //Return occurrences view with scientificname as a parameter into the model
     }

@@ -37,11 +37,15 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author asanabria <asanabria@inbio.ac.cr>
+ * @author asanabria
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:tests-context.xml"})
-@TransactionConfiguration(transactionManager = "transactionManager",defaultRollback = false)
+
+@TransactionConfiguration(
+    transactionManager = "transactionManager",
+    defaultRollback = false)
+
 public class SearchManagerImplTest {
 
     @Autowired
@@ -100,7 +104,11 @@ public class SearchManagerImplTest {
         int offset = 0;
         int quantity = 20;
         Integer expResult = new Integer(3);
-        List result = searchManagerImpl.speciesListPaginatedSearch(searchText, offset, quantity);
+        
+        List result 
+            = searchManagerImpl.speciesListPaginatedSearch(searchText, 
+                offset, quantity);
+        
         assertEquals(expResult, new Integer(3));
     }
 
@@ -114,7 +122,9 @@ public class SearchManagerImplTest {
         int offset = 0;
         int quantity = 20;
         Integer expResult = new Integer(5);
-        List result = searchManagerImpl.fullPaginatedSearch(searchText, offset, quantity);
+        List result 
+            = searchManagerImpl.fullPaginatedSearch(searchText, 
+                offset, quantity);
         assertEquals(expResult, new Integer(5));
     }
 

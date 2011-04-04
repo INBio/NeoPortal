@@ -156,7 +156,11 @@ public class Indexer {
         Transaction tx = fullTextSession.beginTransaction();
 
         // create native Lucene query
-        MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_29, fields, new StandardAnalyzer(Version.LUCENE_29));
+        MultiFieldQueryParser parser 
+            = new MultiFieldQueryParser(Version.LUCENE_29, 
+                fields, 
+                new StandardAnalyzer(Version.LUCENE_29));
+        
         org.apache.lucene.search.Query query = null;
 
         //FIXME Manejo de errores
@@ -168,7 +172,9 @@ public class Indexer {
         }
 
         // Wrap Lucene query in a org.hibernate.Query
-        org.hibernate.search.FullTextQuery hsQuery = fullTextSession.createFullTextQuery(query, Taxon.class);
+        org.hibernate.search.FullTextQuery hsQuery 
+            = fullTextSession.createFullTextQuery(query, Taxon.class);
+        
 
         // for paginated search
         hsQuery.setMaxResults(20);

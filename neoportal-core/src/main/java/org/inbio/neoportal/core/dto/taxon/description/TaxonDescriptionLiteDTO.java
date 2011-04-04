@@ -33,9 +33,8 @@ public class TaxonDescriptionLiteDTO extends BaseDTO implements Comparable {
     public TaxonDescriptionLiteDTO() {
     }
 
-    public TaxonDescriptionLiteDTO(String imageURL,
-                            String commonName,
-                            String scientificName) {
+    public TaxonDescriptionLiteDTO
+        (String imageURL, String commonName, String scientificName) {
 
         this.imageURL = imageURL;
         this.commonName = commonName;
@@ -49,7 +48,11 @@ public class TaxonDescriptionLiteDTO extends BaseDTO implements Comparable {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 23 * hash + (this.getScientificName() != null ? this.getScientificName().hashCode() : 0);
+        hash = 23 * hash 
+            + (this.getScientificName() != null 
+                ? this.getScientificName().hashCode() 
+                : 0);
+        
         return hash;
     }
 
@@ -66,7 +69,11 @@ public class TaxonDescriptionLiteDTO extends BaseDTO implements Comparable {
             return false;
         }
         final TaxonDescriptionLiteDTO other = (TaxonDescriptionLiteDTO) obj;
-        if ((this.getScientificName() == null) ? (other.getScientificName() != null) : !this.scientificName.equals(other.scientificName)) {
+        
+        if ((this.getScientificName() == null) 
+             ? (other.getScientificName() != null) 
+             : !this.scientificName.equals(other.scientificName)) {
+            
             return false;
         }
         return true;

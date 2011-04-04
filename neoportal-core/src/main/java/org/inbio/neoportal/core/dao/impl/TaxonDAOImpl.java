@@ -40,7 +40,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 /**
- *
+ * Implementantion of TaxonDAO that grant access to the Taxon information.
  * @author asanabria
  */
 @Repository

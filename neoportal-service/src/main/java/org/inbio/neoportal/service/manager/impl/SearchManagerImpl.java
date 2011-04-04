@@ -21,7 +21,6 @@ package org.inbio.neoportal.service.manager.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import org.apache.lucene.queryParser.ParseException;
@@ -35,7 +34,7 @@ import org.springframework.stereotype.Service;
 
 /**
  *
- * @author asanabria <asanabria@inbio.ac.cr>
+ * @author asanabria
  */
 @Service
 public class SearchManagerImpl implements SearchManager{
@@ -95,7 +94,8 @@ public class SearchManagerImpl implements SearchManager{
 
 
     @Override
-    public List<TaxonLiteDTO> fullPaginatedSearch(String searchText, int offset, int quantity)
+    public List<TaxonLiteDTO> fullPaginatedSearch
+        (String searchText, int offset, int quantity) 
             throws ParseException{
 
         
@@ -121,7 +121,8 @@ public class SearchManagerImpl implements SearchManager{
         fieldList.addAll(Arrays.asList(occurrence));
         fieldList.addAll(Arrays.asList(taxonDescription));
 
-        return taxonDAO.search(fieldList.toArray(new String[fieldList.size()]), searchText, offset, quantity);
+        return taxonDAO.search(fieldList.toArray(
+            new String[fieldList.size()]), searchText, offset, quantity);
 
     }
 
@@ -151,6 +152,7 @@ public class SearchManagerImpl implements SearchManager{
         fieldList.addAll(Arrays.asList(taxonDescription));
 
 
-        return taxonDAO.searchCount(fieldList.toArray(new String[fieldList.size()]), searchText);
+        return taxonDAO.searchCount(
+            fieldList.toArray(new String[fieldList.size()]), searchText);
     }
 }

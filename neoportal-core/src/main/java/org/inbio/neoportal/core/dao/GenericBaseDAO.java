@@ -69,7 +69,8 @@ public interface GenericBaseDAO<E ,I> {
     * @param maxResults
     * @return
     */
-   //public List<E> findAllPaginated(Class<E> entityClass,int firstResult, int maxResults);
+   //public List<E> findAllPaginated
+   //    (Class<E> entityClass,int firstResult, int maxResults);
 
 
    /**

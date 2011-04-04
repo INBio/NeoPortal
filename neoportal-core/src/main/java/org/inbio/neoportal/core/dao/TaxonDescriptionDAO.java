@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 import org.inbio.neoportal.core.entity.TaxonDescription;
 
 /**
- *
+ * Grant Access to the TaxonDescription Entity
  * @author asanabria
  */
 public interface TaxonDescriptionDAO 

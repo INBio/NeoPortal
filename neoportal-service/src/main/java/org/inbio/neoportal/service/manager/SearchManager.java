@@ -26,7 +26,7 @@ import org.inbio.neoportal.core.dto.taxon.description.TaxonDescriptionLiteDTO;
 
 /**
  *
- * @author asanabria <asanabria@inbio.ac.cr>
+ * @author asanabria
  */
 public interface SearchManager {
 
@@ -37,7 +37,8 @@ public interface SearchManager {
      * @return
      * @throws ParseException
      */
-    public List<TaxonLiteDTO> fullPaginatedSearch(String searchText, int offset, int quantity)
+    public List<TaxonLiteDTO> fullPaginatedSearch
+        (String searchText, int offset, int quantity)
             throws ParseException;
 
     /**
@@ -49,7 +50,8 @@ public interface SearchManager {
      * @return
      * @throws ParseException
      */
-    public List<TaxonDescriptionLiteDTO> speciesListPaginatedSearch(String searchText, int offset, int quantity)
+    public List<TaxonDescriptionLiteDTO> speciesListPaginatedSearch
+        (String searchText, int offset, int quantity)
             throws ParseException;
 
 

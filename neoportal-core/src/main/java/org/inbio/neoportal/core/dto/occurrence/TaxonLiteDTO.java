@@ -21,8 +21,8 @@ package org.inbio.neoportal.core.dto.occurrence;
 import org.inbio.neoportal.core.dto.*;
 
 /**
- *
- * @author asanabria <asanabria@inbio.ac.cr>
+ * A subset of the data hold by the taxon entity
+ * @author asanabria
  */
 public class TaxonLiteDTO extends BaseDTO implements Comparable {
 

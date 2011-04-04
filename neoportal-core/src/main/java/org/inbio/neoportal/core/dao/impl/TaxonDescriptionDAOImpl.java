@@ -24,7 +24,7 @@ import org.inbio.neoportal.core.entity.TaxonDescription;
 import org.springframework.stereotype.Repository;
 
 /**
- *
+ * Grant access to the Taxon entity
  * @author asanabria
  */
 @Repository

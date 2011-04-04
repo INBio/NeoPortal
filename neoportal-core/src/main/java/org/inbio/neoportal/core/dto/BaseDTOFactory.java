@@ -30,7 +30,9 @@ import org.inbio.neoportal.core.entity.LogGenericEntity;
  *
  * Based on dmartin code, in the GBIF customizable portal.
  */
-public abstract class BaseDTOFactory<E extends LogGenericEntity, D extends BaseDTO> implements DTOFactory<E,D> {
+public abstract class 
+    BaseDTOFactory<E extends LogGenericEntity, D extends BaseDTO> 
+        implements DTOFactory<E,D> {
 
 
     /**

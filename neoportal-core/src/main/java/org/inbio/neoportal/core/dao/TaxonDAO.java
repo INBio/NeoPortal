@@ -24,7 +24,7 @@ import org.inbio.neoportal.core.dto.occurrence.TaxonLiteDTO;
 import org.inbio.neoportal.core.entity.Taxon;
 
 /**
- *
+ * Grant access to the Taxon entity 
  * @author asanabria
  */
 public interface TaxonDAO 
@@ -48,7 +48,10 @@ public interface TaxonDAO
      * @param quantity: lengt of the result list.
      * @return
      */
-    public List<TaxonLiteDTO> search(final String[] fields,
-        final String searchText, final int offset, final int quantity) ;
+    public List<TaxonLiteDTO> search(
+        final String[] fields,
+        final String searchText,
+        final int offset, 
+        final int quantity) ;
 
 }
