@@ -20,7 +20,6 @@ import java.io.Serializable;
 import java.util.List;
 import org.hibernate.SessionFactory;
 import org.inbio.neoportal.core.dao.GenericBaseDAO;
-import org.inbio.neoportal.core.entity.LogGenericEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,10 +28,11 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 /**
  * @author jgutierrez
- * @author asanabria <asanabria@inbio.ac.cr>
+ * @author asanabria 
  */
-@Configuration
-public class GenericBaseDAOImpl<E extends LogGenericEntity,I extends Object> extends HibernateDaoSupport implements GenericBaseDAO<E, I> {
+//@Configuration
+public class GenericBaseDAOImpl<E ,I> 
+    extends HibernateDaoSupport implements GenericBaseDAO<E, I> {
 
     @Autowired
     private void initFactory(SessionFactory sessionFactory){
@@ -45,7 +45,6 @@ public class GenericBaseDAOImpl<E extends LogGenericEntity,I extends Object> ext
 	 */
 	public void create(E entity) {
 		HibernateTemplate template = getHibernateTemplate();
-		entity.setCreateLogValues();
 		template.persist(entity);
 		template.flush();
 	}
@@ -56,7 +55,6 @@ public class GenericBaseDAOImpl<E extends LogGenericEntity,I extends Object> ext
 	 */
 	public void update(E entity) {
 		HibernateTemplate template = getHibernateTemplate();
-		entity.setUpdateLogValues();
 		template.update(entity);
 		template.flush();
 	}

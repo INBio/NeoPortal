@@ -18,13 +18,12 @@
 package org.inbio.neoportal.core.dao;
 
 import java.util.List;
-import org.inbio.neoportal.core.entity.LogGenericEntity;
 
 /**
  * @author jgutierrez
  *
  */
-public interface GenericBaseDAO<E extends LogGenericEntity,I extends Object> {
+public interface GenericBaseDAO<E ,I> {
 
  /**
     *

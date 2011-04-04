@@ -24,6 +24,9 @@ import java.util.List;
  */
 public interface GenericSearchDAO {
 
-	public Integer getTotalResults(String HSQL) throws IllegalArgumentException;
-	public List<Integer> getResults(String HSQL, int first, int last) throws IllegalArgumentException;
+	public Integer getTotalResults(String HSQL) 
+        throws IllegalArgumentException;
+    
+	public List<Integer> getResults(String HSQL, int first, int last) 
+        throws IllegalArgumentException;
 }

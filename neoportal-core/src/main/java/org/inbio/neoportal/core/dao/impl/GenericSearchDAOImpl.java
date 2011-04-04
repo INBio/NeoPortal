@@ -29,7 +29,8 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
  * @author jgutierrez
  *
  */
-public class GenericSearchDAOImpl extends HibernateDaoSupport implements GenericSearchDAO {
+public class GenericSearchDAOImpl 
+    extends HibernateDaoSupport implements GenericSearchDAO {
 
 	/**
 	 * Returns the total of elements that could be retrived using that search
