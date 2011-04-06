@@ -18,75 +18,70 @@
  */
 package org.inbio.neoportal.dao.impl;
 
-import org.inbio.neoportal.core.entity.Taxon;
-import org.inbio.neoportal.core.dao.TaxonDAO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import org.junit.runner.RunWith;
+import org.inbio.neoportal.core.test.NeoportalTestBase;
+import java.math.BigDecimal;
 import java.util.List;
+import org.inbio.neoportal.core.dao.TaxonDAO;
+import org.inbio.neoportal.core.entity.Taxon;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import static org.junit.Assert.*;
 
 /**
  *
  * @author asanabria 
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:tests-context.xml"})
-@TransactionConfiguration(
-    transactionManager = "transactionManager"
-    ,defaultRollback = false)
-
-public class TaxonDAOImplTest{
+public class TaxonDAOImplTest extends NeoportalTestBase{
 
     @Autowired
-    public  TaxonDAO taxonDAOImpl;
+    private TaxonDAO taxonDAOImpl;
 
     @BeforeClass
-    public static void setUpClass() throws Exception {
-    }
+    public static void setUpClass() 
+         throws Exception {  }
 
     @AfterClass
-    public static void tearDownClass() throws Exception {
-    }
+    public static void tearDownClass() 
+            throws Exception {  }
 
     @Before
-    public void setUp() {
-
+    public void setUp() 
+        throws InterruptedException{
+    
         Taxon taxon = new Taxon();
-        
+               
         if(taxonDAOImpl.findAll(Taxon.class).isEmpty()){
 
+            taxon.setTaxonId(new BigDecimal(1));
             taxon.setDefaultName("Inga vera");
             taxonDAOImpl.create(taxon);
-
             
+            taxon.setTaxonId(new BigDecimal(2));
             taxon.setDefaultName("Inga vera subsp. spuria");
             taxonDAOImpl.create(taxon);
 
-            
+            taxon.setTaxonId(new BigDecimal(3));
             taxon.setDefaultName("Inga vera subsp. vera");
             taxonDAOImpl.create(taxon);
 
-            
+            taxon.setTaxonId(new BigDecimal(4));
             taxon.setDefaultName("Inga vera");
             taxonDAOImpl.create(taxon);
 
-            
+            taxon.setTaxonId(new BigDecimal(5));
             taxon.setDefaultName("Inga vera");
             taxonDAOImpl.create(taxon);
-        }
+        }  
+
+        this.index(Taxon.class);
     }
 
     @After
-    public void tearDown() {
-    }
+    public void tearDown() { }
 
     /**
      * Test of search method, of class DwCDAOImpl.
@@ -95,7 +90,7 @@ public class TaxonDAOImplTest{
     public void testSearch() {
         System.out.println("search");
         String[] fields = {"defaultName"};
-        String searchText = "Inga_vera";
+        String searchText = "Inga";
         int offset = 0;
         int quantity = 20;
         Integer expResult = new Integer(5);
@@ -115,4 +110,5 @@ public class TaxonDAOImplTest{
         Integer result = taxonDAOImpl.searchCount(fields, searchText);
         assertEquals(expResult, result);
     }
+
 }
