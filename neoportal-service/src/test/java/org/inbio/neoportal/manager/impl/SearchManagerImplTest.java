@@ -18,13 +18,10 @@
  */
 package org.inbio.neoportal.manager.impl;
 
+import org.inbio.neoportal.core.test.NeoportalTestBase;
+import java.math.BigDecimal;
 import org.inbio.neoportal.core.entity.Taxon;
 import org.inbio.neoportal.core.dao.TaxonDAO;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
-import java.util.Calendar;
 import org.inbio.neoportal.service.manager.SearchManager;
 import java.util.List;
 import org.junit.After;
@@ -39,14 +36,7 @@ import static org.junit.Assert.*;
  *
  * @author asanabria
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:tests-context.xml"})
-
-@TransactionConfiguration(
-    transactionManager = "transactionManager",
-    defaultRollback = false)
-
-public class SearchManagerImplTest {
+public class SearchManagerImplTest extends NeoportalTestBase {
 
     @Autowired
     private SearchManager searchManagerImpl;
@@ -68,25 +58,28 @@ public class SearchManagerImplTest {
         
         if(taxonDAOImpl.findAll(Taxon.class).isEmpty()){
 
+            taxon.setTaxonId(new BigDecimal(1));
             taxon.setDefaultName("Inga vera");
             taxonDAOImpl.create(taxon);
 
-            
+            taxon.setTaxonId(new BigDecimal(2));
             taxon.setDefaultName("Inga vera subsp. spuria");
             taxonDAOImpl.create(taxon);
 
-            
+            taxon.setTaxonId(new BigDecimal(3));
             taxon.setDefaultName("Inga vera subsp. vera");
             taxonDAOImpl.create(taxon);
 
-            
+            taxon.setTaxonId(new BigDecimal(4));
             taxon.setDefaultName("Inga vera");
             taxonDAOImpl.create(taxon);
 
-            
+            taxon.setTaxonId(new BigDecimal(5));
             taxon.setDefaultName("Inga vera");
             taxonDAOImpl.create(taxon);
         }
+        
+        this.index(Taxon.class);
     }
 
     @After
@@ -109,7 +102,9 @@ public class SearchManagerImplTest {
             = searchManagerImpl.speciesListPaginatedSearch(searchText, 
                 offset, quantity);
         
-        assertEquals(expResult, new Integer(3));
+        System.out.println("# -- > Testiando "+result.size());
+        
+        assertEquals(expResult, new Integer(result.size()));
     }
 
     /**
@@ -125,7 +120,7 @@ public class SearchManagerImplTest {
         List result 
             = searchManagerImpl.fullPaginatedSearch(searchText, 
                 offset, quantity);
-        assertEquals(expResult, new Integer(5));
+        assertEquals(expResult, new Integer(result.size()));
     }
 
     /**
