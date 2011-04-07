@@ -22,39 +22,27 @@ import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.transform.ResultTransformer;
 import org.inbio.neoportal.core.dto.commonname.CommonNameLiteDTO;
-import org.inbio.neoportal.core.dto.taxon.TaxonLiteDTO;
 import org.inbio.neoportal.core.entity.CommonName;
-import org.inbio.neoportal.core.entity.Taxon;
 
 
 /**
- * Transfrom a list of Taxon entities to OccurrenceLiteDTO
+ * Transfrom a list of CommonName entities to OccurrenceLiteDTO
  * @author asanabria
  */
-public class TaxonResultTransformer 
+public class CommonNameResultTransformer 
     implements ResultTransformer {
 
-    CommonNameResultTransformer commonNameRT =
-        new CommonNameResultTransformer();
-    
-    List commonNameList =
-        new ArrayList<CommonNameLiteDTO>();
-    
     @Override
     public List transformList(List list) {
-        List<Taxon> taxonList = (List<Taxon>) list;
-        List<TaxonLiteDTO> newList = new ArrayList<TaxonLiteDTO>();
+        List<CommonName> CommonNameList = (List<CommonName>) list;
+        List<CommonNameLiteDTO> newList = new ArrayList<CommonNameLiteDTO>();
 
-        for(Taxon taxon: taxonList){
-            
-            commonNameList =  commonNameRT.transformList(
-                new ArrayList<CommonName>(taxon.getCommonNames()));
-            
+        for(CommonName CommonName: CommonNameList)
             newList.add(
-                new TaxonLiteDTO(
-                    taxon.getDefaultName(),
-                    (ArrayList<CommonNameLiteDTO>) commonNameList));
-        }
+                new CommonNameLiteDTO(
+                    CommonName.getCommonNameId(),
+                    CommonName.getName(),
+                    CommonName.getUsedBy()));
         
         return newList;
     }

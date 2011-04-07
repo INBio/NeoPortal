@@ -92,6 +92,17 @@ public class Taxon  implements java.io.Serializable {
      private BigDecimal subSpeciesId;
      private BigDecimal varietyId;
      private BigDecimal formId;
+     
+     // main relationships
+     @ContainedIn
+     private Set<CommonName> commonNames = new HashSet<CommonName>(0);
+     
+     @ContainedIn
+     private Set<TaxonDescription> taxonDescriptions = new HashSet<TaxonDescription>(0);
+
+     @ContainedIn
+     private Set<Occurrence> occurrences = new HashSet<Occurrence>(0);
+
 
      private Set<TaxonHasReferenceElement> taxonHasReferenceElements 
          = new HashSet<TaxonHasReferenceElement>(0);
@@ -102,16 +113,6 @@ public class Taxon  implements java.io.Serializable {
      
      private Set<TaxonHasAssociatedAttribute> taxonHasAssociatedAttributes 
          = new HashSet<TaxonHasAssociatedAttribute>(0);
-
-     @ContainedIn
-     private Set<TaxonDescription> taxonDescriptions = new HashSet<TaxonDescription>(0);
-
-     @ContainedIn
-     private Set<Occurrence> occurrences = new HashSet<Occurrence>(0);
-
-     @ContainedIn
-     private Set<CommonName> commonNames = new HashSet<CommonName>(0);
-
 
     // Constructors
 

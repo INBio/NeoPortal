@@ -106,8 +106,8 @@ public class TaxonDAOImplTest extends NeoportalTestBase{
         System.out.println("searchCount");
         String[] fields = {"defaultName"};
         String searchText = "Inga_vera";
-        Integer expResult = new Integer(5);
-        Integer result = taxonDAOImpl.searchCount(fields, searchText);
+        Long expResult = new Long(5);
+        Long result = taxonDAOImpl.searchCount(fields, searchText);
         assertEquals(expResult, result);
     }
 

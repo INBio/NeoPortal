@@ -32,7 +32,7 @@ import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.inbio.neoportal.core.dao.TaxonDAO;
-import org.inbio.neoportal.core.dto.occurrence.TaxonLiteDTO;
+import org.inbio.neoportal.core.dto.taxon.TaxonLiteDTO;
 import org.inbio.neoportal.core.entity.Taxon;
 import org.inbio.neoportal.core.transformers.TaxonResultTransformer;
 import org.springframework.orm.hibernate3.HibernateCallback;
@@ -99,11 +99,11 @@ public class TaxonDAOImpl
     }
 
     @Override
-    public Integer searchCount(final String[] fields, final String searchText) {
+    public Long searchCount(final String[] fields, final String searchText) {
 
         HibernateTemplate template = getHibernateTemplate();
 
-        return (Integer) template.execute(new HibernateCallback() {
+        return (Long) template.execute(new HibernateCallback() {
             
             @Override
             public Object doInHibernate(Session session) {
@@ -132,7 +132,7 @@ public class TaxonDAOImpl
                 FullTextQuery hsQuery =
                     fullTextSession.createFullTextQuery(query, Taxon.class);
 
-                return new Integer(hsQuery.getResultSize());
+                return new Long(hsQuery.getResultSize());
             }
         });
     }

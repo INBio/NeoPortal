@@ -20,7 +20,7 @@ package org.inbio.neoportal.core.dao;
 
 import java.math.BigDecimal;
 import java.util.List;
-import org.inbio.neoportal.core.dto.occurrence.TaxonLiteDTO;
+import org.inbio.neoportal.core.dto.taxon.TaxonLiteDTO;
 import org.inbio.neoportal.core.entity.Taxon;
 
 /**
@@ -37,7 +37,7 @@ public interface TaxonDAO
      * @param searchText
      * @return
      */
-    public Integer searchCount(final String[] fields, final String searchText);
+    public Long searchCount(final String[] fields, final String searchText);
 
     /**
      * Search the <code>searchText</code> in the lucene index in the <code>fields</code>
