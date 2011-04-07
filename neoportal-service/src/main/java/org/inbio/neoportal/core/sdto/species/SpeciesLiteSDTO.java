@@ -16,34 +16,30 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.core.dto.taxon;
+package org.inbio.neoportal.core.sdto.species;
 
-import java.util.ArrayList;
-import org.inbio.neoportal.core.dto.*;
-import org.inbio.neoportal.core.dto.commonname.CommonNameLiteDTO;
+import org.inbio.neoportal.core.common.dto.*;
+import org.inbio.neoportal.core.common.dto.BaseDTO;
 
 /**
- * A subset of the data hold by the taxon entity
- * @author asanabria
+ *
+ * @author esmata
  */
-public class TaxonLiteDTO extends BaseDTO implements Comparable {
+public class SpeciesLiteSDTO extends BaseDTO implements Comparable {
 
+    private String imageURL;
+	private String commonName;
     private String scientificName;
-    private ArrayList<CommonNameLiteDTO> commonNameList;
 
-    public TaxonLiteDTO() {
+    public SpeciesLiteSDTO() {
     }
 
-    public TaxonLiteDTO(String scientificName) {
+    public SpeciesLiteSDTO
+        (String imageURL, String commonName, String scientificName) {
 
+        this.imageURL = imageURL;
+        this.commonName = commonName;
         this.scientificName = scientificName;
-    }
-
-    public TaxonLiteDTO
-        (String scientificName, ArrayList<CommonNameLiteDTO> commonNameList) {
-        
-        this.scientificName = scientificName;
-        this.commonNameList = commonNameList;
     }
 
     /**
@@ -53,9 +49,10 @@ public class TaxonLiteDTO extends BaseDTO implements Comparable {
     @Override
     public int hashCode() {
         int hash = 3;
-        
-        hash = 23 * hash + 
-            (this.scientificName != null ? this.scientificName.hashCode() : 0);
+        hash = 23 * hash 
+            + (this.getScientificName() != null 
+                ? this.getScientificName().hashCode() 
+                : 0);
         
         return hash;
     }
@@ -69,16 +66,14 @@ public class TaxonLiteDTO extends BaseDTO implements Comparable {
         if (obj == null) {
             return false;
         }
-        
         if (getClass() != obj.getClass()) {
             return false;
         }
+        final SpeciesLiteSDTO other = (SpeciesLiteSDTO) obj;
         
-        final TaxonLiteDTO other = (TaxonLiteDTO) obj;
-        
-        if ((this.scientificName == null) ? 
-                (other.scientificName != null) :
-                !this.scientificName.equals(other.scientificName)) {
+        if ((this.getScientificName() == null) 
+             ? (other.getScientificName() != null) 
+             : !this.scientificName.equals(other.scientificName)) {
             
             return false;
         }
@@ -92,26 +87,50 @@ public class TaxonLiteDTO extends BaseDTO implements Comparable {
     @Override
     public int compareTo(Object o) {
 
-        TaxonLiteDTO ol = (TaxonLiteDTO)o;
-        return this.scientificName.compareTo(ol.getScientificName());
+        SpeciesLiteSDTO ol = (SpeciesLiteSDTO)o;
+        return this.getScientificName().compareTo(ol.getScientificName());
     }
 
-    /* Getters & Setters */
+    /**
+     * @return the imageURL
+     */
+    public String getImageURL() {
+        return imageURL;
+    }
 
+    /**
+     * @param imageURL the imageURL to set
+     */
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    /**
+     * @return the commonName
+     */
+    public String getCommonName() {
+        return commonName;
+    }
+
+    /**
+     * @param commonName the commonName to set
+     */
+    public void setCommonName(String commonName) {
+        this.commonName = commonName;
+    }
+
+    /**
+     * @return the scientificName
+     */
     public String getScientificName() {
         return scientificName;
     }
 
+    /**
+     * @param scientificName the scientificName to set
+     */
     public void setScientificName(String scientificName) {
         this.scientificName = scientificName;
     }
 
-    public ArrayList<CommonNameLiteDTO> getCommonNameList() {
-        return commonNameList;
-    }
-
-    public void setCommonNameList(ArrayList<CommonNameLiteDTO> commonNameList) {
-        this.commonNameList = commonNameList;
-    }
-    
 }

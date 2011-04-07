@@ -21,8 +21,8 @@ package org.inbio.neoportal.service.manager;
 import java.math.BigDecimal;
 import java.util.List;
 import org.apache.lucene.queryParser.ParseException;
-import org.inbio.neoportal.core.dto.taxon.TaxonLiteDTO;
-import org.inbio.neoportal.core.dto.species.SpeciesLiteDTO;
+import org.inbio.neoportal.core.cdto.taxon.TaxonLiteCDTO;
+import org.inbio.neoportal.core.sdto.species.SpeciesLiteSDTO;
 
 
 /**
@@ -38,7 +38,7 @@ public interface SearchManager {
      * @return
      * @throws ParseException
      */
-    public List<TaxonLiteDTO> fullPaginatedSearch
+    public List<TaxonLiteCDTO> fullPaginatedSearch
         (String searchText, int offset, int quantity)
             throws ParseException;
 
@@ -51,7 +51,7 @@ public interface SearchManager {
      * @return
      * @throws ParseException
      */
-    public List<SpeciesLiteDTO> speciesListPaginatedSearch
+    public List<SpeciesLiteSDTO> speciesListPaginatedSearch
         (String searchText, int offset, int quantity)
             throws ParseException;
 

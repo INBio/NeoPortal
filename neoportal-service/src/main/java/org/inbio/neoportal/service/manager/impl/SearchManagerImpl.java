@@ -26,9 +26,9 @@ import java.util.List;
 import java.util.Set;
 import org.apache.lucene.queryParser.ParseException;
 import org.inbio.neoportal.core.dao.TaxonDAO;
-import org.inbio.neoportal.core.dto.commonname.CommonNameLiteDTO;
-import org.inbio.neoportal.core.dto.taxon.TaxonLiteDTO;
-import org.inbio.neoportal.core.dto.species.SpeciesLiteDTO;
+import org.inbio.neoportal.core.cdto.commonname.CommonNameLiteCDTO;
+import org.inbio.neoportal.core.cdto.taxon.TaxonLiteCDTO;
+import org.inbio.neoportal.core.sdto.species.SpeciesLiteSDTO;
 import org.inbio.neoportal.service.manager.SearchManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,18 +53,18 @@ public class SearchManagerImpl implements SearchManager{
      * @throws ParseException 
      */
     @Override
-    public List<SpeciesLiteDTO> 
+    public List<SpeciesLiteSDTO> 
         speciesListPaginatedSearch(String searchText, int offset, int quantity)
             throws ParseException{
 
-        List<TaxonLiteDTO> occurrenceList = null;
-        SpeciesLiteDTO sp = null;
+        List<TaxonLiteCDTO> occurrenceList = null;
+        SpeciesLiteSDTO sp = null;
                 
         //Set to store all the diferent scientific names
-        Set<SpeciesLiteDTO> speciesList = new HashSet<SpeciesLiteDTO>();
+        Set<SpeciesLiteSDTO> speciesList = new HashSet<SpeciesLiteSDTO>();
         
         //Result List of SpeciesLiteDTO Objects
-        List<SpeciesLiteDTO> result = new ArrayList<SpeciesLiteDTO>();
+        List<SpeciesLiteSDTO> result = new ArrayList<SpeciesLiteSDTO>();
 
        String[] taxon =
                 new String[]{ "defaultName", "kingdom", "division", "class_",
@@ -79,9 +79,9 @@ public class SearchManagerImpl implements SearchManager{
                             fieldList.toArray(new String[fieldList.size()]), 
                             searchText, offset, quantity);
         
-        for (TaxonLiteDTO tldto: occurrenceList ){
+        for (TaxonLiteCDTO tldto: occurrenceList ){
              
-            sp = new SpeciesLiteDTO();
+            sp = new SpeciesLiteSDTO();
              
              sp.setCommonName(this.joinCommonNames(tldto.getCommonNameList()));
              sp.setScientificName(tldto.getScientificName());
@@ -128,7 +128,7 @@ public class SearchManagerImpl implements SearchManager{
      * @throws ParseException 
      */
     @Override
-    public List<TaxonLiteDTO> fullPaginatedSearch
+    public List<TaxonLiteCDTO> fullPaginatedSearch
         (String searchText, int offset, int quantity) 
             throws ParseException{
 
@@ -203,9 +203,9 @@ public class SearchManagerImpl implements SearchManager{
      * @param list
      * @return 
      */
-    private String joinCommonNames(ArrayList<CommonNameLiteDTO> list) {
+    private String joinCommonNames(ArrayList<CommonNameLiteCDTO> list) {
 
-        CommonNameLiteDTO cm = null;
+        CommonNameLiteCDTO cm = null;
         
         int length = list.size();
         StringBuilder commonNameList = new StringBuilder();

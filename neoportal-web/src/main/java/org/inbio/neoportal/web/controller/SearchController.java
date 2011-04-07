@@ -22,14 +22,14 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.lucene.queryParser.ParseException;
-import org.inbio.neoportal.core.dto.taxon.TaxonLiteDTO;
-import org.inbio.neoportal.core.dto.species.SpeciesLiteDTO;
+import org.inbio.neoportal.core.cdto.taxon.TaxonLiteCDTO;
+import org.inbio.neoportal.core.sdto.species.SpeciesLiteSDTO;
 import org.inbio.neoportal.service.manager.SearchManager;
-import org.inbio.neoportal.web.messagebean.SpeciesLiteBean;
-import org.inbio.neoportal.web.messagebean.OccurrenceLiteBean;
-import org.inbio.neoportal.web.messagebean.wrapper.XMLCountWrapper;
-import org.inbio.neoportal.web.messagebean.wrapper.XMLSpeciesWrapper;
-import org.inbio.neoportal.web.messagebean.wrapper.XMLSpecimenWrapper;
+import org.inbio.neoportal.web.wdto.SpeciesLiteWDTO;
+import org.inbio.neoportal.web.wdto.OccurrenceLiteWDTO;
+import org.inbio.neoportal.web.wdto.wrapper.XMLCountWrapper;
+import org.inbio.neoportal.web.wdto.wrapper.XMLSpeciesWrapper;
+import org.inbio.neoportal.web.wdto.wrapper.XMLSpecimenWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,15 +65,15 @@ public class SearchController {
         @RequestParam int startIndex,
         @RequestParam int results) {
 
-        List<SpeciesLiteDTO> speciesList = null;
+        List<SpeciesLiteSDTO> speciesList = null;
 
         XMLSpeciesWrapper rw = new XMLSpeciesWrapper();
         try {
             speciesList = searchManagerImpl
                 .speciesListPaginatedSearch(searchString, startIndex , results); 
 
-            for(SpeciesLiteDTO spDTO : speciesList)
-                rw.addElement(new SpeciesLiteBean(
+            for(SpeciesLiteSDTO spDTO : speciesList)
+                rw.addElement(new SpeciesLiteWDTO(
                 spDTO.getImageURL(),
                 spDTO.getCommonName(),
                 spDTO.getScientificName()));
@@ -104,17 +104,7 @@ public class SearchController {
         cw.setCount(searchManagerImpl.speciesListSearchCount(searchString));
         return cw;
     }
-
-    public SearchManager getSearchManagerImpl() {
-        return searchManagerImpl;
-    }
-
-    public void setSearchManagerImpl(SearchManager searchManagerImpl) {
-        this.searchManagerImpl = searchManagerImpl;
-    }
-    
-    
-    
+ 
     /**
      * Get a well formated xml containing paginated occurrences
      * @param searchString
@@ -128,15 +118,15 @@ public class SearchController {
     public @ResponseBody XMLSpecimenWrapper searchOccurrencesWriteXml
         (@RequestParam String searchString) {
 
-        List<TaxonLiteDTO> occurrenceList = null;
+        List<TaxonLiteCDTO> occurrenceList = null;
 
         XMLSpecimenWrapper rw = new XMLSpecimenWrapper();
         try {
             occurrenceList 
                 = searchManagerImpl.fullPaginatedSearch(searchString, 0, 15); 
             
-            for(TaxonLiteDTO olDTO : occurrenceList)
-                rw.addElement(new OccurrenceLiteBean(
+            for(TaxonLiteCDTO olDTO : occurrenceList)
+                rw.addElement(new OccurrenceLiteWDTO(
               //  olDTO.getGlobalUniqueIdentifier(),
                 olDTO.getScientificName()
            //     olDTO.getCountry(),
@@ -172,5 +162,15 @@ public class SearchController {
         XMLCountWrapper cw = new XMLCountWrapper();
         cw.setCount(50L); //TODO
         return cw;
+    }
+    
+    
+    
+    public SearchManager getSearchManagerImpl() {
+        return searchManagerImpl;
+    }
+
+    public void setSearchManagerImpl(SearchManager searchManagerImpl) {
+        this.searchManagerImpl = searchManagerImpl;
     }
 }

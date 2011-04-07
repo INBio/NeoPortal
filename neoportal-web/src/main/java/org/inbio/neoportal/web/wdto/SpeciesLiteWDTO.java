@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.web.messagebean;
+package org.inbio.neoportal.web.wdto;
 
 import javax.xml.bind.annotation.XmlElement;
 
@@ -28,7 +28,7 @@ import org.springframework.roo.addon.tostring.RooToString;
  */
 @RooJavaBean
 @RooToString
-public class SpeciesLiteBean {
+public class SpeciesLiteWDTO {
 
 
 	@XmlElement(name="url")
@@ -44,14 +44,14 @@ public class SpeciesLiteBean {
 	/**
 	 * 
 	 */
-	public SpeciesLiteBean() {
+	public SpeciesLiteWDTO() {
 		super();
 	}
 
     /**
      * Constructor
      */
-    public SpeciesLiteBean(String imageURL,
+    public SpeciesLiteWDTO(String imageURL,
             String commonName,
             String scientificName) {
 

@@ -32,9 +32,9 @@ import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.inbio.neoportal.core.dao.TaxonDAO;
-import org.inbio.neoportal.core.dto.taxon.TaxonLiteDTO;
+import org.inbio.neoportal.core.cdto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.entity.Taxon;
-import org.inbio.neoportal.core.transformers.TaxonResultTransformer;
+import org.inbio.neoportal.core.cdto.transformers.TaxonResultTransformer;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -50,12 +50,12 @@ public class TaxonDAOImpl
     
     
     @Override
-    public List<TaxonLiteDTO> search(final String[] fields, 
+    public List<TaxonLiteCDTO> search(final String[] fields, 
         final String searchText, final int offset, final int quantity) {
 
         HibernateTemplate template = getHibernateTemplate();
 
-        return (List<TaxonLiteDTO>) 
+        return (List<TaxonLiteCDTO>) 
             template.execute(new HibernateCallback() {
                 
             @Override

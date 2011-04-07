@@ -16,13 +16,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.core.transformers;
+package org.inbio.neoportal.core.cdto.transformers;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.transform.ResultTransformer;
-import org.inbio.neoportal.core.dto.commonname.CommonNameLiteDTO;
-import org.inbio.neoportal.core.dto.taxon.TaxonLiteDTO;
+import org.inbio.neoportal.core.cdto.commonname.CommonNameLiteCDTO;
+import org.inbio.neoportal.core.cdto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.entity.CommonName;
 import org.inbio.neoportal.core.entity.Taxon;
 
@@ -38,12 +38,12 @@ public class TaxonResultTransformer
         new CommonNameResultTransformer();
     
     List commonNameList =
-        new ArrayList<CommonNameLiteDTO>();
+        new ArrayList<CommonNameLiteCDTO>();
     
     @Override
     public List transformList(List list) {
         List<Taxon> taxonList = (List<Taxon>) list;
-        List<TaxonLiteDTO> newList = new ArrayList<TaxonLiteDTO>();
+        List<TaxonLiteCDTO> newList = new ArrayList<TaxonLiteCDTO>();
 
         for(Taxon taxon: taxonList){
             
@@ -51,9 +51,9 @@ public class TaxonResultTransformer
                 new ArrayList<CommonName>(taxon.getCommonNames()));
             
             newList.add(
-                new TaxonLiteDTO(
+                new TaxonLiteCDTO(
                     taxon.getDefaultName(),
-                    (ArrayList<CommonNameLiteDTO>) commonNameList));
+                    (ArrayList<CommonNameLiteCDTO>) commonNameList));
         }
         
         return newList;

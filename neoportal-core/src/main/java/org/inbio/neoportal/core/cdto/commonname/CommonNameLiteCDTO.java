@@ -16,16 +16,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.core.dto.commonname;
+package org.inbio.neoportal.core.cdto.commonname;
 
 import java.math.BigDecimal;
-import org.inbio.neoportal.core.dto.BaseDTO;
+import org.inbio.neoportal.core.common.dto.BaseDTO;
 
 /**
  * A subset of the data hold by the CommonName entity
  * @author asanabria
  */
-public class CommonNameLiteDTO 
+public class CommonNameLiteCDTO 
     extends BaseDTO 
         implements Comparable {
 
@@ -36,14 +36,14 @@ public class CommonNameLiteDTO
     /*
      * Empty constructor
      */
-    public CommonNameLiteDTO() {
+    public CommonNameLiteCDTO() {
     }
 
     /**
      * If just the name is well known
      * @param name 
      */
-    public CommonNameLiteDTO(String name) {
+    public CommonNameLiteCDTO(String name) {
         this.name = name;
     }
 
@@ -52,7 +52,7 @@ public class CommonNameLiteDTO
      * @param name
      * @param usedBy 
      */
-    public CommonNameLiteDTO(String name, String usedBy) {
+    public CommonNameLiteCDTO(String name, String usedBy) {
         this.name = name;
         this.usedBy = usedBy;
     }
@@ -63,7 +63,7 @@ public class CommonNameLiteDTO
      * @param name
      * @param usedBy 
      */
-    public CommonNameLiteDTO(BigDecimal commonNameId, String name, String usedBy) {
+    public CommonNameLiteCDTO(BigDecimal commonNameId, String name, String usedBy) {
         this.commonNameId = commonNameId;
         this.name = name;
         this.usedBy = usedBy;
@@ -98,7 +98,7 @@ public class CommonNameLiteDTO
             return false;
         }
 
-        final CommonNameLiteDTO other = (CommonNameLiteDTO) obj;
+        final CommonNameLiteCDTO other = (CommonNameLiteCDTO) obj;
 
         if ((this.name == null)
             ? (other.name != null)
@@ -116,7 +116,7 @@ public class CommonNameLiteDTO
     @Override
     public int compareTo(Object o) {
 
-        CommonNameLiteDTO ol = (CommonNameLiteDTO) o;
+        CommonNameLiteCDTO ol = (CommonNameLiteCDTO) o;
         return this.name.compareTo(ol.getname());
     }
 

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.web.messagebean;
+package org.inbio.neoportal.web.wdto;
 
 import javax.xml.bind.annotation.XmlElement;
 
@@ -28,7 +28,7 @@ import org.springframework.roo.addon.tostring.RooToString;
  */
 @RooJavaBean
 @RooToString
-public class OccurrenceLiteBean {
+public class OccurrenceLiteWDTO {
 
 
 	@XmlElement(name="gui")
@@ -64,14 +64,14 @@ public class OccurrenceLiteBean {
 	/**
 	 * No argument contructor
 	 */
-	public OccurrenceLiteBean() {
+	public OccurrenceLiteWDTO() {
 		super();
 	}
    /**
      * Argument constructor
      * @param scientificName 
      */
-    public OccurrenceLiteBean(String scientificName) {
+    public OccurrenceLiteWDTO(String scientificName) {
         this.scientificName = scientificName;
     }
    
@@ -86,7 +86,7 @@ public class OccurrenceLiteBean {
      * @param latitude
      * @param longitude
      */
-    public OccurrenceLiteBean(String globalUniqueIdentifier,
+    public OccurrenceLiteWDTO(String globalUniqueIdentifier,
             String scientificName,
             String country,
             String province,

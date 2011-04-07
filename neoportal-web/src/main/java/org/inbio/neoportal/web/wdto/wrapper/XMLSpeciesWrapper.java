@@ -16,9 +16,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.web.messagebean.wrapper;
+package org.inbio.neoportal.web.wdto.wrapper;
+
+import org.inbio.neoportal.web.wdto.SpeciesLiteWDTO;
+import org.inbio.neoportal.web.messagebean.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.springframework.roo.addon.javabean.RooJavaBean;
@@ -33,23 +39,25 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooJavaBean
 @RooToString
 @XmlRootElement(name="neoportal-response")
-public class XMLCountWrapper {
+public class XMLSpeciesWrapper {
 
-	@XmlElement(name="count")
-	private Long count;
+	@XmlElementWrapper(name="response-elements", nillable=true)
+	@XmlElement(name="element")
+	private List<SpeciesLiteWDTO> elements = new ArrayList<SpeciesLiteWDTO>();
 
 	/**
 	 *
 	 * @param responseType
 	 */
-	public XMLCountWrapper() {
+	public XMLSpeciesWrapper() {
 		super();
 	}
 
-    /**
-     * @param count the count to set
+	/**
+     * @param xmlBean
+     * @return
      */
-    public void setCount(Long count) {
-        this.count = count;
-    }
+	public boolean addElement(SpeciesLiteWDTO xmlBean){
+		return elements.add(xmlBean);
+	}
 }

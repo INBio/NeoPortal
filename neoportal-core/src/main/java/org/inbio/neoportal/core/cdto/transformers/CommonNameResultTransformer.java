@@ -16,12 +16,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.core.transformers;
+package org.inbio.neoportal.core.cdto.transformers;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.transform.ResultTransformer;
-import org.inbio.neoportal.core.dto.commonname.CommonNameLiteDTO;
+import org.inbio.neoportal.core.cdto.commonname.CommonNameLiteCDTO;
 import org.inbio.neoportal.core.entity.CommonName;
 
 
@@ -35,11 +35,11 @@ public class CommonNameResultTransformer
     @Override
     public List transformList(List list) {
         List<CommonName> CommonNameList = (List<CommonName>) list;
-        List<CommonNameLiteDTO> newList = new ArrayList<CommonNameLiteDTO>();
+        List<CommonNameLiteCDTO> newList = new ArrayList<CommonNameLiteCDTO>();
 
         for(CommonName CommonName: CommonNameList)
             newList.add(
-                new CommonNameLiteDTO(
+                new CommonNameLiteCDTO(
                     CommonName.getCommonNameId(),
                     CommonName.getName(),
                     CommonName.getUsedBy()));

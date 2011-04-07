@@ -20,7 +20,7 @@ package org.inbio.neoportal.core.dao;
 
 import java.math.BigDecimal;
 import java.util.List;
-import org.inbio.neoportal.core.dto.taxon.TaxonLiteDTO;
+import org.inbio.neoportal.core.cdto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.entity.Taxon;
 
 /**
@@ -48,7 +48,7 @@ public interface TaxonDAO
      * @param quantity: lengt of the result list.
      * @return
      */
-    public List<TaxonLiteDTO> search(
+    public List<TaxonLiteCDTO> search(
         final String[] fields,
         final String searchText,
         final int offset, 

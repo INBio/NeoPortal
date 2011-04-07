@@ -16,29 +16,40 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.core.dto;
+package org.inbio.neoportal.web.wdto.wrapper;
 
-import java.util.List;
-import org.inbio.neoportal.core.entity.LogGenericEntity;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.springframework.roo.addon.javabean.RooJavaBean;
+import org.springframework.roo.addon.tostring.RooToString;
 
 /**
  *
- * @author jgutierrez
- * Based on dmartin code, in the GBIF customizable portal.
+ * @author esmata
+ *
  */
-public interface DTOFactory<E extends LogGenericEntity, D extends BaseDTO> {
-    
-    /**
-     * 
-     * @param entity
-     * @return
-     */
-	public D createDTO(E entity);
+
+@RooJavaBean
+@RooToString
+@XmlRootElement(name="neoportal-response")
+public class XMLCountWrapper {
+
+	@XmlElement(name="count")
+	private Long count;
 
 	/**
-     *
-     * @param entitiesList
-     * @return
+	 *
+	 * @param responseType
+	 */
+	public XMLCountWrapper() {
+		super();
+	}
+
+    /**
+     * @param count the count to set
      */
-	public List<D> createDTOList(List<E> entitiesList);
+    public void setCount(Long count) {
+        this.count = count;
+    }
 }
