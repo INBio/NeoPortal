@@ -130,8 +130,8 @@ public class SearchManagerImplTest extends NeoportalTestBase {
     public void testFullSearchCount() throws Exception {
         System.out.println("fullSearchCount");
         String searchText = "Inga";
-        Integer expResult = new Integer(5);
-        Integer result = searchManagerImpl.fullSearchCount(searchText);
+        Long expResult = new Long(5);
+        Long result = searchManagerImpl.fullSearchCount(searchText);
         assertEquals(expResult, result);
     }
 }

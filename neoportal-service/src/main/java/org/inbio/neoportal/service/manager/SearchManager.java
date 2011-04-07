@@ -18,10 +18,11 @@
  */
 package org.inbio.neoportal.service.manager;
 
+import java.math.BigDecimal;
 import java.util.List;
 import org.apache.lucene.queryParser.ParseException;
-import org.inbio.neoportal.core.dto.occurrence.TaxonLiteDTO;
-import org.inbio.neoportal.core.dto.taxon.description.TaxonDescriptionLiteDTO;
+import org.inbio.neoportal.core.dto.taxon.TaxonLiteDTO;
+import org.inbio.neoportal.core.dto.species.SpeciesLiteDTO;
 
 
 /**
@@ -50,10 +51,20 @@ public interface SearchManager {
      * @return
      * @throws ParseException
      */
-    public List<TaxonDescriptionLiteDTO> speciesListPaginatedSearch
+    public List<SpeciesLiteDTO> speciesListPaginatedSearch
         (String searchText, int offset, int quantity)
             throws ParseException;
 
+    /**
+     * Search <code>searchText</code> in the lucene index, and count the results
+     * @param searchText
+     * @return
+     * @throws ParseException
+     */
+    public Long speciesListSearchCount(String searchText)
+            throws ParseException;
+   
+    
 
     /**
      * Return the amount of items returned by a Lucene search
@@ -61,7 +72,7 @@ public interface SearchManager {
      * @return
      * @throws ParseException
      */
-    public Integer fullSearchCount(String searchText)
+    public Long fullSearchCount(String searchText)
             throws ParseException;
 
 }

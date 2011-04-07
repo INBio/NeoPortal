@@ -18,6 +18,7 @@
  */
 package org.inbio.neoportal.service.manager.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -25,8 +26,9 @@ import java.util.List;
 import java.util.Set;
 import org.apache.lucene.queryParser.ParseException;
 import org.inbio.neoportal.core.dao.TaxonDAO;
-import org.inbio.neoportal.core.dto.occurrence.TaxonLiteDTO;
-import org.inbio.neoportal.core.dto.taxon.description.TaxonDescriptionLiteDTO;
+import org.inbio.neoportal.core.dto.commonname.CommonNameLiteDTO;
+import org.inbio.neoportal.core.dto.taxon.TaxonLiteDTO;
+import org.inbio.neoportal.core.dto.species.SpeciesLiteDTO;
 import org.inbio.neoportal.service.manager.SearchManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,29 +44,27 @@ public class SearchManagerImpl implements SearchManager{
     @Autowired
     private TaxonDAO taxonDAO;
 
+    /**
+     * 
+     * @param searchText
+     * @param offset
+     * @param quantity
+     * @return
+     * @throws ParseException 
+     */
     @Override
-    public List<TaxonDescriptionLiteDTO> 
+    public List<SpeciesLiteDTO> 
         speciesListPaginatedSearch(String searchText, int offset, int quantity)
             throws ParseException{
 
         List<TaxonLiteDTO> occurrenceList = null;
-        
-        TaxonLiteDTO ol = null; //Used to iterate over occurrenceList
-        
+        SpeciesLiteDTO sp = null;
+                
         //Set to store all the diferent scientific names
-        Set<TaxonDescriptionLiteDTO> scientificNames = 
-            new HashSet<TaxonDescriptionLiteDTO>();
-        
-        TaxonDescriptionLiteDTO sp = null;
-        
-        int lastResult = 0;
+        Set<SpeciesLiteDTO> speciesList = new HashSet<SpeciesLiteDTO>();
         
         //Result List of SpeciesLiteDTO Objects
-        List<TaxonDescriptionLiteDTO> result = 
-            new ArrayList<TaxonDescriptionLiteDTO>();
-
-        int         maxQuantity     = 10;
-        int         nextStartItem   = offset;
+        List<SpeciesLiteDTO> result = new ArrayList<SpeciesLiteDTO>();
 
        String[] taxon =
                 new String[]{ "defaultName", "kingdom", "division", "class_",
@@ -76,23 +76,57 @@ public class SearchManagerImpl implements SearchManager{
 
         // Search the results of the query
         occurrenceList = taxonDAO.search(
-            fieldList.toArray(new String[fieldList.size()]), 
-            searchText, nextStartItem, maxQuantity);
+                            fieldList.toArray(new String[fieldList.size()]), 
+                            searchText, offset, quantity);
         
         for (TaxonLiteDTO tldto: occurrenceList ){
-             sp = new TaxonDescriptionLiteDTO();
-             sp.setImageURL("http://pulsatrix.inbio.ac.cr/projects/atta2/chrome/site/test.JPG");
-             sp.setCommonName("Nombre común X");
+             
+            sp = new SpeciesLiteDTO();
+             
+             sp.setCommonName(this.joinCommonNames(tldto.getCommonNameList()));
              sp.setScientificName(tldto.getScientificName());
-             scientificNames.add(sp);
+             sp.setImageURL("http://pulsatrix.inbio.ac.cr/projects/atta2/chrome/site/header.png");
+             
+             speciesList.add(sp);
         }
 
-        result.addAll(scientificNames);
+        result.addAll(speciesList);
 
         return result;
     }
+   
+    
+    /**
+     * Returns the element count of the search result
+     * @param searchText
+     * @return
+     * @throws ParseException 
+     */
+    @Override
+    public Long speciesListSearchCount(String searchText)
+            throws ParseException{
+        
+       String[] taxon =
+        new String[]{ "defaultName", "kingdom", "division", "class_",
+                         "order", "family", "genus", "species"};
 
+        ArrayList<String> fieldList = new ArrayList<String>();
 
+        fieldList.addAll(Arrays.asList(taxon));
+        
+        return taxonDAO.searchCount(
+            fieldList.toArray(new String[fieldList.size()]),
+            searchText);
+    }
+    
+    /**
+     * 
+     * @param searchText
+     * @param offset
+     * @param quantity
+     * @return
+     * @throws ParseException 
+     */
     @Override
     public List<TaxonLiteDTO> fullPaginatedSearch
         (String searchText, int offset, int quantity) 
@@ -126,8 +160,14 @@ public class SearchManagerImpl implements SearchManager{
 
     }
 
+    /**
+     * 
+     * @param searchText
+     * @return
+     * @throws ParseException 
+     */
     @Override
-    public Integer fullSearchCount(String searchText)
+    public Long fullSearchCount(String searchText)
             throws ParseException {
 
                 String[] taxon =
@@ -154,5 +194,33 @@ public class SearchManagerImpl implements SearchManager{
 
         return taxonDAO.searchCount(
             fieldList.toArray(new String[fieldList.size()]), searchText);
+    }
+    
+    
+    /**
+     * Put toguether all the common names of a list and concatenate them into a 
+     * single string.
+     * @param list
+     * @return 
+     */
+    private String joinCommonNames(ArrayList<CommonNameLiteDTO> list) {
+
+        CommonNameLiteDTO cm = null;
+        
+        int length = list.size();
+        StringBuilder commonNameList = new StringBuilder();
+        
+        for(int i = 0; i < length; i++){
+            cm = list.get(i);
+            commonNameList.append(cm.getName());
+            
+            if( ! cm.getUsedBy().isEmpty() )
+                commonNameList.append("(").append(cm.getUsedBy()).append(")");
+            
+            if(i < length-1)
+                commonNameList.append(", ");          
+        }
+        
+        return commonNameList.toString();
     }
 }
