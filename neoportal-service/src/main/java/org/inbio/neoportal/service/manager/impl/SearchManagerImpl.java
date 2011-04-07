@@ -18,16 +18,19 @@
  */
 package org.inbio.neoportal.service.manager.impl;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.apache.lucene.queryParser.ParseException;
+import org.inbio.neoportal.core.dao.OccurrenceDAO;
 import org.inbio.neoportal.core.dao.TaxonDAO;
 import org.inbio.neoportal.core.dto.commonname.CommonNameLiteCDTO;
+import org.inbio.neoportal.core.dto.occurrence.OccurrenceGeospatialLiteCDTO;
+import org.inbio.neoportal.core.dto.occurrence.OccurrenceLiteCDTO;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
+import org.inbio.neoportal.service.dto.occurrences.OccurrenceLiteSDTO;
 import org.inbio.neoportal.service.dto.species.SpeciesLiteSDTO;
 import org.inbio.neoportal.service.manager.SearchManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +46,9 @@ public class SearchManagerImpl implements SearchManager{
 
     @Autowired
     private TaxonDAO taxonDAO;
+    
+    @Autowired
+    private OccurrenceDAO occurrenceDAO;
 
     /**
      * 
@@ -54,7 +60,7 @@ public class SearchManagerImpl implements SearchManager{
      */
     @Override
     public List<SpeciesLiteSDTO> 
-        speciesListPaginatedSearch(String searchText, int offset, int quantity)
+        speciesPaginatedSearch(String searchText, int offset, int quantity)
             throws ParseException{
 
         List<TaxonLiteCDTO> occurrenceList = null;
@@ -103,7 +109,7 @@ public class SearchManagerImpl implements SearchManager{
      * @throws ParseException 
      */
     @Override
-    public Long speciesListSearchCount(String searchText)
+    public Long speciesSearchCount(String searchText)
             throws ParseException{
         
        String[] taxon =
@@ -128,15 +134,9 @@ public class SearchManagerImpl implements SearchManager{
      * @throws ParseException 
      */
     @Override
-    public List<TaxonLiteCDTO> fullPaginatedSearch
+    public List<OccurrenceLiteSDTO> occurrencePaginatedSearch
         (String searchText, int offset, int quantity) 
             throws ParseException{
-
-        
-        
-        String[] taxon =
-                new String[]{ "defaultName", "kingdom", "division", "class_",
-                                 "order", "family", "genus", "species"};
 
         String[] occurrence =
                 new String[]{"scientificName", "higherTaxon", "kingdom",
@@ -144,20 +144,54 @@ public class SearchManagerImpl implements SearchManager{
                                    "genus", "specificEpithet", "country",
                                      "stateProvince", "county", "locality"};
 
-        String[] taxonDescription =
-                new String[]{ "scientificName", "kingdomTaxon", "phylumTaxon",
-                             "classTaxon", "orderTaxon", "familyTaxon",
-                             "genusTaxon", "synonyms", "commonNames"};
-
-         ArrayList<String> fieldList = new ArrayList<String>();
-
-        fieldList.addAll(Arrays.asList(taxon));
+        ArrayList<String> fieldList = new ArrayList<String>();
         fieldList.addAll(Arrays.asList(occurrence));
-        fieldList.addAll(Arrays.asList(taxonDescription));
+        
+        ArrayList<OccurrenceLiteSDTO> olsdto = new 
+            ArrayList<OccurrenceLiteSDTO>();
+        
+        // retrieve the search results
+        ArrayList<OccurrenceLiteCDTO> ocList 
+            =  (ArrayList<OccurrenceLiteCDTO>) occurrenceDAO.search(
+                    fieldList.toArray(new String[fieldList.size()]), 
+                    searchText, 
+                    offset, 
+                    quantity);
+        
+        ArrayList<OccurrenceGeospatialLiteCDTO> ogl = null;
+        
+        String latitude = null;
+        String longitude = null;
+        
+        
+        for(OccurrenceLiteCDTO ol : ocList ){
+            
+            // take only the firs of a list of coordinates
+            ogl = ol.getGeospatialList();
+            
+            if(ogl.size() > 0){
+                latitude = ogl.get(0).getLatitude();
+                longitude = ogl.get(0).getLongitude();
+            }else{
+                latitude = null;
+                longitude = null;
+            }
+            
+            
+            olsdto.add(
+                new OccurrenceLiteSDTO(
+                    ol.getScientificName(),
+                    ol.getInstitution(),
+                    ol.getCountry(),
+                    ol.getProvince(),
+                    ol.getCounty(),
+                    ol.getLocality(),
+                    latitude,
+                    longitude,
+                    ol.getCatalog()));
+        }
 
-        return taxonDAO.search(fieldList.toArray(
-            new String[fieldList.size()]), searchText, offset, quantity);
-
+        return olsdto;
     }
 
     /**
@@ -167,12 +201,8 @@ public class SearchManagerImpl implements SearchManager{
      * @throws ParseException 
      */
     @Override
-    public Long fullSearchCount(String searchText)
+    public Long occurrenceSearchCount(String searchText)
             throws ParseException {
-
-                String[] taxon =
-                new String[]{ "defaultName", "kingdom", "division", "class_",
-                                 "order", "family", "genus", "species"};
 
         String[] occurrence =
                 new String[]{"scientificName", "higherTaxon", "kingdom",
@@ -180,19 +210,10 @@ public class SearchManagerImpl implements SearchManager{
                                    "genus", "specificEpithet", "country",
                                      "stateProvince", "county", "locality"};
 
-        String[] taxonDescription =
-                new String[]{ "scientificName", "kingdomTaxon", "phylumTaxon",
-                             "classTaxon", "orderTaxon", "familyTaxon",
-                             "genusTaxon", "synonyms", "commonNames"};
-
-         ArrayList<String> fieldList = new ArrayList<String>();
-
-        fieldList.addAll(Arrays.asList(taxon));
+        ArrayList<String> fieldList = new ArrayList<String>();
         fieldList.addAll(Arrays.asList(occurrence));
-        fieldList.addAll(Arrays.asList(taxonDescription));
 
-
-        return taxonDAO.searchCount(
+        return occurrenceDAO.searchCount(
             fieldList.toArray(new String[fieldList.size()]), searchText);
     }
     
@@ -224,3 +245,22 @@ public class SearchManagerImpl implements SearchManager{
         return commonNameList.toString();
     }
 }
+
+/*  Jajajaj, apologies to the future me for a comment like this...
+ * 
+        String[] taxon =
+                new String[]{ "defaultName", "kingdom", "division", "class_",
+                                 "order", "family", "genus", "species"};
+
+        String[] occurrence =
+                new String[]{"scientificName", "higherTaxon", "kingdom",
+                                 "phylum", "class_", "orders", "family",
+                                   "genus", "specificEpithet", "country",
+                                     "stateProvince", "county", "locality"};
+
+        String[] taxonDescription =
+                new String[]{ "scientificName", "kingdomTaxon", "phylumTaxon",
+                             "classTaxon", "orderTaxon", "familyTaxon",
+                             "genusTaxon", "synonyms", "commonNames"};
+
+ */

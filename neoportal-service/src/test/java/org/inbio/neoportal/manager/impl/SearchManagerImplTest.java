@@ -99,7 +99,7 @@ public class SearchManagerImplTest extends NeoportalTestBase {
         Integer expResult = new Integer(3);
         
         List result 
-            = searchManagerImpl.speciesListPaginatedSearch(searchText, 
+            = searchManagerImpl.speciesPaginatedSearch(searchText, 
                 offset, quantity);
         
         assertEquals(expResult, new Integer(result.size()));
@@ -109,7 +109,7 @@ public class SearchManagerImplTest extends NeoportalTestBase {
      * Test of fullPaginatedSearch method, of class SearchManagerImpl.
      */
     @Test
-    public void testFullPaginatedSearch() throws Exception {
+    public void testOccurrencePaginatedSearch() throws Exception {
         System.out.println("fullPaginatedSearch");
         String searchText = "Inga_vera";
         int offset = 0;
@@ -117,7 +117,7 @@ public class SearchManagerImplTest extends NeoportalTestBase {
         Integer expResult = new Integer(5);
         
         List result 
-            = searchManagerImpl.fullPaginatedSearch(searchText, 
+            = searchManagerImpl.occurrencePaginatedSearch(searchText, 
                 offset, quantity);
         
         assertEquals(expResult, new Integer(result.size()));
@@ -127,11 +127,11 @@ public class SearchManagerImplTest extends NeoportalTestBase {
      * Test of fullSearchCount method, of class SearchManagerImpl.
      */
     @Test
-    public void testFullSearchCount() throws Exception {
+    public void testOccurrenceSearchCount() throws Exception {
         System.out.println("fullSearchCount");
         String searchText = "Inga";
         Long expResult = new Long(5);
-        Long result = searchManagerImpl.fullSearchCount(searchText);
+        Long result = searchManagerImpl.occurrenceSearchCount(searchText);
         assertEquals(expResult, result);
     }
 }

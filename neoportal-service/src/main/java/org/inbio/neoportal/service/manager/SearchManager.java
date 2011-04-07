@@ -18,10 +18,9 @@
  */
 package org.inbio.neoportal.service.manager;
 
-import java.math.BigDecimal;
 import java.util.List;
 import org.apache.lucene.queryParser.ParseException;
-import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
+import org.inbio.neoportal.service.dto.occurrences.OccurrenceLiteSDTO;
 import org.inbio.neoportal.service.dto.species.SpeciesLiteSDTO;
 
 
@@ -32,17 +31,6 @@ import org.inbio.neoportal.service.dto.species.SpeciesLiteSDTO;
 public interface SearchManager {
 
     /**
-     * Search <code>searchText</code> int the lucene index.
-     * Results are paginated
-     * @param searchText
-     * @return
-     * @throws ParseException
-     */
-    public List<TaxonLiteCDTO> fullPaginatedSearch
-        (String searchText, int offset, int quantity)
-            throws ParseException;
-
-    /**
      * Search <code>searchText</code> in the lucene index, this method return only
      * differents species (scientificNames).
      * @param searchText
@@ -51,7 +39,7 @@ public interface SearchManager {
      * @return
      * @throws ParseException
      */
-    public List<SpeciesLiteSDTO> speciesListPaginatedSearch
+    public List<SpeciesLiteSDTO> speciesPaginatedSearch
         (String searchText, int offset, int quantity)
             throws ParseException;
 
@@ -61,9 +49,20 @@ public interface SearchManager {
      * @return
      * @throws ParseException
      */
-    public Long speciesListSearchCount(String searchText)
+    public Long speciesSearchCount(String searchText)
             throws ParseException;
    
+  
+      /**
+     * Search <code>searchText</code> int the lucene index.
+     * Results are paginated
+     * @param searchText
+     * @return
+     * @throws ParseException
+     */
+    public List<OccurrenceLiteSDTO> occurrencePaginatedSearch
+        (String searchText, int offset, int quantity)
+            throws ParseException;
     
 
     /**
@@ -72,7 +71,7 @@ public interface SearchManager {
      * @return
      * @throws ParseException
      */
-    public Long fullSearchCount(String searchText)
+    public Long occurrenceSearchCount(String searchText)
             throws ParseException;
 
 }
