@@ -19,6 +19,7 @@
 package org.inbio.neoportal.core.dao;
 
 import java.util.List;
+import org.hibernate.transform.ResultTransformer;
 
 /**
  * @author jgutierrez
@@ -63,21 +64,33 @@ public interface GenericBaseDAO<E ,I> {
 
 
    /**
-    *
+    * Return a generic search.
     * @param entityClass
-    * @param firstResult
-    * @param maxResults
-    * @return
+    * @param fields
+    * @param searchText
+    * @param offset
+    * @param quantity
+    * @return 
     */
-   //public List<E> findAllPaginated
-   //    (Class<E> entityClass,int firstResult, int maxResults);
+    public List search(
+        final Class<E> entityClass,
+        final ResultTransformer resultTransformer,
+        final String[] fields, 
+        final String searchText,
+        final int offset, 
+        final int quantity) ;
 
-
-   /**
-    * 
-    * @param entityClass
-    * @return
-    */
-   //public Long count(Class<E> entityClass);
+    /**
+     * Return a search count
+     * @param entityClass
+     * @param fields
+     * @param searchText
+     * @return 
+     */
+    public Long searchCount(
+        final Class<E> entityClass, 
+        final ResultTransformer resultTransformer,
+        final String[] fields,
+        final String searchText);
 
 }

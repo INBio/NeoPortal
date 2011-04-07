@@ -19,7 +19,9 @@
 package org.inbio.neoportal.core.dao.impl;
 
 import java.math.BigDecimal;
+import java.util.List;
 import org.inbio.neoportal.core.dao.OccurrenceDAO;
+import org.inbio.neoportal.core.dto.transformers.OccurrenceTransformer;
 import org.inbio.neoportal.core.entity.Occurrence;
 import org.springframework.stereotype.Repository;
 
@@ -31,4 +33,44 @@ import org.springframework.stereotype.Repository;
 public class OccurrenceDAOImpl 
     extends GenericBaseDAOImpl<Occurrence, BigDecimal>
         implements OccurrenceDAO{ 
+    
+       /**
+    * Return a generic search.
+    * @param entityClass
+    * @param fields
+    * @param searchText
+    * @param offset
+    * @param quantity
+    * @return 
+    */
+    @Override
+    public List search(
+        final String[] fields, 
+        final String searchText,
+        final int offset, 
+        final int quantity){
+        
+        return super.search(Occurrence.class,
+                            new OccurrenceTransformer(),
+                            fields, 
+                            searchText,
+                            offset,
+                            quantity);
+    }
+
+    /**
+     * Return a search count
+     * @param entityClass
+     * @param fields
+     * @param searchText
+     * @return 
+     */
+    @Override
+    public Long searchCount(final String[] fields, final String searchText){
+        
+        return super.searchCount(Occurrence.class, 
+                                 new OccurrenceTransformer(),
+                                 fields, 
+                                 searchText);
+    }
 }

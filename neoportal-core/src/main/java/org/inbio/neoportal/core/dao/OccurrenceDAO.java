@@ -19,6 +19,7 @@
 package org.inbio.neoportal.core.dao;
 
 import java.math.BigDecimal;
+import java.util.List;
 import org.inbio.neoportal.core.entity.Occurrence;
 
 /**
@@ -27,5 +28,29 @@ import org.inbio.neoportal.core.entity.Occurrence;
  */
 public interface OccurrenceDAO 
     extends GenericBaseDAO<Occurrence, BigDecimal>{
+    
+           /**
+    * Return a generic search.
+    * @param entityClass
+    * @param fields
+    * @param searchText
+    * @param offset
+    * @param quantity
+    * @return 
+    */
+    public List search(
+        final String[] fields, 
+        final String searchText,
+        final int offset, 
+        final int quantity);
+
+    /**
+     * Return a search count
+     * @param entityClass
+     * @param fields
+     * @param searchText
+     * @return 
+     */
+    public Long searchCount(final String[] fields, final String searchText);
 
 }
