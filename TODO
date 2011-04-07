@@ -1,11 +1,9 @@
- - Better Index.
- - Return CommonNames for the main search of taxons.
- * Re-write testcases for portal-core and portal-indexer.
- - Refactor occurrences result window.
- - Add Images support for the main window.
+ * Refactor occurrences result window.
+ - Add species record result window.
+ - Add Images support for the main window (not alwais the same image).
  - Add audit tables on the database
  - Add support for security (users).
  - Add support for comments.
- - Add species record result window.
  - Add support for social networks.
+ - Better Index.
 
