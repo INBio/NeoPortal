@@ -16,40 +16,54 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.web.wdto.wrapper;
+package org.inbio.neoportal.common.dto;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
-import org.springframework.roo.addon.javabean.RooJavaBean;
-import org.springframework.roo.addon.tostring.RooToString;
+import java.io.Serializable;
 
 /**
- *
- * @author esmata
+ * All DTO's should extend this base!
+ * 
+ * @author jgutierrez
  *
  */
-
-@RooJavaBean
-@RooToString
-@XmlRootElement(name="neoportal-response")
-public class XMLCountWrapper {
-
-	@XmlElement(name="count")
-	private Long count;
+public class BaseDTO 
+    implements Serializable {
 
 	/**
-	 *
-	 * @param responseType
+	 * 
 	 */
-	public XMLCountWrapper() {
-		super();
+	private static final long serialVersionUID = 1L;
+	
+	//log value
+	private String username;
+	private String logCreationDate;
+
+	/**
+	 * @return the username
+	 */
+	public String getUsername() {
+		return username;
 	}
 
-    /**
-     * @param count the count to set
-     */
-    public void setCount(Long count) {
-        this.count = count;
-    }
+	/**
+	 * @param username the username to set
+	 */
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	/**
+	 * @return the logCreationDate
+	 */
+	public String getLogCreationDate() {
+		return logCreationDate;
+	}
+
+	/**
+	 * @param logCreationDate the logCreationDate to set
+	 */
+	public void setLogCreationDate(String logCreationDate) {
+		this.logCreationDate = logCreationDate;
+	}
+
 }

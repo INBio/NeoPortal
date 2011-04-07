@@ -16,47 +16,29 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.web.wdto;
+package org.inbio.neoportal.common.dto;
 
-import javax.xml.bind.annotation.XmlElement;
+import java.util.List;
+import org.inbio.neoportal.core.entity.LogGenericEntity;
 
-import org.springframework.roo.addon.javabean.RooJavaBean;
-import org.springframework.roo.addon.tostring.RooToString;
-
-/*
- * @author esmata
+/**
+ *
+ * @author jgutierrez
+ * Based on dmartin code, in the GBIF customizable portal.
  */
-@RooJavaBean
-@RooToString
-public class SpeciesLiteWDTO {
-
-
-	@XmlElement(name="url")
-    private String imageURL;
-
-	@XmlElement(name="cname")
-	private String commonName;
-
-	@XmlElement(name="scname")
-	private String scientificName;
-
-	
-	/**
-	 * 
-	 */
-	public SpeciesLiteWDTO() {
-		super();
-	}
-
+public interface DTOFactory<E extends LogGenericEntity, D extends BaseDTO> {
+    
     /**
-     * Constructor
+     * 
+     * @param entity
+     * @return
      */
-    public SpeciesLiteWDTO(String imageURL,
-            String commonName,
-            String scientificName) {
+	public D createDTO(E entity);
 
-        this.imageURL = imageURL;
-        this.commonName = commonName;
-        this.scientificName = scientificName;
-    }
+	/**
+     *
+     * @param entitiesList
+     * @return
+     */
+	public List<D> createDTOList(List<E> entitiesList);
 }

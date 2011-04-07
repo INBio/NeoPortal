@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.web.wdto;
+package org.inbio.neoportal.web.dto;
 
 import javax.xml.bind.annotation.XmlElement;
 

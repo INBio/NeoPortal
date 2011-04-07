@@ -21,8 +21,8 @@ package org.inbio.neoportal.service.manager;
 import java.math.BigDecimal;
 import java.util.List;
 import org.apache.lucene.queryParser.ParseException;
-import org.inbio.neoportal.core.cdto.taxon.TaxonLiteCDTO;
-import org.inbio.neoportal.core.sdto.species.SpeciesLiteSDTO;
+import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
+import org.inbio.neoportal.service.dto.species.SpeciesLiteSDTO;
 
 
 /**

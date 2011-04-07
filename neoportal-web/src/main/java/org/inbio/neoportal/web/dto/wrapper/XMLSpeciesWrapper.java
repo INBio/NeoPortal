@@ -16,29 +16,47 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.core.common.dto;
+package org.inbio.neoportal.web.dto.wrapper;
 
+import org.inbio.neoportal.web.dto.SpeciesLiteWDTO;
+import java.util.ArrayList;
 import java.util.List;
-import org.inbio.neoportal.core.entity.LogGenericEntity;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.springframework.roo.addon.javabean.RooJavaBean;
+import org.springframework.roo.addon.tostring.RooToString;
 
 /**
  *
- * @author jgutierrez
- * Based on dmartin code, in the GBIF customizable portal.
+ * @author esmata
+ *
  */
-public interface DTOFactory<E extends LogGenericEntity, D extends BaseDTO> {
-    
-    /**
-     * 
-     * @param entity
-     * @return
-     */
-	public D createDTO(E entity);
+
+@RooJavaBean
+@RooToString
+@XmlRootElement(name="neoportal-response")
+public class XMLSpeciesWrapper {
+
+	@XmlElementWrapper(name="response-elements", nillable=true)
+	@XmlElement(name="element")
+	private List<SpeciesLiteWDTO> elements = new ArrayList<SpeciesLiteWDTO>();
 
 	/**
-     *
-     * @param entitiesList
+	 *
+	 * @param responseType
+	 */
+	public XMLSpeciesWrapper() {
+		super();
+	}
+
+	/**
+     * @param xmlBean
      * @return
      */
-	public List<D> createDTOList(List<E> entitiesList);
+	public boolean addElement(SpeciesLiteWDTO xmlBean){
+		return elements.add(xmlBean);
+	}
 }

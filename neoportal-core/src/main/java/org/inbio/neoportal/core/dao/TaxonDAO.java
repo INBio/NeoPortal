@@ -20,7 +20,7 @@ package org.inbio.neoportal.core.dao;
 
 import java.math.BigDecimal;
 import java.util.List;
-import org.inbio.neoportal.core.cdto.taxon.TaxonLiteCDTO;
+import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.entity.Taxon;
 
 /**

@@ -16,10 +16,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.web.wdto.wrapper;
+package org.inbio.neoportal.web.dto.wrapper;
 
-import org.inbio.neoportal.web.wdto.OccurrenceLiteWDTO;
-import org.inbio.neoportal.web.messagebean.*;
+import org.inbio.neoportal.web.dto.OccurrenceLiteWDTO;
 import java.util.ArrayList;
 import java.util.List;
 

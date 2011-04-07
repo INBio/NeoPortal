@@ -16,10 +16,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.core.cdto.commonname;
+package org.inbio.neoportal.core.dto.commonname;
 
 import java.math.BigDecimal;
-import org.inbio.neoportal.core.common.dto.BaseDTO;
+import org.inbio.neoportal.common.dto.BaseDTO;
 
 /**
  * A subset of the data hold by the CommonName entity
