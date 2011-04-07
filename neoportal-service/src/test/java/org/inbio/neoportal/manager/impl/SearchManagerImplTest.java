@@ -102,8 +102,6 @@ public class SearchManagerImplTest extends NeoportalTestBase {
             = searchManagerImpl.speciesListPaginatedSearch(searchText, 
                 offset, quantity);
         
-        System.out.println("# -- > Testiando "+result.size());
-        
         assertEquals(expResult, new Integer(result.size()));
     }
 
@@ -117,9 +115,11 @@ public class SearchManagerImplTest extends NeoportalTestBase {
         int offset = 0;
         int quantity = 20;
         Integer expResult = new Integer(5);
+        
         List result 
             = searchManagerImpl.fullPaginatedSearch(searchText, 
                 offset, quantity);
+        
         assertEquals(expResult, new Integer(result.size()));
     }
 
