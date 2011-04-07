@@ -37,7 +37,7 @@ public interface TaxonDAO
      * @param searchText
      * @return
      */
-    public Long searchCount(final String[] fields, final String searchText);
+    public Long searchCount(final String searchText);
 
     /**
      * Search the <code>searchText</code> in the lucene index in the <code>fields</code>
@@ -49,7 +49,6 @@ public interface TaxonDAO
      * @return
      */
     public List<TaxonLiteCDTO> search(
-        final String[] fields,
         final String searchText,
         final int offset, 
         final int quantity) ;

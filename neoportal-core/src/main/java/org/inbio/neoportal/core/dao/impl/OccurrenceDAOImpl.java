@@ -19,6 +19,8 @@
 package org.inbio.neoportal.core.dao.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.inbio.neoportal.core.dao.OccurrenceDAO;
 import org.inbio.neoportal.core.dto.transformers.OccurrenceTransformer;
@@ -45,14 +47,22 @@ public class OccurrenceDAOImpl
     */
     @Override
     public List search(
-        final String[] fields, 
         final String searchText,
         final int offset, 
         final int quantity){
         
+          String[] occurrence =
+                new String[]{"scientificName", "higherTaxon", "kingdom",
+                                 "phylum", "class_", "orders", "family",
+                                   "genus", "specificEpithet", "country",
+                                     "stateProvince", "county", "locality"};
+
+        ArrayList<String> fieldList = new ArrayList<String>();
+        fieldList.addAll(Arrays.asList(occurrence));
+        
         return super.search(Occurrence.class,
                             new OccurrenceTransformer(),
-                            fields, 
+                            fieldList.toArray(new String[fieldList.size()]),
                             searchText,
                             offset,
                             quantity);
@@ -66,11 +76,20 @@ public class OccurrenceDAOImpl
      * @return 
      */
     @Override
-    public Long searchCount(final String[] fields, final String searchText){
+    public Long searchCount( final String searchText){
+        
+          String[] occurrence =
+                new String[]{"scientificName", "higherTaxon", "kingdom",
+                                 "phylum", "class_", "orders", "family",
+                                   "genus", "specificEpithet", "country",
+                                     "stateProvince", "county", "locality"};
+
+        ArrayList<String> fieldList = new ArrayList<String>();
+        fieldList.addAll(Arrays.asList(occurrence));
         
         return super.searchCount(Occurrence.class, 
                                  new OccurrenceTransformer(),
-                                 fields, 
+                                 fieldList.toArray(new String[fieldList.size()]),
                                  searchText);
     }
 }

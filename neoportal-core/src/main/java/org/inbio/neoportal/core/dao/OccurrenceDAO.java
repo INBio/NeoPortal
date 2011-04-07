@@ -39,7 +39,6 @@ public interface OccurrenceDAO
     * @return 
     */
     public List search(
-        final String[] fields, 
         final String searchText,
         final int offset, 
         final int quantity);
@@ -51,6 +50,6 @@ public interface OccurrenceDAO
      * @param searchText
      * @return 
      */
-    public Long searchCount(final String[] fields, final String searchText);
+    public Long searchCount(final String searchText);
 
 }

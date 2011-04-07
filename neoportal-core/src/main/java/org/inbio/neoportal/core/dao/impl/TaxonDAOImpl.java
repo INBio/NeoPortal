@@ -19,6 +19,8 @@
 package org.inbio.neoportal.core.dao.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.inbio.neoportal.core.dao.TaxonDAO;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
@@ -37,12 +39,20 @@ public class TaxonDAOImpl
     
     
     @Override
-    public List<TaxonLiteCDTO> search(final String[] fields, 
-        final String searchText, final int offset, final int quantity) {
+    public List<TaxonLiteCDTO> search
+        (final String searchText, final int offset, final int quantity) {
+        
+       String[] taxon =
+                new String[]{ "defaultName", "kingdom", "division", "class_",
+                                 "order", "family", "genus", "species"};
+
+        ArrayList<String> fieldList = new ArrayList<String>();
+
+        fieldList.addAll(Arrays.asList(taxon));
 
         return super.search(Taxon.class,
                             new TaxonTransformer(), 
-                            fields, 
+                            fieldList.toArray(new String[fieldList.size()]), 
                             searchText, 
                             offset, 
                             quantity);
@@ -50,11 +60,19 @@ public class TaxonDAOImpl
     }
 
     @Override
-    public Long searchCount(final String[] fields, final String searchText) {
+    public Long searchCount(final String searchText) {
+        
+        String[] taxon =
+                new String[]{ "defaultName", "kingdom", "division", "class_",
+                                 "order", "family", "genus", "species"};
 
+        ArrayList<String> fieldList = new ArrayList<String>();
+
+        fieldList.addAll(Arrays.asList(taxon));
+        
         return super.searchCount(Taxon.class, 
                                 new TaxonTransformer(), 
-                                fields,
+                                fieldList.toArray(new String[fieldList.size()]), 
                                 searchText);
     }
 }

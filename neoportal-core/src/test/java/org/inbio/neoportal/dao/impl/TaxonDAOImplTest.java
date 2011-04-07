@@ -89,12 +89,11 @@ public class TaxonDAOImplTest extends NeoportalTestBase{
     @Test
     public void testSearch() {
         System.out.println("search");
-        String[] fields = {"defaultName"};
         String searchText = "Inga";
         int offset = 0;
         int quantity = 20;
         Integer expResult = new Integer(5);
-        List result = taxonDAOImpl.search(fields, searchText, offset, quantity);
+        List result = taxonDAOImpl.search(searchText, offset, quantity);
         assertEquals(expResult, new Integer(result.size()));
     }
 
@@ -104,10 +103,9 @@ public class TaxonDAOImplTest extends NeoportalTestBase{
     @Test
     public void testSearchCount() {
         System.out.println("searchCount");
-        String[] fields = {"defaultName"};
         String searchText = "Inga_vera";
         Long expResult = new Long(5);
-        Long result = taxonDAOImpl.searchCount(fields, searchText);
+        Long result = taxonDAOImpl.searchCount(searchText);
         assertEquals(expResult, result);
     }
 
