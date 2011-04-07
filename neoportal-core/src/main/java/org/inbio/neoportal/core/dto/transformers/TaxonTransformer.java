@@ -31,11 +31,11 @@ import org.inbio.neoportal.core.entity.Taxon;
  * Transfrom a list of Taxon entities to OccurrenceLiteDTO
  * @author asanabria
  */
-public class TaxonResultTransformer 
+public class TaxonTransformer 
     implements ResultTransformer {
 
-    CommonNameResultTransformer commonNameRT =
-        new CommonNameResultTransformer();
+    CommonNameTransformer commonNameRT =
+        new CommonNameTransformer();
     
     List commonNameList =
         new ArrayList<CommonNameLiteCDTO>();

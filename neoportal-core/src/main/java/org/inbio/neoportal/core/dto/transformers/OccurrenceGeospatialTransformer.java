@@ -21,28 +21,31 @@ package org.inbio.neoportal.core.dto.transformers;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.transform.ResultTransformer;
-import org.inbio.neoportal.core.dto.commonname.CommonNameLiteCDTO;
-import org.inbio.neoportal.core.entity.CommonName;
+import org.inbio.neoportal.core.dto.occurrence.OccurrenceGeospatialLiteCDTO;
+import org.inbio.neoportal.core.entity.OccurrenceGeospatialExtension;
 
 
 /**
- * Transfrom a list of CommonName entities to OccurrenceLiteDTO
+ * Transfrom a list of Taxon entities to OccurrenceLiteDTO
  * @author asanabria
  */
-public class CommonNameResultTransformer 
+public class OccurrenceGeospatialTransformer 
     implements ResultTransformer {
 
     @Override
     public List transformList(List list) {
-        List<CommonName> CommonNameList = (List<CommonName>) list;
-        List<CommonNameLiteCDTO> newList = new ArrayList<CommonNameLiteCDTO>();
-
-        for(CommonName CommonName: CommonNameList)
+        
+        List<OccurrenceGeospatialExtension> occurrenceGeospatialList = 
+            (List<OccurrenceGeospatialExtension>) list;
+        
+        List<OccurrenceGeospatialLiteCDTO> newList =
+            new ArrayList<OccurrenceGeospatialLiteCDTO>();
+                
+        for(OccurrenceGeospatialExtension oge: occurrenceGeospatialList)
             newList.add(
-                new CommonNameLiteCDTO(
-                    CommonName.getCommonNameId(),
-                    CommonName.getName(),
-                    CommonName.getUsedBy()));
+                new OccurrenceGeospatialLiteCDTO(
+                    oge.getDecimalLatitude(),
+                    oge.getDecimalLongitude()));
         
         return newList;
     }
