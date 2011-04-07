@@ -19,7 +19,6 @@
 package org.inbio.neoportal.service.manager.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -72,18 +71,10 @@ public class SearchManagerImpl implements SearchManager{
         //Result List of SpeciesLiteDTO Objects
         List<SpeciesLiteSDTO> result = new ArrayList<SpeciesLiteSDTO>();
 
-       String[] taxon =
-                new String[]{ "defaultName", "kingdom", "division", "class_",
-                                 "order", "family", "genus", "species"};
 
-        ArrayList<String> fieldList = new ArrayList<String>();
-
-        fieldList.addAll(Arrays.asList(taxon));
 
         // Search the results of the query
-        occurrenceList = taxonDAO.search(
-                            fieldList.toArray(new String[fieldList.size()]), 
-                            searchText, offset, quantity);
+        occurrenceList = taxonDAO.search(searchText, offset, quantity);
         
         for (TaxonLiteCDTO tldto: occurrenceList ){
              
@@ -112,17 +103,7 @@ public class SearchManagerImpl implements SearchManager{
     public Long speciesSearchCount(String searchText)
             throws ParseException{
         
-       String[] taxon =
-        new String[]{ "defaultName", "kingdom", "division", "class_",
-                         "order", "family", "genus", "species"};
-
-        ArrayList<String> fieldList = new ArrayList<String>();
-
-        fieldList.addAll(Arrays.asList(taxon));
-        
-        return taxonDAO.searchCount(
-            fieldList.toArray(new String[fieldList.size()]),
-            searchText);
+        return taxonDAO.searchCount(searchText);
     }
     
     /**
@@ -138,14 +119,7 @@ public class SearchManagerImpl implements SearchManager{
         (String searchText, int offset, int quantity) 
             throws ParseException{
 
-        String[] occurrence =
-                new String[]{"scientificName", "higherTaxon", "kingdom",
-                                 "phylum", "class_", "orders", "family",
-                                   "genus", "specificEpithet", "country",
-                                     "stateProvince", "county", "locality"};
-
-        ArrayList<String> fieldList = new ArrayList<String>();
-        fieldList.addAll(Arrays.asList(occurrence));
+      
         
         ArrayList<OccurrenceLiteSDTO> olsdto = new 
             ArrayList<OccurrenceLiteSDTO>();
@@ -153,7 +127,6 @@ public class SearchManagerImpl implements SearchManager{
         // retrieve the search results
         ArrayList<OccurrenceLiteCDTO> ocList 
             =  (ArrayList<OccurrenceLiteCDTO>) occurrenceDAO.search(
-                    fieldList.toArray(new String[fieldList.size()]), 
                     searchText, 
                     offset, 
                     quantity);
@@ -204,17 +177,7 @@ public class SearchManagerImpl implements SearchManager{
     public Long occurrenceSearchCount(String searchText)
             throws ParseException {
 
-        String[] occurrence =
-                new String[]{"scientificName", "higherTaxon", "kingdom",
-                                 "phylum", "class_", "orders", "family",
-                                   "genus", "specificEpithet", "country",
-                                     "stateProvince", "county", "locality"};
-
-        ArrayList<String> fieldList = new ArrayList<String>();
-        fieldList.addAll(Arrays.asList(occurrence));
-
-        return occurrenceDAO.searchCount(
-            fieldList.toArray(new String[fieldList.size()]), searchText);
+        return occurrenceDAO.searchCount( searchText);
     }
     
     
