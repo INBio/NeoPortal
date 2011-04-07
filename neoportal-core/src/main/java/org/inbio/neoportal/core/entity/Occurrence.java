@@ -112,6 +112,7 @@ public class Occurrence  implements java.io.Serializable {
      private String attributes;
      private String imageUrl;
      private String relatedInformation;
+     
      private Set<OccurrenceHasReferenceElement> occurrenceHasReferenceElements
          = new HashSet<OccurrenceHasReferenceElement>(0);
      
