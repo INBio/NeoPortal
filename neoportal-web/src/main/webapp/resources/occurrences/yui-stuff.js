@@ -153,8 +153,6 @@ function createOccurrencesDS(searchString){
     myDataSource.responseSchema = {
         resultNode: "element",
         fields: [{
-            key:"gui"
-        },{
             key:"scientificname"
         },{
             key:"country"
@@ -189,7 +187,7 @@ function createOccurrencesConfigs(){
         dynamicData: true, // Enables dynamic server-driven data
         // Sets UI initial sort arrow
         sortedBy : {
-            key:"scientificname",
+            key:"country",
             dir:YAHOO.widget.DataTable.CLASS_ASC
         },
         // Enables pagination

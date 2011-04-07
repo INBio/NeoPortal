@@ -153,8 +153,8 @@ function clearPopups(){
  */
 function showSpecimenPoints(searchString)  {
     //Prepare URL for XHR request:
-    var sUrl = "../search/occurrences?searchString=scientificname:"+searchString+
-        "&format=xml&sort=gui&dir=asc&startIndex=0&results=20";
+    var sUrl = "../search/occurrences?searchString="+searchString+
+        "&format=xml&sort=scientificname&dir=asc&startIndex=0&results=20";
 
     //Prepare callback object
     var callback = {
