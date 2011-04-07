@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.lucene.queryParser.ParseException;
-import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
+import org.inbio.neoportal.service.dto.occurrences.OccurrenceLiteSDTO;
 import org.inbio.neoportal.service.dto.species.SpeciesLiteSDTO;
 import org.inbio.neoportal.service.manager.SearchManager;
 import org.inbio.neoportal.web.dto.SpeciesLiteWDTO;
@@ -70,7 +70,7 @@ public class SearchController {
         XMLSpeciesWrapper rw = new XMLSpeciesWrapper();
         try {
             speciesList = searchManagerImpl
-                .speciesListPaginatedSearch(searchString, startIndex , results); 
+                .speciesPaginatedSearch(searchString, startIndex , results); 
 
             for(SpeciesLiteSDTO spDTO : speciesList)
                 rw.addElement(new SpeciesLiteWDTO(
@@ -101,7 +101,7 @@ public class SearchController {
             throws ParseException {
         
         XMLCountWrapper cw = new XMLCountWrapper();
-        cw.setCount(searchManagerImpl.speciesListSearchCount(searchString));
+        cw.setCount(searchManagerImpl.speciesSearchCount(searchString));
         return cw;
     }
  
@@ -113,31 +113,32 @@ public class SearchController {
     @RequestMapping(
         value="/occurrences", 
         method=RequestMethod.GET, 
-        params={"format=xml","searchString"})
+        params={"format=xml","searchString", "startIndex", "results"})
     
     public @ResponseBody XMLSpecimenWrapper searchOccurrencesWriteXml
-        (@RequestParam String searchString) {
+        (@RequestParam String searchString,
+         @RequestParam int startIndex,
+         @RequestParam int results) {
 
-        List<TaxonLiteCDTO> occurrenceList = null;
+        List<OccurrenceLiteSDTO> occurrenceList = null;
 
         XMLSpecimenWrapper rw = new XMLSpecimenWrapper();
         try {
             occurrenceList 
-                = searchManagerImpl.fullPaginatedSearch(searchString, 0, 15); 
+                = searchManagerImpl.occurrencePaginatedSearch(searchString, startIndex, results); 
             
-            for(TaxonLiteCDTO olDTO : occurrenceList)
-                rw.addElement(new OccurrenceLiteWDTO(
-              //  olDTO.getGlobalUniqueIdentifier(),
-                olDTO.getScientificName()
-           //     olDTO.getCountry(),
-            //    olDTO.getProvince(),
-            //    olDTO.getCounty(),
-            //    olDTO.getLocality(),
-            //    olDTO.getLatitude(),
-            //    olDTO.getLongitude(),
-           //     olDTO.getCatalog(),
-           //     olDTO.getInstitution()
-                    ));
+            for(OccurrenceLiteSDTO olDTO : occurrenceList)
+                rw.addElement(
+                    new OccurrenceLiteWDTO(
+                        olDTO.getScientificName(),
+                        olDTO.getCountry(),
+                        olDTO.getProvince(),
+                        olDTO.getCounty(),      
+                        olDTO.getLocality(),
+                        olDTO.getLatitude(),
+                        olDTO.getLongitude(),
+                        olDTO.getCatalog(),
+                        olDTO.getInstitution()));
 
         } catch (ParseException ex) {
             Logger.getLogger(
@@ -158,9 +159,10 @@ public class SearchController {
         params={"format=xml","searchString"})
     
     public @ResponseBody XMLCountWrapper countOccurrencesWriteXml
-        (@RequestParam String searchString) {
+        (@RequestParam String searchString) 
+            throws ParseException {
         XMLCountWrapper cw = new XMLCountWrapper();
-        cw.setCount(50L); //TODO
+        cw.setCount(searchManagerImpl.occurrenceSearchCount(searchString));
         return cw;
     }
     

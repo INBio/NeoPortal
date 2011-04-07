@@ -147,7 +147,7 @@ function initTable(searchString) {
  */
 function createOccurrencesDS(searchString){
     var myDataSource = new YAHOO.util.DataSource
-    ("../search/occurrences?searchString=scientificname:"+searchString+"&format=xml&");
+    ("../search/occurrences?searchString="+searchString+"&format=xml&");
     myDataSource.responseType = YAHOO.util.DataSource.TYPE_XML;
     myDataSource.useXPath = true;
     myDataSource.responseSchema = {
