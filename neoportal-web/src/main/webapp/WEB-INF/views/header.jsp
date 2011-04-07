@@ -10,6 +10,7 @@
             <form:form>
 
                 <div id="banner-rep">
+                    <!--a href="${pageContext.request.contextPath}"  -->
                     <div id="banner">
                         <div id="title">
                             <h1>
@@ -17,6 +18,7 @@
                             </h1>
                         </div>
                     </div>
+                    <!--/a-->
                 </div>
                 <!--<div id="header_links">
                     <a class="link_home" href="welcome.htm"><fmt:message key="home_title"/></a>

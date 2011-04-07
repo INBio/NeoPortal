@@ -66,14 +66,10 @@
             <div id="moduleExplanation">
                 <div class="hd">Bienvenido al Portal de biodiversidad de INBio</div>
                 <div class="bd">
-                    <h3>Explorar especies:</h3>
-                    <p>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx<br>
-                    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx<br>
-                    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.</p>
-                    <h3>Explorar multimedios:</h3>
-                    <p>xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx<br>
-                    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx<br>
-                    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.</p>
+                    <p>Para empezar a descubrir información sobre nuestra biodiversidad 
+                        solo tienes que escribir el nombre de una especie, su nombre científico
+                    o de algún lugar que te interese.<br>
+                    (No internacionalizado)</p>
                 </div>
             </div>
 

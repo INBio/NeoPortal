@@ -9,11 +9,11 @@ var totalcount;
  */
 var myColumnDefs = [ {
     key : "cname",
-    sortable : true,
+    sortable : false,
     label : commonNameT
 }, {
     key : "scname",
-    sortable : true,
+    sortable : false,
     label : scientificNameT
 }, {
     key : "url",

@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.lucene.queryParser.ParseException;
-import org.inbio.neoportal.core.dto.occurrence.TaxonLiteDTO;
-import org.inbio.neoportal.core.dto.taxon.description.TaxonDescriptionLiteDTO;
+import org.inbio.neoportal.core.dto.taxon.TaxonLiteDTO;
+import org.inbio.neoportal.core.dto.species.SpeciesLiteDTO;
 import org.inbio.neoportal.service.manager.SearchManager;
 import org.inbio.neoportal.web.messagebean.SpeciesLiteBean;
 import org.inbio.neoportal.web.messagebean.OccurrenceLiteBean;
@@ -49,6 +49,72 @@ public class SearchController {
     @Autowired
     private SearchManager searchManagerImpl;
 
+
+    /**
+     * Get a well formated xml containing paginated species
+     * @param searchString
+     * @return
+     */
+    @RequestMapping(
+        value="/species", 
+        method=RequestMethod.GET, 
+        params={"format=xml","searchString", "startIndex", "results"})
+    
+    public @ResponseBody XMLSpeciesWrapper searchSpeciesWriteXml(
+        @RequestParam String searchString,
+        @RequestParam int startIndex,
+        @RequestParam int results) {
+
+        List<SpeciesLiteDTO> speciesList = null;
+
+        XMLSpeciesWrapper rw = new XMLSpeciesWrapper();
+        try {
+            speciesList = searchManagerImpl
+                .speciesListPaginatedSearch(searchString, startIndex , results); 
+
+            for(SpeciesLiteDTO spDTO : speciesList)
+                rw.addElement(new SpeciesLiteBean(
+                spDTO.getImageURL(),
+                spDTO.getCommonName(),
+                spDTO.getScientificName()));
+
+        } catch (ParseException ex) {
+            Logger.getLogger(
+                SearchController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return rw;
+    }
+
+    /**
+     * Get a string containing the total count of species by searchString
+     * @param searchString
+     * @return
+     */
+    @RequestMapping(
+        value="/countSpecies",
+        method=RequestMethod.GET, 
+        params={"format=xml","searchString"})
+    
+    public @ResponseBody XMLCountWrapper countSpeciesWriteXml 
+        (@RequestParam String searchString) 
+            throws ParseException {
+        
+        XMLCountWrapper cw = new XMLCountWrapper();
+        cw.setCount(searchManagerImpl.speciesListSearchCount(searchString));
+        return cw;
+    }
+
+    public SearchManager getSearchManagerImpl() {
+        return searchManagerImpl;
+    }
+
+    public void setSearchManagerImpl(SearchManager searchManagerImpl) {
+        this.searchManagerImpl = searchManagerImpl;
+    }
+    
+    
+    
     /**
      * Get a well formated xml containing paginated occurrences
      * @param searchString
@@ -90,8 +156,8 @@ public class SearchController {
         
         return rw;
     }
-
-     /**
+    
+    /**
      * Get a string containing the total count of occurrences by searchString
      * @param searchString
      * @return
@@ -106,65 +172,5 @@ public class SearchController {
         XMLCountWrapper cw = new XMLCountWrapper();
         cw.setCount(50L); //TODO
         return cw;
-    }
-
-    /**
-     * Get a well formated xml containing paginated species
-     * @param searchString
-     * @return
-     */
-    @RequestMapping(
-        value="/species", 
-        method=RequestMethod.GET, 
-        params={"format=xml","searchString"})
-    
-    public @ResponseBody XMLSpeciesWrapper searchSpeciesWriteXml
-        (@RequestParam String searchString) {
-
-        List<TaxonDescriptionLiteDTO> speciesList = null;
-
-        XMLSpeciesWrapper rw = new XMLSpeciesWrapper();
-        try {
-            speciesList 
-                = searchManagerImpl.speciesListPaginatedSearch(searchString, 0 ,10); //TODO
-
-            for(TaxonDescriptionLiteDTO spDTO : speciesList)
-                rw.addElement(new SpeciesLiteBean(
-                spDTO.getImageURL(),
-                spDTO.getCommonName(),
-                spDTO.getScientificName()));
-
-        } catch (ParseException ex) {
-            Logger.getLogger(
-                SearchController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        return rw;
-    }
-
-    /**
-     * Get a string containing the total count of species by searchString
-     * @param searchString
-     * @return
-     */
-    @RequestMapping(
-        value="/countSpecies",
-        method=RequestMethod.GET, 
-        params={"format=xml","searchString"})
-    
-    public @ResponseBody XMLCountWrapper countSpeciesWriteXml
-        (@RequestParam String searchString) {
-        
-        XMLCountWrapper cw = new XMLCountWrapper();
-        cw.setCount(50L); //TODO
-        return cw;
-    }
-
-    public SearchManager getSearchManagerImpl() {
-        return searchManagerImpl;
-    }
-
-    public void setSearchManagerImpl(SearchManager searchManagerImpl) {
-        this.searchManagerImpl = searchManagerImpl;
     }
 }
