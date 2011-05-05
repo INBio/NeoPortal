@@ -34,7 +34,8 @@ import org.hibernate.search.annotations.Indexed;
  */
 
 @Indexed
-public class Taxon  implements java.io.Serializable {
+public class Taxon  
+    implements java.io.Serializable {
 
 
     // Fields    

@@ -93,8 +93,17 @@ body {
 
 #tablePanelContainer {
     text-align:center;
-    float:left;
+    float: left;
     width: 50%;
+}
+
+#tablePanelContainerFull {
+    text-align:center;
+    float: left;
+    width: auto;
+    margin: auto;
+    padding: auto;
+    border: auto;
 }
 
 #occuPanel{

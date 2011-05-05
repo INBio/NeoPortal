@@ -19,6 +19,8 @@
 package org.inbio.neoportal.core.dao;
 
 import java.math.BigDecimal;
+import java.util.List;
+import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionLiteCDTO;
 import org.inbio.neoportal.core.entity.TaxonDescription;
 
 /**
@@ -27,5 +29,27 @@ import org.inbio.neoportal.core.entity.TaxonDescription;
  */
 public interface TaxonDescriptionDAO 
     extends GenericBaseDAO<TaxonDescription, BigDecimal> {
+    
+        /**
+     * Return the total amount of items of a query.
+     * @param fields
+     * @param searchText
+     * @return
+     */
+    public Long searchCount(final String searchText);
+
+    /**
+     * Search the <code>searchText</code> in the lucene index in the <code>fields</code>
+     * Results are paginated.
+     * @param fields
+     * @param searchText
+     * @param offset: first result of the list.
+     * @param quantity: lengt of the result list.
+     * @return
+     */
+    public List<TaxonDescriptionLiteCDTO> search(
+        final String searchText,
+        final int offset, 
+        final int quantity) ;
 
 }

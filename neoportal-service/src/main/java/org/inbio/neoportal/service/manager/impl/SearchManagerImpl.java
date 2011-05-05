@@ -25,12 +25,15 @@ import java.util.Set;
 import org.apache.lucene.queryParser.ParseException;
 import org.inbio.neoportal.core.dao.OccurrenceDAO;
 import org.inbio.neoportal.core.dao.TaxonDAO;
+import org.inbio.neoportal.core.dao.TaxonDescriptionDAO;
 import org.inbio.neoportal.core.dto.commonname.CommonNameLiteCDTO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceGeospatialLiteCDTO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceLiteCDTO;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
+import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionLiteCDTO;
 import org.inbio.neoportal.service.dto.occurrences.OccurrenceLiteSDTO;
 import org.inbio.neoportal.service.dto.species.SpeciesLiteSDTO;
+import org.inbio.neoportal.service.dto.species.TaxonDescriptionLiteSDTO;
 import org.inbio.neoportal.service.manager.SearchManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,8 +50,66 @@ public class SearchManagerImpl implements SearchManager{
     private TaxonDAO taxonDAO;
     
     @Autowired
+    private TaxonDescriptionDAO taxonDescriptionDAO;
+
+    @Autowired
     private OccurrenceDAO occurrenceDAO;
 
+        /**
+     * 
+     * @param searchText
+     * @param offset
+     * @param quantity
+     * @return
+     * @throws ParseException 
+     */
+    @Override
+    public List<TaxonDescriptionLiteSDTO> 
+        speciesPaginatedSearch(String searchText, int offset, int quantity)
+            throws ParseException{
+
+        
+        TaxonDescriptionLiteSDTO sp = null;
+                
+        //Set to store all the diferent scientific names
+        List<TaxonDescriptionLiteCDTO> speciesList = new ArrayList<TaxonDescriptionLiteCDTO>();
+        
+        //Result List of SpeciesLiteDTO Objects
+        List<TaxonDescriptionLiteSDTO> result = new ArrayList<TaxonDescriptionLiteSDTO>();
+
+
+
+        // Search the results of the query
+        speciesList = taxonDescriptionDAO.search(searchText, offset, quantity);
+        
+        for (TaxonDescriptionLiteCDTO tldto: speciesList ){
+             
+            sp = new TaxonDescriptionLiteSDTO();
+             
+             sp.setCommonNameList(searchText);
+             sp.setScientificName(tldto.getScientificName());
+             sp.setInstitution(tldto.getInstitution());
+             result.add(sp);
+        }
+
+        return result;
+    }
+   
+    
+    /**
+     * Returns the element count of the search result
+     * @param searchText
+     * @return
+     * @throws ParseException 
+     */
+    @Override
+    public Long speciesSearchCount(String searchText)
+            throws ParseException{
+        
+        return taxonDescriptionDAO.searchCount(searchText);
+    }
+    
+    
     /**
      * 
      * @param searchText
@@ -59,7 +120,7 @@ public class SearchManagerImpl implements SearchManager{
      */
     @Override
     public List<SpeciesLiteSDTO> 
-        speciesPaginatedSearch(String searchText, int offset, int quantity)
+        taxonPaginatedSearch(String searchText, int offset, int quantity)
             throws ParseException{
 
         List<TaxonLiteCDTO> occurrenceList = null;
@@ -100,7 +161,7 @@ public class SearchManagerImpl implements SearchManager{
      * @throws ParseException 
      */
     @Override
-    public Long speciesSearchCount(String searchText)
+    public Long taxonSearchCount(String searchText)
             throws ParseException{
         
         return taxonDAO.searchCount(searchText);

@@ -24,12 +24,15 @@ import java.util.logging.Logger;
 import org.apache.lucene.queryParser.ParseException;
 import org.inbio.neoportal.service.dto.occurrences.OccurrenceLiteSDTO;
 import org.inbio.neoportal.service.dto.species.SpeciesLiteSDTO;
+import org.inbio.neoportal.service.dto.species.TaxonDescriptionLiteSDTO;
 import org.inbio.neoportal.service.manager.SearchManager;
 import org.inbio.neoportal.web.dto.SpeciesLiteWDTO;
 import org.inbio.neoportal.web.dto.OccurrenceLiteWDTO;
+import org.inbio.neoportal.web.dto.TaxonDescriptionLiteWDTO;
 import org.inbio.neoportal.web.dto.wrapper.XMLCountWrapper;
 import org.inbio.neoportal.web.dto.wrapper.XMLSpeciesWrapper;
 import org.inbio.neoportal.web.dto.wrapper.XMLSpecimenWrapper;
+import org.inbio.neoportal.web.dto.wrapper.XMLTaxonDescriptionWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,7 +52,6 @@ public class SearchController {
     @Autowired
     private SearchManager searchManagerImpl;
 
-
     /**
      * Get a well formated xml containing paginated species
      * @param searchString
@@ -60,17 +62,72 @@ public class SearchController {
         method=RequestMethod.GET, 
         params={"format=xml","searchString", "startIndex", "results"})
     
-    public @ResponseBody XMLSpeciesWrapper searchSpeciesWriteXml(
+    public @ResponseBody XMLTaxonDescriptionWrapper searchTaxonDescriptionWriteXml(
         @RequestParam String searchString,
         @RequestParam int startIndex,
         @RequestParam int results) {
+         List<TaxonDescriptionLiteSDTO> speciesList = null;
 
+        XMLTaxonDescriptionWrapper rw = new XMLTaxonDescriptionWrapper();
+        
+        try {
+            speciesList = searchManagerImpl
+                .speciesPaginatedSearch(searchString, startIndex , results); 
+
+            for(TaxonDescriptionLiteSDTO spDTO : speciesList)
+                rw.addElement(new TaxonDescriptionLiteWDTO(
+                    spDTO.getScientificName(),
+                    spDTO.getCommonNameList(),
+                    spDTO.getInstitution()));
+
+        } catch (ParseException ex) {
+            Logger.getLogger(
+                SearchController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return rw;     
+    }
+
+    /**
+     * Get a string containing the total count of species by searchString
+     * @param searchString
+     * @return
+     */
+    @RequestMapping(
+        value="/countSpecies",
+        method=RequestMethod.GET, 
+        params={"format=xml","searchString"})
+    
+    public @ResponseBody XMLCountWrapper countTaxonDescriptionWriteXml 
+        (@RequestParam String searchString) 
+            throws ParseException {
+        
+        XMLCountWrapper cw = new XMLCountWrapper();
+        cw.setCount(searchManagerImpl.speciesSearchCount(searchString));
+        return cw;
+    }
+
+    /**
+     * Get a well formated xml containing paginated species
+     * @param searchString
+     * @return
+     */
+    @RequestMapping(
+        value="/taxa", 
+        method=RequestMethod.GET, 
+        params={"format=xml","searchString", "startIndex", "results"})
+    
+    public @ResponseBody XMLSpeciesWrapper searchTaxonWriteXml(
+        @RequestParam String searchString,
+        @RequestParam int startIndex,
+        @RequestParam int results) {
+        
         List<SpeciesLiteSDTO> speciesList = null;
 
         XMLSpeciesWrapper rw = new XMLSpeciesWrapper();
         try {
             speciesList = searchManagerImpl
-                .speciesPaginatedSearch(searchString, startIndex , results); 
+                .taxonPaginatedSearch(searchString, startIndex , results); 
 
             for(SpeciesLiteSDTO spDTO : speciesList)
                 rw.addElement(new SpeciesLiteWDTO(
@@ -92,16 +149,16 @@ public class SearchController {
      * @return
      */
     @RequestMapping(
-        value="/countSpecies",
+        value="/countTaxa",
         method=RequestMethod.GET, 
         params={"format=xml","searchString"})
     
-    public @ResponseBody XMLCountWrapper countSpeciesWriteXml 
+    public @ResponseBody XMLCountWrapper countTaxonWriteXml 
         (@RequestParam String searchString) 
             throws ParseException {
         
         XMLCountWrapper cw = new XMLCountWrapper();
-        cw.setCount(searchManagerImpl.speciesSearchCount(searchString));
+        cw.setCount(searchManagerImpl.taxonSearchCount(searchString));
         return cw;
     }
  

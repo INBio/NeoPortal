@@ -5,7 +5,7 @@
 function getTotalSpecies(contextPath,searchString)  {
 
     //Prepare URL for XHR request:
-    var sUrl = contextPath+"/search/countSpecies?searchString="+searchString+"&format=xml";
+    var sUrl = contextPath+"/search/countTaxa?searchString="+searchString+"&format=xml";
 
     //Prepare our callback object
     var callback = {

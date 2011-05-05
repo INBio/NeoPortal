@@ -9,38 +9,14 @@ var contextPath;
  * This structure defines the requiered data to show in ocurrences page
  */
 var myColumnDefs = [  {
-    key : "scientificname",
-    sortable : true,
-    label : scientificNameT
+    key : "cname",
+    sortable : false,
+    label : commonNameT
 }, {
-    key : "institution",
-    sortable : true,
+    key : "inst",
+    sortable : false,
     label : institutionT
-}, {
-    key : "country",
-    sortable : true,
-    label : countryT
-}, {
-    key : "province",
-    sortable : true,
-    label : provinceT
-}, {
-    key : "county",
-    sortable : true,
-    label : countyT
-},  {
-    key : "latitude",
-    sortable : false,
-    label : latitudeT
-}, {
-    key : "longitude",
-    sortable : false,
-    label : longitudeT
-},{
-    key : "catalog",
-    sortable : true,
-    label : catalogT
-} ];
+}];
 
 
 /*
@@ -151,25 +127,9 @@ function createSpeciesDS(searchString){
     myDataSource.responseSchema = {
         resultNode: "element",
         fields: [{
-            key:"scientificname"
+            key:"cname"
         },{
-            key:"country"
-        },{
-            key:"province"
-        },{
-            key:"county"
-        },{
-            key:"locality"
-        },{
-            key:"latitude",
-            parser:"number"
-        },{
-            key:"longitude",
-            parser:"number"
-        },{
-            key:"catalog"
-        },{
-            key:"institution"
+            key:"inst"
         }]
     };
     return myDataSource;
@@ -181,11 +141,11 @@ function createSpeciesDS(searchString){
 function createSpeciesConfigs(){
     var myConfigs = {
         // Initial request for first page of data
-        initialRequest: "sort=scientificname&dir=asc&startIndex=0&results=15",
+        initialRequest: "sort=commonname&dir=asc&startIndex=0&results=15",
         dynamicData: true, // Enables dynamic server-driven data
         // Sets UI initial sort arrow
         sortedBy : {
-            key:"country",
+            key:"cname",
             dir:YAHOO.widget.DataTable.CLASS_ASC
         },
         // Enables pagination

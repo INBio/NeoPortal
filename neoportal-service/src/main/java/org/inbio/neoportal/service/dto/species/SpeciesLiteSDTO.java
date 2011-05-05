@@ -18,18 +18,24 @@
  */
 package org.inbio.neoportal.service.dto.species;
 
-import org.inbio.neoportal.common.dto.*;
 import org.inbio.neoportal.common.dto.BaseDTO;
 
 /**
  *
  * @author esmata
+ * @author asanabria
  */
-public class SpeciesLiteSDTO extends BaseDTO implements Comparable {
+public class SpeciesLiteSDTO 
+    extends BaseDTO 
+        implements Comparable {
 
     private String imageURL;
 	private String commonName;
     private String scientificName;
+    private String institution;
+    private String country;
+    private String provice;
+    private String county;
 
     public SpeciesLiteSDTO() {
     }
@@ -133,4 +139,35 @@ public class SpeciesLiteSDTO extends BaseDTO implements Comparable {
         this.scientificName = scientificName;
     }
 
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCounty() {
+        return county;
+    }
+
+    public void setCounty(String county) {
+        this.county = county;
+    }
+
+    public String getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(String institution) {
+        this.institution = institution;
+    }
+
+    public String getProvice() {
+        return provice;
+    }
+
+    public void setProvice(String provice) {
+        this.provice = provice;
+    }
 }

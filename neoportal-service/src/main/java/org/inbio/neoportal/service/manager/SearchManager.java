@@ -22,6 +22,7 @@ import java.util.List;
 import org.apache.lucene.queryParser.ParseException;
 import org.inbio.neoportal.service.dto.occurrences.OccurrenceLiteSDTO;
 import org.inbio.neoportal.service.dto.species.SpeciesLiteSDTO;
+import org.inbio.neoportal.service.dto.species.TaxonDescriptionLiteSDTO;
 
 
 /**
@@ -33,13 +34,37 @@ public interface SearchManager {
     /**
      * Search <code>searchText</code> in the lucene index, this method return only
      * differents species (scientificNames).
+     * (using the TaxonDescription entity)
      * @param searchText
      * @param offset
      * @param quantity
      * @return
      * @throws ParseException
      */
-    public List<SpeciesLiteSDTO> speciesPaginatedSearch
+    public List<TaxonDescriptionLiteSDTO> speciesPaginatedSearch
+        (String searchText, int offset, int quantity)
+            throws ParseException;
+
+    /**
+     * Search <code>searchText</code> in the lucene index, and count the results
+     * (using the TaxonDescription entity)
+     * @param searchText
+     * @return
+     * @throws ParseException
+     */
+    public Long speciesSearchCount(String searchText)
+            throws ParseException;
+    
+    /**
+     * Search <code>searchText</code> in the lucene index, this method return only
+     * differents species (scientificNames).
+     * @param searchText
+     * @param offset
+     * @param quantity
+     * @return
+     * @throws ParseException
+     */
+    public List<SpeciesLiteSDTO> taxonPaginatedSearch
         (String searchText, int offset, int quantity)
             throws ParseException;
 
@@ -49,7 +74,7 @@ public interface SearchManager {
      * @return
      * @throws ParseException
      */
-    public Long speciesSearchCount(String searchText)
+    public Long taxonSearchCount(String searchText)
             throws ParseException;
    
   

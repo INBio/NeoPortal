@@ -99,7 +99,7 @@ public class SearchManagerImplTest extends NeoportalTestBase {
         Integer expResult = new Integer(3);
         
         List result 
-            = searchManagerImpl.speciesPaginatedSearch(searchText, 
+            = searchManagerImpl.taxonPaginatedSearch(searchText, 
                 offset, quantity);
         
         assertEquals(expResult, new Integer(result.size()));

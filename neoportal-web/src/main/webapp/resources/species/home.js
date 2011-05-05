@@ -249,7 +249,7 @@ function createSpeciesConfigs(){
  * Creates the species data source for results table
  */
 function createSpeciesDS(searchString){
-    var myDataSource = new YAHOO.util.DataSource("search/species?searchString="+searchString+"&format=xml&");
+    var myDataSource = new YAHOO.util.DataSource("search/taxa?searchString="+searchString+"&format=xml&");
     myDataSource.responseType = YAHOO.util.DataSource.TYPE_XML;
     myDataSource.useXPath = true;
     myDataSource.responseSchema = {
