@@ -78,7 +78,7 @@ function showOnPanel(scName){
     //Create body
     var content = '<p id="title">'+serviceTitleT+'</p>';
     content += createServiceUrl(contextPath+occurrencesUrl(scName),'service',seeMultimediaT);
-    content += createServiceUrl(contextPath+occurrencesUrl(scName),'service',seeSpeciesT);
+    content += createServiceUrl(contextPath+speciesUrl(scName),'service',seeSpeciesT);
     content += createServiceUrl(contextPath+occurrencesUrl(scName),'service',seeOccurrencesT);
     content += '<p id="title">'+externalTitleT+'</p>';
     content += createExternalUrl(picasaUrl(scName),'picasa',seeOnPicasaT);
@@ -113,6 +113,15 @@ function occurrencesUrl(scName){
     var strSearch = cleanedInput.replace(" ","_");
     return '/occurrences/'+strSearch;
 }
+
+function speciesUrl(scName){
+    var cleanedInput = cleanInputSearch(scName);
+    //Finally replace blank spaces for underscores
+    var strSearch = cleanedInput.replace(" ","_");
+    return '/species/'+strSearch;
+}
+
+
 function picasaUrl(scName){
     var cleanedInput = cleanInputSearch(scName);
     //Finally replace blank spaces for plus
