@@ -121,7 +121,7 @@ function initTable(searchString) {
  */
 function createSpeciesDS(searchString){
     var myDataSource = new YAHOO.util.DataSource
-    ("../search/species?searchString="+searchString+"&format=xml&");
+    (contextPath + "/search/species?searchString="+searchString+"&format=xml&");
     myDataSource.responseType = YAHOO.util.DataSource.TYPE_XML;
     myDataSource.useXPath = true;
     myDataSource.responseSchema = {

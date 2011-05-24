@@ -139,7 +139,16 @@
 		  </exclusion>
 		 </exclusions>
 		</dependency>
-
+	 <dependency>
+	  <groupId>com.sun.xml</groupId>
+	  <artifactId>jaxb-impl</artifactId>
+	  <version>2.0EA3</version>
+	 </dependency>
+	 <dependency>
+	  <groupId>commons-lang</groupId>
+	  <artifactId>commons-lang</artifactId>
+	  <version>2.6</version>
+	 </dependency>
 	</dependencies>
 	<repositories>
 		<!-- For testing against latest Spring snapshots -->
@@ -157,6 +166,7 @@
 			<url>http://maven.springframework.org/milestone</url>
 			<snapshots><enabled>false</enabled></snapshots>
 		</repository>
+        
 	</repositories>
 	<organization>
 		<name>Instituto Nacional de Biodiversidad</name>

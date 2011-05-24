@@ -252,6 +252,56 @@ a.service:link,a.service:visited,a.wikis:link,a.wikis:visited,a.eol:link,a.eol:v
     -webkit-border-radius: 3px;
 }
 
+/*-------------------------------Styling Taxon Description page ---------------------------------*/
+#tabsContainer {
+    float: left;
+    width: 100%;
+    background-color: #85DB18;
+    
+    margin-bottom: 5px;
+    
+    /*round corners*/
+    -moz-border-radius: 6px 6px 0 0;
+    border-radius: 6px 6px 0 0;
+}
+
+#tabsContainer ul{
+    float:left;
+    list-style: none;
+    
+    margin: 0 0 0 40px;
+    padding: 0;
+}
+
+#tabsContainer li {
+    float: left;
+}
+
+#tabsContainer li a {
+    text-decoration: none;
+    display: block;
+    
+    color: #F5F6D4;
+    padding: 0 1em;
+    font-size: 1.2em;
+    line-height: 3.5em;
+}
+
+#tabsContainer li.currentTab a {
+    background-color: #493F0B;
+    font-weight: bold;
+    
+    /*border-bottom: 6px solid #A7C520;
+    font-weight: bold;*/
+}
+
+#taxonDescription {
+    clear: both;
+    border-top: 1px solid #ccc;
+}
+
+/*---------------------------------End Taxon Description page -----------------------------------*/
+
 /*------------------------------- Footer by Cristian Granados --------------------------------*/
 #footer {
         margin:0;
@@ -262,6 +312,8 @@ a.service:link,a.service:visited,a.wikis:link,a.wikis:visited,a.eol:link,a.eol:v
         text-align:center;
         color:#354B20;
         line-height:24px;
+        
+        clear: both;
     }
 
 <[if gte IE 5.5]><![if lt IE 7]>

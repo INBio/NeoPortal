@@ -25,6 +25,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.inbio.neoportal.web.dto.TaxonDescriptionFullWDTO;
 import org.inbio.neoportal.web.dto.TaxonDescriptionLiteWDTO;
 
 import org.springframework.roo.addon.javabean.RooJavaBean;
@@ -44,7 +45,10 @@ public class XMLTaxonDescriptionWrapper {
 	@XmlElementWrapper(name="response-elements", nillable=true)
 	@XmlElement(name="element")
 	private List<TaxonDescriptionLiteWDTO> elements = new ArrayList<TaxonDescriptionLiteWDTO>();
-
+    
+    @XmlElementWrapper(name="taxon-description", nillable=true)
+	@XmlElement(name="element")
+    private List<TaxonDescriptionFullWDTO> tdfElements = new ArrayList<TaxonDescriptionFullWDTO> ();
 	/**
 	 *
 	 * @param responseType
@@ -60,4 +64,13 @@ public class XMLTaxonDescriptionWrapper {
 	public boolean addElement(TaxonDescriptionLiteWDTO xmlBean){
 		return elements.add(xmlBean);
 	}
+
+    /**
+     * 
+     * @param taxonDescriptionFullWDTO
+     * @return 
+     */
+    public boolean addElement(TaxonDescriptionFullWDTO taxonDescriptionFullWDTO) {
+        return tdfElements.add(taxonDescriptionFullWDTO);
+    }
 }

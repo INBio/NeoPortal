@@ -28,12 +28,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/species/*")
 public class SpeciesController {
 
-    @RequestMapping(value = "/{scientificname}", method = RequestMethod.GET)
-    public String prepareSN
-        (Model model, @PathVariable(value = "scientificname") String scientificName) {
+//    @RequestMapping(value = "/{scientificname}", method = RequestMethod.GET)
+//    public String prepareSN
+//        (Model model, @PathVariable(value = "scientificname") String scientificName) {
+//        
+//        model.addAttribute("scientificname", scientificName);
+//        return "species"; //Return occurrences view with scientificname as a parameter into the model
+//    }
+    
+    @RequestMapping (
+            value = "/{scientificName}",
+            method = RequestMethod.GET)
+    public String getTaxonDescriptionByProvider (
+            Model model,
+            @PathVariable(value = "scientificName") String scientificName) {
         
-        model.addAttribute("scientificname", scientificName);
-        return "species"; //Return occurrences view with scientificname as a parameter into the model
+        model.addAttribute("scientificName", scientificName);
+        //model.addAttribute("provider", provider);
+        
+        return "taxonDescription";
     }
 }
 

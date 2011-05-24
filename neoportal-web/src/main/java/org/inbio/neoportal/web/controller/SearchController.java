@@ -58,7 +58,7 @@ public class SearchController {
      * @return
      */
     @RequestMapping(
-        value="/species", 
+        value="/species*", 
         method=RequestMethod.GET, 
         params={"format=xml","searchString", "startIndex", "results"})
     
