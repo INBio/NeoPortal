@@ -22,16 +22,23 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.inbio.neoportal.core.dao.TaxonDescriptionDAO;
+import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionLiteCDTO;
 import org.inbio.neoportal.core.dto.transformers.TaxonDescriptionTransformer;
+import org.inbio.neoportal.core.dto.transformers.TaxonDescriptionFullTransformer;
 import org.inbio.neoportal.core.dto.transformers.TaxonTransformer;
 import org.inbio.neoportal.core.entity.TaxonDescription;
+import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 /**
  * Grant access to the Taxon entity
  * @author asanabria
+ * @author avargas
  */
 @Repository
 public class TaxonDescriptionDAOImpl 
@@ -73,5 +80,27 @@ public class TaxonDescriptionDAOImpl
                                 new TaxonTransformer(), 
                                 fieldList.toArray(new String[fieldList.size()]), 
                                 searchText);
+    }
+
+    @Override
+    public List<TaxonDescriptionFullCDTO> findAllByScientificName(
+       final String scientificName,
+       final String provider) {
+        HibernateTemplate template = getHibernateTemplate();
+		return (List<TaxonDescriptionFullCDTO>) template.execute(new HibernateCallback() {
+			public Object doInHibernate(Session session) {       
+                Query query = session.createQuery(
+						"from TaxonDescription as td"
+						+ " where lower(td.scientificName) = lower(:scientificName)"
+                        + " and lower(td.institutionCode) = lower(:provider)");
+				query.setParameter("scientificName", scientificName);
+                query.setParameter("provider", provider);
+                query.setResultTransformer(new TaxonDescriptionFullTransformer());
+                
+                //query.setCacheable(true);
+				return query.list();
+			}
+		});
+        
     }
 }

@@ -20,12 +20,14 @@ package org.inbio.neoportal.core.dao;
 
 import java.math.BigDecimal;
 import java.util.List;
+import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionLiteCDTO;
 import org.inbio.neoportal.core.entity.TaxonDescription;
 
 /**
  * Grant Access to the TaxonDescription Entity
  * @author asanabria
+ * @author avargas
  */
 public interface TaxonDescriptionDAO 
     extends GenericBaseDAO<TaxonDescription, BigDecimal> {
@@ -52,4 +54,8 @@ public interface TaxonDescriptionDAO
         final int offset, 
         final int quantity) ;
 
+    
+   public List<TaxonDescriptionFullCDTO> findAllByScientificName(
+        final String scientificName,
+        final String provider) ;
 }
