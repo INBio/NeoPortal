@@ -65,5 +65,6 @@ public class BaseDTO
 	public void setLogCreationDate(String logCreationDate) {
 		this.logCreationDate = logCreationDate;
 	}
+	
 
 }

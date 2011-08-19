@@ -25,7 +25,9 @@ import java.util.Set;
 import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.NumericField;
 
 
 /**
@@ -45,6 +47,8 @@ public class Taxon
      private Taxon taxonBySinonymTaxonId;
      private Taxon taxonByAncestorTaxonId;
 
+     @Field
+     @NumericField
      private BigDecimal taxonomicalRangeId;
 
      @Field

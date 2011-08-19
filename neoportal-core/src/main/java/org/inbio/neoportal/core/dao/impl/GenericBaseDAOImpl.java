@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
 import org.hibernate.Session;
@@ -35,10 +36,8 @@ import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.transform.ResultTransformer;
 import org.inbio.neoportal.core.dao.GenericBaseDAO;
-import org.inbio.neoportal.core.dto.transformers.TaxonTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateCallback;
-
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -154,7 +153,8 @@ public class GenericBaseDAOImpl<E ,I>
                 hsQuery.setResultTransformer(resultTransformer);
                 hsQuery.setFirstResult(offset);
                 hsQuery.setMaxResults(quantity);
-
+                
+                
                 return hsQuery.list();
             }
         });
@@ -194,10 +194,13 @@ public class GenericBaseDAOImpl<E ,I>
                     
                 }
 
+                
                 // Wrap Lucene query in a org.hibernate.Query
                 FullTextQuery hsQuery =
                     fullTextSession.createFullTextQuery(query, entityClass);
 
+                //hsQuery.enableFullTextFilter(searchText)
+                
                 return new Long(hsQuery.getResultSize());
             }
         });

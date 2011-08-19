@@ -44,7 +44,8 @@ public class TaxonDAOImpl
         
        String[] taxon =
                 new String[]{ "defaultName", "kingdom", "division", "class_",
-                                 "order", "family", "genus", "species"};
+                                 "order", "family", "genus", "species",
+                                "taxonomicalRangeId"};
 
         ArrayList<String> fieldList = new ArrayList<String>();
 
@@ -64,7 +65,8 @@ public class TaxonDAOImpl
         
         String[] taxon =
                 new String[]{ "defaultName", "kingdom", "division", "class_",
-                                 "order", "family", "genus", "species"};
+                                 "order", "family", "genus", "species",
+                                "taxonomicalRangeId"};
 
         ArrayList<String> fieldList = new ArrayList<String>();
 
