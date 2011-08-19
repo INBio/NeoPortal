@@ -16,6 +16,9 @@ body {
     margin:0;
     padding:0;
     background-color:#F6F6F5;
+    
+    font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;
+    
 }
 
 /* The content of each .jsp*/
@@ -67,6 +70,30 @@ body {
     margin-top:3px;
 }
 
+/*------------------------------- Footer by Cristian Granados --------------------------------*/
+#footer {
+        margin:0;
+        background: #D2D8A5;
+        width: 100%;
+        left: 0;
+        right: 0;
+        text-align:center;
+        color:#354B20;
+        line-height:24px;
+        
+        clear: both;
+    }
+
+<[if gte IE 5.5]><![if lt IE 7]>
+#footer {
+top: expression( ( 0 - footer.offsetHeight + ( document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight ) + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop ) ) + 'px' );
+position:absolute;
+}
+<![endif]><![endif]>
+
+/*------------------------------- Footer by Cristian Granados --------------------------------*/
+
+
 #resultsPanel {
 	width: 100%;
 	margin-top: 20px;
@@ -104,6 +131,65 @@ body {
     margin: auto;
     padding: auto;
     border: auto;
+}
+
+/*
+***** styling table component *******
+*/
+#resultTable.home{
+    /*font-family: arial, helvetica, sans-serif;*/
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    
+}
+
+#resultTable.home td{
+    width: 33%;
+    
+    font-size: 0.95em;
+}
+
+#resultTable.home th{
+    border: 1px solid #555;
+    font-weight: normal;
+    
+    background-color: #D8D8DA;
+}
+
+#resultTable.home tr.odd{
+    background-color: #eaf7fe;
+}
+
+#resultTable.home tbody tr:hover{
+    background-color: #8395B3;
+    color: #fff;
+}
+
+#resultTable.home .scname{
+    font-style: italic;
+}
+
+/*
+*   styling pagination and showing info
+*/
+
+div.top, div.bottom {
+    text-align: center;
+    font-size: 0.9em;
+    
+    color: #333;
+    
+    margin: 15px 0 20px;
+}
+
+span.paginate_button{
+    margin-right: 15px;
+}
+
+span.paginate_active{
+    margin-right: 15px;
+    font-weight: bold;
 }
 
 #occuPanel{
@@ -161,6 +247,7 @@ body {
     margin:10px 20% 25px 20%;
     padding:10px;
     text-align:center;
+    font-size: 0.8em;
    -moz-border-radius: 5px;
    -webkit-border-radius: 5px;
 }
@@ -215,9 +302,7 @@ body {
 }
 
 a.service:link,a.service:visited,a.wikis:link,a.wikis:visited,a.eol:link,a.eol:visited,a.gbif:link,a.gbif:visited,a.picasa:link,a.picasa:visited,a.flickr:link,a.flickr:visited{
-    color:#5E6B30;
     text-decoration:none;
-    font-weight:bold;
 }
 
 /* Style for images shown on species list */
@@ -302,26 +387,38 @@ a.service:link,a.service:visited,a.wikis:link,a.wikis:visited,a.eol:link,a.eol:v
 
 /*---------------------------------End Taxon Description page -----------------------------------*/
 
-/*------------------------------- Footer by Cristian Granados --------------------------------*/
-#footer {
-        margin:0;
-        background: #D2D8A5;
-        width: 100%;
-        left: 0;
-        right: 0;
-        text-align:center;
-        color:#354B20;
-        line-height:24px;
-        
-        clear: both;
-    }
-
-<[if gte IE 5.5]><![if lt IE 7]>
-#footer {
-top: expression( ( 0 - footer.offsetHeight + ( document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight ) + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop ) ) + 'px' );
-position:absolute;
+/*-------------------------------- Occurrences page style -----------------------*/
+.occuPanel{
+    overflow: auto;
+    border-left: 1px solid;
+    border-right: 1px solid;
 }
-<![endif]><![endif]>
 
-/*------------------------------- Footer by Cristian Granados --------------------------------*/
+#resultTable.occurrences{
+    
+    width: 125%;
+    border-collapse: collapse;
+}
 
+#resultTable.occurrences td{
+    font-size: 0.8em;
+    line-height: 1.6em;
+    padding-left: 4px;
+}
+
+#resultTable.occurrences th{
+    border: 1px solid #555;
+    font-weight: normal;
+    font-size: 0.8em;
+    
+    background-color: #CBCBCB;
+}
+
+#resultTable.occurrences tr.odd{
+    background-color: #EDF5FF;
+}
+
+#resultTable.occurrences tbody tr:hover{
+    background-color: #8395B3;
+    color: #fff;
+}

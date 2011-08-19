@@ -46,6 +46,9 @@ public class XMLSpecimenWrapper {
 	@XmlElement(name="element")
 	private List<OccurrenceLiteWDTO> elements = new ArrayList<OccurrenceLiteWDTO>();
 
+    @XmlElementWrapper(name="response-elements", nillable=true)
+	@XmlElement(name="count")
+	private Long count;
 	/**
 	 *
 	 * @param responseType
@@ -61,35 +64,11 @@ public class XMLSpecimenWrapper {
 	public boolean addElement(OccurrenceLiteWDTO xmlBean){
 		return elements.add(xmlBean);
 	}
-}
-
-/* This class tries to implementm the wraper with generics, nonetheless,when the
- * controller returns the XMLSpecimenWrapper object, the annotation @responsebody
- * gets an error traying to marshal the object to xml format
- * See writeToResult() method of Jaxb2RootElementHttpMessageConverter class
-@RooJavaBean
-@RooToString
-@XmlRootElement(name="neoportal-response")
-    public class XMLSpecimenWrapper <K> {
-
-	@XmlElementWrapper(name="response-elements", nillable=true)
-	@XmlElement(name="element")
-	private List elements = new ArrayList<K>();
-
-	/**
-	 *
-	 * @param responseType
-	 */
-	/*public XMLSpecimenWrapper() {
-		super();
-	}*/
-
-	/**
-     * @param xmlBean
-     * @return
+    
+    /**
+     * @param count the count to set
      */
-	/*public boolean addElement(K xmlBean){
-		return elements.add(xmlBean);
-	}
+    public void setCount(Long count) {
+        this.count = count;
+    }
 }
-*/

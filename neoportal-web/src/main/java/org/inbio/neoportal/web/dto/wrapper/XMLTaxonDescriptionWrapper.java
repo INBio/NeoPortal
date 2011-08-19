@@ -49,7 +49,11 @@ public class XMLTaxonDescriptionWrapper {
     @XmlElementWrapper(name="taxon-description", nillable=true)
 	@XmlElement(name="element")
     private List<TaxonDescriptionFullWDTO> tdfElements = new ArrayList<TaxonDescriptionFullWDTO> ();
-	/**
+	
+    @XmlElement(name="count")
+	private Long count;
+    
+    /**
 	 *
 	 * @param responseType
 	 */
@@ -73,4 +77,11 @@ public class XMLTaxonDescriptionWrapper {
     public boolean addElement(TaxonDescriptionFullWDTO taxonDescriptionFullWDTO) {
         return tdfElements.add(taxonDescriptionFullWDTO);
     }
+    
+    /**
+     * @param count the count to set
+     */
+    public void setCount(Long count) {
+        this.count = count;
+    }    
 }

@@ -49,10 +49,13 @@ var myColumnDefs = [  {
 function initOccurrences(context,scientificname){
     //Pass the context path to javascript scope
     contextPath = context;
+    
+    //Initialize open layers map
+    initMap('map', scientificname);
+    
     //Initialize ocurrences table
     initTable(scientificname);
-    //Initialize open layers map
-    initMap('map',scientificname);
+    
 }
 
 /*
@@ -98,104 +101,129 @@ function globalListener(e) {
  * This function initializes the table to show the list of ocurrences
  */
 function initTable(searchString) {
-    //Data source to get the information for filling the table
-	var myDataSource = createOccurrencesDS(searchString);
+    //create the table
+	createOccurrencesTable();
 
-    // DataTable configuration
-    var myConfigs = createOccurrencesConfigs();
-
-    //Get total results to use it on pagination
-    getTotalOccurrences(contextPath,searchString);
-
-    //Creates the new instance for species table
-    singleSelectDataTable = new YAHOO.widget.ScrollingDataTable("occuPanel",
-        myColumnDefs, myDataSource, myConfigs);
-
-    // Update totalRecords on the fly with value from server
-    singleSelectDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
-        oPayload.totalRecords = totalcount;
-        return oPayload;
-    }
-
-    // Subscribe to events for row selection
-    singleSelectDataTable.subscribe("rowMouseoverEvent", singleSelectDataTable.onEventHighlightRow);
-    singleSelectDataTable.subscribe("rowMouseoutEvent", singleSelectDataTable.onEventUnhighlightRow);
-
-    //Overwrite onEventSelectRow function
-    singleSelectDataTable.onEventSelectRow = function(oArgs) {
-        //------------- Taken from original function ---------------------
-        var sMode = this.get("selectionMode");
-        if(sMode == "single") {
-            this._handleSingleSelectionByMouse(oArgs);
-        }
-        else {
-            this._handleStandardSelectionByMouse(oArgs);
-        }
-        //---------------------------------------------------------------
-        //Subscribe the event to the global listener
-        var fromObj = document.getElementById('occuPanel');
-        var myEvent = new YAHOO.util.CustomEvent("myEvent", fromObj);
-        myEvent.subscribe(globalListener, fromObj);
-        myEvent.fire();
-    }
-    // Finally subscribe the overwrite method
-    singleSelectDataTable.subscribe("rowClickEvent", singleSelectDataTable.onEventSelectRow);
-}
-
-/**
- * Creates the occurrences data source for results table
- */
-function createOccurrencesDS(searchString){
-    var myDataSource = new YAHOO.util.DataSource
-    ("../search/occurrences?searchString="+searchString+"&format=xml&");
-    myDataSource.responseType = YAHOO.util.DataSource.TYPE_XML;
-    myDataSource.useXPath = true;
-    myDataSource.responseSchema = {
-        resultNode: "element",
-        fields: [{
-            key:"scientificname"
-        },{
-            key:"country"
-        },{
-            key:"province"
-        },{
-            key:"county"
-        },{
-            key:"locality"
-        },{
-            key:"latitude",
-            parser:"number"
-        },{
-            key:"longitude",
-            parser:"number"
-        },{
-            key:"catalog"
-        },{
-            key:"institution"
-        }]
-    };
-    return myDataSource;
-}
-
-/**
- * Yui data table pagination config
- */
-function createOccurrencesConfigs(){
-    var myConfigs = {
-        // Initial request for first page of data
-        initialRequest: "sort=scientificname&dir=asc&startIndex=0&results=15",
-        dynamicData: true, // Enables dynamic server-driven data
-        // Sets UI initial sort arrow
-        sortedBy : {
-            key:"country",
-            dir:YAHOO.widget.DataTable.CLASS_ASC
+    //configure datatable...
+    $("#resultTable").dataTable({
+        //"sDom": '<"top">rt<"bottom"flp><"clear">',
+        "oLanguage": {
+            "sInfo": tableInfo,
+            "oPaginate": {
+                "sFirst": tableFirst,
+                "sLast": tableLast,
+                "sNext": tableNext,
+                "sPrevious": tablePrevious
+            }
         },
-        // Enables pagination
-        paginator: new YAHOO.widget.Paginator({
-            rowsPerPage:15
-        }),
-        selectionMode : "single",
-        width: "100%"
-    };
-    return myConfigs;
+        //show pagination on both, top and bottom
+        "sDom": '<"top"lfip>rt<"bottom"ip<"clear">',
+        "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+            /* add scname class for scientific name celd */
+            $('td:eq(1)', nRow).attr("class", "scname");
+            return nRow;
+        },
+        "sPaginationType": "full_numbers",
+        "bFilter": false,
+        "bDestroy": true,
+        "bServerSide": true,
+        "sAjaxSource": contextPath+"/api/search/occurrences",
+        "fnServerData": function( sSource, aoData, fnCallback){
+            //get actual index for pagging
+
+            var sEcho = aoData[0].value;
+            $.get(contextPath+"/api/search/occurrences", {searchString: searchString,
+                format:     "xml",
+                startIndex: aoData[3].value,    //iDisplayStart
+                results:    10,
+                sort:       'scientificname',
+                dir:        'asc'}, function(data){
+                    //prepare the json for datatable to use it the right way
+                    /* convert to format that DataTables understands */
+                    var jData = $( data );
+
+                    totalcount = jData.find("count").text();
+
+                    var json = {"sEcho": sEcho,"aaData" : []};
+
+                    json.iTotalRecords = totalcount;
+                    json.iTotalDisplayRecords = totalcount;
+
+                    jData.find("element").each(function(){
+                       json.aaData.push([
+                           $(this).find("scientificname").text(),
+                           $(this).find("institution").text(),
+                           $(this).find("country").text(),
+                           $(this).find("province").text(),
+                           $(this).find("county").text(),
+                           $(this).find("latitude").text(),
+                           $(this).find("longitude").text(),
+                           $(this).find("catalog").text(),
+                       ]);
+                    });
+
+                    fnCallback(json);
+
+                    //hide the show 10 entries component
+                    $("#resultTable_length").hide();
+
+                    configureTable();
+                    
+                    //repaint the map with the new points
+                    showSpecimenPoints(searchString, aoData[3].value);
+
+                }, "xml");
+        }
+    });
+    
+}
+
+/**
+ * Creates the occurrences results table
+ */
+function createOccurrencesTable(){
+    //check if table exist...
+    if ($("#resultTable").length < 1){
+        var tHead = "<thead><tr>";
+        tHead += "<th>" + scientificNameT +"</th>";
+        tHead += "<th>" + institutionT +"</th>";
+        tHead += "<th>" + countryT +"</th>";
+        tHead += "<th>" + provinceT +"</th>";
+        tHead += "<th>" + countyT +"</th>";
+        tHead += "<th>" + latitudeT +"</th>";
+        tHead += "<th>" + longitudeT +"</th>";
+        tHead += "<th>" + catalogT +"</th>";
+        tHead += "</tr></thead>";
+
+        //create table
+        $("#occuPanel").append("<table id='resultTable' class='occurrences'></table>");
+        $("#resultTable").append(tHead);
+    }
+}
+
+
+function configureTable(){
+    //wrap the table after data table is generate
+    //the div hold the horizontal scroll
+    if($("div.occuPanel").length < 1){
+        $("#resultTable").wrap('<div class="occuPanel" />');
+    }
+    
+    $("#resultTable tbody tr").click(function(){
+        //Clear map pop ups
+        clearPopups();
+        
+        var nsc='',latitude='',longitude='',catalog='',institution='';
+        catalog = $(this)[0].cells[7].innerHTML;
+        institution = $(this)[0].cells[1].innerHTML;
+        nsc = $(this)[0].cells[0].innerHTML;
+        latitude = $(this)[0].cells[5].innerHTML;
+        longitude = $(this)[0].cells[6].innerHTML;
+        //Set the values on "selectedFeature" variable
+        var attributes = createAttrib(nsc,latitude,longitude,catalog,institution);
+        selectedFeature = new OpenLayers.Feature.Vector(
+            new OpenLayers.Geometry.Point(longitude,latitude), attributes);
+        //Show pop up on map
+        onFeatureSelectFromTable(selectedFeature);
+    });
 }

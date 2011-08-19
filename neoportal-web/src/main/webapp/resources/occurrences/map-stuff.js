@@ -16,7 +16,7 @@ var vectorLayer;
 /*
  * This function initializes the gis functionality for occurrences page
  */
-function initMap(divId,searchString){
+function initMap(divId,searchString, startIndex){
     var initialbounds = new OpenLayers.Bounds(
         -86.109, 8.377,
         -82.555, 11.221
@@ -48,7 +48,7 @@ function initMap(divId,searchString){
     map.addControl(new OpenLayers.Control.Scale($('scale')));
     map.addControl(new OpenLayers.Control.MousePosition({element: $('location')}));
     //Add occurrences points into the map
-    showSpecimenPoints(searchString);
+    showSpecimenPoints(searchString, startIndex);
     /*/Set up a control for specimens pop ups
     selectControl = new OpenLayers.Control.SelectFeature(vectorLayer,
     {onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});
@@ -100,9 +100,9 @@ function onFeatureSelect(feature) {
     map.addPopup(popup);
     //Define a custom event and throw the event to the global listener
     var fromObj = document.getElementById('mapPanel');
-    var myEvent = new YAHOO.util.CustomEvent("myEvent", fromObj);
-    myEvent.subscribe(globalListener, fromObj);
-    myEvent.fire();
+    //var myEvent = new YAHOO.util.CustomEvent("myEvent", fromObj);
+    //myEvent.subscribe(globalListener, fromObj);
+    //myEvent.fire();
 }
 
 /*
@@ -151,66 +151,55 @@ function clearPopups(){
 /*
  * Ajax request to show occurrences on the map
  */
-function showSpecimenPoints(searchString)  {
+function showSpecimenPoints(searchString, startIndex)  {    
     //Prepare URL for XHR request:
-    var sUrl = "../search/occurrences?searchString="+searchString+
-        "&format=xml&sort=scientificname&dir=asc&startIndex=0&results=20";
+    var sUrl = contextPath + "/api/search/occurrences?searchString="+searchString+
+        "&format=xml&sort=scientificname&dir=asc&startIndex="+startIndex+"&results=20";
 
-    //Prepare callback object
-    var callback = {
-
-        //If XHR call is successful
-        success: function(oResponse) {
-            //Root element -> response
-            var xmlDoc = oResponse.responseXML.documentElement;
-            //Get the list of specimens
-            var specimenList = xmlDoc.getElementsByTagName("element");
-            //List of coordinates (to determine the posible bounderies)
-            var latArray = new Array();
-            var longArray = new Array();
-            //Add all the specimen point
-            for(var i = 0;i<specimenList.length;i++){
-                var catalog,latitude,longitude,scientificname,institution;
-                var node = specimenList[i];
-                if(node.getElementsByTagName("catalog")[0] != null){
-                    catalog = node.getElementsByTagName("catalog")[0].childNodes[0].nodeValue;
-                }
-                if(node.getElementsByTagName("latitude")[0] != null){
-                    latitude = node.getElementsByTagName("latitude")[0].childNodes[0].nodeValue;
-                }
-                if(node.getElementsByTagName("longitude")[0] != null){
-                    longitude = node.getElementsByTagName("longitude")[0].childNodes[0].nodeValue;
-                }
-                if(node.getElementsByTagName("scientificname")[0] != null){
-                    scientificname = node.getElementsByTagName("scientificname")[0].childNodes[0].nodeValue;
-                }
-                if(node.getElementsByTagName("institution")[0] != null){
-                    institution = node.getElementsByTagName("institution")[0].childNodes[0].nodeValue;
-                } 
-                attributes = createAttrib(scientificname,latitude,longitude,catalog,institution);
-                addPoint(longitude,latitude,attributes);
-                latArray.push(parseFloat(latitude));
-                longArray.push(parseFloat(longitude));
+    $.get(sUrl, function(xmlDoc){
+        //clear the vector layer
+        vectorLayer.destroyFeatures();
+        
+        //Get the list of specimens
+        var specimenList = xmlDoc.getElementsByTagName("element");
+        //List of coordinates (to determine the posible bounderies)
+        var latArray = new Array();
+        var longArray = new Array();
+        //Add all the specimen point
+        for(var i = 0;i<specimenList.length;i++){
+            var catalog,latitude,longitude,scientificname,institution;
+            var node = specimenList[i];
+            if(node.getElementsByTagName("catalog")[0] != null){
+                catalog = node.getElementsByTagName("catalog")[0].childNodes[0].nodeValue;
             }
-
-            //Zooming on the correct geographical area (deppending on results)
-            var minX = getMinX(longArray);
-            var minY = getMinY(latArray);
-            var maxX = getMaxX(longArray);
-            var maxY = getMaxY(latArray);
-            var bounds = new OpenLayers.Bounds(
-                minX, minY, maxX, maxY);
-            map.zoomToExtent(bounds);
-        },
-
-        //If XHR call is not successful
-        failure: function(oResponse) {
-            YAHOO.log("Failed to process XHR transaction.", "info", "example");
+            if(node.getElementsByTagName("latitude")[0] != null){
+                latitude = node.getElementsByTagName("latitude")[0].childNodes[0].nodeValue;
+            }
+            if(node.getElementsByTagName("longitude")[0] != null){
+                longitude = node.getElementsByTagName("longitude")[0].childNodes[0].nodeValue;
+            }
+            if(node.getElementsByTagName("scientificname")[0] != null){
+                scientificname = node.getElementsByTagName("scientificname")[0].childNodes[0].nodeValue;
+            }
+            if(node.getElementsByTagName("institution")[0] != null){
+                institution = node.getElementsByTagName("institution")[0].childNodes[0].nodeValue;
+            } 
+            attributes = createAttrib(scientificname,latitude,longitude,catalog,institution);
+            addPoint(longitude,latitude,attributes);
+            latArray.push(parseFloat(latitude));
+            longArray.push(parseFloat(longitude));
         }
-    };
 
-    //Make our XHR call using Connection Manager's
-    YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
+        //Zooming on the correct geographical area (deppending on results)
+        var minX = getMinX(longArray);
+        var minY = getMinY(latArray);
+        var maxX = getMaxX(longArray);
+        var maxY = getMaxY(latArray);
+        var bounds = new OpenLayers.Bounds(
+            minX, minY, maxX, maxY);
+        map.zoomToExtent(bounds);
+        });
+
 }
 
 /*

@@ -36,61 +36,54 @@ var myColumnDefs = [ {
  */
 function initSearch(context){
     //Sets the focus over search input
-    document.getElementById("searchInput").focus();
+    $("#searchInput").focus();
     //Set the variable that contains the context path
     contextPath = context;
     //Inits yui panel support
-    initYUIPanels();
+    //initYUIPanels();
+    
+    $("#simple").click(function(){
+        //homeSearch();
+        //Get the input search string from textbox
+        var searchString = $('#searchInput').val();
+        //Replace the blank spaces for underscores (Requiered for search engine)
+        var clearInput = cleanInputSearch(searchString);
+        //var input = clearInput.replace(/ /g,"_");
+        
+        //put input on url
+        window.location.search = 'q=' + clearInput;
+    });
+    
+    if(window.location.search != '')
+    {
+        homeSearch();
+    }
 }
 
-/*
- * To initialize YUI panel where the services gonna be shown
- */
-function initYUIPanels(){
-    if(!YAHOO.example.container.wait) {
-        YAHOO.example.container.wait =
-        new YAHOO.widget.Panel("wait",
-        {
-            width:"450px",
-            fixedcenter:true,
-            close:true,
-            draggable:true,
-            zindex:999,
-            modal:true,
-            visible:false
-        });
-    }
-    if(!YAHOO.example.container.moduleExplanation){
-        YAHOO.example.container.moduleExplanation =
-            new YAHOO.widget.Module("moduleExplanation", {
-            visible: false
-        });
-        YAHOO.example.container.moduleExplanation.show();
-    }
-}
 
 /*
  * To show specific services on the YUI panel
  */
 function showOnPanel(scName){
-    //Create header
-    YAHOO.example.container.wait.setHeader(scName);
+
     //Create body
-    var content = '<p id="title">'+serviceTitleT+'</p>';
+    var content = "<div id='dialog' title='" + scName + "'>";
+    content += '<p>';
     content += createServiceUrl(contextPath+occurrencesUrl(scName),'service',seeMultimediaT);
     content += createServiceUrl(contextPath+speciesUrl(scName),'service',seeSpeciesT);
     content += createServiceUrl(contextPath+occurrencesUrl(scName),'service',seeOccurrencesT);
-    content += '<p id="title">'+externalTitleT+'</p>';
-    content += createExternalUrl(picasaUrl(scName),'picasa',seeOnPicasaT);
-    content += createExternalUrl(flickrUrl(scName),'flickr',seeOnFlickrT);
-    content += createExternalUrl(gbifUrl(scName),'gbif',seeOnGbifT);
-    content += createExternalUrl(eolUrl(scName),'eol',seeOnEolT);
-    content += createExternalUrl(wikiUrl(scName),'wikis',seeOnWikiST);
-
-    YAHOO.example.container.wait.setBody(content);
-    //Show the panel os services
-    YAHOO.example.container.wait.render(document.getElementById('contenido'));
-    YAHOO.example.container.wait.show();
+    content += '</p>';
+    content += "</div>";
+    
+    $("body").append(content);
+    
+    $("#dialog").dialog({
+       modal: true,
+       resizable: false,
+       close: function () {
+           $("#dialog").remove();
+       }
+    });
 }
 
 /*
@@ -118,7 +111,7 @@ function speciesUrl(scName){
     var cleanedInput = cleanInputSearch(scName);
     //Finally replace blank spaces for underscores
     var strSearch = cleanedInput.replace(" ","_");
-    return '/species/'+strSearch;
+    return '/species/'+strSearch+'/';
 }
 
 
@@ -147,7 +140,7 @@ function eolUrl(scName){
 function wikiUrl(scName){
     var cleanedInput = cleanInputSearch(scName);
     //Finally replace blank spaces for plus
-    var strSearch = cleanedInput.replace(" ","_");
+    var strSearch = cleanedI.homenput.replace(" ","_");
     return 'http://species.wikimedia.org/wiki/'+strSearch;
 }
 function cleanInputSearch(input){
@@ -171,100 +164,108 @@ function trim(string)
  */
 function homeSearch() {
     //Hide the search explanation panel
-    YAHOO.example.container.moduleExplanation.hide();
-    //Get the input search string from textbox
-    var searchString = document.getElementById('searchInput').value;
-    //Replace the blank spaces for underscores (Requiered for search engine)
-    var clearInput = cleanInputSearch(searchString);
-    var input = clearInput.replace(" ","_");
+    $("#moduleExplanation").hide(0.3);
+        
+    //get the q param with the corresponding search
+    var input = window.location.search;
+    input = input.split('=');
     
-    //Create the data source of yui table
-    var myDataSource = createSpeciesDS(input);
+    var searchString = input[1];
+    
+    if(input.length > 2) {
+        //case when there's more than the q param
+        //we need to iterate throw the array until find q
+    }
+    
+    //searchString = searchString.replace(/_/g, ' ');
+    searchString = unescape(searchString);
+    
+    //set search string into input bar
+    $('#searchInput').val(searchString);
+    
+    //check if table exist...
+    if ($("#resultTable").length < 1){
+        var tHead = "<thead><tr>";
+        tHead += "<th>" + commonNameT +"</th>";
+        tHead += "<th>" + scientificNameT +"</th>";
+        tHead += "<th>" + imageT +"</th>";
+        tHead += "</tr></thead>";
+
+        //create table
+        $("#tablePanel").append("<table id='resultTable' class='home'></table>");
+        $("#resultTable").append(tHead);
+    }
 
     // DataTable configuration
-    var myConfigs = createSpeciesConfigs();
 
-    //Get total results to use it on pagination
-    getTotalSpecies(contextPath,input);
-
-    //Creates the new instance for species table
-    singleSelectDataTable = new YAHOO.widget.DataTable("tablePanel",
-        myColumnDefs, myDataSource, myConfigs);
-
-    // Update totalRecords on the fly with value from server
-    singleSelectDataTable.handleDataReturnPayload = function(oRequest, oResponse, oPayload) {
-        oPayload.totalRecords = totalcount;
-        return oPayload;
-    }
-
-    // Subscribe events for row selection
-    singleSelectDataTable.subscribe("rowMouseoverEvent",singleSelectDataTable.onEventHighlightRow);
-    singleSelectDataTable.subscribe("rowMouseoutEvent",singleSelectDataTable.onEventUnhighlightRow);
-
-    // Overwrite onEventSelectRow function
-    singleSelectDataTable.onEventSelectRow = function(oArgs) {
-        // ------------- Taken from original function ---------------------
-        var sMode = this.get("selectionMode");
-        if (sMode == "single") {
-            this._handleSingleSelectionByMouse(oArgs);
-        } else {
-            this._handleStandardSelectionByMouse(oArgs);
-        }//----------------------------------------------------------------
-        //Get the scientific name of selected row
-        var selectedRow = this.getSelectedTrEls()[0];
-        var content = selectedRow.getElementsByTagName('div');
-        var scName= content[1].innerHTML; //Getting the scientific name
-        //Call function that renders the services
-        showOnPanel(scName);
-    }
-
-    //Finally subscribe the overwrite method
-    singleSelectDataTable.subscribe("rowClickEvent",
-        singleSelectDataTable.onEventSelectRow);
-}
-
-/**
- * Yui data table pagination config
- */
-function createSpeciesConfigs(){
-    var myConfigs = {
-        // Initial request for first page of data
-        initialRequest: "sort=cname&dir=asc&startIndex=0&results=10",
-        dynamicData: true, // Enables dynamic server-driven data
-        // Sets UI initial sort arrow
-        sortedBy : {
-            key:"cname",
-            dir:YAHOO.widget.DataTable.CLASS_ASC
+            
+    //configure datatable...
+    $("#resultTable").dataTable({
+        //"sDom": '<"top">rt<"bottom"flp><"clear">',
+        "oLanguage": {
+            "sInfo": tableInfo,
+            "oPaginate": {
+                "sFirst": tableFirst,
+                "sLast": tableLast,
+                "sNext": tableNext,
+                "sPrevious": tablePrevious
+            }
         },
-        // Enables pagination
-        paginator: new YAHOO.widget.Paginator({
-            rowsPerPage:10
-        }),
-        selectionMode : "single"
-    };
-    return myConfigs;
+        //show pagination on both, top and bottom
+        "sDom": '<"top"lfip>rt<"bottom"ip<"clear">',
+        "fnRowCallback": function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+            /* add scname class for scientific name celd */
+            $('td:eq(1)', nRow).attr("class", "scname");
+            return nRow;
+        },
+        "sPaginationType": "full_numbers",
+        "bFilter": false,
+        "bDestroy": true,
+        "bServerSide": true,
+        "sAjaxSource": contextPath+"/api/search/taxa",
+        "fnServerData": function( sSource, aoData, fnCallback){
+            //get actual index for pagging
+
+            var sEcho = aoData[0].value;
+            $.get(contextPath+"/api/search/taxa", {searchString: searchString,
+                format: "xml",
+                startIndex: aoData[3].value,    //iDisplayStart
+                results: 10}, function(data){
+                    //prepare the json for datatable to use it the right way
+                    /* convert to format that DataTables understands */
+                    var jData = $( data );
+                    totalcount = jData.find("count").text();
+
+                    var json = {"sEcho": sEcho,"aaData" : []};
+
+                    json.iTotalRecords = totalcount;
+                    json.iTotalDisplayRecords = totalcount;
+
+                    jData.find("element").each(function(){
+                       json.aaData.push([
+                           $(this).find("cname").text(),
+                           $(this).find("scname").text(),
+                           "<img src=\"" + $(this).find("url").text() + "\" />"
+                       ]);
+                    });
+
+                    fnCallback(json);
+
+                    //hide the show 10 entries component
+                    $("#resultTable_length").hide();
+
+                    configureTable();
+
+                }, "xml");
+        }
+    });
+
 }
 
-/**
- * Creates the species data source for results table
- */
-function createSpeciesDS(searchString){
-    var myDataSource = new YAHOO.util.DataSource("search/taxa?searchString="+searchString+"&format=xml&");
-    myDataSource.responseType = YAHOO.util.DataSource.TYPE_XML;
-    myDataSource.useXPath = true;
-    myDataSource.responseSchema = {
-        resultNode: "element",
-        fields: [{
-            key:"cname"
-        },{
-            key:"scname"
-        },{
-            key:"url"
-        }],
-        metaFields: {
-            // Access to value in the server response
-            totalRecords: 'totalrecords'
-        }
-    };
-    return myDataSource;
+function configureTable(){
+    $("#tablePanel tbody tr").click(function(){
+        //show the panel for the selected row
+        showOnPanel($(this).children("td.scname").text());
+    });
 }
+

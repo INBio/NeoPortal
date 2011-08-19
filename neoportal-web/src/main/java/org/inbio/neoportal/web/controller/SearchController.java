@@ -46,7 +46,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @author asanabria
  */
 @Controller
-@RequestMapping("search/*")
+@RequestMapping("api/search/*")
 public class SearchController {
 
     @Autowired
@@ -66,11 +66,14 @@ public class SearchController {
         @RequestParam String searchString,
         @RequestParam int startIndex,
         @RequestParam int results) {
-         List<TaxonDescriptionLiteSDTO> speciesList = null;
+        List<TaxonDescriptionLiteSDTO> speciesList = null;
 
         XMLTaxonDescriptionWrapper rw = new XMLTaxonDescriptionWrapper();
         
         try {
+            
+            rw.setCount(searchManagerImpl.speciesSearchCount(searchString));
+            
             speciesList = searchManagerImpl
                 .speciesPaginatedSearch(searchString, startIndex , results); 
 
@@ -126,6 +129,13 @@ public class SearchController {
 
         XMLSpeciesWrapper rw = new XMLSpeciesWrapper();
         try {
+            //filter taxon range to match only species
+            //TODO: change taxonomical Range number for enum
+            searchString += " AND (taxonomicalRangeId:19 taxonomicalRangeId:20 taxonomicalRangeId:21 taxonomicalRangeId:22)";
+            
+            //include the count, this reduce one server call
+            rw.setCount(searchManagerImpl.taxonSearchCount(searchString));
+            
             speciesList = searchManagerImpl
                 .taxonPaginatedSearch(searchString, startIndex , results); 
 
@@ -181,6 +191,9 @@ public class SearchController {
 
         XMLSpecimenWrapper rw = new XMLSpecimenWrapper();
         try {
+            //get total record set, usefull for pagination
+            rw.setCount(searchManagerImpl.occurrenceSearchCount(searchString));
+            
             occurrenceList 
                 = searchManagerImpl.occurrencePaginatedSearch(searchString, startIndex, results); 
             

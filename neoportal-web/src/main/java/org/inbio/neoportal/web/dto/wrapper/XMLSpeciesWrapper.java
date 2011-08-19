@@ -44,7 +44,11 @@ public class XMLSpeciesWrapper {
 	@XmlElement(name="element")
 	private List<SpeciesLiteWDTO> elements = new ArrayList<SpeciesLiteWDTO>();
 
-	/**
+    @XmlElementWrapper(name="response-elements", nillable=true)
+	@XmlElement(name="count")
+	private Long count;
+    
+    /**
 	 *
 	 * @param responseType
 	 */
@@ -59,4 +63,11 @@ public class XMLSpeciesWrapper {
 	public boolean addElement(SpeciesLiteWDTO xmlBean){
 		return elements.add(xmlBean);
 	}
+    
+    /**
+     * @param count the count to set
+     */
+    public void setCount(Long count) {
+        this.count = count;
+    }
 }

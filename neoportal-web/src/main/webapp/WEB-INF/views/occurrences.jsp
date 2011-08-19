@@ -8,23 +8,17 @@
         <!-- neoportal js and css -->
         <link rel="stylesheet" type="text/css"
               href="<c:out value="${pageContext.request.contextPath}"/><spring:theme code='styleSheet'/>"/>
+        <link rel="stylesheet" type="text/css" href="<c:out value="${pageContext.request.contextPath}"/><spring:theme code='jquery-ui'/>"/>
+        
 
         <!-- Open Layers -->
         <link rel="stylesheet" type="text/css" href="<c:url value="/resources/openlayers/style.css"/>">
         <script type="text/JavaScript" src="http://openlayers.org/api/OpenLayers.js"></script>
 
-        <!-- YUI -->
-        <link rel="stylesheet" type="text/css" href="<c:url value="/resources/yui/datatable/assets/skins/sam/datatable.css"/>">
-        <link rel="stylesheet" type="text/css" href="<c:url value="/resources/yui/fonts/fonts-min.css"/>">
-        <link rel="stylesheet" type="text/css" href="<c:url value="/resources/yui/paginator/assets/skins/sam/paginator.css"/>">
-        <script type="text/javascript" src="<c:url value="/resources/yui/yahoo/yahoo-min.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/yui/event/event-min.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/yui/yahoo-dom-event/yahoo-dom-event.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/resources/yui/connection/connection-min.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/resources/yui/element/element-min.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/resources/yui/datasource/datasource-min.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/resources/yui/datatable/datatable-min.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/resources/yui/paginator/paginator-min.js"/>"></script>
+        <!-- jquery -->
+        <script type="text/javascript" src="<c:url value="/resources/js/jquery-1.6.1.min.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui-1.8.13.custom.min.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/jquery.dataTables.min.js" />" ></script>
 
         <!-- To internacionalize js texts -->
         <script>
@@ -36,6 +30,13 @@
             var countyT = '<fmt:message key="county"/>';
             var latitudeT = '<fmt:message key="latitude"/>';
             var longitudeT = '<fmt:message key="longitude"/>';
+            
+            //internacionalize the table pagination 
+            var tableInfo = '<fmt:message key="table_pagination_info"/>';
+            var tableFirst = '<fmt:message key="table_pagination_first"/>';
+            var tableLast = '<fmt:message key="table_pagination_last"/>';
+            var tableNext = '<fmt:message key="table_pagination_next"/>';
+            var tablePrevious = '<fmt:message key="table_pagination_previous"/>';
         </script>
 
         <!-- Util javaScript -->
@@ -54,11 +55,13 @@
             <jsp:include page="/WEB-INF/views/header.jsp"/>
 
             <div id="content">
-                <h2><fmt:message key="scientific_name"/>: ${scientificname} </h2>
+                <h3><fmt:message key="scientific_name"/>: ${scientificname} </h3>
                 <!-- Table Panel -->
                 <div id="tablePanelContainer">
                     <!--<h4><fmt:message key="occurrences_table"/></h4>-->
-                    <div id="occuPanel"></div>
+                    <div id="occuPanel">
+
+                    </div>
                 </div>
                 <!-- Map Panel -->
                 <div id="mapPanel">

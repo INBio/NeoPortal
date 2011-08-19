@@ -12,33 +12,25 @@
         <title><fmt:message key="app_name"/></title>
         
         <!-- neoportal js and css -->
-        <link rel="stylesheet" type="text/css"
-              href="<c:out value="${pageContext.request.contextPath}"/><spring:theme code='styleSheet'/>"/>
-
-        <!-- YUI -->
-        <link rel="stylesheet" type="text/css" href="<c:url value="/resources/yui/datatable/assets/skins/sam/datatable.css"/>">
-        <link rel="stylesheet" type="text/css" href="<c:url value="/resources/yui/fonts/fonts-min.css"/>">
-        <link rel="stylesheet" type="text/css" href="<c:url value="/resources/yui/paginator/assets/skins/sam/paginator.css"/>">
-        <script type="text/javascript" src="<c:url value="/resources/yui/yahoo/yahoo-min.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/yui/event/event-min.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/yui/yahoo-dom-event/yahoo-dom-event.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/resources/yui/connection/connection-min.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/resources/yui/element/element-min.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/resources/yui/datasource/datasource-min.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/resources/yui/datatable/datatable-min.js"/>"></script>
-        <script type="text/javascript" src="<c:url value="/resources/yui/paginator/paginator-min.js"/>"></script>
+        <link rel="stylesheet" type="text/css" href="<c:out value="${pageContext.request.contextPath}"/><spring:theme code='styleSheet'/>"/>
+        <link rel="stylesheet" type="text/css" href="<c:out value="${pageContext.request.contextPath}"/><spring:theme code='jquery-ui'/>"/>
         
+        <!-- jquery -->
+        <script type="text/javascript" src="<c:url value="/resources/js/jquery-1.6.1.min.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui-1.8.13.custom.min.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/jquery.dataTables.min.js" />" ></script>
+        <script type="text/javascript" src="<c:url value="/resources/js/jquery.xslt.js" />" ></script>
+
         <!-- Util javaScript -->
           
-        <script type="text/javascript" src="<c:url value="/resources/species/taxon-description-behavior.js" />"></script>
         <script type="text/javascript" >
             var scientificName = "${scientificName}";
             var provider = "";
-            var contextPath = "${pageContext.request.contextPath}";
-            
-            
+            var contextPath = "${pageContext.request.contextPath}";    
         </script>
         
+        <script type="text/javascript" src="<c:url value="/resources/species/taxon-description-behavior.js" />"></script>
+                
     </head>
     <body>
          <div id="contenido">
