@@ -103,4 +103,22 @@ public class TaxonDescriptionDAOImpl
 		});
         
     }
+    
+    @Override
+    public List<TaxonDescriptionFullCDTO> findAllByScientificName(
+       final String scientificName) {
+        HibernateTemplate template = getHibernateTemplate();
+		return (List<TaxonDescriptionFullCDTO>) template.execute(new HibernateCallback() {
+			public Object doInHibernate(Session session) {       
+                Query query = session.createQuery(
+						"from TaxonDescription as td"
+						+ " where lower(td.scientificName) = lower(:scientificName)");
+				query.setParameter("scientificName", scientificName);
+                query.setResultTransformer(new TaxonDescriptionFullTransformer());
+                
+                //query.setCacheable(true);
+				return query.list();
+			}
+		});
+    }
 }

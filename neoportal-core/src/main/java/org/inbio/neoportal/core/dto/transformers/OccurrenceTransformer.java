@@ -55,6 +55,7 @@ public class OccurrenceTransformer
            ogl = (ArrayList<OccurrenceGeospatialLiteCDTO>) ogt.transformList(temp);
                                
             newList.add(new OccurrenceLiteCDTO(
+                                oc.getOccurrenceId().toString(),
                                 oc.getScientificName(),
                                 oc.getInstitutionCode(),
                                 oc.getCountry(),

@@ -56,9 +56,6 @@
 			<scope>compile</scope>
 		</dependency>
 
-        
-
-
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
@@ -69,12 +66,6 @@
 			<artifactId>commons-dbcp</artifactId>
 			<version>1.2.2</version>
 		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.5.0</version>
-		</dependency>
-
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -82,22 +73,18 @@
 			<version>3.3.0.Final</version>
 		</dependency>
 
-
         <!-- Hibernate core -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-annotations</artifactId>
-			<version>3.5.6-Final</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>3.5.6-Final</version>
+			<version>3.6.0.Final</version>
+		 <type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>3.5.6-Final</version>
+			<version>3.6.0.Final</version>
+		 <type>jar</type>
 		</dependency>
 
         <!-- PostgreSQL -->
@@ -108,16 +95,7 @@
 			<!--version>8.4-701.jdbc4</version-->
 		</dependency>
         <!-- loggin -->
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.14</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>1.5.10</version>
-		</dependency>
+		<!-- loggin -->
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-queries</artifactId>
@@ -148,6 +126,18 @@
 			<version>1.2.127</version>
 			<scope>test</scope>
 		</dependency>
+	 <dependency>
+	  <groupId>org.slf4j</groupId>
+	  <artifactId>slf4j-log4j12</artifactId>
+	  <version>1.6.1</version>
+	  <type>jar</type>
+	 </dependency>
+	 <dependency>
+	  <groupId>org.slf4j</groupId>
+	  <artifactId>slf4j-api</artifactId>
+	  <version>1.6.1</version>
+	  <type>jar</type>
+	 </dependency>
 	</dependencies>
 	<pluginRepositories>
 

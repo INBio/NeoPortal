@@ -20,9 +20,12 @@ package org.inbio.neoportal.core.entity;
 // Generated 02/03/2011 05:06:45 PM by Hibernate Tools 3.1.0.beta4
 
 import java.math.BigDecimal;
+import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 
 /**
@@ -38,14 +41,15 @@ public class CommonName
     @DocumentId
      private BigDecimal commonNameId;
 
+    @ContainedIn
      private Taxon taxon;
 
-     @Field
+     @Field(index= Index.TOKENIZED)
      private String name;
      private String language;
      private String temporality;
 
-     @Field
+     @Field(index= Index.TOKENIZED)
      private String locality;
      private String sex;
      private String lifeStage;

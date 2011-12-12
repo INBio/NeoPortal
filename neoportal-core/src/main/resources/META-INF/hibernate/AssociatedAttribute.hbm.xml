@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 02/03/2011 05:06:44 PM by Hibernate Tools 3.1.0.beta4 -->
 <hibernate-mapping>
   <class name="org.inbio.neoportal.core.entity.AssociatedAttribute" schema="public" table="ASSOCIATED_ATTRIBUTE">

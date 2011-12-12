@@ -53,4 +53,9 @@ public interface TaxonDAO
         final int offset, 
         final int quantity) ;
 
+    
+    public List<TaxonLiteCDTO> searchBoost(
+        final String searchText,
+        final int offset, 
+        final int quantity) ;
 }

@@ -19,6 +19,7 @@
 package org.inbio.neoportal.core.entity;
 // Generated 02/03/2011 05:06:44 PM by Hibernate Tools 3.1.0.beta4
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
@@ -416,8 +417,10 @@ public class TaxonDescription
         return this.synonyms;
     }
     
-    public void setSynonyms(String synonyms) {
-        this.synonyms = synonyms;
+    public void setSynonyms(String synonyms) throws UnsupportedEncodingException {
+        //byte[] utf8Bytes = synonyms.getBytes("UTF8");
+        this.synonyms = synonyms != null? synonyms.replaceAll("\u000b"," ") : "";
+        //this.synonyms = synonyms;
     }
 
     public String getAuthorYearOfScientificName() {
@@ -441,7 +444,7 @@ public class TaxonDescription
     }
     
     public void setCommonNames(String commonNames) {
-        this.commonNames = commonNames;
+        this.commonNames = commonNames != null? commonNames.replaceAll("\u000b"," ") : "";
     }
 
     public String getTypification() {
@@ -481,7 +484,7 @@ public class TaxonDescription
     }
     
     public void setLifeCycle(String lifeCycle) {
-        this.lifeCycle = lifeCycle;
+        this.lifeCycle = lifeCycle != null? lifeCycle.replaceAll("\u000b"," ") : "";
     }
 
     public String getReproduction() {
@@ -561,7 +564,7 @@ public class TaxonDescription
     }
     
     public void setPopulationBiology(String populationBiology) {
-        this.populationBiology = populationBiology;
+        this.populationBiology = populationBiology != null? populationBiology.replaceAll("\u000b", " ") : "";
     }
 
     public String getThreatStatus() {
@@ -585,7 +588,7 @@ public class TaxonDescription
     }
     
     public void setHabitat(String habitat) {
-        this.habitat = habitat;
+        this.habitat = habitat != null? habitat.replaceAll("\u000b", " ") : "";
     }
 
     public String getTerritory() {
@@ -625,7 +628,7 @@ public class TaxonDescription
     }
     
     public void setFolklore(String folklore) {
-        this.folklore = folklore;
+        this.folklore = folklore != null? folklore.replaceAll("\u000b", " ") : "";
     }
 
     public String getTheReferences() {

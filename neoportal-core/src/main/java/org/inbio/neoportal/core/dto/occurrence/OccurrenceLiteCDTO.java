@@ -30,7 +30,7 @@ public class OccurrenceLiteCDTO
     extends BaseDTO 
         implements Comparable {
 
-    
+    private String occurrenceId;
     private String scientificName;
     private String institution;
     private String country;
@@ -50,6 +50,7 @@ public class OccurrenceLiteCDTO
     }
 
     public OccurrenceLiteCDTO(
+                String occurrenceId,
                 String scientificName, 
                 String institution,
                 String country,
@@ -59,6 +60,7 @@ public class OccurrenceLiteCDTO
                 String catalog,
                 ArrayList<OccurrenceGeospatialLiteCDTO> list) {
         
+        this.occurrenceId = occurrenceId;
         this.scientificName = scientificName;
         this.institution = institution;
         this.country = country;
@@ -121,6 +123,14 @@ public class OccurrenceLiteCDTO
 
     /* Getters & Setters */
 
+    public String getOccurrenceId() {
+        return occurrenceId;
+    }
+    
+    public void setOccurrenceId(String occurrenceId){
+        this.occurrenceId = occurrenceId;
+    }
+    
     public String getScientificName() {
         return scientificName;
     }
@@ -184,5 +194,6 @@ public class OccurrenceLiteCDTO
     public void setGeospatialList(ArrayList<OccurrenceGeospatialLiteCDTO> geospatialList) {
         this.geospatialList = geospatialList;
     }
+    
     
 }

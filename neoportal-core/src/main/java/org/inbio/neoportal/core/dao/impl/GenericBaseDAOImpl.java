@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
 import org.hibernate.Session;
@@ -128,9 +127,8 @@ public class GenericBaseDAOImpl<E ,I>
                 
                 // create native Lucene query
                 MultiFieldQueryParser parser = 
-                        new MultiFieldQueryParser(Version.LUCENE_29, 
-                            fields, new StandardAnalyzer(Version.LUCENE_29));
-
+                        new MultiFieldQueryParser(Version.LUCENE_33, 
+                            fields, new StandardAnalyzer(Version.LUCENE_33));
 
                 //FIXME Manejo de errores
                 try {
@@ -146,8 +144,8 @@ public class GenericBaseDAOImpl<E ,I>
                 }
                 
                 // Wrap Lucene query in a org.hibernate.Query
-                FullTextQuery hsQuery =
-                        fullTextSession.createFullTextQuery(query, entityClass);
+                org.hibernate.Query hsQuery =
+                        (org.hibernate.Query) fullTextSession.createFullTextQuery(query, entityClass);
 
                 // Configure the result list
                 hsQuery.setResultTransformer(resultTransformer);
@@ -180,8 +178,8 @@ public class GenericBaseDAOImpl<E ,I>
 
                 // create native Lucene query
                 MultiFieldQueryParser parser =
-                        new MultiFieldQueryParser(Version.LUCENE_29, 
-                            fields, new StandardAnalyzer(Version.LUCENE_29));
+                        new MultiFieldQueryParser(Version.LUCENE_33, 
+                            fields, new StandardAnalyzer(Version.LUCENE_33));
 
                 try {
                     

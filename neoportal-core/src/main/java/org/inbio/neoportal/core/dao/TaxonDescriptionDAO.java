@@ -58,4 +58,7 @@ public interface TaxonDescriptionDAO
    public List<TaxonDescriptionFullCDTO> findAllByScientificName(
         final String scientificName,
         final String provider) ;
+   
+   public List<TaxonDescriptionFullCDTO> findAllByScientificName(
+        final String scientificName) ;
 }

@@ -22,12 +22,12 @@ package org.inbio.neoportal.core.entity;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.OneToMany;
 import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.NumericField;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 
 /**
@@ -48,7 +48,6 @@ public class Taxon
      private Taxon taxonByAncestorTaxonId;
 
      @Field
-     @NumericField
      private BigDecimal taxonomicalRangeId;
 
      @Field
@@ -99,8 +98,9 @@ public class Taxon
      private BigDecimal formId;
      
      // main relationships
-     @ContainedIn
-     private Set<CommonName> commonNames = new HashSet<CommonName>(0);
+     @OneToMany(mappedBy="taxon")
+     @IndexedEmbedded
+     private Set<CommonName> commonNames = new HashSet<CommonName>();
      
      @ContainedIn
      private Set<TaxonDescription> taxonDescriptions = new HashSet<TaxonDescription>(0);
