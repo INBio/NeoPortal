@@ -214,6 +214,7 @@ public class SearchManagerImpl implements SearchManager{
             
             olsdto.add(
                 new OccurrenceLiteSDTO(
+                    ol.getOccurrenceId(),
                     ol.getScientificName(),
                     ol.getInstitution(),
                     ol.getCountry(),
@@ -260,7 +261,7 @@ public class SearchManagerImpl implements SearchManager{
             commonNameList.append(cm.getName());
             
             if( ! cm.getUsedBy().isEmpty() )
-                commonNameList.append("(").append(cm.getUsedBy()).append(")");
+                commonNameList.append(" (").append(cm.getUsedBy()).append(")");
             
             if(i < length-1)
                 commonNameList.append(", ");          

@@ -29,6 +29,7 @@ public class OccurrenceLiteSDTO
     extends BaseDTO 
         implements Comparable {
     
+    private String occurrenceId;
     private String scientificName;
     private String institution;
     private String country;
@@ -52,6 +53,7 @@ public class OccurrenceLiteSDTO
     }
 
     public OccurrenceLiteSDTO(
+        String occurrenceId,
         String scientificName, 
         String institution, 
         String country, 
@@ -62,6 +64,7 @@ public class OccurrenceLiteSDTO
         String longitude, 
         String catalog) {
         
+        this.occurrenceId = occurrenceId;
         this.scientificName = scientificName;
         this.institution = institution;
         this.country = country;
@@ -161,4 +164,8 @@ public class OccurrenceLiteSDTO
         return scientificName;
     }
 
+    public String getOccurrenceId(){
+        return occurrenceId;
+    }
+    
 }
