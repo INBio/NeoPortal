@@ -29,8 +29,10 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.util.Version;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
+import org.inbio.neoportal.core.entity.CommonName;
 import org.inbio.neoportal.core.entity.Occurrence;
 import org.inbio.neoportal.index.util.HibernateUtil;
 import org.inbio.neoportal.core.entity.Taxon;
@@ -67,6 +69,9 @@ public class Indexer {
         System.out.println("# - Taxon");
         fullTextSession.createIndexer(Taxon.class).startAndWait();
 
+        System.out.println("# - CommonName");
+        fullTextSession.createIndexer(CommonName.class).startAndWait();
+        
         System.out.println("# - TaxonDescription");
         fullTextSession.createIndexer(TaxonDescription.class).startAndWait();
 
@@ -157,9 +162,9 @@ public class Indexer {
 
         // create native Lucene query
         MultiFieldQueryParser parser 
-            = new MultiFieldQueryParser(Version.LUCENE_29, 
+            = new MultiFieldQueryParser(Version.LUCENE_33, 
                 fields, 
-                new StandardAnalyzer(Version.LUCENE_29));
+                new StandardAnalyzer(Version.LUCENE_33));
         
         org.apache.lucene.search.Query query = null;
 
@@ -170,11 +175,10 @@ public class Indexer {
         } catch (ParseException ex) {
             Logger.getLogger(Taxon.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+      
         // Wrap Lucene query in a org.hibernate.Query
-        org.hibernate.search.FullTextQuery hsQuery 
+        FullTextQuery hsQuery 
             = fullTextSession.createFullTextQuery(query, Taxon.class);
-        
 
         // for paginated search
         hsQuery.setMaxResults(20);
@@ -189,7 +193,7 @@ public class Indexer {
         // Show the results page by page (20 items each).
         for(int i = 0; i <=totalAmount; ){
 
-            result = hsQuery.list();
+            result = ((org.hibernate.Query)hsQuery).list();
 /*
             for(Taxon res : result)
                 System.out.println("#-> "+res.getSynonyms()
