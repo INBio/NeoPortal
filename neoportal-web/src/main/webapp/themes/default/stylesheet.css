@@ -6,22 +6,21 @@
         CSS to customize the GUI of portal project
 */
 
-html {
-    height:100%;
-}
-
 body {
-    height: 100%;
-    width:100%;
+
     margin:0;
     padding:0;
-    background-color:#F6F6F5;
     
-    font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;
-    
+    /*font-family: Lucida Grande, Lucida Sans, Arial, sans-serif;*/
+    font-family: Verdana, Helvetica, Arial, sans-serif;
 }
 
 /* The content of each .jsp*/
+.data_wrapper{
+    margin: 0 auto;
+    width: 900px;
+}
+
 #contenido {
     text-align:justify;
     margin: 3px 5% 0 5%;
@@ -30,10 +29,6 @@ body {
     border-left:1px solid #D7DAA9;
     border-right:1px solid #D7DAA9;
     background-color:white;
-    /* CSS 3 */
-    -moz-box-shadow: 0 0 5px 5px #B7B990;
-    -webkit-box-shadow: 0 0 5px 5px #B7B990;
-    box-shadow: 0 0 5px 5px #B7B990;
 }
 
 #contenido h2{
@@ -41,9 +36,9 @@ body {
     text-align:justify;
     padding: 5px 0 5px 0;
 }
-
-#content{
-    padding:0 2% 0 2%;
+.section{
+    width: 940px;
+    margin: 0 auto;
 }
 
 #banner {background: url(images/banner.jpg) no-repeat 0 0; height: 123px;}
@@ -93,17 +88,10 @@ position:absolute;
 
 /*------------------------------- Footer by Cristian Granados --------------------------------*/
 
-
-#resultsPanel {
-	width: 100%;
-	margin-top: 20px;
-}
-
-#tablePanel{
-    margin:0 5% 0 5%;
-}
-
-#searchPanel{
+/*-------------------------------Home page style --------------------------------*/
+/*search field*/
+/**/
+#searchPanel {
 	width: 100%;
 	text-align: center;
 	margin-top: 20px;
@@ -112,6 +100,11 @@ position:absolute;
 #searchPanel input {
   width: 300px;
   height: 25px;
+}
+
+#searchPanel {
+    text-align: center;
+    margin-top: 20px;
 }
 
 #searchPanel input:focus {
@@ -129,33 +122,72 @@ position:absolute;
     float: left;
     width: auto;
     margin: auto;
-    padding: auto;
-    border: auto;
+/*    padding: auto;*/
+/*    border: auto;*/
 }
 
-/*
-***** styling table component *******
-*/
-#resultTable.home{
+/* --- styling search result component --- */
+#resultsPanel{
+    font-size: 0.95em;
+    margin: 20px auto;
+    
+    color: #231f20;
+}
+
+#tablePanel{
     /*font-family: arial, helvetica, sans-serif;*/
-    width: 100%;
-    border-collapse: collapse;
+    width: 700px;
+    margin: 10px auto;
+    border-collapse: col    background-color:#F6F6F5;lapse;
+}
+
+#tablePanel div.search_item{
+    border-top: 1px solid #bbb;
+    font-weight: normal;
+    text-align: left;
+    
+    padding-top: 3px;
+    
+    clear: both;
+}
+
+#tablePanel div.search_item a, #tablePanel div.search_item a:visited{
+    font-style: italic;
+    text-decoration: none;
+    font-weight: bold;
+    
+    color: #332f30;
+}
+
+#tablePanel div.search_item img{
+    float: right;
+}
+
+#tablePanel div.search_item span{
+    display: block;
+}
+
+
+/* -- pagination elements */
+div.dataTables_paginate{
+    font-size: 0.9em;
+    
+    display: none;
+    
     text-align: center;
     
+    clear: both;
 }
 
-#resultTable.home td{
-    width: 33%;
-    
-    font-size: 0.95em;
+span.paginate_button{
+    margin-right: 15px;
 }
 
-#resultTable.home th{
-    border: 1px solid #555;
-    font-weight: normal;
-    
-    background-color: #D8D8DA;
+span.paginate_active{
+    margin-right: 15px;
+    font-weight: bold;
 }
+/* -- */
 
 #resultTable.home tr.odd{
     background-color: #eaf7fe;
@@ -170,9 +202,7 @@ position:absolute;
     font-style: italic;
 }
 
-/*
-*   styling pagination and showing info
-*/
+
 
 div.top, div.bottom {
     text-align: center;
@@ -183,14 +213,7 @@ div.top, div.bottom {
     margin: 15px 0 20px;
 }
 
-span.paginate_button{
-    margin-right: 15px;
-}
 
-span.paginate_active{
-    margin-right: 15px;
-    font-weight: bold;
-}
 
 #occuPanel{
     width: 98%;
@@ -247,62 +270,9 @@ span.paginate_active{
     margin:10px 20% 25px 20%;
     padding:10px;
     text-align:center;
-    font-size: 0.8em;
+    font-size: 1em;
    -moz-border-radius: 5px;
    -webkit-border-radius: 5px;
-}
-
-.service{
-    margin-top:10px;
-    padding: 2px 0 0 40px;
-    background: url(images/tabs.png);
-    background-repeat:no-repeat;
-    background-position: 10px 2px;    
-    font-size:14px;
-}
-.flickr{
-    margin-top:10px;
-    padding: 2px 0 0 40px;
-    background: url(images/flickr.png);
-    background-repeat:no-repeat;
-    background-position: 10px 2px;
-    font-size:14px;
-}
-.picasa{
-    margin-top:10px;
-    padding: 2px 0 0 40px;
-    background: url(images/picasa.png);
-    background-repeat:no-repeat;
-    background-position: 10px 2px;
-    font-size:14px;
-}
-.gbif{
-    margin-top:10px;
-    padding: 2px 0 0 40px;
-    background: url(images/gbif.png);
-    background-repeat:no-repeat;
-    background-position: 10px 2px;
-    font-size:14px;
-}
-.eol{
-    margin-top:10px;
-    padding: 2px 0 0 40px;
-    background: url(images/eol.png);
-    background-repeat:no-repeat;
-    background-position: 10px 2px;
-    font-size:14px;
-}
-.wikis{
-    margin-top:10px;
-    padding: 2px 0 0 40px;
-    background: url(images/wiki.png);
-    background-repeat:no-repeat;
-    background-position: 10px 2px;
-    font-size:14px;
-}
-
-a.service:link,a.service:visited,a.wikis:link,a.wikis:visited,a.eol:link,a.eol:visited,a.gbif:link,a.gbif:visited,a.picasa:link,a.picasa:visited,a.flickr:link,a.flickr:visited{
-    text-decoration:none;
 }
 
 /* Style for images shown on species list */
@@ -385,7 +355,32 @@ a.service:link,a.service:visited,a.wikis:link,a.wikis:visited,a.eol:link,a.eol:v
     border-top: 1px solid #ccc;
 }
 
+div.container{
+    float: left;
+    min-height: 300px;
+}
+
+div.left-column{
+    float:left;
+    width: 250px;
+}
+
+div.content-column{
+    margin-left: 250px;
+}
+
 /*---------------------------------End Taxon Description page -----------------------------------*/
+
+/*---------------------------- MENU style ----------------------------------*/
+ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+li.menu-top{
+    cursor: pointer;
+}
 
 /*-------------------------------- Occurrences page style -----------------------*/
 .occuPanel{

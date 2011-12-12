@@ -30,6 +30,9 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooToString
 public class OccurrenceLiteWDTO {
 
+    @XmlElement(name="occurrenceId")
+    private String occurrenceId;
+    
 	@XmlElement(name="scientificname")
 	private String scientificName;
 
@@ -82,7 +85,8 @@ public class OccurrenceLiteWDTO {
      * @param latitude
      * @param longitude
      */
-    public OccurrenceLiteWDTO(String scientificName,
+    public OccurrenceLiteWDTO(String occurrenceId,
+            String scientificName,
             String country,
             String province,
             String county,
@@ -92,7 +96,7 @@ public class OccurrenceLiteWDTO {
             String catalog,
             String institution) {
 
-
+        this.occurrenceId = occurrenceId;
         this.scientificName = scientificName;
         this.country = country;
         this.province = province;

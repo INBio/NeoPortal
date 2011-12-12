@@ -22,7 +22,7 @@ package org.inbio.neoportal.web.controller;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.lucene.queryParser.ParseException;
+
 import org.inbio.neoportal.service.dto.occurrences.OccurrenceLiteSDTO;
 import org.inbio.neoportal.service.manager.SearchManager;
 import org.inbio.neoportal.web.dto.OccurrenceLiteWDTO;
@@ -68,6 +68,7 @@ public class OccurrencesApiController {
             for(OccurrenceLiteSDTO olDTO : occurrenceList)
                 rw.addElement(
                     new OccurrenceLiteWDTO(
+                        olDTO.getOccurrenceId(),
                         olDTO.getScientificName(),
                         olDTO.getCountry(),
                         olDTO.getProvince(),
@@ -78,7 +79,7 @@ public class OccurrencesApiController {
                         olDTO.getCatalog(),
                         olDTO.getInstitution()));
 
-        } catch (ParseException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(
                 SearchController.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -10,69 +10,40 @@
  * 
  */
 $(document).ready(function (){
-   //get provider if it comes on url
-   hash = window.location.hash;
-   
-   if(hash != '')
-   {
-       urlParts = hash.split('/');
-       provider = urlParts[urlParts.length - 1];
-   }
-   
-   //create providers tab list, show taxon description for provider
-   createProviderTabs(showTaxonDescription);
-   
+    //get provider if it comes on url
+    hash = window.location.hash;
+
+    showTab(hash.substr(1));
+
+    $("#tabsContainer li").click(function(){
+       showTab($('a', this)[0].hash.substr(1) );
+    });
 });
 
+function showTab(tab){
+    if (tab == "")
+        tab = "info";
+    
+    //clear current tab
+    $('li.currentTab').removeClass('currentTab');
+    //hide current section, specific function show his own div
+    $('div.tab_wrapper').hide();
+    
+    switch (tab) {
+        case 'images':
 
-function createProviderTabs(taxonDescription) {
-    //get providers list
-    //Prepare URL for XHR request:
-    var sUrl = contextPath+"/api/search/species?searchString="+scientificName+"&format=xml&startIndex=0&results=20";
-
-    $.get(sUrl, function(data){
-
-        //taxon description
-        
-        var ulContent = "<ul>";
-
-        //get provider in case no one was indicate
-        if(provider == '')
-        {
-            provider = $(data).find("inst")[0].textContent;
-        }
-
-        var classCurrentTab = "";
-
-        //create tabs
-        $(data).find('element').each(function(){
-            actualValue = $(this).find("inst").text();
-
-            if(actualValue == provider)
-                classCurrentTab = "class=\"currentTab\"";
-            else
-                classCurrentTab = "";
-
-            ulContent += "<li " + classCurrentTab + ">"
-                + "<a href=\"#/" + actualValue + "\" onclick=\"javascript:changeTaxonDescription(this)\">"
-                + actualValue
-                + "</a>"
-                + "</li>";
-        });
-
-        ulContent += "</ul>";
-
-        //insert into dom
-        $("#tabsContainer").append(ulContent);
-
-        //get taxon description info
-        taxonDescription(provider);
-        
-    }, 'xml');
-
-    //Make our XHR call using Connection Manager's
-    //YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
-
+            break;
+        case 'occurrences':
+            showOccurrences();
+            break;
+        //show the species information, based on INB provider
+        case 'info':
+        default:
+            showTaxonDescription('INB');
+            break;
+    }    
+    //set currentTab style
+    $('li:has(a[href="#' + tab + '"])').addClass('currentTab');
 }
 
 function showTaxonDescription(provider) {
@@ -93,13 +64,15 @@ function showTaxonDescription(provider) {
 
         divTd = document.createElement("div");
         divTd.id = "taxonDescription";
+        divTd.className = "tab_wrapper";
 
+        //deprecated, multiple providers support
         //combine with xsl template
-        xsl = loadXMLDoc(contextPath + "/resources/species/" + provider.toLowerCase() + ".xsl");
+        //xsl = loadXMLDoc(contextPath + "/resources/species/" + provider.toLowerCase() + ".xsl");
 
-        if(!xsl) {
+       // if(!xsl) {
             xsl = loadXMLDoc(contextPath + "/resources/species/base.xsl");
-        }
+        //}
 
 //            debugger;
 
@@ -120,13 +93,20 @@ function showTaxonDescription(provider) {
         divTd.innerHTML = divTd.innerHTML.replace(/\&lt;/g, '<').replace(/\&gt;/g, '>');
 
         //insert into dom
-        $("#content"). append(divTd);
+        $("#content").append(divTd);
+        
+        $("div.data-panel").hide();
+        $("div.data-panel").each(function(){
+            if($(this).children().size() < 2)
+                $(this).remove();
+        });
+        
+        $("div.data-panel:first").fadeIn(1500);
+        //create side menu
+        createMenu(data);
+
                        
     }, 'xml');
-
-    //Make our XHR call using Connection Manager's
-    //YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
-    
 }
 
 function loadXMLDoc(dname) {
@@ -141,6 +121,162 @@ function loadXMLDoc(dname) {
     xhttp.send("");
     return xhttp.responseXML;
 }
+
+function createMenu(xml_data){
+    
+    $(xml_data).find("element").each(function(){
+        if($(this).find("institutionCode").text() == 'INB'){
+            
+            // -- look for Natural History Elements
+            var hasNaturalHistory = false;
+            var naturalHistory = "<li id='item-naturalHistory' class='menu-top'>" 
+                + naturalHistoryT + "</li>";
+            
+            if($(this).find("reproduction").length > 0 
+                    && $(this).find("reproduction").text() != '')
+                hasNaturalHistory = true;
+            
+            if($(this).find("annualCycle").length > 0
+                    && $(this).find("annualCycle").text() != '')
+                hasNaturalHistory = true;
+            
+            if($(this).find("feeding").length > 0
+                    && $(this).find("feeding").text() != '')
+                hasNaturalHistory = true;
+            
+            if($(this).find("behavior").length > 0
+                    && $(this).find("behavior").text() != '')
+                hasNaturalHistory = true;
+            
+            if($(this).find("habit").length > 0
+                    && $(this).find("habit").text() != '')
+                hasNaturalHistory = true;
+            
+            // -- Habitat Distribution menu item 
+            var hasHabitatDistribution = false;
+            var habitatDistribution = "<li id='item-habitatDistribution' class='menu-top'>" 
+                + habitatDistributionT + "</li>";
+            
+            if($(this).find("habitat").length > 0)
+                hasHabitatDistribution = true;
+            
+            if($(this).find("distribution").length > 0)
+                hasHabitatDistribution = true;
+            
+            // -- Uses Management menu item 
+            var hasUsesManagement = false;
+            var usesManagement = "<li id='item-usesManagement' class='menu-top'>" 
+                + usesManagementT + "</li>";
+            
+            if($(this).find("theUses").length > 0 && $(this).find("theUses").text() != '')
+                hasUsesManagement = true;
+            
+            if($(this).find("theManagement").length > 0 && $(this).find("theManagement").text())
+                hasUsesManagement = true;
+            
+            // -- Demography Conservation menu item 
+            var hasDemographyConservation = false;
+            var demographyConservation = "<li id='item-demographyConservation' class='menu-top'>" 
+                + demographyConservationT + "</li>";
+            
+            if($(this).find("threatStatus").length > 0
+                    && $(this).find("threatStatus").text() != '')
+                hasDemographyConservation = true;
+            
+            if($(this).find("populationBiology").length > 0
+                    && $(this).find("populationBiology").text() != '')
+                hasDemographyConservation = true;
+            
+            // -- Description menu item 
+            var hasDescription = false;
+            var description = "<li id='item-description' class='menu-top'>" 
+                + descriptionT + "</li>";
+            
+            if($(this).find("scientificDescription").length > 0)
+                hasDescription = true;
+            
+            // -- Documentation menu item 
+            var hasDocumentation = false;
+            var documentation = "<li id='item-documentation' class='menu-top'>" 
+                + documentationT + "</li>";
+            
+            if($(this).find("theReferences").length > 0 && $(this).find("theReferences").text() != '')
+                hasDocumentation = true;
+            
+            // -- Information menu item 
+            var hasInformation = false;
+            var information = "<li id='item-information' class='menu-top'>" 
+                + informationT + "</li>";
+            
+            if($(this).find("language").length > 0)
+                hasInformation = true;
+            
+            if($(this).find("creators").length > 0)
+                hasInformation = true;
+            
+            if($(this).find("contributors").length > 0)
+                hasInformation = true;
+            
+            if($(this).find("taxonRecordId").length > 0)
+                hasInformation = true;
+            
+            if($(this).find("synonyms").length > 0)
+                hasInformation = true;
+            
+            if($(this).find("dateCreated").length > 0)
+                hasInformation = true;
+            
+            if($(this).find("dateLastModified").length > 0)
+                hasInformation = true;
+            
+            
+            //generated the menu list
+            var menuContent = '';
+            
+            if (hasNaturalHistory)
+                menuContent += naturalHistory;
+            
+            if (hasHabitatDistribution)
+                menuContent += habitatDistribution;
+            
+            if (hasDemographyConservation)
+                menuContent += demographyConservation;
+            
+            if (hasUsesManagement)
+                menuContent += usesManagement;
+            
+            if (hasDescription)
+                menuContent += description;
+            
+            if (hasDocumentation)
+                menuContent += documentation;
+            
+            if (hasInformation)
+                menuContent += information;
+
+            var ul = $("<ul id='menu-species' class='menu'></ul>")
+                .html(menuContent);
+                
+            $("li", ul).hide();
+            
+            $(ul).appendTo("#menu-panel");
+            
+            //showItems();
+            $("#menu-species li").each(function(idx){
+                $(this).delay(idx * 350).fadeIn( 900 )});
+        
+            $("#menu-species li").click(function(){
+                var itemName = $(this).attr('id').split('-')[1];
+                
+                $("div.data-panel:visible").fadeOut('fast',function(){
+                    $("div." + itemName).fadeIn(800);
+                });
+                
+            });
+        }
+    });   
+}
+
 
 function changeTaxonDescription(elem){
     if(elem.parentNode.className == "currentTab")
@@ -160,4 +296,70 @@ function changeTaxonDescription(elem){
     elem.parentNode.className = 'currentTab';
 
     showTaxonDescription(elem.textContent);
+}
+
+/*
+ * Get and display occurrences
+ */
+function showOccurrences(){
+    $("#occurrences").show();
+    
+    if(map)
+        return;
+
+    //prepare view options
+    $(document).ready(function(){
+        $("#view_control a").click(function(){
+            switch ($(this).attr('rel')) {
+                case 'data':
+                    $("#mapPanel").hide();
+                    $("#resultTableHalf").hide();
+                    $("#resultTable").show();
+                    $("#tablePanelContainer").show().removeClass('half');
+                    break;
+                case 'split':
+                    //$("#mapPanel").show().css('margin-left', '50%');
+                    $("#mapPanel").show().attr('class', 'halfMap');
+                    $("#resultTableHalf").show();
+                    $("#resultTable").hide();
+                    $("#tablePanelContainer").show().attr('class', 'half');
+                    if(map)
+                        map.updateSize();
+                    break;
+                case 'map':
+                default:
+                    $("#tablePanelContainer").hide();
+                    //$("#mapPanel").show().css('margin', '0');
+                    $("#mapPanel").show().attr('class', 'extendMap');
+                    if(map)
+                        map.updateSize();
+                    break;
+            }
+            //evita sobreescribir el hash del url
+            return false;
+        });
+    });
+    
+    //Initialize open layers map
+    initMap2('map');
+    
+    //get data
+    //Prepare URL for XHR request:
+    var sUrl = contextPath + "/api/search/occurrences?searchString=scientificName:\""+scientificName+"\""+
+        "&format=xml&sort=scientificname&dir=asc&startIndex="+0+"&results=2000";
+
+    $.get(sUrl, function(xmlDoc){
+        showSpecimenPoints(xmlDoc);
+        
+        //Initialize ocurrences table
+        createTable(xmlDoc, '#tablePanelContainer');
+        
+        // TODO: crear función para las vistas, este código es copia de 
+        // el código al darle click a la vista 'Mapa'
+        $("#tablePanelContainer").hide();
+        //$("#mapPanel").show().css('margin', '0');
+        $("#mapPanel").show().attr('class', 'extendMap');
+        if(map)
+            map.updateSize();
+    });
 }

@@ -12,55 +12,84 @@ var selectControl;
 var selectedFeature;
 //Layer to show specimens points
 var vectorLayer;
+//cantidad de features del cluster de mayor tamaño
+var clusterMaxLenght;
 
 /*
  * This function initializes the gis functionality for occurrences page
  */
-function initMap(divId,searchString, startIndex){
-    var initialbounds = new OpenLayers.Bounds(
-        -86.109, 8.377,
-        -82.555, 11.221
+function initMap2(divId){
+    map = new OpenLayers.Map( divId );
+    var googleLayer = new OpenLayers.Layer.Google('Google Hybrid', {
+                        type: google.maps.MapTypeId.HYBRID,
+                        numZoomLevels: 15,
+                        minZoomLevel: 2
+                });
+    
+    //cluster strategy
+    var strategy = new OpenLayers.Strategy.Cluster({distance: 5});
+    
+    //estilo del mapa para uso de clusters
+    var style = new OpenLayers.Style({
+        pointRadius: "${radius}",
+        fillColor: "${fillColor}",
+        fillOpacity: 0.7,
+        strokeOpacity: 0,
+        label: "${label}",
+        fontColor: "#555"
+        },
+        {
+            context: {
+                radius: function(feature){
+                    return Math.min(feature.attributes.count, 16) + 8;
+                },
+                fillColor: function(feature) {
+
+                    var r = Math.round( 255 * feature.cluster.length / clusterMaxLenght);
+                    var g = Math.round(Math.sin(Math.PI * feature.cluster.length / clusterMaxLenght) * 255);
+                    var b = Math.round( 255 * (clusterMaxLenght - feature.cluster.length) / clusterMaxLenght);
+
+                    return "rgb(" + r + "," + g + "," + b + ")";
+                },
+                label: function(feature){ 
+                    return feature.cluster.length;
+                }
+            }
+        }
     );
-    var options = {
-        controls: [],
-        maxResolution: 0.09776171875,
-        projection: "EPSG:900913",
-        units: 'm'
-    };
-    var myMapDiv = document.getElementById(divId);
-    map = new OpenLayers.Map(options);
-    map.render(myMapDiv);
-    //Base layer
-    googleLayer  = new OpenLayers.Layer.Google('Google Hybrid', {type: G_HYBRID_MAP });
+    
     //Specimens layer
-    vectorLayer = new OpenLayers.Layer.Vector('Specimens');
-    vectorLayer.setVisibility(true);
-    //Adding layers
-    map.addLayer(vectorLayer);
-    map.addLayer(googleLayer);
-    //Build up all controls
-    map.zoomToExtent(initialbounds);
-    map.addControl(new OpenLayers.Control.PanZoomBar
-    ({position: new OpenLayers.Pixel(2, 15)}));
-    map.addControl(new OpenLayers.Control.LayerSwitcher
-    ({'ascending':false},{'position':OpenLayers.Control}));
-    map.addControl(new OpenLayers.Control.Navigation());
-    map.addControl(new OpenLayers.Control.Scale($('scale')));
-    map.addControl(new OpenLayers.Control.MousePosition({element: $('location')}));
-    //Add occurrences points into the map
-    showSpecimenPoints(searchString, startIndex);
-    /*/Set up a control for specimens pop ups
-    selectControl = new OpenLayers.Control.SelectFeature(vectorLayer,
-    {onSelect: onFeatureSelect, onUnselect: onFeatureUnselect});
+    vectorLayer = new OpenLayers.Layer.Vector('Specimens',{
+        strategies: [ strategy ],
+        styleMap: new OpenLayers.StyleMap({
+            "default": style,
+            "select": style
+        })
+    });
+    vectorLayer.setVisibility(false);
+    
+    map.addLayers([googleLayer, vectorLayer]);
+    
+    //Set up a control for specimens pop ups
+    selectControl = new OpenLayers.Control.SelectFeature(
+        vectorLayer,
+        {
+            onSelect: onFeatureSelect, 
+            onUnselect: onFeatureUnselect,
+            multiple: false
+        }
+    );
     map.addControl(selectControl);
-    selectControl.activate();*/
+    selectControl.activate();
+    
 }
 
 /*
  * Creates a new atributes array for each speciemns point
  */
-function createAttrib(scientificName,latitude,longitude,catalog,institution) {
+function createAttrib(occurrenceId, scientificName,latitude,longitude,catalog,institution) {
     attrib = {
+        OccurrenceId: occurrenceId,
         ScientificName: scientificName,
         Latitude: latitude,
         Longitude: longitude,
@@ -71,12 +100,16 @@ function createAttrib(scientificName,latitude,longitude,catalog,institution) {
 }
 
 /*
- * This function adds a new point to the specimens Layer
+ * This function create a new point feature
  */
-function addPoint(x, y, attribute) {
+function createPoint(x, y, attribute) {
+    var point = new OpenLayers.Geometry.Point(x, y);
+    //transform lat/lon to google projection, a Mercator projection variant
+    point.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
     var feature = new OpenLayers.Feature.Vector(
-    new OpenLayers.Geometry.Point(x, y), attribute);
-    vectorLayer.addFeatures(feature);
+            point , attribute);
+    //vectorLayer.addFeatures(feature);
+    return feature;
 }
 
 /*
@@ -86,23 +119,37 @@ function addPoint(x, y, attribute) {
  */
 function onFeatureSelect(feature) {
     selectedFeature = feature;
-    popup = new OpenLayers.Popup.FramedCloud("point",
-    feature.geometry.getBounds().getCenterLonLat(),
-    null,
-    "<div style=\"font-size:.8em\">"+
-    "<br><b>Nombre científico: </b>"+feature.attributes.ScientificName+
-    "<br><b>Institución: </b>"+feature.attributes.Institution+
-    "<br><b># de catálogo: </b>"+feature.attributes.Catalog+
-    "<br><b>Latutud: </b>"+feature.attributes.Latitude+
-    "<br><b>Longitud: </b>"+feature.attributes.Longitude+"</div>",
-    null, true, onPopupClose);
-    feature.popup = popup;
-    map.addPopup(popup);
-    //Define a custom event and throw the event to the global listener
-    var fromObj = document.getElementById('mapPanel');
-    //var myEvent = new YAHOO.util.CustomEvent("myEvent", fromObj);
-    //myEvent.subscribe(globalListener, fromObj);
-    //myEvent.fire();
+    
+    if(!selectedFeature.cluster){
+        popup = new OpenLayers.Popup.FramedCloud("point",
+        feature.geometry.getBounds().getCenterLonLat(),
+        null,
+        "<div style=\"font-size:.8em\">"+
+        "<br><b>Nombre científico: </b>"+feature.attributes.ScientificName+
+        "<br><b>Institución: </b>"+feature.attributes.Institution+
+        "<br><b># de catálogo: </b>"+feature.attributes.Catalog+
+        "<br><b>Latutud: </b>"+feature.attributes.Latitude+
+        "<br><b>Longitud: </b>"+feature.attributes.Longitude+"</div>",
+        null, true, onPopupClose);
+        feature.popup = popup;
+        map.addPopup(popup);
+    }
+    else{
+        popup = new OpenLayers.Popup.FramedCloud("point",
+        feature.geometry.getBounds().getCenterLonLat(),
+        null,
+        "<div style=\"font-size:.8em\">"+
+        "<br><b>Cluster con "+
+            feature.cluster.length+
+            " ocurrencias</b>"+
+            "</div>",
+        null, true, onPopupClose);
+        feature.popup = popup;
+        map.addPopup(popup);
+    }
+    
+    //mark features on table
+    selectRowsFromMap(selectedFeature.cluster);
 }
 
 /*
@@ -128,6 +175,9 @@ function onFeatureSelectFromTable(feature) {
  */
 function onPopupClose(evt) {
     selectControl.unselect(selectedFeature);
+    
+    //unselect table rows
+    unselectAllRows();
 }
 
 /*
@@ -151,12 +201,7 @@ function clearPopups(){
 /*
  * Ajax request to show occurrences on the map
  */
-function showSpecimenPoints(searchString, startIndex)  {    
-    //Prepare URL for XHR request:
-    var sUrl = contextPath + "/api/search/occurrences?searchString="+searchString+
-        "&format=xml&sort=scientificname&dir=asc&startIndex="+startIndex+"&results=20";
-
-    $.get(sUrl, function(xmlDoc){
+function showSpecimenPoints(xmlDoc)  {
         //clear the vector layer
         vectorLayer.destroyFeatures();
         
@@ -165,10 +210,14 @@ function showSpecimenPoints(searchString, startIndex)  {
         //List of coordinates (to determine the posible bounderies)
         var latArray = new Array();
         var longArray = new Array();
+        var points = [];
         //Add all the specimen point
         for(var i = 0;i<specimenList.length;i++){
-            var catalog,latitude,longitude,scientificname,institution;
+            var catalog,latitude,longitude,scientificname,institution, occurrenceId;
             var node = specimenList[i];
+            if(node.getElementsByTagName("occurrenceId")[0] != null){
+                occurrenceId = node.getElementsByTagName("occurrenceId")[0].childNodes[0].nodeValue;
+            }
             if(node.getElementsByTagName("catalog")[0] != null){
                 catalog = node.getElementsByTagName("catalog")[0].childNodes[0].nodeValue;
             }
@@ -184,8 +233,8 @@ function showSpecimenPoints(searchString, startIndex)  {
             if(node.getElementsByTagName("institution")[0] != null){
                 institution = node.getElementsByTagName("institution")[0].childNodes[0].nodeValue;
             } 
-            attributes = createAttrib(scientificname,latitude,longitude,catalog,institution);
-            addPoint(longitude,latitude,attributes);
+            attributes = createAttrib(occurrenceId,scientificname,latitude,longitude,catalog,institution);
+            points.push( createPoint(longitude,latitude,attributes) );
             latArray.push(parseFloat(latitude));
             longArray.push(parseFloat(longitude));
         }
@@ -195,11 +244,36 @@ function showSpecimenPoints(searchString, startIndex)  {
         var minY = getMinY(latArray);
         var maxX = getMaxX(longArray);
         var maxY = getMaxY(latArray);
-        var bounds = new OpenLayers.Bounds(
-            minX, minY, maxX, maxY);
+        var bounds = new OpenLayers.Bounds();
+        bounds.extend(new OpenLayers.LonLat(minX, minY));
+        bounds.extend(new OpenLayers.LonLat(maxX, maxY));
+        bounds.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
+        map.maxExtent = bounds;
         map.zoomToExtent(bounds);
-        });
+        
+        vectorLayer.addFeatures(points);
+        
+        clusterMaxLenght = getMaxCluster();
+        
+        vectorLayer.setVisibility(true);
 
+}
+
+/*
+ * Retorna el largo del mayor cluster
+ */
+function getMaxCluster(){
+    var arrayCluster = vectorLayer.features;
+    var maxLength = 0;
+    
+    
+    for( i=0; i<arrayCluster.length; i++){
+        if(arrayCluster[i].cluster.length > maxLength){
+            maxLength = arrayCluster[i].cluster.length;
+        }
+    }
+    
+    return maxLength;
 }
 
 /*

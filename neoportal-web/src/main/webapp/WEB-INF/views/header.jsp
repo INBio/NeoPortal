@@ -7,8 +7,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         <div style="-rave-layout: grid">
-            <form:form>
-
                 <div id="banner-rep">
                     <!--a href="${pageContext.request.contextPath}"  -->
                     <div id="banner">
@@ -24,7 +22,5 @@
                     <a class="link_home" href="welcome.htm"><fmt:message key="home_title"/></a>
                     <a class="link_about" href="about.htm"><fmt:message key="about_title"/></a>
                 </div>-->
-
-            </form:form>
         </div>
 

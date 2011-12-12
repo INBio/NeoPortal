@@ -4,6 +4,8 @@ var contextPath;
 var singleSelectDataTable;
 //Total count of species by searchCriteria (Use on pagination)
 var totalcount;
+//
+var url = "/neoportal/api/search/taxa"
 /*
  * This structure defines the requiered data to show in ocurrences page
  */
@@ -56,7 +58,13 @@ function initSearch(context){
     
     if(window.location.search != '')
     {
-        homeSearch();
+        //homeSearch();
+        
+        homeSearch_();
+        
+        $("div.dataTables_paginate").show();
+        
+        externalSearch();
     }
 }
 
@@ -128,8 +136,11 @@ function flickrUrl(scName){
     return 'http://www.flickr.com/search/show/?q='+strSearch;
 }
 function gbifUrl(scName){
-    var cleanedInput = cleanInputSearch(scName);
-    return 'http://data.gbif.org/search/'+cleanedInput;
+    //var cleanedInput = cleanInputSearch(scName);
+    //return 'http://data.gbif.org/search/'+cleanedInput;
+    //return 'http://data.gbif.org/ws/rest/taxon/list?scientificname=' +
+    //    scName + '&maxresults=10';
+    return 'http://data.gbif.org/search/' + scName;
 }
 function eolUrl(scName){
     var cleanedInput = cleanInputSearch(scName);
@@ -140,7 +151,7 @@ function eolUrl(scName){
 function wikiUrl(scName){
     var cleanedInput = cleanInputSearch(scName);
     //Finally replace blank spaces for plus
-    var strSearch = cleanedI.homenput.replace(" ","_");
+    var strSearch = cleanedInput.replace(" ","_");
     return 'http://species.wikimedia.org/wiki/'+strSearch;
 }
 function cleanInputSearch(input){
@@ -191,7 +202,9 @@ function homeSearch() {
         tHead += "<th>" + imageT +"</th>";
         tHead += "</tr></thead>";
 
-        //create table
+        //create tableCamarero, esa realidad está demasiado cruda.
+
+
         $("#tablePanel").append("<table id='resultTable' class='home'></table>");
         $("#resultTable").append(tHead);
     }
@@ -227,10 +240,10 @@ function homeSearch() {
             //get actual index for pagging
 
             var sEcho = aoData[0].value;
-            $.get(contextPath+"/api/search/taxa", {searchString: searchString,
+            $.get(contextPath+"/api/search/taxa", {searchTerms: searchString,
                 format: "xml",
                 startIndex: aoData[3].value,    //iDisplayStart
-                results: 10}, function(data){
+                itemsPerPage: 10}, function(data){
                     //prepare the json for datatable to use it the right way
                     /* convert to format that DataTables understands */
                     var jData = $( data );
@@ -269,3 +282,83 @@ function configureTable(){
     });
 }
 
+function homeSearch_(){
+    //Hide the search explanation panel
+    $("#moduleExplanation").hide(300);
+        
+    //get the q param with the corresponding search
+    var input = window.location.search;
+    input = input.split('=');
+    
+    var searchString = input[1];
+    
+    if(input.length > 2) {
+        //case when there's more than the q param
+        //we need to iterate throw the array until find q
+    }
+    
+    //searchString = searchString.replace(/_/g, ' ');
+    searchString = unescape(searchString);
+    
+    //set search string into input bar
+    $('#searchInput').val(searchString);
+    
+    $("#tablePanel").inbPaginate(url, 
+        {searchTerms: searchString, totalResults: "count",
+            firstControl: "span.firstControl", lastControl: "span.lastControl",
+            nextControl: "span.nextControl", previousControl: "span.previousControl",
+            iterateFunction: function(xmlData){
+                //iterate throw the records.. 
+                //generate the html code for the resulting set
+                debugger;
+                                
+                var itemList = "";
+                
+                $(xmlData).find("element").each(function(){
+                    var newItem = "<div class='search_item'>";
+                    newItem += "<img src=\"" + $(this).find("url").text() + "\" />"
+                    newItem += "<span>\n\
+                        <a href=\"species/" + $(this).find("scname").text() + "\">" 
+                        + $(this).find("scname").text() + "</a></span>";
+                    newItem += "<span>" + $(this).find("cname").text() + "</span>";
+                    newItem += "</div>";
+                    
+                    itemList += newItem;
+                });
+                
+                //return the html string
+                //the plugin add this to the container
+                return itemList;
+        }});
+}
+
+function externalSearch(){
+    //get the q param with the corresponding search
+    var input = window.location.search;
+    input = input.split('=');
+    
+    var searchString = input[1];
+    
+    if(input.length > 2) {
+        //case when there's more than the q param
+        //we need to iterate throw the array until find q
+    }
+    
+    searchString = unescape(searchString);
+
+    $("#externalResult").append("<a href='" + 
+                        gbifUrl(searchString) + 
+                        "'>Buscar en GBIF</a>");
+    
+    $("#externalResult").append("<a href='" + 
+                        eolUrl(searchString) + 
+                        "'>Buscar en EOL</a>");
+    
+    $("#externalResult").append("<a href='" + 
+        wikiUrl(searchString) + 
+        "'>Buscar en wikispecies</a>");
+        
+        
+    //muestra el div de enlaces externos
+    $("#externalResult").show();
+}

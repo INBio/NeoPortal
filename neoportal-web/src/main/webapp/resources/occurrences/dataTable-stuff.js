@@ -4,6 +4,10 @@ var singleSelectDataTable;
 var totalcount;
 //ContextPath
 var contextPath;
+//puntero x donde va la lista de occurrencias en html
+var actualIndex;
+// xml data
+var xmlOccu;
 
 /*
  * This structure defines the requiered data to show in ocurrences page
@@ -181,23 +185,33 @@ function initTable(searchString) {
 /**
  * Creates the occurrences results table
  */
-function createOccurrencesTable(){
+function createOccurrencesTable(divContainer){
     //check if table exist...
     if ($("#resultTable").length < 1){
         var tHead = "<thead><tr>";
-        tHead += "<th>" + scientificNameT +"</th>";
-        tHead += "<th>" + institutionT +"</th>";
+        //tHead += "<th class='first_column'>" + scientificNameT +"</th>";
+        tHead += "<th class='first_column'>" + institutionT +"</th>";
         tHead += "<th>" + countryT +"</th>";
         tHead += "<th>" + provinceT +"</th>";
         tHead += "<th>" + countyT +"</th>";
         tHead += "<th>" + latitudeT +"</th>";
         tHead += "<th>" + longitudeT +"</th>";
-        tHead += "<th>" + catalogT +"</th>";
+        tHead += "<th class='last_column'>" + catalogT +"</th>";
         tHead += "</tr></thead>";
 
         //create table
-        $("#occuPanel").append("<table id='resultTable' class='occurrences'></table>");
+        $(divContainer).append("<table id='resultTable' class='simpleTable occurrences'></table>");
         $("#resultTable").append(tHead);
+        
+        //crea tabla para vista resumida
+        tHead = "<thead><tr>";
+        tHead += "<th class='first_column'>" + "Location" +"</th>";
+        tHead += "<th>" + latitudeT +"</th>";
+        tHead += "<th class='last_column'>" + longitudeT +"</th>";
+        tHead += "</tr></thead>";
+        
+        $(divContainer).append("<table id='resultTableHalf' class='simpleTable occurrences'></table>");
+        $("#resultTableHalf").hide().append(tHead);
     }
 }
 
@@ -226,4 +240,81 @@ function configureTable(){
         //Show pop up on map
         onFeatureSelectFromTable(selectedFeature);
     });
+}
+
+
+function createTable(xmlDoc, divContainer){
+    if(!xmlOccu){
+        xmlOccu = xmlDoc;
+        totalcount = $(xmlDoc).find('count')[0].textContent;
+        actualIndex = 0;
+        
+        createOccurrencesTable(divContainer);
+        
+        // verifica si necesita botón de 'ver más'
+        if(totalcount > 10){
+            //add the 'show more' button
+            $(divContainer).append("<a href='#' id='show-more'>show more</a>");
+
+            $("#show-more").click(function(){
+                $(this).hide();
+                createTable();
+
+                //avoid change current url hash
+                return false;
+            });
+        }
+    }
+    
+    maxIndex = actualIndex + 10;
+    if(maxIndex > totalcount)
+        maxIndex = totalcount;
+    
+    var htmlRows = "";
+    var htmlRowsHalf = "";
+    
+    for (actualIndex; actualIndex < maxIndex; actualIndex++) {
+        
+        var elem = $(xmlOccu).find('element')[actualIndex];
+        
+        htmlRows += "<tr class=occurrence_"+ $(elem).find('occurrenceId').text() + ">"+
+                //"<td>"+ $(elem).find('scientificname').text() + "</td>"+
+                "<td class='first_column'>"+ $(elem).find('institution').text() + "</td>"+
+                "<td>"+ $(elem).find('country').text() + "</td>"+
+                "<td>"+ $(elem).find('province').text() + "</td>"+
+                "<td>"+ $(elem).find('county').text() + "</td>"+
+                "<td>"+ $(elem).find('latitude').text() + "</td>"+
+                "<td>"+ $(elem).find('longitude').text() + "</td>"+
+                "<td>"+ $(elem).find('catalog').text() + "</td>"+
+                "</tr>";
+            
+        htmlRowsHalf += "<tr class=occurrence_"+ $(elem).find('occurrenceId').text() + ">"+
+            //"<td>"+ $(elem).find('scientificname').text() + "</td>"+
+            "<td class='first_column'>"+ $(elem).find('country').text() + ", "+
+            $(elem).find('province').text() + ", "+
+            $(elem).find('county').text() + "</td>"+
+            "<td>"+ $(elem).find('latitude').text() + "</td>"+
+            "<td>"+ $(elem).find('longitude').text() + "</td>"+
+            "</tr>";
+    }
+    
+    //put new rows at the end of the table
+    $("#resultTable").append(htmlRows);
+    $("#resultTableHalf").append(htmlRowsHalf);
+    
+    if (actualIndex < totalcount){
+        $("#show-more").show();
+    }
+}
+
+function selectRowsFromMap(arrayFeatures){
+    //debugger;
+    
+    for(i=0; i<arrayFeatures.length; i++){
+        $("tr.occurrence_" + arrayFeatures[i].attributes.OccurrenceId).addClass('selected');
+    }
+}
+
+function unselectAllRows(){
+    $("tr.selected").removeClass('selected');
 }
