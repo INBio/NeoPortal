@@ -5,7 +5,7 @@ var singleSelectDataTable;
 //Total count of species by searchCriteria (Use on pagination)
 var totalcount;
 //
-var url = "/neoportal/api/search/taxa"
+var url = "/neoportal-web/api/search/taxa"
 /*
  * This structure defines the requiered data to show in ocurrences page
  */
