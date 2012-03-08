@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
 import org.hibernate.Session;
@@ -203,5 +204,103 @@ public class GenericBaseDAOImpl<E ,I>
             }
         });
     }
+
+    @Override
+    public List search(
+            final Class<E> entityClass,
+            final ResultTransformer resultTransformer,
+            final String searchText,
+            final int offset,
+            final int quantity) {
+        
+        
+        HibernateTemplate template = getHibernateTemplate();
+
+        return (List) template.execute(new HibernateCallback() {
+                
+            @Override
+            public Object doInHibernate(Session session) {
+
+                Query query = null;
+                FullTextSession fullTextSession = 
+                    Search.getFullTextSession(session);
+                
+                // create native Lucene query
+                QueryParser parser = 
+                        new QueryParser(Version.LUCENE_33, "",
+                            new StandardAnalyzer(Version.LUCENE_33));
+
+                //FIXME Manejo de errores
+                try {
+                    
+                    query = parser.parse(searchText);
+                    
+                } catch (ParseException ex) {
+                    
+                    Logger.getLogger(entityClass.getName())
+                        .log(Level.SEVERE, null, ex);
+                    
+                    return null;
+                }
+                
+                // Wrap Lucene query in a org.hibernate.Query
+                org.hibernate.Query hsQuery =
+                        (org.hibernate.Query) fullTextSession.createFullTextQuery(query, entityClass);
+
+                // Configure the result list
+                hsQuery.setResultTransformer(resultTransformer);
+                hsQuery.setFirstResult(offset);
+                hsQuery.setMaxResults(quantity);
+                
+                return hsQuery.list();
+            }
+        });
+    }
+
+    @Override
+    public Long searchCount(
+            final Class<E> entityClass,
+            final ResultTransformer resultTransformer,
+            final String searchText) {
+        
+        HibernateTemplate template = getHibernateTemplate();
+
+        return (Long) template.execute(new HibernateCallback() {
+            
+            @Override
+            public Object doInHibernate(Session session) {
+
+                Query query = null;
+                FullTextSession fullTextSession = 
+                    Search.getFullTextSession(session);
+
+                // create native Lucene query
+                QueryParser parser =
+                        new QueryParser(Version.LUCENE_33, 
+                            "", new StandardAnalyzer(Version.LUCENE_33));
+
+                try {
+                    
+                    query = parser.parse(searchText);
+                    
+                } catch (ParseException ex) {
+                    
+                    Logger.getLogger(entityClass.getName())
+                        .log(Level.SEVERE, null, ex);
+                    
+                }
+                
+                // Wrap Lucene query in a org.hibernate.Query
+                FullTextQuery hsQuery =
+                    fullTextSession.createFullTextQuery(query, entityClass);
+
+                //hsQuery.enableFullTextFilter(searchText)
+                
+                return new Long(hsQuery.getResultSize());
+            }
+        });
+    }
       
+    
+    
 }

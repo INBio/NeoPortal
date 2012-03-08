@@ -21,6 +21,7 @@
         <mapping resource="META-INF/hibernate/TaxonDescriptionHasReferenceElement.hbm.xml"/>
         <mapping resource="META-INF/hibernate/CommonName.hbm.xml"/>
         <mapping resource="META-INF/hibernate/TaxonAssociatedAttributeHasReferenceElement.hbm.xml"/>
+        <mapping resource="META-INF/hibernate/ColumnList.hbm.xml"/>
     
     <!-- Hibernate search event listeners -->
 <!--        <event type="post-update">

@@ -7,6 +7,7 @@
     <!-- Hibernate search configuration -->
     <property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
     <property name="hibernate.search.default.indexBase">/home/arturo/LuceneIndex/</property>
+    <!--    <property name="hibernate.search.default.indexBase">/var/LuceneIndex/</property>-->
     <property name="hibernate.search.default.locking_strategy">simple</property>
     <!-- Mappings -->
     <mapping resource="META-INF/hibernate/TaxonHasAssociatedAttribute.hbm.xml"/>
@@ -24,8 +25,11 @@
     <mapping resource="META-INF/hibernate/TaxonDescriptionHasReferenceElement.hbm.xml"/>
     <mapping resource="META-INF/hibernate/CommonName.hbm.xml"/>
     <mapping resource="META-INF/hibernate/TaxonAssociatedAttributeHasReferenceElement.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/ColumnList.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/ColumnDefault.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/FilterList.hbm.xml"/>
     <!-- Hibernate search event listeners -->
-<!--    <event type="post-update">
+    <!--    <event type="post-update">
       <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
     </event>
     <event type="post-insert">

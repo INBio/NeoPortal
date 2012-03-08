@@ -92,4 +92,26 @@ public class OccurrenceDAOImpl
                                  fieldList.toArray(new String[fieldList.size()]),
                                  searchText);
     }
+    
+    /**
+    * Return a generic search.
+    * @param entityClass
+    * @param fields
+    * @param searchText
+    * @param offset
+    * @param quantity
+    * @return 
+    */
+    @Override
+    public List advancedSearch(
+        final String searchText,
+        final int offset, 
+        final int quantity){
+        
+        return super.search(Occurrence.class,
+                            new OccurrenceTransformer(),
+                            searchText,
+                            offset,
+                            quantity);
+    }
 }

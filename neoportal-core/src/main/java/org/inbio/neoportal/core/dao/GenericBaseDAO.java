@@ -93,4 +93,33 @@ public interface GenericBaseDAO<E ,I> {
         final String[] fields,
         final String searchText);
 
+    /**
+     * Return a search using QueryParser class.
+     * Highly use in advanced search procedures.
+     * @param entityClass
+     * @param resultTransformer
+     * @param searchText
+     * @param offset
+     * @param quantity
+     * @return 
+     */
+    public List search(
+        final Class<E> entityClass,
+        final ResultTransformer resultTransformer,
+        final String searchText,
+        final int offset, 
+        final int quantity);
+    
+    /**
+     * Return search count for not MultiField search.
+     * Use with search that use QueryParser class.
+     * @param entityClass
+     * @param resultTransformer
+     * @param searchText
+     * @return 
+     */
+    public Long searchCount(
+        final Class<E> entityClass, 
+        final ResultTransformer resultTransformer,
+        final String searchText);
 }

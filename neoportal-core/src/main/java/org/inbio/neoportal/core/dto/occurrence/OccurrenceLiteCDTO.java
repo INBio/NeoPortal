@@ -19,7 +19,6 @@
 package org.inbio.neoportal.core.dto.occurrence;
 
 import java.util.ArrayList;
-import java.util.List;
 import org.inbio.neoportal.common.dto.*;
 
 /**
@@ -194,6 +193,5 @@ public class OccurrenceLiteCDTO
     public void setGeospatialList(ArrayList<OccurrenceGeospatialLiteCDTO> geospatialList) {
         this.geospatialList = geospatialList;
     }
-    
-    
+
 }
