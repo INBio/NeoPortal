@@ -48,7 +48,6 @@ public class OccurrencesApiController {
     @RequestMapping (
             value = "/api/occurrences",
             method = RequestMethod.GET
-            //params={"taxonName", "startIndex=0", "results=10"}
             )
     public @ResponseBody XMLSpecimenWrapper searchOccurrencesWriteXml (
             @RequestParam String taxonName,

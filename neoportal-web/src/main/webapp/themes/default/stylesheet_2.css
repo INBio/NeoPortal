@@ -525,3 +525,28 @@ table.simpleTable tbody tr:hover{
 table.simpleTable tbody tr.selected{
     background-color: #C3D5F3;
 }
+
+/*
+----------------- AdvancedSearch ----------------------------
+*/
+
+div.filterGroup{
+    border: 1px solid #AAA;
+    width: 250px;
+    margin: 10px;
+    padding: 5px;
+    
+    /*round corners*/
+    border-radius: 8px;
+}
+
+span.expand-button, span.reduce-button{
+    float: right;
+    
+    font-size: 11px;
+}
+
+span.columnItem{
+    margin-right: 13px;
+    display: inline-table; /*checkbox and label in the same line*/
+}
