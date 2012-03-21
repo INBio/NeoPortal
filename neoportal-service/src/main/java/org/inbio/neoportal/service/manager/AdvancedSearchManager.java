@@ -19,11 +19,12 @@
 package org.inbio.neoportal.service.manager;
 
 import java.util.List;
+import org.inbio.neoportal.core.dto.occurrence.OccurrenceCDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.ColumnDefaultSDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.ColumnListSDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.FilterListSDTO;
+import org.inbio.neoportal.service.dto.advancedSearch.FilterSDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.FiltersSDTO;
-import org.inbio.neoportal.service.dto.occurrences.OccurrenceLiteSDTO;
 
 /**
  *
@@ -69,8 +70,8 @@ public interface AdvancedSearchManager {
      * @param quantity
      * @return 
      */
-    public List<OccurrenceLiteSDTO> occurrencePaginatedSearch(
-            String filters, int offset, int quantity);
+    public List<OccurrenceCDTO> occurrencePaginatedSearch(
+            FilterSDTO filters, int offset, int quantity);
     
     /**
      * 
@@ -78,5 +79,5 @@ public interface AdvancedSearchManager {
      * @return 
      */
     public Long occurrenceSearchCount(
-            String filters);
+            FilterSDTO filters);
 }

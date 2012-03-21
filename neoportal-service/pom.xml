@@ -180,12 +180,6 @@
             </snapshots>
         </repository>
         <repository>
-            <url>http://ftp.ing.umu.se/mirror/eclipse/rt/eclipselink/maven.repo</url>
-            <id>eclipselink</id>
-            <layout>default</layout>
-            <name>Repository for library Library[eclipselink]</name>
-        </repository>
-        <repository>
             <url>http://download.java.net/maven/2/</url>
             <id>hibernate-persistence</id>
             <layout>default</layout>

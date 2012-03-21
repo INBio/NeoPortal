@@ -1,6 +1,20 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ *  NeoPortal - New implementation of the INBio Species and Occurrences portal.
+ *  
+ *  Copyright (C) 2010 INBio - Instituto Nacional de Biodiversidad, Costa Rica
+ * 
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ * 
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ * 
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.inbio.neoportal.service.manager.impl;
 
@@ -9,14 +23,18 @@ import java.util.List;
 import org.inbio.neoportal.core.dao.ColumnDefaultDAO;
 import org.inbio.neoportal.core.dao.ColumnListDAO;
 import org.inbio.neoportal.core.dao.FilterListDAO;
+import org.inbio.neoportal.core.dao.OccurrenceDAO;
 import org.inbio.neoportal.core.dto.advancedsearch.ColumnDefaultCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.ColumnListCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.FilterListCDTO;
+import org.inbio.neoportal.core.dto.occurrence.OccurrenceCDTO;
+import org.inbio.neoportal.core.dto.occurrence.OccurrenceLiteCDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.ColumnDefaultSDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.ColumnListSDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.FilterListSDTO;
+import org.inbio.neoportal.service.dto.advancedSearch.FilterSDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.FiltersSDTO;
-import org.inbio.neoportal.service.dto.occurrences.OccurrenceLiteSDTO;
+import org.inbio.neoportal.service.entity.AdvancedSearchData;
 import org.inbio.neoportal.service.manager.AdvancedSearchManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +55,9 @@ public class AdvancedSearchManagerImpl
 
     @Autowired
     private FilterListDAO filterListDAO;
+    
+    @Autowired
+    private OccurrenceDAO occurrenceDAO;
     
     
     @Override
@@ -117,26 +138,49 @@ public class AdvancedSearchManagerImpl
         
         return result;
     }
-
+    
     @Override
-    public List<OccurrenceLiteSDTO> occurrencePaginatedSearch(
-            String filters, 
+    public List<OccurrenceCDTO> occurrencePaginatedSearch(
+            FilterSDTO filters, 
             int offset, 
             int quantity) {
         
         //create search text base on filters
         String query = createQuery(filters);
         
-        throw new UnsupportedOperationException("Not supported yet.");
+        List<OccurrenceCDTO> occurrenceCDTO = 
+                occurrenceDAO.advancedSearch(query, offset, quantity);
+        
+        return occurrenceCDTO;
     }
 
     @Override
-    public Long occurrenceSearchCount(String filters) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public Long occurrenceSearchCount(FilterSDTO filters) {
+        //create search text base on filters
+        String query = createQuery(filters);
+        
+        return occurrenceDAO.searchCount(query);        
     }
     
-    private String createQuery(String filters){
+    private String createQuery(FilterSDTO filters){
+        String query = "";
         
-        return "";
+        /* taxon terms */
+        AdvancedSearchData taxonomy = filters.getTaxonomy();
+        if (taxonomy.getFilters().containsKey("taxon") && 
+            taxonomy.getFilters().get("taxon") != ""){
+            query += " (";
+            query += "defaultName: \"" + taxonomy.getFilters().get("taxon") + "\" OR ";
+            query += "kingdom: \"" + taxonomy.getFilters().get("taxon") + "\" OR ";
+            query += "division: \"" + taxonomy.getFilters().get("taxon") + "\" OR ";
+            query += "class_: \"" + taxonomy.getFilters().get("taxon") + "\" OR ";
+            query += "order: \"" + taxonomy.getFilters().get("taxon") + "\" OR ";
+            query += "family: \"" + taxonomy.getFilters().get("taxon") + "\" OR ";
+            query += "genus: \"" + taxonomy.getFilters().get("taxon") + "\" OR ";
+            query += "scientificName: \"" + taxonomy.getFilters().get("taxon") + "\") ";
+        }
+        
+        return query;
     }
+
 }
