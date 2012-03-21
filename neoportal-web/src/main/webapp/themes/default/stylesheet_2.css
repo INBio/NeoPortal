@@ -529,24 +529,51 @@ table.simpleTable tbody tr.selected{
 /*
 ----------------- AdvancedSearch ----------------------------
 */
-
-div.filterGroup{
-    border: 1px solid #AAA;
+div.leftPanel{
+    float: left;
     width: 250px;
-    margin: 10px;
+    padding: 10px;
+}
+div.filterGroup{
+    background-color: #fff;
     padding: 5px;
+    margin-bottom: 10px;
     
+    border: 1px solid #AAA;
     /*round corners*/
     border-radius: 8px;
 }
-
 span.expand-button, span.reduce-button{
-    float: right;
-    
+    float: right;    
     font-size: 11px;
 }
-
+span.expand-button:hover, span.reduce-button:hover{
+    cursor: pointer;
+}
 span.columnItem{
     margin-right: 13px;
     display: inline-table; /*checkbox and label in the same line*/
+}
+div.results{
+    float: left;
+    /*display: inline-block;*/
+    margin-left: 30px;
+}
+
+/* advanced search result table */
+table.tablePanel {
+    border-collapse: collapse;
+}
+table.tablePanel th{
+    /*color: #036;*/
+    border-bottom: 2px solid #039;
+    padding-bottom: 4px;
+    font-weight: bold;
+}
+table.tablePanel th,table.tablePanel td{
+    padding-top: 6px;
+    text-align: left;
+        
+    border-right: 15px solid #ffffff;
+    border-left: 15px solid #ffffff;
 }

@@ -62,6 +62,7 @@
             <jsp:include page="/WEB-INF/views/header_inner.jsp"/>
 
             <div id="content">
+                <a id="searchBtn" href="#">search</a>
 
                                             
             </div> <!-- end content -->

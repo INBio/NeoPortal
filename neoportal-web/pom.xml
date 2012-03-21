@@ -12,7 +12,7 @@
 		<org.springframework-version>3.0.4.RELEASE</org.springframework-version>
 		<org.springframework.roo-version>1.2.0.RELEASE</org.springframework.roo-version>
 		<org.aspectj-version>1.6.8</org.aspectj-version>
-		<org.slf4j-version>1.5.10</org.slf4j-version>
+		<org.slf4j-version>1.6.1</org.slf4j-version>
 	 <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
 	 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -21,7 +21,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${org.springframework-version}</version>
+			<version>3.0.5.RELEASE</version>
 			<exclusions>
 				<!-- Exclude Commons Logging in favor of SLF4j -->
 				<exclusion>
@@ -29,11 +29,13 @@
 					<artifactId>commons-logging</artifactId>
 				 </exclusion>
 			</exclusions>
+		 <type>jar</type>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${org.springframework-version}</version>
+			<version>3.0.5.RELEASE</version>
+		 <type>jar</type>
 		</dependency>
 		<!-- Roo dependencies -->
 
@@ -88,6 +90,31 @@
 			<artifactId>javax.inject</artifactId>
 			<version>1</version>
 		</dependency>
+        
+        <!--  JSR 303 with Hibernate Validator -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.0.0.GA</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>4.1.0.Final</version>
+		</dependency>
+
+        <!-- Jackson JSON Mapper -->
+		<dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-asl</artifactId>
+            <version>1.9.3</version>
+         </dependency>
+
+         <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.3</version>
+          </dependency>
 
 		<!-- Servlet -->
 		<dependency>
@@ -170,16 +197,6 @@
 	  <groupId>org.springframework.roo</groupId>
 	  <artifactId>org.springframework.roo.annotations</artifactId>
 	  <version>1.2.0.RELEASE</version>
-	 </dependency>
-	 <dependency>
-	  <groupId>org.codehaus.jackson</groupId>
-	  <artifactId>jackson-core-asl</artifactId>
-	  <version>1.9.0</version>
-	 </dependency>
-	 <dependency>
-	  <groupId>org.codehaus.jackson</groupId>
-	  <artifactId>jackson-mapper-asl</artifactId>
-	  <version>1.9.0</version>
 	 </dependency>
 	</dependencies>
 	<repositories>

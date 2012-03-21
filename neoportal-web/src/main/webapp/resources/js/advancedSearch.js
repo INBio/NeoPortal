@@ -4,6 +4,13 @@
  */
 
 var filtersUrl = "/neoportal-web/api/advancedSearch/getColumnList";
+var occurrencesUrl = "/neoportal-web/api/advancedSearch/getOccurrences";
+var countOccurrenceUrl = "/neoportal-web/api/advancedSearch/countOccurrences";
+
+//pagination info
+var startIndex = 0; //offset for paginated search
+var itemsPerPage = 10; //
+var totalItems = 0; //total number of regs based on filters
 
 $(document).ready(function(){
     
@@ -11,6 +18,26 @@ $(document).ready(function(){
     addSearchPanel(searchContainer);
     
     $("#content").append(searchContainer);
+    
+    $("#searchBtn").click(function(){
+        var searchData = generatedQueryData();
+        //get total count of regs
+        $.ajax({
+            type: 'post',
+            url: countOccurrenceUrl,
+            data: JSON.stringify(searchData),
+            success: function(countData){
+                //set count variable
+                totalItems = countData.count;
+                //call main data 
+                searchOccurrences(0, 10);
+            },
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8'
+        });
+        
+        
+    });
     
 });
 
@@ -20,11 +47,12 @@ $(document).ready(function(){
 function addSearchPanel(searchContainer){
     //var searchContainerLocal = searchContainer;
     $.getJSON(filtersUrl, function(data){
-        debugger;
+        //debugger;
         
         var columnList = data.columnList;
         var columnDefault = data.columnDefault;
         var filterList = data.filterList;
+        var leftPanel = $("<div/>").addClass("leftPanel");
         
         /**
         
@@ -66,12 +94,14 @@ function addSearchPanel(searchContainer){
                 }
             }
             
-            $(searchContainer).append(filterDiv);
+            $(leftPanel).append(filterDiv);
             
             //hide expand option before resume filterDiv
             $("span.expand-button", filterDiv).hide();
             
         }
+        
+        $(searchContainer).append(leftPanel);
         
         $("div.filterGroup").each(function(index, filterGroup){
             resumeFilterGroup(filterGroup);
@@ -120,7 +150,7 @@ function addSearchPanel(searchContainer){
  * 
  */
 function resumeFilterGroup(filterGroup){
-    debugger;
+    //debugger;
     
     $("span.columnItem", filterGroup).hide();
     
@@ -147,7 +177,7 @@ function resumeFilterGroup(filterGroup){
  *
  */
 function expandFilterGroup(filterGroup){
-    debugger;
+    //debugger;
     
     //hide resume elements
     $("p.resume", filterGroup).remove();
@@ -157,6 +187,7 @@ function expandFilterGroup(filterGroup){
 
 
     $(filterGroup).width(500);
+    $(filterGroup).css({position: "relative"});
     
     $("span.filter-group-button", filterGroup).toggle();
 }
@@ -171,4 +202,146 @@ function getColumnDefaultByKey(json, key){
         }
     }
     return false;
+}
+
+/**
+ * Create the object with all the columns and filters needed to return 
+ * the appropiate results
+ */
+function generatedQueryData(){
+    var queryData = new Object();
+    
+/* taxon information */
+    queryData.taxonomy = new Object();
+    queryData.taxonomy.columns = new Array();
+    //columns
+    $("div.taxonomy input.columnItem:checked").each(function (index, item){
+        queryData.taxonomy.columns[index] = $(item).attr("name");
+    });
+    queryData.taxonomy.filters = new Object();
+    //filters
+    $("div.taxonomy span.filterItem").each(function (index, item){
+        var $input = $("input", item);
+        var newFilter = new Object();
+        
+        if ($input.attr("type") == "text"){
+            eval("queryData.taxonomy.filters." 
+                + $input.attr("name") + " = '" 
+                + $input.val() + "'");
+        }
+    });
+    
+    return queryData;
+}
+
+/**
+ * Generate the table and pagination html elements
+ */
+function showTable(searchContainer, data){
+    
+    if (data == null)
+        return;
+    
+    //$("div.results", searchContainer).remove();
+    //check if the div exists
+    var existDiv = $("div.results").length > 0? true: false ;
+
+    if(existDiv){   //change just the tbody section when table is already generate
+        $("div.results table tbody").html(generatedTableRows(data));
+    }
+    else{   //create buttons for pagination and table elements
+        var divResults = "<div class=\"results\">";
+        //paginated elements
+        divResults += "<span class=\"firstControl paginate_button\">Inicio</span>";
+        divResults += "<span class=\"previousControl paginate_button\">Anterior</span>";
+        divResults += "<span class=\"nextControl paginate_button\">Siguiente</span>";
+        divResults += "<span class=\"lastControl paginate_button\">Último</span>";
+
+       //table
+        divResults += "<table class=\"tablePanel\">";
+        divResults += "<thead><tr>";
+
+        //iterate throw the columns
+        $("input.columnItem:checked").each(function (index, elem){
+            divResults += "<th scope=\"col\">" + $(elem).attr("name") + "</th>";
+        });
+
+        divResults += "</tr></thead>";
+        
+        //append the html code for all data rows
+        divResults += generatedTableRows(data);
+        
+        $(searchContainer).append(divResults);
+        
+        
+        //events for pagination
+        $("span.firstControl").click(function(){
+            startIndex = 0;
+            searchOccurrences(startIndex, itemsPerPage);
+        });
+
+        $("span.previousControl").click(function(){
+            if((startIndex - itemsPerPage) >= 0 ){
+                startIndex -= itemsPerPage;
+                searchOccurrences(startIndex, itemsPerPage);
+            }
+        });
+
+        $("span.lastControl").click(function(){
+            startIndex = totalItems - (totalItems % itemsPerPage);
+            searchOccurrences(startIndex, itemsPerPage);
+        });
+
+        $("span.nextControl").click(function(){
+            if(startIndex + itemsPerPage < totalItems){
+                startIndex += itemsPerPage;
+                searchOccurrences(startIndex, itemsPerPage);
+            }
+        });
+    }
+    
+}
+
+/**
+*
+*/
+function searchOccurrences(startIndex, results){
+    var searchContainer = $("div.search");
+    var searchData = generatedQueryData();
+    var searchUrl = occurrencesUrl + "?startIndex=" + startIndex + "&results=" + results;
+    
+    var postCall = {type: 'post',
+      url: searchUrl,
+      data: JSON.stringify(searchData),
+      success: function(data){
+          debugger;
+          //alert("sent request");
+
+          //show data paginated
+          showTable(searchContainer, data);
+      },
+      dataType: 'json',
+      contentType: 'application/json; charset=utf-8'
+    };
+    $.ajax(postCall);
+}
+
+/**
+* receive the data and return the html for the rows
+* this function does not include the table tag or thead
+* just tr's for each row
+*/
+function generatedTableRows(data){
+    var columnList = $("input.columnItem:checked");
+    var rows = "";
+    for(i=0; i < data.length; i++){
+        rows += "<tr>";
+        for(j=0; j < columnList.length; j++){
+            //debugger;
+            rows += "<td>" + data[i][$(columnList[j]).attr("name")] + "</td>";
+        }
+        rows += "</tr>";
+    }
+    
+    return rows;
 }
