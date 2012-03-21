@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.inbio.neoportal.core.dao.OccurrenceDAO;
+import org.inbio.neoportal.core.dto.transformers.OccurrenceDWCTransformer;
 import org.inbio.neoportal.core.dto.transformers.OccurrenceTransformer;
 import org.inbio.neoportal.core.entity.Occurrence;
 import org.springframework.stereotype.Repository;
@@ -109,7 +110,7 @@ public class OccurrenceDAOImpl
         final int quantity){
         
         return super.search(Occurrence.class,
-                            new OccurrenceTransformer(),
+                            new OccurrenceDWCTransformer(),
                             searchText,
                             offset,
                             quantity);
