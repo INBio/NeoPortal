@@ -20,6 +20,10 @@ package org.inbio.neoportal.service.dto.advancedSearch;
 
 import java.util.List;
 import org.inbio.neoportal.common.dto.BaseDTO;
+import org.inbio.neoportal.core.dto.advancedsearch.ColumnDefaultCDTO;
+import org.inbio.neoportal.core.dto.advancedsearch.SearchColumnCDTO;
+import org.inbio.neoportal.core.dto.advancedsearch.SearchFilterCDTO;
+import org.inbio.neoportal.core.dto.advancedsearch.SearchGroupCDTO;
 
 /**
  *
@@ -28,42 +32,52 @@ import org.inbio.neoportal.common.dto.BaseDTO;
 public class FiltersSDTO 
         extends BaseDTO{
     
-    private List<ColumnListSDTO> columnList;
-    private List<ColumnDefaultSDTO> columnDefault;
-    private List<FilterListSDTO> filterList;
+    private List<SearchGroupCDTO> searchGroupList;
+    private List<SearchColumnCDTO> searchColumnList;
+    private List<ColumnDefaultCDTO> searchColumnDefaultList;
+    private List<SearchFilterCDTO> searchFilterList;
 
     public FiltersSDTO() {
     }
 
-    public FiltersSDTO(List<ColumnListSDTO> columnList, List<ColumnDefaultSDTO> columnDefault, List<FilterListSDTO> filterList) {
-        this.columnList = columnList;
-        this.columnDefault = columnDefault;
-        this.filterList = filterList;
+    public FiltersSDTO(List<SearchGroupCDTO> searchGroupList, List<SearchColumnCDTO> searchColumnList, List<ColumnDefaultCDTO> searchColumnDefaultList, List<SearchFilterCDTO> searchFilterList) {
+        this.searchGroupList = searchGroupList;
+        this.searchColumnList = searchColumnList;
+        this.searchColumnDefaultList = searchColumnDefaultList;
+        this.searchFilterList = searchFilterList;
     }
 
-    public List<ColumnDefaultSDTO> getColumnDefault() {
-        return columnDefault;
+    public List<ColumnDefaultCDTO> getSearchColumnDefaultList() {
+        return searchColumnDefaultList;
     }
 
-    public void setColumnDefault(List<ColumnDefaultSDTO> columnDefault) {
-        this.columnDefault = columnDefault;
+    public void setSearchColumnDefaultList(List<ColumnDefaultCDTO> searchColumnDefaultList) {
+        this.searchColumnDefaultList = searchColumnDefaultList;
     }
 
-    public List<ColumnListSDTO> getColumnList() {
-        return columnList;
+    public List<SearchColumnCDTO> getSearchColumnList() {
+        return searchColumnList;
     }
 
-    public void setColumnList(List<ColumnListSDTO> columnList) {
-        this.columnList = columnList;
+    public void setSearchColumnList(List<SearchColumnCDTO> searchColumnList) {
+        this.searchColumnList = searchColumnList;
     }
 
-    public List<FilterListSDTO> getFilterList() {
-        return filterList;
+    public List<SearchFilterCDTO> getSearchFilterList() {
+        return searchFilterList;
     }
 
-    public void setFilterList(List<FilterListSDTO> filterList) {
-        this.filterList = filterList;
+    public void setSearchFilterList(List<SearchFilterCDTO> searchFilterList) {
+        this.searchFilterList = searchFilterList;
     }
-    
+
+    public List<SearchGroupCDTO> getSearchGroupList() {
+        return searchGroupList;
+    }
+
+    public void setSearchGroupList(List<SearchGroupCDTO> searchGroupList) {
+        this.searchGroupList = searchGroupList;
+    }
+
     
 }

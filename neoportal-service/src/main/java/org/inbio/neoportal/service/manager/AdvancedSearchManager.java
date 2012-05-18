@@ -19,12 +19,12 @@
 package org.inbio.neoportal.service.manager;
 
 import java.util.List;
-import org.inbio.neoportal.core.dto.occurrence.OccurrenceCDTO;
-import org.inbio.neoportal.service.dto.advancedSearch.ColumnDefaultSDTO;
-import org.inbio.neoportal.service.dto.advancedSearch.ColumnListSDTO;
-import org.inbio.neoportal.service.dto.advancedSearch.FilterListSDTO;
+import org.inbio.neoportal.core.dto.advancedsearch.ColumnDefaultCDTO;
+import org.inbio.neoportal.core.dto.advancedsearch.SearchColumnCDTO;
+import org.inbio.neoportal.core.dto.advancedsearch.SearchFilterCDTO;
+import org.inbio.neoportal.core.dto.advancedsearch.SearchGroupCDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.FilterSDTO;
-import org.inbio.neoportal.service.dto.advancedSearch.FiltersSDTO;
+import org.inbio.neoportal.service.dto.advancedSearch.OccurrenceSDTO;
 
 /**
  *
@@ -36,32 +36,32 @@ public interface AdvancedSearchManager {
      * 
      * @return 
      */
-    public List<ColumnListSDTO> getAllColumns();
+    public List<SearchColumnCDTO> getAllColumns();
     
     /**
      * 
      * @param keyName
      * @return 
      */
-    public ColumnListSDTO getColumnListByKey(String keyName);
+    public SearchColumnCDTO getColumnListByKey(String keyName);
     
     /**
      * 
      * @return 
      */
-    public FiltersSDTO getFilters();
+    public List<ColumnDefaultCDTO> getColumnDefault();
     
     /**
      * 
      * @return 
      */
-    public List<ColumnDefaultSDTO> getColumnDefault();
+    public List<SearchFilterCDTO> getAllFilters();
     
     /**
      * 
      * @return 
      */
-    public List<FilterListSDTO> getAllFilters();
+    public List<SearchGroupCDTO> getAllSearchGroup();
     
     /**
      * 
@@ -70,7 +70,7 @@ public interface AdvancedSearchManager {
      * @param quantity
      * @return 
      */
-    public List<OccurrenceCDTO> occurrencePaginatedSearch(
+    public List<OccurrenceSDTO> occurrencePaginatedSearch(
             FilterSDTO filters, int offset, int quantity);
     
     /**

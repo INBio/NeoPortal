@@ -30,6 +30,7 @@ import org.inbio.neoportal.core.dto.commonname.CommonNameLiteCDTO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceGeospatialLiteCDTO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceLiteCDTO;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
+import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionLiteCDTO;
 import org.inbio.neoportal.service.dto.occurrences.OccurrenceLiteSDTO;
 import org.inbio.neoportal.service.dto.species.SpeciesLiteSDTO;
@@ -269,23 +270,14 @@ public class SearchManagerImpl implements SearchManager{
         
         return commonNameList.toString();
     }
+
+    @Override
+    public List<TaxonDescriptionFullCDTO> taxonAutocomplete(String term) 
+            throws ParseException {
+        
+        List<TaxonDescriptionFullCDTO> taxonList =
+                taxonDescriptionDAO.searchFull(term, 0, 10);
+        
+        return taxonList;
+    }
 }
-
-/*  Jajajaj, apologies to the future me for a comment like this...
- * 
-        String[] taxon =
-                new String[]{ "defaultName", "kingdom", "division", "class_",
-                                 "order", "family", "genus", "species"};
-
-        String[] occurrence =
-                new String[]{"scientificName", "higherTaxon", "kingdom",
-                                 "phylum", "class_", "orders", "family",
-                                   "genus", "specificEpithet", "country",
-                                     "stateProvince", "county", "locality"};
-
-        String[] taxonDescription =
-                new String[]{ "scientificName", "kingdomTaxon", "phylumTaxon",
-                             "classTaxon", "orderTaxon", "familyTaxon",
-                             "genusTaxon", "synonyms", "commonNames"};
-
- */

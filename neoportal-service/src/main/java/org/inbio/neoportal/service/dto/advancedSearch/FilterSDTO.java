@@ -18,6 +18,7 @@
  */
 package org.inbio.neoportal.service.dto.advancedSearch;
 
+import java.util.List;
 import org.inbio.neoportal.common.dto.BaseDTO;
 import org.inbio.neoportal.service.entity.AdvancedSearchData;
 
@@ -29,25 +30,17 @@ import org.inbio.neoportal.service.entity.AdvancedSearchData;
 public class FilterSDTO
         extends BaseDTO{
     
-    private AdvancedSearchData taxonomy;
-    private AdvancedSearchData geography;
+    private List<AdvancedSearchData> filterGroups;
 
     public FilterSDTO() {
     }
 
-    public AdvancedSearchData getTaxonomy() {
-        return taxonomy;
+    public List<AdvancedSearchData> getFilterGroups() {
+        return filterGroups;
     }
 
-    public void setTaxonomy(AdvancedSearchData taxonomy) {
-        this.taxonomy = taxonomy;
+    public void setFilterGroups(List<AdvancedSearchData> filterGroups) {
+        this.filterGroups = filterGroups;
     }
 
-    public AdvancedSearchData getGeography() {
-        return geography;
-    }
-
-    public void setGeography(AdvancedSearchData geography) {
-        this.geography = geography;
-    }
 }

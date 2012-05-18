@@ -20,6 +20,7 @@ package org.inbio.neoportal.service.manager;
 
 import java.util.List;
 import org.apache.lucene.queryParser.ParseException;
+import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
 import org.inbio.neoportal.service.dto.occurrences.OccurrenceLiteSDTO;
 import org.inbio.neoportal.service.dto.species.SpeciesLiteSDTO;
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionLiteSDTO;
@@ -77,6 +78,10 @@ public interface SearchManager {
     public Long taxonSearchCount(String searchText)
             throws ParseException;
    
+    
+    public List<TaxonDescriptionFullCDTO> taxonAutocomplete
+            (String term)
+            throws ParseException;
   
       /**
      * Search <code>searchText</code> int the lucene index.

@@ -1,7 +1,7 @@
 /*
  *  NeoPortal - New implementation of the INBio Species and Occurrences portal.
  *  
- *  Copyright (C) 2010 INBio - Instituto Nacional de Biodiversidad, Costa Rica
+ *  Copyright (C) 2012 INBio - Instituto Nacional de Biodiversidad, Costa Rica
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,38 +16,34 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.service.entity;
+package org.inbio.neoportal.service.dto.advancedSearch;
 
-import java.util.LinkedHashMap;
-import java.util.List;
+import org.inbio.neoportal.common.dto.BaseDTO;
 
 /**
  *
  * @author avargas
  */
-public class AdvancedSearchData {
+public class SearchGroupSDTO 
+        extends BaseDTO
+            implements Comparable {
     
+    private String searchGroupId;
     private String key;
-    private List<String> columns;
-    private List<LinkedHashMap<String,String>> filters;
-
-    public AdvancedSearchData() {
+    
+    public SearchGroupSDTO() {
     }
 
-    public List<String> getColumns() {
-        return columns;
+    public SearchGroupSDTO(String searchGroupId, String key) {
+        this.searchGroupId = searchGroupId;
+        this.key = key;
     }
+    
+    @Override
+    public int compareTo(Object o) {
 
-    public void setColumns(List<String> columns) {
-        this.columns = columns;
-    }
-
-    public List<LinkedHashMap<String, String>> getFilters() {
-        return filters;
-    }
-
-    public void setFilters(List<LinkedHashMap<String, String>> filters) {
-        this.filters = filters;
+        SearchGroupSDTO cl = (SearchGroupSDTO)o;
+        return this.getKey().compareTo(cl.getKey());
     }
 
     public String getKey() {
@@ -56,6 +52,14 @@ public class AdvancedSearchData {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getSearchGroupId() {
+        return searchGroupId;
+    }
+
+    public void setSearchGroupId(String searchGroupId) {
+        this.searchGroupId = searchGroupId;
     }
 
     

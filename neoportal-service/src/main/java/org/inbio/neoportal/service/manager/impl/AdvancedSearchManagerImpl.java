@@ -19,21 +19,24 @@
 package org.inbio.neoportal.service.manager.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import org.inbio.neoportal.core.dao.ColumnDefaultDAO;
-import org.inbio.neoportal.core.dao.ColumnListDAO;
-import org.inbio.neoportal.core.dao.FilterListDAO;
+import org.inbio.neoportal.core.dao.GeoLayerDAO;
+import org.inbio.neoportal.core.dao.SearchColumnDAO;
+import org.inbio.neoportal.core.dao.SearchFilterDAO;
 import org.inbio.neoportal.core.dao.OccurrenceDAO;
+import org.inbio.neoportal.core.dao.SearchGroupDAO;
 import org.inbio.neoportal.core.dto.advancedsearch.ColumnDefaultCDTO;
-import org.inbio.neoportal.core.dto.advancedsearch.ColumnListCDTO;
-import org.inbio.neoportal.core.dto.advancedsearch.FilterListCDTO;
+import org.inbio.neoportal.core.dto.advancedsearch.GeoFeatureCDTO;
+import org.inbio.neoportal.core.dto.advancedsearch.GeoLayerCDTO;
+import org.inbio.neoportal.core.dto.advancedsearch.SearchColumnCDTO;
+import org.inbio.neoportal.core.dto.advancedsearch.SearchFilterCDTO;
+import org.inbio.neoportal.core.dto.advancedsearch.SearchGroupCDTO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceCDTO;
-import org.inbio.neoportal.core.dto.occurrence.OccurrenceLiteCDTO;
-import org.inbio.neoportal.service.dto.advancedSearch.ColumnDefaultSDTO;
-import org.inbio.neoportal.service.dto.advancedSearch.ColumnListSDTO;
-import org.inbio.neoportal.service.dto.advancedSearch.FilterListSDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.FilterSDTO;
-import org.inbio.neoportal.service.dto.advancedSearch.FiltersSDTO;
+import org.inbio.neoportal.service.dto.advancedSearch.OccurrenceSDTO;
 import org.inbio.neoportal.service.entity.AdvancedSearchData;
 import org.inbio.neoportal.service.manager.AdvancedSearchManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,99 +51,97 @@ public class AdvancedSearchManagerImpl
             implements AdvancedSearchManager{
     
     @Autowired
-    private ColumnListDAO columnListDAO;
+    private SearchColumnDAO columnListDAO;
     
     @Autowired 
     private ColumnDefaultDAO columnDefaultDAO;
 
     @Autowired
-    private FilterListDAO filterListDAO;
+    private SearchFilterDAO filterListDAO;
     
     @Autowired
-    private OccurrenceDAO occurrenceDAO;
+    private OccurrenceDAO occurrenceDAO;    
     
+    @Autowired
+    private SearchGroupDAO searchGroupDAO; 
     
+    @Autowired
+    private GeoLayerDAO geoLayerDAO;
+
     @Override
-    public List<ColumnListSDTO> getAllColumns() {
-        List<ColumnListCDTO> clCDTO;
-        List<ColumnListSDTO> result = new ArrayList<ColumnListSDTO>();
+    public List<SearchColumnCDTO> getAllColumns() {
+        List<SearchColumnCDTO> clCDTO;
         
-        clCDTO = columnListDAO.getAllColumns();
+        clCDTO = columnListDAO.getAllSearchColumns();
         
-        for (ColumnListCDTO itemCDTO : clCDTO) {
-            result.add(
-                new ColumnListSDTO(
-                        itemCDTO.getColumnListId(),
-                        itemCDTO.getLang(),
-                        itemCDTO.getKey(),
-                        itemCDTO.getValue()));
-        }
-        
-        return result;
+        return clCDTO;
     }
 
     @Override
-    public ColumnListSDTO getColumnListByKey(String keyName) {
-        ColumnListCDTO clCDTO;
+    public SearchColumnCDTO getColumnListByKey(String keyName) {
+        SearchColumnCDTO clCDTO;
         
-        clCDTO = columnListDAO.getColumnListByKey(keyName);
+        clCDTO = columnListDAO.getSearchColumnByKey(keyName);
         
-        return new ColumnListSDTO(
-                clCDTO.getColumnListId(), 
-                clCDTO.getLang(), 
-                clCDTO.getKey(), 
-                clCDTO.getValue());
+        return clCDTO;
     }
-    
-    @Override
-    public FiltersSDTO getFilters(){
-        FiltersSDTO filtersSDTO = new FiltersSDTO();
         
-        filtersSDTO.setColumnList(this.getAllColumns());
-        filtersSDTO.setColumnDefault(this.getColumnDefault());
-        filtersSDTO.setFilterList(this.getAllFilters());
-        
-        return filtersSDTO;
-    }
-    
     @Override
-    public List<ColumnDefaultSDTO> getColumnDefault(){
+    public List<ColumnDefaultCDTO> getColumnDefault(){
         List<ColumnDefaultCDTO> columnDefaultCDTO;
-        List<ColumnDefaultSDTO> result = new ArrayList<ColumnDefaultSDTO>();
-        
+                
         columnDefaultCDTO = columnDefaultDAO.getAllColumns();
         
-        for (ColumnDefaultCDTO item : columnDefaultCDTO) {
-            result.add(new ColumnDefaultSDTO(
-                            item.getColumnDefaultId(),
-                            item.getKey(),
-                            item.getValue()));
-        }
-        
-        return result;
+        return columnDefaultCDTO;
     }
 
     @Override
-    public List<FilterListSDTO> getAllFilters() {
-        List<FilterListCDTO> flCDTO;
-        List<FilterListSDTO> result = new ArrayList<FilterListSDTO>();
-        
+    public List<SearchFilterCDTO> getAllFilters() {
+        List<SearchFilterCDTO> flCDTO;
+                
         flCDTO = filterListDAO.getAllFilters();
         
-        for (FilterListCDTO itemCDTO : flCDTO) {
-            result.add(
-                new FilterListSDTO(
-                        itemCDTO.getFilterListId(),
-                        itemCDTO.getLang(),
-                        itemCDTO.getKey(),
-                        itemCDTO.getValue()));
-        }
-        
-        return result;
+        return flCDTO;
     }
     
     @Override
-    public List<OccurrenceCDTO> occurrencePaginatedSearch(
+    public List<SearchGroupCDTO> getAllSearchGroup(){
+        List<SearchGroupCDTO> sgCDTO;
+        sgCDTO = searchGroupDAO.getAllSearchGroups();
+        
+        //prepare filters with their value list
+        for (SearchGroupCDTO searchGroup: sgCDTO){
+        
+            for (SearchFilterCDTO searchFilterCDTO : searchGroup.getSearchFilterList()) {
+                
+                //add value list for combos
+                if("combo".equals(searchFilterCDTO.getType())){
+                    //load filter values
+                    List<GeoLayerCDTO> geoLayers = 
+                            geoLayerDAO.getGeoLayerByName(searchFilterCDTO.getFilterKey());
+
+                    GeoLayerCDTO geoLayer = geoLayers.get(0);
+                    
+                    if(geoLayer != null){
+                        List<String> geoFeaturesValues = new ArrayList<String>();
+                        
+                        //add all option
+                        geoFeaturesValues.add("all");
+                        for(GeoFeatureCDTO feature: geoLayer.getGeoFeatures()){
+                            geoFeaturesValues.add(feature.getName());
+                        }
+
+                        searchFilterCDTO.setValues(geoFeaturesValues);
+                    }
+                }
+            }
+        }
+        
+        return sgCDTO;
+    }
+    
+    @Override
+    public List<OccurrenceSDTO> occurrencePaginatedSearch(
             FilterSDTO filters, 
             int offset, 
             int quantity) {
@@ -151,36 +152,120 @@ public class AdvancedSearchManagerImpl
         List<OccurrenceCDTO> occurrenceCDTO = 
                 occurrenceDAO.advancedSearch(query, offset, quantity);
         
-        return occurrenceCDTO;
+        //transform to OccurrenceSDTO 
+        return occurrenceCDTOtoSDTO(occurrenceCDTO);
     }
 
     @Override
     public Long occurrenceSearchCount(FilterSDTO filters) {
         //create search text base on filters
         String query = createQuery(filters);
-        
+            
         return occurrenceDAO.searchCount(query);        
     }
     
+    /**
+     * 
+     * @param filters
+     * @return 
+     */
     private String createQuery(FilterSDTO filters){
         String query = "";
         
-        /* taxon terms */
-        AdvancedSearchData taxonomy = filters.getTaxonomy();
-        if (taxonomy.getFilters().containsKey("taxon") && 
-            taxonomy.getFilters().get("taxon") != ""){
-            query += " (";
-            query += "defaultName: \"" + taxonomy.getFilters().get("taxon") + "\" OR ";
-            query += "kingdom: \"" + taxonomy.getFilters().get("taxon") + "\" OR ";
-            query += "division: \"" + taxonomy.getFilters().get("taxon") + "\" OR ";
-            query += "class_: \"" + taxonomy.getFilters().get("taxon") + "\" OR ";
-            query += "order: \"" + taxonomy.getFilters().get("taxon") + "\" OR ";
-            query += "family: \"" + taxonomy.getFilters().get("taxon") + "\" OR ";
-            query += "genus: \"" + taxonomy.getFilters().get("taxon") + "\" OR ";
-            query += "scientificName: \"" + taxonomy.getFilters().get("taxon") + "\") ";
+        for(AdvancedSearchData groupData: filters.getFilterGroups()){
+            
+            // seudo switch throw filterGroups aka searchGroups
+            if("taxonomic".equals(groupData.getKey())){
+                for (LinkedHashMap filter : groupData.getFilters()) {
+                    if(query.length() > 0)
+                        query += " AND ";
+            
+                    // Taxon terms
+                    if("taxon_name".equals(filter.get("key"))){
+                        query += " (";
+                        query += "defaultName: \"" + filter.get("value") + "\" OR ";
+                        query += "kingdom: \"" + filter.get("value") + "\" OR ";
+                        query += "division: \"" + filter.get("value") + "\" OR ";
+                        query += "class_: \"" + filter.get("value") + "\" OR ";
+                        query += "order: \"" + filter.get("value") + "\" OR ";
+                        query += "family: \"" + filter.get("value") + "\" OR ";
+                        query += "genus: \"" + filter.get("value") + "\" OR ";
+                        query += "scientificName: \"" + filter.get("value") + "\") ";
+                    }
+                }
+            }
+            else if("geographic".equals(groupData.getKey())){
+                for (LinkedHashMap filter : groupData.getFilters()) {
+                    if ("all".equals(filter.get("value")))
+                        continue;
+                    
+                    if(query.length() > 0)
+                        query += " AND ";
+                    
+                    query += filter.get("key") + ":\"" + filter.get("value") + "\" ";
+                }
+            }
         }
         
         return query;
     }
 
+    
+    private List<OccurrenceSDTO> occurrenceCDTOtoSDTO(List<OccurrenceCDTO> occurrenceCDTOs){
+        List<OccurrenceSDTO> result = new ArrayList<OccurrenceSDTO>();
+        
+        for(OccurrenceCDTO occurrence: occurrenceCDTOs){
+            OccurrenceSDTO newOccurrence = new OccurrenceSDTO();
+            
+            /*  Occurrence Terms  */    
+            newOccurrence.setOccurrenceId(occurrence.getOccurrenceId());
+            newOccurrence.setCatalogNumber(occurrence.getCatalogNumber());
+            newOccurrence.setRemarks(occurrence.getRemarks()); /* dwc = occurrenceRemarks */
+
+            newOccurrence.setCollector(occurrence.getCollector());  /* dwc = recordedBy */
+            newOccurrence.setSex(occurrence.getSex());
+            newOccurrence.setLifeStage(occurrence.getLifeStage());
+
+            /*  Taxon terms */
+            newOccurrence.setTaxonId(occurrence.getTaxonId());
+            newOccurrence.setScientificName(occurrence.getScientificName());
+            newOccurrence.setAcceptedNameUsage(occurrence.getAcceptedNameUsage());
+            newOccurrence.setParentNameUsage(occurrence.getParentNameUsage());
+            newOccurrence.setOriginalNameUsage(occurrence.getOriginalNameUsage());
+            newOccurrence.setNameAccordingTo(occurrence.getNameAccordingTo());
+            newOccurrence.setNamePublishedIn(occurrence.getNamePublishedIn());
+            newOccurrence.setNamePublishedInYear(occurrence.getNamePublishedInYear());
+            newOccurrence.setHigherClassification(occurrence.getHigherClassification());
+            newOccurrence.setKingdom(occurrence.getKingdom());
+            newOccurrence.setPhylum(occurrence.getPhylum());  /*  dwc = phylum  */
+            newOccurrence.setClass_(occurrence.getClass_());  /*  dwc = class  */
+            newOccurrence.setOrder(occurrence.getOrder());
+            newOccurrence.setFamily(occurrence.getFamily());
+            newOccurrence.setGenus(occurrence.getGenus());
+            newOccurrence.setSubgenus(occurrence.getSubgenus());
+            newOccurrence.setSpecificEpithet(occurrence.getSpecificEpithet());
+            newOccurrence.setInfraspecificEpithet(occurrence.getInfraspecificEpithet());
+            newOccurrence.setInfraspecificRank(occurrence.getInfraspecificRank());   /*  dwc = taxonRank  */
+            newOccurrence.setVerbatimTaxonRank(occurrence.getVerbatimTaxonRank());
+            newOccurrence.setScientificNameAuthorship(occurrence.getScientificNameAuthorship());
+            newOccurrence.setVernacularName(occurrence.getVernacularName());
+            newOccurrence.setNomenclaturalCode(occurrence.getNomenclaturalCode());
+            newOccurrence.setTaxonomicStatus(occurrence.getTaxonomicStatus());
+            newOccurrence.setNomenclaturalStatus(occurrence.getNomenclaturalStatus());
+            newOccurrence.setTaxonRemarks(occurrence.getTaxonRemarks());
+
+            HashMap<String, String> geoFeatures = new HashMap<String, String>();
+            if(occurrence.getLocation() != null){
+                for(GeoFeatureCDTO feature: occurrence.getLocation().getGeoFeaturesCDTO()){
+                    geoFeatures.put(feature.getGeoLayerName(), feature.getName());
+                }
+            }
+            
+            newOccurrence.setProperties(geoFeatures);
+            
+            result.add(newOccurrence);
+        }
+        
+        return result;        
+    }
 }

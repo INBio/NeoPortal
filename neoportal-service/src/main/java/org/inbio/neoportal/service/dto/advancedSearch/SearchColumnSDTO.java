@@ -24,7 +24,7 @@ import org.inbio.neoportal.common.dto.BaseDTO;
  *
  * @author avargas
  */
-public class ColumnListSDTO 
+public class SearchColumnSDTO 
         extends BaseDTO
             implements Comparable {
     
@@ -33,10 +33,10 @@ public class ColumnListSDTO
     private String key;
     private String value;
 
-    public ColumnListSDTO() {
+    public SearchColumnSDTO() {
     }
 
-    public ColumnListSDTO(String id, String lang, String key, String value) {
+    public SearchColumnSDTO(String id, String lang, String key, String value) {
         this.columnListId = id;
         this.lang = lang;
         this.key = key;
@@ -46,7 +46,7 @@ public class ColumnListSDTO
     @Override
     public int compareTo(Object o) {
 
-        ColumnListSDTO cl = (ColumnListSDTO)o;
+        SearchColumnSDTO cl = (SearchColumnSDTO)o;
         return this.getKey().compareTo(cl.getKey());
     }
 
