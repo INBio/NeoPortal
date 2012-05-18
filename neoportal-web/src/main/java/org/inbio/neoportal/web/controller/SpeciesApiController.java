@@ -18,6 +18,7 @@
  */
 package org.inbio.neoportal.web.controller;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,7 +47,8 @@ public class SpeciesApiController {
     
     @RequestMapping (
             value = "/{scientificName}/{provider}",
-            method = RequestMethod.GET)
+            method = RequestMethod.GET,
+            headers = "Accept=application/xml")
     public @ResponseBody XMLTaxonDescriptionWrapper getTaxonDescriptionByProvider (
             @PathVariable(value = "scientificName") String scientificName,
             @PathVariable(value = "provider") String provider) {
@@ -123,6 +125,79 @@ public class SpeciesApiController {
         }
         
         return tdw;
+    }
+    
+    @RequestMapping (
+            value = "/{scientificName}/{provider}",
+            method = RequestMethod.GET,
+            headers = "Accept=application/json")
+    public @ResponseBody Object getTaxonDescriptionByProviderJson (
+            @PathVariable(value = "scientificName") String scientificName,
+            @PathVariable(value = "provider") String provider) {
+        
+        List<TaxonDescriptionFullSDTO> taxonDescription = null;
+        LinkedHashMap<String, LinkedHashMap> data = new LinkedHashMap<String, LinkedHashMap>();
+        
+        try {
+            
+            scientificName = scientificName.replace('_', ' ');
+            
+            taxonDescription = 
+                    speciesManagerImpl.taxonDescriptionByProvider(scientificName, provider);
+            
+            // TODO: fix non data scenary
+            TaxonDescriptionFullSDTO taxon = taxonDescription.get(0);
+            
+            //transforme SDTO to species record form
+            // -- Natural History --
+            LinkedHashMap<String, String> naturalHistory = new LinkedHashMap<String, String>();
+            naturalHistory.put("habit", taxon.getHabit());
+            naturalHistory.put("reproduction", taxon.getReproduction());
+            naturalHistory.put("feeding", taxon.getFeeding());
+            naturalHistory.put("behavior", taxon.getBehavior());
+            naturalHistory.put("annualCycle", taxon.getAnnualCycle());
+            naturalHistory.put("lifeCycle", taxon.getLifeCycle());
+            //naturalHistory.put("phenology", taxon);
+            
+            LinkedHashMap<String, String> habitatDistribution = new LinkedHashMap<String, String>();
+            habitatDistribution.put("habitat", taxon.getHabitat());
+            habitatDistribution.put("distribution", taxon.getDistribution());
+            
+            LinkedHashMap<String, String> demographyConservation = new LinkedHashMap<String, String>();
+            demographyConservation.put("threatStatus", taxon.getThreatStatus());
+            demographyConservation.put("territory", taxon.getTerritory());
+            demographyConservation.put("populationBiology", taxon.getPopulationBiology());
+            
+            LinkedHashMap<String, String> usesManagement = new LinkedHashMap<String, String>();
+            usesManagement.put("uses", taxon.getTheUses());
+            usesManagement.put("management", taxon.getTheManagement());
+            
+            LinkedHashMap<String, String> description = new LinkedHashMap<String, String>();
+            description.put("scientificDescription", taxon.getScientificDescription());
+            description.put("briefDescription", taxon.getBriefDescription());
+            
+            LinkedHashMap<String, String> information = new LinkedHashMap<String, String>();
+            information.put("language", taxon.getLanguage());
+            information.put("author", taxon.getCreators());
+            information.put("contributors", taxon.getContributors());
+            information.put("taxonRecordId", taxon.getTaxonRecordId());
+            information.put("dateLastModified", taxon.getDateLastModified());
+            information.put("dateCreated", taxon.getDateCreated());
+            
+            //wrap all the data
+            data.put("naturalHistory", naturalHistory);
+            data.put("habitatDistribution", habitatDistribution);
+            data.put("demographyConservation", demographyConservation);
+            data.put("usesManagement", usesManagement);
+            data.put("description", description);
+            data.put("information", information);
+            
+        } catch (Exception e) {
+            Logger.getLogger(
+                SpeciesController.class.getName()).log(Level.SEVERE, null, e);
+        }
+        
+        return data;
     }
     
     @RequestMapping (

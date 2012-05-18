@@ -103,6 +103,7 @@ h3{
 }
 h4{
     font-size: 14px;
+    margin: 2px 0;
 }
 a{
     color: #333;
@@ -325,6 +326,8 @@ div.dataTables_paginate{
 }
 span.paginate_button{
     margin-right: 15px;
+    color: #555;
+    cursor: pointer;
 }
 span.paginate_active{
     margin-right: 15px;
@@ -442,7 +445,12 @@ li.menu-top{
     
     margin-bottom: 8px;
 }
-
+li.menu-disable{
+    pointer-events: none;
+    cursor: default;
+    color: #8DC63F;
+    
+}
 /*-------------------------------- Occurrences page style -----------------------*/
 div#occurrences{
     margin: 10px auto;
@@ -526,26 +534,45 @@ table.simpleTable tbody tr.selected{
     background-color: #C3D5F3;
 }
 
+
 /*
 ----------------- AdvancedSearch ----------------------------
 */
+div.search{
+    padding-top: 20px;
+}
+div.controls{
+    margin: 0px 0px 12px 50px;
+}
+div.controls a{
+    font-size: 14px;
+    border: 1px solid #BBB;
+    padding: 2px 10px;
+    margin-right: 10px;
+}
 div.leftPanel{
     float: left;
     width: 250px;
-    padding: 10px;
+    padding: 0 18px;
 }
 div.filterGroup{
     background-color: #fff;
     padding: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     
     border: 1px solid #AAA;
     /*round corners*/
     border-radius: 8px;
+    
+    /*shadow*/
+    -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 span.expand-button, span.reduce-button{
     float: right;    
     font-size: 11px;
+    color: #555;
 }
 span.expand-button:hover, span.reduce-button:hover{
     cursor: pointer;
@@ -554,15 +581,22 @@ span.columnItem{
     margin-right: 13px;
     display: inline-table; /*checkbox and label in the same line*/
 }
+div.filterGroup p.resume{
+    margin-top: 5px;
+    color: #555;
+    font-size: 12px;
+}
 div.results{
     float: left;
     /*display: inline-block;*/
-    margin-left: 30px;
+    margin-left: 40px;
+    padding-left: 15px;
 }
 
 /* advanced search result table */
 table.tablePanel {
     border-collapse: collapse;
+    margin: 10px 0;
 }
 table.tablePanel th{
     /*color: #036;*/
@@ -571,9 +605,15 @@ table.tablePanel th{
     font-weight: bold;
 }
 table.tablePanel th,table.tablePanel td{
-    padding-top: 6px;
+    padding: 3px 12px 3px 4px;
     text-align: left;
-        
-    border-right: 15px solid #ffffff;
-    border-left: 15px solid #ffffff;
+    border-bottom: 1px solid #ccc;
+}
+div.results span.showingControl{
+    display: block;
+    text-align: center;
+    color: #555;
+}
+div.paginate_group{
+    text-align: center;
 }

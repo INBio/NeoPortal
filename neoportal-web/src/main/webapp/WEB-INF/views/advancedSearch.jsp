@@ -62,9 +62,13 @@
             <jsp:include page="/WEB-INF/views/header_inner.jsp"/>
 
             <div id="content">
-                <a id="searchBtn" href="#">search</a>
-
-                                            
+                <div class="leftPanel">
+                    <div class="controls">
+                        <a id="searchBtn" href="#">search</a>
+                        <span id="countLabel"></span>
+                    </div>
+                </div>
+                      
             </div> <!-- end content -->
             
             <!-- Footer -->

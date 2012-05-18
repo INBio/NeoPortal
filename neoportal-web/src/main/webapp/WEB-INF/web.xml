@@ -35,10 +35,10 @@
     </servlet-mapping>
 
     <!-- Define the basename for a resource bundle -->
-    <context-param>
+<!--    <context-param>
         <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
         <param-value>messages</param-value>
-    </context-param>
+    </context-param>-->
     <!-- Define the default locale to resource bundle -->
     <context-param>
         <param-name>

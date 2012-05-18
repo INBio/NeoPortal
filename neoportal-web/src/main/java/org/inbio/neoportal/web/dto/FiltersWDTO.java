@@ -7,7 +7,7 @@ package org.inbio.neoportal.web.dto;
 import org.springframework.roo.addon.json.RooJson;
 import java.util.List;
 import org.inbio.neoportal.service.dto.advancedSearch.ColumnDefaultSDTO;
-import org.inbio.neoportal.service.dto.advancedSearch.ColumnListSDTO;
+import org.inbio.neoportal.service.dto.advancedSearch.SearchColumnSDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.FilterListSDTO;
 
 /**
@@ -17,7 +17,7 @@ import org.inbio.neoportal.service.dto.advancedSearch.FilterListSDTO;
 @RooJson
 public class FiltersWDTO {
     
-    private List<ColumnListSDTO> columnList;
+    private List<SearchColumnSDTO> columnList;
     private List<ColumnDefaultSDTO> columnDefault;
     private List<FilterListSDTO> filterList;
     
@@ -25,11 +25,11 @@ public class FiltersWDTO {
         
     }
     
-    public void setColumnList(List<ColumnListSDTO> columnList){
+    public void setColumnList(List<SearchColumnSDTO> columnList){
         this.columnList = columnList;
     }
     
-    public List<ColumnListSDTO> getColumnList(){
+    public List<SearchColumnSDTO> getColumnList(){
         return this.columnList;
     }
     

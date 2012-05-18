@@ -39,6 +39,7 @@ function showTab(tab){
         //show the species information, based on INB provider
         case 'info':
         default:
+            //showTaxonDescription_old('INB');
             showTaxonDescription('INB');
             break;
     }    
@@ -46,225 +47,151 @@ function showTab(tab){
     $('li:has(a[href="#' + tab + '"])').addClass('currentTab');
 }
 
-function showTaxonDescription(provider) {
-    
+
+function showTaxonDescription(provider){
+    $("#taxonDescription").show();
+    //
     //get taxon description by provider
     //Prepare URL for XHR request:
     var sUrl = contextPath+"/api/species/"+scientificName+"/" + provider;
 
-    $.get(sUrl, function(data) {
-        //root element -> response
-        var xmlDoc = data.documentElement;           
-        //taxon description
-        var rootChildNodes = xmlDoc.getElementsByTagName("taxon-description")[0];
-
-        //debugger;
-
-        var divTd = $("#taxonDescription").remove();
-
-        divTd = document.createElement("div");
-        divTd.id = "taxonDescription";
-        divTd.className = "tab_wrapper";
-
-        //deprecated, multiple providers support
-        //combine with xsl template
-        //xsl = loadXMLDoc(contextPath + "/resources/species/" + provider.toLowerCase() + ".xsl");
-
-       // if(!xsl) {
-            xsl = loadXMLDoc(contextPath + "/resources/species/base.xsl");
-        //}
-
-//            debugger;
-
-        // code for IE
-        if (window.ActiveXObject) {
-            ex=xmlDoc.transformNode(xsl);
-            //document.getElementById("example").innerHTML=ex;
-            divTd.innerHTML=ex;
-        }
-        // code for Mozilla, Firefox, Opera, etc.
-        else if (document.implementation && document.implementation.createDocument) {
-            xsltProcessor=new XSLTProcessor();
-            xsltProcessor.importStylesheet(xsl);
-            resultDocument = xsltProcessor.transformToFragment(xmlDoc,document);
-            divTd.appendChild(resultDocument);
-        }
-
-        divTd.innerHTML = divTd.innerHTML.replace(/\&lt;/g, '<').replace(/\&gt;/g, '>');
-
-        //insert into dom
-        $("#content").append(divTd);
-        
-        $("div.data-panel").hide();
-        $("div.data-panel").each(function(){
-            if($(this).children().size() < 2)
-                $(this).remove();
-        });
-        
-        $("div.data-panel:first").fadeIn(1500);
-        //create side menu
-        createMenu(data);
-
-                       
-    }, 'xml');
-}
-
-function loadXMLDoc(dname) {
-    if (window.XMLHttpRequest) {
-        xhttp=new XMLHttpRequest();
-    }
-    else {
-        xhttp=new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    
-    xhttp.open("GET",dname,false);
-    xhttp.send("");
-    return xhttp.responseXML;
-}
-
-function createMenu(xml_data){
-    
-    $(xml_data).find("element").each(function(){
-        if($(this).find("institutionCode").text() == 'INB'){
+    $.ajax({
+        type: "get",
+        url: sUrl,
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        success: function(data){
+            debugger;
             
-            // -- look for Natural History Elements
-            var hasNaturalHistory = false;
-            var naturalHistory = "<li id='item-naturalHistory' class='menu-top'>" 
-                + naturalHistoryT + "</li>";
+            // Natural history
+            var nhContent = "";
+            if(data.naturalHistory.habit != ""){
+                nhContent += "<h4>" + habitT + "</h4>";
+                nhContent += "<div>" + data.naturalHistory.habit + "</div>";
+            }
+            if(data.naturalHistory.reproduction != ""){
+                nhContent += "<h4>" + reproductionT + "</h4>";
+                nhContent += "<div>" + data.naturalHistory.reproduction + "</div>";
+            }
+            if(data.naturalHistory.feeding != ""){
+                nhContent += "<h4>" + feedingT + "</h4>";
+                nhContent += "<div>" + data.naturalHistory.feeding + "</div>";
+            }
+            if(data.naturalHistory.behavior != ""){
+                nhContent += "<h4>" + behaviorT + "</h4>";
+                nhContent += "<div>" + data.naturalHistory.behavior + "</div>";
+            }
+            if(data.naturalHistory.annualCycle != ""){
+                nhContent += "<h4>" + annualCycleT + "</h4>";
+                nhContent += "<div>" + data.naturalHistory.annualCycle + "</div>";
+            }
+            if(data.naturalHistory.lifeCycle != ""){
+                nhContent += "<h4>" + lifeCycleT + "</h4>";
+                nhContent += "<div>" + data.naturalHistory.lifeCycle + "</div>";
+            }
             
-            if($(this).find("reproduction").length > 0 
-                    && $(this).find("reproduction").text() != '')
-                hasNaturalHistory = true;
+            // Habitat and Distribution
+            var hdContent = "";
+            if(data.habitatDistribution.habitat != ""){
+                hdContent += "<h4>" + habitatT + "</h4>";
+                hdContent += "<div>" + data.habitatDistribution.habitat + "</div>";
+            }
+            if(data.habitatDistribution.distribution != ""){
+                hdContent += "<h4>" + distributionT + "</h4>";
+                hdContent += "<div>" + data.habitatDistribution.distribution + "</div>";
+            }
             
-            if($(this).find("annualCycle").length > 0
-                    && $(this).find("annualCycle").text() != '')
-                hasNaturalHistory = true;
+            // Demography and Conservation
+            var dcContent = "";
+            if(data.demographyConservation.threatStatus != ""){
+                dcContent += "<h4>" + threatStatusT + "</h4>";
+                dcContent += "<div>" + data.demographyConservation.threatStatus + "</div>";
+            }
+            if(data.demographyConservation.territory != ""){
+                dcContent += "<h4>" + territoryT + "</h4>";
+                dcContent += "<div>" + data.demographyConservation.territory + "</div>";
+            }
+            if(data.demographyConservation.populationBiology != ""){
+                dcContent += "<h4>" + populationBiologyT + "</h4>";
+                dcContent += "<div>" + data.demographyConservation.populationBiology + "</div>";
+            }
             
-            if($(this).find("feeding").length > 0
-                    && $(this).find("feeding").text() != '')
-                hasNaturalHistory = true;
+            // Uses and management
+            var umContent = "";
+            if(data.usesManagement.uses != ""){
+                umContent += "<h4>" + usesT + "</h4>";
+                umContent += "<div>" + data.usesManagement.uses + "</div>";
+            }
+            if(data.usesManagement.management != ""){
+                umContent += "<h4>" + managementT + "</h4>";
+                umContent += "<div>" + data.usesManagement.management + "</div>";
+            }
             
-            if($(this).find("behavior").length > 0
-                    && $(this).find("behavior").text() != '')
-                hasNaturalHistory = true;
+            // Description
+            var dContent = "";
+            if(data.description.scientificDescription != ""){
+                dContent += "<h4>" + scientificDescriptionT + "</h4>";
+                dContent += "<div>" + data.description.scientificDescription + "</div>";
+            }
             
-            if($(this).find("habit").length > 0
-                    && $(this).find("habit").text() != '')
-                hasNaturalHistory = true;
+            // Information
+            var iContent = "";
+            if(data.information.language != ""){
+                iContent += "<h4>" + languageT + "</h4>";
+                iContent += "<div>" + data.information.language + "</div>";
+            }
+            if(data.information.author != ""){
+                iContent += "<h4>" + authorT + "</h4>";
+                iContent += "<div>" + data.information.author + "</div>";
+            }
+            if(data.information.contributors != ""){
+                iContent += "<h4>" + contributorsT + "</h4>";
+                iContent += "<div>" + data.information.contributors + "</div>";
+            }
+            if(data.information.taxonRecordId != ""){
+                iContent += "<h4>" + taxonRecordIdT + "</h4>";
+                iContent += "<div>" + data.information.taxonRecordId + "</div>";
+            }
+            if(data.information.dateLastModified != ""){
+                iContent += "<h4>" + dateLastModifiedT + "</h4>";
+                iContent += "<div>" + data.information.dateLastModified + "</div>";
+            }
+            if(data.information.dateCreated != ""){
+                iContent += "<h4>" + dateCreatedT + "</h4>";
+                iContent += "<div>" + data.information.dateCreated + "</div>";
+            }
             
-            // -- Habitat Distribution menu item 
-            var hasHabitatDistribution = false;
-            var habitatDistribution = "<li id='item-habitatDistribution' class='menu-top'>" 
-                + habitatDistributionT + "</li>";
+            // add content to DOM
+            $("div.naturalHistory").append(nhContent);
+            $("div.habitatDistribution").append(hdContent);
+            $("div.demographyConservation").append(dcContent);
+            $("div.usesManagement").append(umContent);
+            $("div.description").append(dContent);
+            $("div.information").append(iContent);
+         
+            // configure menu items
+            if(nhContent == ""){
+                $("#item-naturalHistory").addClass("menu-disable");
+            }
+            if(hdContent == ""){
+                $("#item-habitatDistribution").addClass("menu-disable");
+            }
+            if(dcContent == ""){
+                $("#item-demographyConservation").addClass("menu-disable");
+            }
+            if(umContent == ""){
+                $("#item-usesManagement").addClass("menu-disable");
+            }
+            if(dContent == ""){
+                $("#item-description").addClass("menu-disable");
+            }
+            if(iContent == ""){
+                $("#item-information").addClass("menu-disable");
+            }
             
-            if($(this).find("habitat").length > 0)
-                hasHabitatDistribution = true;
+            $("div.data-panel").hide();
+            $("div.naturalHistory").show();
             
-            if($(this).find("distribution").length > 0)
-                hasHabitatDistribution = true;
-            
-            // -- Uses Management menu item 
-            var hasUsesManagement = false;
-            var usesManagement = "<li id='item-usesManagement' class='menu-top'>" 
-                + usesManagementT + "</li>";
-            
-            if($(this).find("theUses").length > 0 && $(this).find("theUses").text() != '')
-                hasUsesManagement = true;
-            
-            if($(this).find("theManagement").length > 0 && $(this).find("theManagement").text())
-                hasUsesManagement = true;
-            
-            // -- Demography Conservation menu item 
-            var hasDemographyConservation = false;
-            var demographyConservation = "<li id='item-demographyConservation' class='menu-top'>" 
-                + demographyConservationT + "</li>";
-            
-            if($(this).find("threatStatus").length > 0
-                    && $(this).find("threatStatus").text() != '')
-                hasDemographyConservation = true;
-            
-            if($(this).find("populationBiology").length > 0
-                    && $(this).find("populationBiology").text() != '')
-                hasDemographyConservation = true;
-            
-            // -- Description menu item 
-            var hasDescription = false;
-            var description = "<li id='item-description' class='menu-top'>" 
-                + descriptionT + "</li>";
-            
-            if($(this).find("scientificDescription").length > 0)
-                hasDescription = true;
-            
-            // -- Documentation menu item 
-            var hasDocumentation = false;
-            var documentation = "<li id='item-documentation' class='menu-top'>" 
-                + documentationT + "</li>";
-            
-            if($(this).find("theReferences").length > 0 && $(this).find("theReferences").text() != '')
-                hasDocumentation = true;
-            
-            // -- Information menu item 
-            var hasInformation = false;
-            var information = "<li id='item-information' class='menu-top'>" 
-                + informationT + "</li>";
-            
-            if($(this).find("language").length > 0)
-                hasInformation = true;
-            
-            if($(this).find("creators").length > 0)
-                hasInformation = true;
-            
-            if($(this).find("contributors").length > 0)
-                hasInformation = true;
-            
-            if($(this).find("taxonRecordId").length > 0)
-                hasInformation = true;
-            
-            if($(this).find("synonyms").length > 0)
-                hasInformation = true;
-            
-            if($(this).find("dateCreated").length > 0)
-                hasInformation = true;
-            
-            if($(this).find("dateLastModified").length > 0)
-                hasInformation = true;
-            
-            
-            //generated the menu list
-            var menuContent = '';
-            
-            if (hasNaturalHistory)
-                menuContent += naturalHistory;
-            
-            if (hasHabitatDistribution)
-                menuContent += habitatDistribution;
-            
-            if (hasDemographyConservation)
-                menuContent += demographyConservation;
-            
-            if (hasUsesManagement)
-                menuContent += usesManagement;
-            
-            if (hasDescription)
-                menuContent += description;
-            
-            if (hasDocumentation)
-                menuContent += documentation;
-            
-            if (hasInformation)
-                menuContent += information;
-
-            var ul = $("<ul id='menu-species' class='menu'></ul>")
-                .html(menuContent);
-                
-            $("li", ul).hide();
-            
-            $(ul).appendTo("#menu-panel");
-            
-            //showItems();
-            $("#menu-species li").each(function(idx){
-                $(this).delay(idx * 350).fadeIn( 900 )});
-        
             $("#menu-species li").click(function(){
                 var itemName = $(this).attr('id').split('-')[1];
                 
@@ -273,8 +200,10 @@ function createMenu(xml_data){
                 });
                 
             });
+            
         }
-    });   
+        
+    });
 }
 
 

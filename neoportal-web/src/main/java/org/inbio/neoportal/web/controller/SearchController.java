@@ -21,6 +21,8 @@ package org.inbio.neoportal.web.controller;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.lucene.queryParser.ParseException;
+import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
 import org.inbio.neoportal.service.dto.occurrences.OccurrenceLiteSDTO;
 import org.inbio.neoportal.service.dto.species.SpeciesLiteSDTO;
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionLiteSDTO;
@@ -49,7 +51,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class SearchController {
 
     @Autowired
-    private SearchManager searchManagerImpl;
+    private SearchManager searchManager;
 
     /**
      * Get a well formated xml containing paginated species
@@ -71,9 +73,9 @@ public class SearchController {
         
         try {
             
-            rw.setCount(searchManagerImpl.speciesSearchCount(searchString));
+            rw.setCount(searchManager.speciesSearchCount(searchString));
             
-            speciesList = searchManagerImpl
+            speciesList = searchManager
                 .speciesPaginatedSearch(searchString, startIndex , results); 
 
             for(TaxonDescriptionLiteSDTO spDTO : speciesList)
@@ -105,7 +107,7 @@ public class SearchController {
             throws Exception {
         
         XMLCountWrapper cw = new XMLCountWrapper();
-        cw.setCount(searchManagerImpl.speciesSearchCount(searchString));
+        cw.setCount(searchManager.speciesSearchCount(searchString));
         return cw;
     }
 
@@ -132,9 +134,9 @@ public class SearchController {
             searchTerms = "(" + searchTerms + ") AND (taxonomicalRangeId:19 taxonomicalRangeId:20 taxonomicalRangeId:21 taxonomicalRangeId:22)";
             
             //include the count, this reduce one server call
-            rw.setCount(searchManagerImpl.taxonSearchCount(searchTerms));
+            rw.setCount(searchManager.taxonSearchCount(searchTerms));
             
-            speciesList = searchManagerImpl
+            speciesList = searchManager
                 .taxonPaginatedSearch(searchTerms, startIndex, itemsPerPage); 
 
             for(SpeciesLiteSDTO spDTO : speciesList)
@@ -166,7 +168,7 @@ public class SearchController {
             throws Exception {
         
         XMLCountWrapper cw = new XMLCountWrapper();
-        cw.setCount(searchManagerImpl.taxonSearchCount(searchString));
+        cw.setCount(searchManager.taxonSearchCount(searchString));
         return cw;
     }
  
@@ -189,10 +191,10 @@ public class SearchController {
         XMLSpecimenWrapper rw = new XMLSpecimenWrapper();
         try {
             //get total record set, usefull for pagination
-            rw.setCount(searchManagerImpl.occurrenceSearchCount(searchString));
+            rw.setCount(searchManager.occurrenceSearchCount(searchString));
             
             occurrenceList 
-                = searchManagerImpl.occurrencePaginatedSearch(searchString, startIndex, results); 
+                = searchManager.occurrencePaginatedSearch(searchString, startIndex, results); 
             
             for(OccurrenceLiteSDTO olDTO : occurrenceList)
                 rw.addElement(
@@ -230,17 +232,36 @@ public class SearchController {
         (@RequestParam String searchString) 
             throws Exception {
         XMLCountWrapper cw = new XMLCountWrapper();
-        cw.setCount(searchManagerImpl.occurrenceSearchCount(searchString));
+        cw.setCount(searchManager.occurrenceSearchCount(searchString));
         return cw;
     }
     
-    
+    /**
+     * Use for autocomplete on AdvancedSearch GUI
+     * @param term the string to 'autocomplete'
+     * @return json object for use with jquery autocomplete function
+     */
+    @RequestMapping (
+        value = "/taxon",
+        method = RequestMethod.GET
+        )
+    @ResponseBody
+    public Object searchTaxonAutocomplete (
+        @RequestParam (value = "term", required=true) String term
+       ) throws ParseException{
+                
+        
+        List<TaxonDescriptionFullCDTO> taxonList = 
+                searchManager.taxonAutocomplete(term);
+        
+        return taxonList;
+    }
     
     public SearchManager getSearchManagerImpl() {
-        return searchManagerImpl;
+        return searchManager;
     }
 
     public void setSearchManagerImpl(SearchManager searchManagerImpl) {
-        this.searchManagerImpl = searchManagerImpl;
+        this.searchManager = searchManagerImpl;
     }
 }

@@ -18,27 +18,24 @@
  */
 package org.inbio.neoportal.web.controller;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.deser.std.FromStringDeserializer.URLDeserializer;
+import java.util.Locale;
+import org.inbio.neoportal.core.dto.advancedsearch.ColumnDefaultCDTO;
+import org.inbio.neoportal.core.dto.advancedsearch.SearchColumnCDTO;
+import org.inbio.neoportal.core.dto.advancedsearch.SearchFilterCDTO;
+import org.inbio.neoportal.core.dto.advancedsearch.SearchGroupCDTO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceCDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.FilterSDTO;
-import org.inbio.neoportal.service.dto.advancedSearch.FiltersSDTO;
+import org.inbio.neoportal.service.dto.advancedSearch.OccurrenceSDTO;
 import org.inbio.neoportal.service.manager.AdvancedSearchManager;
-import org.inbio.neoportal.web.dto.FilterWDTO;
-import org.inbio.neoportal.web.dto.FiltersWDTO;
-import org.inbio.neoportal.web.dto.OccurrenceWDTOJson;
+import org.inbio.neoportal.web.dto.SearchColumnWDTO;
+import org.inbio.neoportal.web.dto.SearchFilterWDTO;
+import org.inbio.neoportal.web.dto.SearchGroupWDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,35 +49,120 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping("/api/advancedSearch/*")
-public class AdvancedSearchApiController {
+public class AdvancedSearchApiController{
     
     @Autowired
     private AdvancedSearchManager advancedSearchManager;
     private FilterSDTO filterSDTO;
     
+    @Autowired
+    private MessageSource messageSource;
+   
+    
     @RequestMapping(value="getColumnList", headers="Accept=application/json")
     @ResponseBody
-    public Object getAllColumns(){
+    public Object getAllColumns(Locale locale){
         
-        FiltersSDTO filtersSDTO = advancedSearchManager.getFilters();
-        FiltersWDTO filters = new FiltersWDTO();
-        //List<ColumnListSDTO> columnListSDTO = advancedSearchManager.getAllColumns();
-        //List<ColumnListWDTO> columnListWDTO = new ArrayList<ColumnListWDTO>();
+        List<SearchGroupCDTO> searchGroupCDTOs = advancedSearchManager.getAllSearchGroup();
+        List<SearchGroupWDTO> searchGroupWDTOs = new ArrayList<SearchGroupWDTO>();
+             
         
-//        for (ColumnListSDTO item : columnListSDTO) {
-//            columnListWDTO.add(
-//                    new ColumnListWDTO(
-//                            item.getColumnListId(), 
-//                            item.getLang(), 
-//                            item.getKey(), 
-//                            item.getValue()));
-//        }
+        for(SearchGroupCDTO searchGroup: searchGroupCDTOs){
+            List<SearchColumnWDTO> columnWDTOs = new ArrayList<SearchColumnWDTO>();
+            List<SearchColumnWDTO> columnDefaults = new ArrayList<SearchColumnWDTO>();
+            List<SearchFilterWDTO> filterWDTOs = new ArrayList<SearchFilterWDTO>();
+            
+            //fill column list
+            for(SearchColumnCDTO searchColumn: searchGroup.getSearchColumnList()){
+                
+                columnWDTOs.add(
+                        new SearchColumnWDTO(
+                                searchColumn.getSearchColumnId(), 
+                                searchColumn.getColumnKey(), 
+                                messageSource.getMessage(
+                                    searchColumn.getColumnKey(), 
+                                    null,
+                                    "?? " + searchColumn.getColumnKey() + " ??"
+                        + "",
+                                    locale)));
+            }
+            
+            //fill column defaults
+            for(ColumnDefaultCDTO columnDefault: searchGroup.getColumnDefaultList()){
+                columnDefaults.add(
+                        new SearchColumnWDTO(
+                                columnDefault.getColumnDefaultId(), 
+                                columnDefault.getColumnDefaultKey(), 
+                                messageSource.getMessage(
+                                    columnDefault.getColumnDefaultKey(), 
+                                    null, 
+                                    "?? " + columnDefault.getColumnDefaultKey() + " ??",
+                                    locale)));
+            }
+            
+            //fill filters
+            for(SearchFilterCDTO searchFilter: searchGroup.getSearchFilterList()){
+                ArrayList<HashMap<String, String>> values = null;
+                if("combo".equals(searchFilter.getType())){
+                
+                    values = new ArrayList<HashMap<String, String>>();
+                    
+                    //make a map with value, label
+                    //add ?? value ?? when no label was found
+                    for(String value: searchFilter.getValues()){
+                        HashMap<String, String> map = new HashMap<String, String>();
+                        map.put("key", value);
+                        
+                        if(value.equals("all")){
+                            value = messageSource.getMessage(
+                                    value,
+                                    null,
+                                    "?? " + value,
+                                    locale);
+                        }
+                        
+                        map.put("label", value);
+                        values.add(map
+                        // FIXME: not all values required translation, uncomment to get translated values
+                                //                                messageSource.getMessage(
+//                                    value,
+//                                    null,
+//                                    "?? " + value,
+//                                    locale)
+//                                value
+                                );
+                    }
+                }
+                
+                filterWDTOs.add(
+                        new SearchFilterWDTO(
+                                searchFilter.getSearchFilterId(), 
+                                searchFilter.getFilterKey(), 
+                                searchFilter.getType(), 
+                                messageSource.getMessage(
+                                    searchFilter.getFilterKey(), 
+                                    null,
+                                    "?? " + searchFilter.getFilterKey() + " ??",
+                                    locale),
+                                values));
+            }
+            
+            //fill the searchGroup
+            searchGroupWDTOs.add(
+                    new SearchGroupWDTO(
+                            searchGroup.getSearchGroupId(), 
+                            searchGroup.getKey(), 
+                            messageSource.getMessage(
+                                searchGroup.getKey(),
+                                null,
+                                "?? " + searchGroup.getKey() + " ??",
+                                locale), 
+                            columnWDTOs, 
+                            columnDefaults, 
+                            filterWDTOs));
+        }
         
-        filters.setColumnList(filtersSDTO.getColumnList());
-        filters.setColumnDefault(filtersSDTO.getColumnDefault());
-        filters.setFilterList(filtersSDTO.getFilterList());
-        
-        return filters;
+        return searchGroupWDTOs;
     }
     
     
@@ -103,17 +185,17 @@ public class AdvancedSearchApiController {
         @RequestParam (value = "startIndex", defaultValue="0", required=false) int startIndex,
         @RequestParam (value = "results", defaultValue="10", required=false) int results
        ){
-                
-        List<OccurrenceCDTO> occurrenceCDTO =
+
+        List<OccurrenceSDTO> occurrenceSDTO =
                 advancedSearchManager.occurrencePaginatedSearch(
                 filterSDTO,
                 startIndex, 
                 results);
                 
         /* TODO: usar columnList para retornar solo los datos solicitados
-        * y reducir el tiempo de respuesta */
+        * y reducir tamaño de los datos transferidos */
                 
-        return occurrenceCDTO;
+        return occurrenceSDTO;
     }
     
     

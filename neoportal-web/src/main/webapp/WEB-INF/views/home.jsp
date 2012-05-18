@@ -58,6 +58,7 @@
             <div id="searchPanel" class="data_wrapper">
                 <input id="searchInput" type="text" value="">
                 <a id="simple" class="searchButton" href="#"><fmt:message key="search"/></a>
+                <a href="advancedSearch/"><fmt:message key="advanced_search"/></a>
             </div>
 
             <!-- Search explanation panel -->
