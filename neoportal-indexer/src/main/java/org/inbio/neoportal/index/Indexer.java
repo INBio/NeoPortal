@@ -33,19 +33,27 @@ import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.inbio.neoportal.core.entity.CommonName;
+import org.inbio.neoportal.core.entity.GeoFeature;
+import org.inbio.neoportal.core.entity.Location;
 import org.inbio.neoportal.core.entity.Occurrence;
-import org.inbio.neoportal.index.util.HibernateUtil;
 import org.inbio.neoportal.core.entity.Taxon;
 import org.inbio.neoportal.core.entity.TaxonDescription;
-
+import org.inbio.neoportal.index.util.HibernateUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Component;
 
 
 /**
  *
  * @author asanabria <asanabria@inbio.ac.cr>
  */
+@Component
 public class Indexer {
 
+    @Autowired
+    private Importer importer;
 
     public Indexer(){
         super();
@@ -77,6 +85,12 @@ public class Indexer {
 
         System.out.println("# - Occurrence");
         fullTextSession.createIndexer(Occurrence.class).startAndWait();
+        
+        System.out.println("# - GeoFeatures");
+        fullTextSession.createIndexer(GeoFeature.class).startAndWait();
+        
+        System.out.println("# - Locations");
+        fullTextSession.createIndexer(Location.class).startAndWait();
 
         System.out.println("# - Fin de la indexación \n");
     }
@@ -96,6 +110,15 @@ public class Indexer {
         if(args.length == 1)
             if (args[0].equals("index")){
                 this.createIndex();
+                return;
+            }
+            else if (args[0].equals("import")){
+                //Importer importer = new Importer();
+                importer.importAll(
+                        "/home/arturo/Proyectos/atta2-portal/AttaExport/GeoCapas/AttaGeoLayersFromSnaps_v03.csv",
+                        "/home/arturo/Proyectos/atta2-portal/AttaExport/GeoCapas/AttaProvincias.csv",
+                        "/home/arturo/Proyectos/atta2-portal/AttaExport/GeoCapas/AttaGeoSitesFromSnaps_v03.csv",
+                        "/home/arturo/Proyectos/atta2-portal/AttaExport/ubis_20120518.csv");
                 return;
             }
 
@@ -222,13 +245,17 @@ public class Indexer {
     public static void main(String[] args)
             throws InterruptedException, ParseException{
 
+        ApplicationContext appContext = 
+                new ClassPathXmlApplicationContext("applicationContext.xml");
+        
+        Indexer i = appContext.getBean(Indexer.class);
         //String[] localArgs = new String[2];
         //localArgs[0] = "all";
         //localArgs[1] = "country:Costa_Rica";
 
-        Indexer index = new Indexer();
+        //Indexer index = new Indexer();
         //index.processArguments(localArgs);
-        index.processArguments(args);
+        i.processArguments(args);
 
     }
 }
