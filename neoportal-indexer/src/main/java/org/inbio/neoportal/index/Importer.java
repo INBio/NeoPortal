@@ -22,7 +22,6 @@ import au.com.bytecode.opencsv.CSVReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -475,7 +474,7 @@ public class Importer {
                 taxonDescription.setSynonyms(taxonDes[9]);
                 taxonDescription.setAuthorYearOfScientificName(
                         taxonDes[3] + " (" + taxonDes[4] + ")");
-                taxonDescription.setSpeciesPublicationReference(taxonDes[7]);
+                taxonDescription.setSpeciesPublicationReference(taxonDes[52]);
                 taxonDescription.setCommonNames(taxonDes[8]);
                 //taxonDescription.setTypification(null);
                 String contributors = taxonDes[41];
@@ -502,7 +501,7 @@ public class Importer {
                 taxonDescription.setLifeCycle(taxonDes[20]);
                 taxonDescription.setReproduction(taxonDes[23]);
                 //taxonDescription.setAnnualCycle(null);
-                //taxonDescription.setScientificDescription(null);
+                taxonDescription.setScientificDescription(taxonDes[12]);
                 //taxonDescription.setBriefDescription(null);
                 taxonDescription.setFeeding(taxonDes[56]);
                 taxonDescription.setBehavior(taxonDes[65]);
@@ -530,6 +529,14 @@ public class Importer {
                 //taxonDescription.setTargetAudiences(null);
                 
                 genericBaseDAO.create(taxonDescription);
+                
+                //update Taxon with image from ubis (thumb image - estampilla)
+                String imageUrl = taxonDes[67].trim();
+                if(imageUrl.length() > 0){
+                    taxon.setImageUrl(imageUrl);
+                    taxonDAO.update(taxon);
+                }
+                
                 contador++;
             }
             

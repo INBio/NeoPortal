@@ -82,7 +82,7 @@ public class Indexer {
         
         System.out.println("# - TaxonDescription");
         fullTextSession.createIndexer(TaxonDescription.class).startAndWait();
-
+        
         System.out.println("# - Occurrence");
         fullTextSession.createIndexer(Occurrence.class).startAndWait();
         
@@ -118,7 +118,7 @@ public class Indexer {
                         "/home/arturo/Proyectos/atta2-portal/AttaExport/GeoCapas/AttaGeoLayersFromSnaps_v03.csv",
                         "/home/arturo/Proyectos/atta2-portal/AttaExport/GeoCapas/AttaProvincias.csv",
                         "/home/arturo/Proyectos/atta2-portal/AttaExport/GeoCapas/AttaGeoSitesFromSnaps_v03.csv",
-                        "/home/arturo/Proyectos/atta2-portal/AttaExport/ubis_20120518.csv");
+                        "/home/arturo/Proyectos/atta2-portal/AttaExport/ubis_20120518_2.csv");
                 return;
             }
 
