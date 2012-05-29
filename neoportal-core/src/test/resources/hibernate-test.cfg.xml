@@ -1,27 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     
     <session-factory>
 
     <!-- Mappings -->
         <!-- Mappings -->
-        <mapping resource="META-INF/hibernate/TaxonHasAssociatedAttribute.hbm.xml"/>
-        <mapping resource="META-INF/hibernate/ReferenceElement.hbm.xml"/>
-        <mapping resource="META-INF/hibernate/Taxon.hbm.xml"/>
-        <mapping resource="META-INF/hibernate/Occurrence.hbm.xml"/>
-        <mapping resource="META-INF/hibernate/DataProvider.hbm.xml"/>
-        <mapping resource="META-INF/hibernate/TaxonHasReferenceElement.hbm.xml"/>
-        <mapping resource="META-INF/hibernate/OccurrenceCuratorialExtension.hbm.xml"/>
-        <mapping resource="META-INF/hibernate/OccurrenceGeospatialExtension.hbm.xml"/>
-        <mapping resource="META-INF/hibernate/TaxonDescription.hbm.xml"/>
-        <mapping resource="META-INF/hibernate/AssociatedAttribute.hbm.xml"/>
-        <mapping resource="META-INF/hibernate/Service.hbm.xml"/>
-        <mapping resource="META-INF/hibernate/OccurrenceHasReferenceElement.hbm.xml"/>
-        <mapping resource="META-INF/hibernate/TaxonDescriptionHasReferenceElement.hbm.xml"/>
-        <mapping resource="META-INF/hibernate/CommonName.hbm.xml"/>
-        <mapping resource="META-INF/hibernate/TaxonAssociatedAttributeHasReferenceElement.hbm.xml"/>
-        <mapping resource="META-INF/hibernate/ColumnList.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/TaxonHasAssociatedAttribute.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/ReferenceElement.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/Taxon.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/Occurrence.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/DataProvider.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/TaxonHasReferenceElement.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/OccurrenceCuratorialExtension.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/OccurrenceGeospatialExtension.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/TaxonDescription.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/AssociatedAttribute.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/Service.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/OccurrenceHasReferenceElement.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/TaxonDescriptionHasReferenceElement.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/CommonName.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/TaxonAssociatedAttributeHasReferenceElement.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/SearchGroup.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/SearchColumnDefault.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/SearchFilter.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/SearchColumn.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/ImportDwc.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/GeoFeature.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/GeoLayer.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/Location.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/Images.hbm.xml"/>
     
     <!-- Hibernate search event listeners -->
 <!--        <event type="post-update">

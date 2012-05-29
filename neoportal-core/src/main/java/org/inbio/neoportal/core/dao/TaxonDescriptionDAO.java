@@ -53,6 +53,11 @@ public interface TaxonDescriptionDAO
         final String searchText,
         final int offset, 
         final int quantity) ;
+    
+    public List<TaxonDescriptionFullCDTO> searchFull(
+        final String searchText,
+        final int offset, 
+        final int quantity) ;
 
     
    public List<TaxonDescriptionFullCDTO> findAllByScientificName(

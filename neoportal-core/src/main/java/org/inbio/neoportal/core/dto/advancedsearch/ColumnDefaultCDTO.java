@@ -15,8 +15,8 @@ public class ColumnDefaultCDTO
             implements Comparable {
 
     private String columnDefaultId;
-    private String key;
-    private String value;
+    private String searchGroupId;
+    private String columnDefaultKey;
 
     public ColumnDefaultCDTO() {
         
@@ -25,19 +25,19 @@ public class ColumnDefaultCDTO
     /**
      * 
      * @param columnDefaultId
-     * @param key
-     * @param value 
+     * @param searchGroupId
+     * @param columnDefaultKey 
      */
-    public ColumnDefaultCDTO(String columnDefaultId, String key, String value) {
+    public ColumnDefaultCDTO(String columnDefaultId, String searchGroupId, String columnDefaultKey) {
         this.columnDefaultId = columnDefaultId;
-        this.key = key;
-        this.value = value;
+        this.searchGroupId = searchGroupId;
+        this.columnDefaultKey = columnDefaultKey;
     }
     
     @Override
     public int compareTo(Object t) {
         ColumnDefaultCDTO oc = (ColumnDefaultCDTO) t;
-        return this.key.compareTo(oc.getKey());
+        return this.columnDefaultKey.compareTo(oc.getColumnDefaultKey());
     }
 
     public String getColumnDefaultId() {
@@ -48,20 +48,21 @@ public class ColumnDefaultCDTO
         this.columnDefaultId = columnDefaultId;
     }
 
-    public String getKey() {
-        return key;
+    public String getColumnDefaultKey() {
+        return columnDefaultKey;
     }
 
-    public void setKey(String key) {
-        this.key = key;
+    public void setColumnDefaultKey(String columnDefaultKey) {
+        this.columnDefaultKey = columnDefaultKey;
     }
 
-    public String getValue() {
-        return value;
+    public String getSearchGroupId() {
+        return searchGroupId;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setSearchGroupId(String searchGroupId) {
+        this.searchGroupId = searchGroupId;
     }
+
     
 }

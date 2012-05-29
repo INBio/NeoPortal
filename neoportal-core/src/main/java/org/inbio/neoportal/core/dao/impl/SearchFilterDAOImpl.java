@@ -8,10 +8,10 @@ import java.math.BigDecimal;
 import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.inbio.neoportal.core.dao.FilterListDAO;
-import org.inbio.neoportal.core.dto.advancedsearch.FilterListCDTO;
-import org.inbio.neoportal.core.dto.transformers.FilterListTransformer;
-import org.inbio.neoportal.core.entity.FilterList;
+import org.inbio.neoportal.core.dao.SearchFilterDAO;
+import org.inbio.neoportal.core.dto.advancedsearch.SearchFilterCDTO;
+import org.inbio.neoportal.core.dto.transformers.SearchFilterTransformer;
+import org.inbio.neoportal.core.entity.SearchFilter;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -21,19 +21,19 @@ import org.springframework.stereotype.Repository;
  * @author avargas
  */
 @Repository
-public class FilterListDAOImpl 
-        extends GenericBaseDAOImpl<FilterList, BigDecimal>
-        implements FilterListDAO {
+public class SearchFilterDAOImpl 
+        extends GenericBaseDAOImpl<SearchFilter, BigDecimal>
+        implements SearchFilterDAO {
 
     @Override
-    public List<FilterListCDTO> getAllFilters() {
+    public List<SearchFilterCDTO> getAllFilters() {
         HibernateTemplate template = getHibernateTemplate();
-		return (List<FilterListCDTO>) template.execute(new HibernateCallback() {
+		return (List<SearchFilterCDTO>) template.execute(new HibernateCallback() {
             @Override
 			public Object doInHibernate(Session session) {       
                 Query query = session.createQuery(
-						"from FilterList");
-                query.setResultTransformer(new FilterListTransformer());
+						"from SearchFilter");
+                query.setResultTransformer(new SearchFilterTransformer());
                 
                 query.setCacheable(true);
 				return query.list();
@@ -43,15 +43,15 @@ public class FilterListDAOImpl
     }
 
     @Override
-    public FilterListCDTO getFilterListByKey(final String keyName) {
+    public SearchFilterCDTO getSearchFilterByKey(final String keyName) {
          HibernateTemplate template = getHibernateTemplate();
-		return (FilterListCDTO) template.execute(new HibernateCallback() {
+		return (SearchFilterCDTO) template.execute(new HibernateCallback() {
             @Override
 			public Object doInHibernate(Session session) {       
                 Query query = session.createQuery(
-						"from FilterList");
-                query.setParameter("Key", keyName);
-                query.setResultTransformer(new FilterListTransformer());
+						"from SearchFilter");
+                query.setParameter("FilterKey", keyName);
+                query.setResultTransformer(new SearchFilterTransformer());
 				return query.list();
 			}
 		});

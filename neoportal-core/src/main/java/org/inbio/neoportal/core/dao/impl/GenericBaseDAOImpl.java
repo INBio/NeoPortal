@@ -29,6 +29,7 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
+import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.search.FullTextQuery;
@@ -40,12 +41,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author jgutierrez
  * @author asanabria 
  */
-//@Configuration
+@Repository
 public class GenericBaseDAOImpl<E ,I> 
     extends HibernateDaoSupport 
         implements GenericBaseDAO<E, I> {
@@ -301,6 +303,32 @@ public class GenericBaseDAOImpl<E ,I>
         });
     }
       
-    
+    /**
+     * Scrollable iterator for all elements of passing entity
+     * Use offline pagination
+     * @param entityClass   The required entity
+     * @param maxResults    Number of items per page
+     * @param firstResult   First result, the offset for pagination
+     * @return 
+     */
+    public List<E> scrollAll(
+            final Class<E> entityClass,
+            final int maxResults,
+            final int firstResult){
+        HibernateTemplate template = getHibernateTemplate();
+        
+        return (List<E>) template.execute(new HibernateCallback() {
+            @Override
+			public Object doInHibernate(Session session) {
+                org.hibernate.Query query = session.createQuery(
+						"from " + entityClass.getSimpleName()
+                        + " order by ID");
+				query.setMaxResults(maxResults);
+                query.setFirstResult(firstResult);
+                return query.list();
+			}
+		});
+        
+    }
     
 }

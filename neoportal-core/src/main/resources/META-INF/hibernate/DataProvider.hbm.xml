@@ -1,35 +1,31 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 02/03/2011 05:06:43 PM by Hibernate Tools 3.1.0.beta4 -->
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 02/05/2012 12:04:45 PM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-  <class name="org.inbio.neoportal.core.entity.DataProvider" schema="public" table="DATA_PROVIDER">
-    <id name="dataProviderId" type="big_decimal">
-      <column name="DATA_PROVIDER_ID" precision="131089" scale="0"/>
-      <generator class="assigned"/>
-    </id>
-    <property name="name" type="string">
-      <column name="NAME"/>
-    </property>
-    <property name="displayName" type="string">
-      <column name="DISPLAY_NAME"/>
-    </property>
-    <property name="websiteUrl" type="string">
-      <column name="WEBSITE_URL"/>
-    </property>
-    <property name="contactEmail" type="string">
-      <column name="CONTACT_EMAIL"/>
-    </property>
-    <set inverse="true" name="occurrences">
-      <key>
-        <column name="DATA_PROVIDER_ID" not-null="true" precision="131089" scale="0"/>
-      </key>
-      <one-to-many class="org.inbio.neoportal.core.entity.Occurrence"/>
-    </set>
-    <set inverse="true" name="taxonDescriptions">
-      <key>
-        <column name="PROVIDER_ID" not-null="true" precision="131089" scale="0"/>
-      </key>
-      <one-to-many class="org.inbio.neoportal.core.entity.TaxonDescription"/>
-    </set>
-  </class>
+    <class name="org.inbio.neoportal.core.entity.DataProvider" table="data_provider" schema="public">
+        <id name="dataProviderId" type="big_decimal">
+            <column name="data_provider_id" precision="131089" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="string">
+            <column name="name" />
+        </property>
+        <property name="displayName" type="string">
+            <column name="display_name" />
+        </property>
+        <property name="websiteUrl" type="string">
+            <column name="website_url" />
+        </property>
+        <property name="contactEmail" type="string">
+            <column name="contact_email" />
+        </property>
+        <set name="occurrences" inverse="true">
+            <key>
+                <column name="data_provider_id" precision="131089" scale="0" not-null="true" />
+            </key>
+            <one-to-many class="org.inbio.neoportal.core.entity.Occurrence" />
+        </set>
+    </class>
 </hibernate-mapping>

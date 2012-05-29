@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 09/05/2012 05:39:55 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.inbio.neoportal.core.entity.GeoFeature" table="geo_feature" schema="public">
+        <composite-id name="id" class="org.inbio.neoportal.core.entity.GeoFeatureId">
+            <key-property name="geoLayerId" type="long">
+                <column name="geo_layer_id" />
+            </key-property>
+            <key-property name="geoFeatureId" type="long">
+                <column name="geo_feature_id" />
+            </key-property>
+        </composite-id>
+        <many-to-one name="geoLayer" class="org.inbio.neoportal.core.entity.GeoLayer" update="false" insert="false" fetch="select">
+            <column name="geo_layer_id" not-null="true" />
+        </many-to-one>
+        <property name="name" type="string">
+            <column name="name" />
+        </property>
+        <set name="locations" inverse="true" table="location_features">
+            <key>
+                <column name="geo_layer_id" not-null="true" />
+                <column name="geo_feature_id" not-null="true" />
+            </key>
+            <many-to-many entity-name="org.inbio.neoportal.core.entity.Location">
+                <column name="location_id" not-null="true" />
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

@@ -10,8 +10,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.inbio.neoportal.core.dao.ColumnDefaultDAO;
 import org.inbio.neoportal.core.dto.advancedsearch.ColumnDefaultCDTO;
-import org.inbio.neoportal.core.dto.transformers.ColumnDefaultTransformer;
-import org.inbio.neoportal.core.entity.ColumnDefault;
+import org.inbio.neoportal.core.dto.transformers.SearchColumnTransformer;
+import org.inbio.neoportal.core.entity.SearchColumnDefault;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class ColumnDefaultDAOImpl 
-        extends GenericBaseDAOImpl<ColumnDefault, BigDecimal>
+        extends GenericBaseDAOImpl<SearchColumnDefault, BigDecimal>
         implements ColumnDefaultDAO {
 
     @Override
@@ -32,8 +32,8 @@ public class ColumnDefaultDAOImpl
             @Override
 			public Object doInHibernate(Session session) {       
                 Query query = session.createQuery(
-						"from ColumnDefault");
-                query.setResultTransformer(new ColumnDefaultTransformer());
+						"from SearchColumnDefault");
+                query.setResultTransformer(new SearchColumnTransformer());
                 
                 query.setCacheable(true);
 				return query.list();
@@ -49,9 +49,9 @@ public class ColumnDefaultDAOImpl
             @Override
 			public Object doInHibernate(Session session) {       
                 Query query = session.createQuery(
-						"from ColumnDefault");
-                query.setParameter("key", keyName);
-                query.setResultTransformer(new ColumnDefaultTransformer());
+						"from SearchColumnDefault");
+                query.setParameter("ColumnKey", keyName);
+                query.setResultTransformer(new SearchColumnTransformer());
 				return query.list();
 			}
 		});

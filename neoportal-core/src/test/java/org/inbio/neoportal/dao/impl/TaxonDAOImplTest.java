@@ -103,7 +103,7 @@ public class TaxonDAOImplTest extends NeoportalTestBase{
     @Test
     public void testSearchCount() {
         System.out.println("searchCount");
-        String searchText = "Inga_vera";
+        String searchText = "Inga vera";
         Long expResult = new Long(5);
         Long result = taxonDAOImpl.searchCount(searchText);
         assertEquals(expResult, result);

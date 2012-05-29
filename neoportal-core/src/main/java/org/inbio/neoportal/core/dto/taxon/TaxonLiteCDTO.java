@@ -32,6 +32,8 @@ public class TaxonLiteCDTO
 
     private String scientificName;
     private ArrayList<CommonNameLiteCDTO> commonNameList;
+    private ArrayList<ImagesCDTO> imageList;
+    private String imageUrl;
 
     public TaxonLiteCDTO() {
     }
@@ -115,5 +117,25 @@ public class TaxonLiteCDTO
     public void setCommonNameList(ArrayList<CommonNameLiteCDTO> commonNameList) {
         this.commonNameList = commonNameList;
     }
-    
+
+    public ArrayList<ImagesCDTO> getImageList() {
+        return imageList;
+    }
+
+    public void setImageList(ArrayList<ImagesCDTO> imageList) {
+        this.imageList = imageList;
+    }
+
+    /**
+     * The imageUrl from UBIS for use like thumb
+     * @return 
+     */
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+        
 }

@@ -19,6 +19,7 @@
 package org.inbio.neoportal.core.dto.occurrence;
 
 import org.inbio.neoportal.common.dto.*;
+import org.inbio.neoportal.core.dto.LocationCDTO;
 
 /**
  * Occurrence record, fields based on DarwinCore Terms http://rs.tdwg.org/dwc/terms/index.htm
@@ -90,6 +91,7 @@ public class OccurrenceCDTO
     private String nomenclaturalStatus;
     private String taxonRemarks;
     
+    private LocationCDTO location;
     
     public OccurrenceCDTO() {
     }
@@ -441,6 +443,14 @@ public class OccurrenceCDTO
 
     public void setVernacularName(String vernacularName) {
         this.vernacularName = vernacularName;
+    }
+
+    public LocationCDTO getLocation() {
+        return location;
+    }
+
+    public void setLocation(LocationCDTO location) {
+        this.location = location;
     }
 
 }

@@ -19,10 +19,16 @@
 package org.inbio.neoportal.core.dto.transformers;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import org.hibernate.transform.ResultTransformer;
+import org.inbio.neoportal.core.dto.LocationCDTO;
+import org.inbio.neoportal.core.dto.advancedsearch.GeoFeatureCDTO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceCDTO;
+import org.inbio.neoportal.core.entity.GeoFeature;
 import org.inbio.neoportal.core.entity.Occurrence;
+import org.inbio.neoportal.core.entity.Location;
 
 /**
  * Transfrom a list of Occurrences entities to OccurrenceCDTO
@@ -37,9 +43,7 @@ public class OccurrenceDWCTransformer
         
         List<OccurrenceCDTO> newList = new ArrayList<OccurrenceCDTO>();
         
-        OccurrenceGeospatialTransformer ogt = 
-            new OccurrenceGeospatialTransformer();
-                
+
        for(Occurrence oc: occurrenceList){
             OccurrenceCDTO newCDTO = new OccurrenceCDTO();
             newCDTO.setOccurrenceId(oc.getOccurrenceId().toString());
@@ -49,7 +53,8 @@ public class OccurrenceDWCTransformer
             newCDTO.setSex(oc.getSex());
             newCDTO.setLifeStage(oc.getLifeStage());
             
-            newCDTO.setTaxonId(oc.getTaxon().getTaxonId().toString());
+            if(oc.getTaxon() != null)
+                newCDTO.setTaxonId(oc.getTaxon().getTaxonId().toString());
             newCDTO.setScientificName(oc.getScientificName());
             // TODO: include AcceptedNameUsage to Occurrence Entity
             newCDTO.setAcceptedNameUsage("Not implemented");
@@ -77,6 +82,9 @@ public class OccurrenceDWCTransformer
             newCDTO.setNomenclaturalStatus("Not implemented");
             newCDTO.setTaxonRemarks("Not implemented");
             
+            //location information
+            newCDTO.setLocation(transformLocation(oc.getLocation()));
+            
             newList.add(newCDTO);
         }
         
@@ -86,5 +94,56 @@ public class OccurrenceDWCTransformer
     @Override
     public Object transformTuple(Object[] os, String[] strings) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    private LocationCDTO transformLocation(Location location){
+        if(location == null)
+            return null;
+        
+        LocationCDTO locationCDTO = new LocationCDTO();
+        
+        locationCDTO.setLocationId(location.getLocationId().toString());
+        locationCDTO.setDecimalLatitude(location.getDecimalLatitude());
+        locationCDTO.setDecimalLongitude(location.getDecimalLongitude());
+        locationCDTO.setGeodeticDatum(location.getGeodeticDatum());
+        locationCDTO.setCoordinateUncertaintyInMeters(location.getCoordinateUncertaintyInMeters());
+        locationCDTO.setPointRadiusSpatialFit(location.getPointRadiusSpatialFit());
+        locationCDTO.setFootprintWkt(location.getFootprintWkt());
+        locationCDTO.setFootPrintSpatialFit(location.getFootPrintSpatialFit());
+        locationCDTO.setVerbatimCoordinates(location.getVerbatimCoordinates());
+        locationCDTO.setVerbatimLatitude(location.getVerbatimLatitude());
+        locationCDTO.setVerbatimLongitude(location.getVerbatimLongitude());
+        locationCDTO.setVerbatimCoordinateSystem(location.getVerbatimCoordinateSystem());
+        locationCDTO.setGeoreferenceProtocol(location.getGeoreferenceProtocol());
+        locationCDTO.setGeoreferenceSources(location.getGeoreferenceSources());
+        locationCDTO.setGeoreferenceVerificationStatus(location.getGeoreferenceVerificationStatus());
+        locationCDTO.setGeoreferenceRemarks(location.getGeoreferenceRemarks());
+        
+        List<GeoFeatureCDTO> featureCDTOs = new ArrayList<GeoFeatureCDTO>();
+        
+        Iterator itr = location.getFeatures().iterator();
+        
+        while (itr.hasNext()) {
+            GeoFeature geoFeature = (GeoFeature) itr.next();
+            
+            GeoFeatureCDTO featureCDTO = new GeoFeatureCDTO();
+            
+            featureCDTO.setGeoLayerId(
+                    String.valueOf(geoFeature.getGeoLayer().getGeoLayerId()));
+            
+            featureCDTO.setGeoFeatureId(
+                    String.valueOf(geoFeature.getId().getGeoFeatureId()));
+            
+            featureCDTO.setName(geoFeature.getName());
+            
+            featureCDTO.setGeoLayerName(geoFeature.getGeoLayer().getName());
+            
+            featureCDTOs.add(featureCDTO);
+        }
+                
+        locationCDTO.setGeoFeaturesCDTO(featureCDTOs);
+        
+        return locationCDTO;
+                    
     }
 }

@@ -23,6 +23,7 @@ import java.util.List;
 import org.hibernate.transform.ResultTransformer;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceGeospatialLiteCDTO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceLiteCDTO;
+import org.inbio.neoportal.core.entity.Location;
 import org.inbio.neoportal.core.entity.Occurrence;
 import org.inbio.neoportal.core.entity.OccurrenceGeospatialExtension;
 
@@ -48,11 +49,15 @@ public class OccurrenceTransformer
             new OccurrenceGeospatialTransformer();
                 
        for(Occurrence oc: occurrenceList){
+           Location location = oc.getLocation();
            
-           temp = new ArrayList<OccurrenceGeospatialExtension>
-                (oc.getOccurrenceGeospatialExtensions());
+           // FIXME: OccurrenceGeoSpatial is deprecated
+           OccurrenceGeospatialLiteCDTO ogCDTO = new OccurrenceGeospatialLiteCDTO();
+           ogCDTO.setLatitude(location.getDecimalLatitude());
+           ogCDTO.setLongitude(location.getDecimalLongitude());
            
-           ogl = (ArrayList<OccurrenceGeospatialLiteCDTO>) ogt.transformList(temp);
+           ogl = new ArrayList<OccurrenceGeospatialLiteCDTO>();
+           ogl.add(ogCDTO);
                                
             newList.add(new OccurrenceLiteCDTO(
                                 oc.getOccurrenceId().toString(),

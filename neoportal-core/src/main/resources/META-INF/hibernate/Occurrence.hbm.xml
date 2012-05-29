@@ -1,173 +1,159 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 02/03/2011 05:06:43 PM by Hibernate Tools 3.1.0.beta4 -->
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 10/05/2012 09:55:45 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-  <class name="org.inbio.neoportal.core.entity.Occurrence" schema="public" table="OCCURRENCE">
-    <id name="occurrenceId" type="big_decimal">
-      <column name="OCCURRENCE_ID" precision="131089" scale="0"/>
-      <generator class="assigned"/>
-    </id>
-    <many-to-one class="org.inbio.neoportal.core.entity.DataProvider" fetch="select" name="dataProvider">
-      <column name="DATA_PROVIDER_ID" not-null="true" precision="131089" scale="0"/>
-    </many-to-one>
-    <many-to-one class="org.inbio.neoportal.core.entity.Taxon" fetch="select" name="taxon">
-      <column name="TAXON_ID" not-null="true" precision="131089" scale="0"/>
-    </many-to-one>
-    <property name="globalUniqueIdentifier" type="string">
-      <column name="GLOBAL_UNIQUE_IDENTIFIER"/>
-    </property>
-    <property name="dateLastModified" type="string">
-      <column name="DATE_LAST_MODIFIED"/>
-    </property>
-    <property name="institutionCode" type="string">
-      <column name="INSTITUTION_CODE"/>
-    </property>
-    <property name="collectionCode" type="string">
-      <column name="COLLECTION_CODE"/>
-    </property>
-    <property name="catalogNumber" type="string">
-      <column name="CATALOG_NUMBER"/>
-    </property>
-    <property name="scientificName" type="string">
-      <column name="SCIENTIFIC_NAME"/>
-    </property>
-    <property name="basisOfRecord" type="string">
-      <column name="BASIS_OF_RECORD"/>
-    </property>
-    <property name="informationWithheld" type="string">
-      <column name="INFORMATION_WITHHELD"/>
-    </property>
-    <property name="higherTaxon" type="string">
-      <column name="HIGHER_TAXON"/>
-    </property>
-    <property name="kingdom" type="string">
-      <column name="KINGDOM"/>
-    </property>
-    <property name="phylum" type="string">
-      <column name="PHYLUM"/>
-    </property>
-    <property name="class_" type="string">
-      <column name="CLASS"/>
-    </property>
-    <property name="orders" type="string">
-      <column name="ORDERS"/>
-    </property>
-    <property name="family" type="string">
-      <column name="FAMILY"/>
-    </property>
-    <property name="genus" type="string">
-      <column name="GENUS"/>
-    </property>
-    <property name="specificEpithet" type="string">
-      <column name="SPECIFIC_EPITHET"/>
-    </property>
-    <property name="infraspecificEpithet" type="string">
-      <column name="INFRASPECIFIC_EPITHET"/>
-    </property>
-    <property name="infraspecificRank" type="string">
-      <column name="INFRASPECIFIC_RANK"/>
-    </property>
-    <property name="authorYearOfScientificName" type="string">
-      <column name="AUTHOR_YEAR_OF_SCIENTIFIC_NAME"/>
-    </property>
-    <property name="nomenclaturalCode" type="string">
-      <column name="NOMENCLATURAL_CODE"/>
-    </property>
-    <property name="identificationQualifier" type="string">
-      <column name="IDENTIFICATION_QUALIFIER"/>
-    </property>
-    <property name="collectingMethod" type="string">
-      <column name="COLLECTING_METHOD"/>
-    </property>
-    <property name="validDistributionFlag" type="string">
-      <column name="VALID_DISTRIBUTION_FLAG"/>
-    </property>
-    <property name="collector" type="string">
-      <column name="COLLECTOR"/>
-    </property>
-    <property name="earliestDateCollected" type="string">
-      <column name="EARLIEST_DATE_COLLECTED"/>
-    </property>
-    <property name="latestDateCollected" type="string">
-      <column name="LATEST_DATE_COLLECTED"/>
-    </property>
-    <property name="dayOfYear" type="big_decimal">
-      <column name="DAY_OF_YEAR" precision="131089" scale="0"/>
-    </property>
-    <property name="higherGeography" type="string">
-      <column name="HIGHER_GEOGRAPHY"/>
-    </property>
-    <property name="continent" type="string">
-      <column name="CONTINENT"/>
-    </property>
-    <property name="waterBody" type="string">
-      <column name="WATER_BODY"/>
-    </property>
-    <property name="islandGroup" type="string">
-      <column name="ISLAND_GROUP"/>
-    </property>
-    <property name="island" type="string">
-      <column name="ISLAND"/>
-    </property>
-    <property name="country" type="string">
-      <column name="COUNTRY"/>
-    </property>
-    <property name="stateProvince" type="string">
-      <column name="STATE_PROVINCE"/>
-    </property>
-    <property name="county" type="string">
-      <column name="COUNTY"/>
-    </property>
-    <property name="locality" type="string">
-      <column name="LOCALITY"/>
-    </property>
-    <property name="minimumElevationInMeters" type="string">
-      <column name="MINIMUM_ELEVATION_IN_METERS"/>
-    </property>
-    <property name="maximumElevationInMeters" type="string">
-      <column name="MAXIMUM_ELEVATION_IN_METERS"/>
-    </property>
-    <property name="minimumDepthInmeters" type="string">
-      <column name="MINIMUM_DEPTH_INMETERS"/>
-    </property>
-    <property name="maximumDepthInmeters" type="string">
-      <column name="MAXIMUM_DEPTH_INMETERS"/>
-    </property>
-    <property name="sex" type="string">
-      <column name="SEX"/>
-    </property>
-    <property name="lifeStage" type="string">
-      <column name="LIFE_STAGE"/>
-    </property>
-    <property name="remarks" type="string">
-      <column name="REMARKS"/>
-    </property>
-    <property name="attributes" type="string">
-      <column name="ATTRIBUTES"/>
-    </property>
-    <property name="imageUrl" type="string">
-      <column name="IMAGE_URL"/>
-    </property>
-    <property name="relatedInformation" type="string">
-      <column name="RELATED_INFORMATION"/>
-    </property>
-    <set inverse="true" name="occurrenceHasReferenceElements">
-      <key>
-        <column name="OCCURRENCE_ID" not-null="true" precision="131089" scale="0"/>
-      </key>
-      <one-to-many class="org.inbio.neoportal.core.entity.OccurrenceHasReferenceElement"/>
-    </set>
-    <set inverse="true" name="occurrenceCuratorialExtensions">
-      <key>
-        <column name="OCCURRENCE_ID" not-null="true" precision="131089" scale="0"/>
-      </key>
-      <one-to-many class="org.inbio.neoportal.core.entity.OccurrenceCuratorialExtension"/>
-    </set>
-    <set inverse="true" name="occurrenceGeospatialExtensions">
-      <key>
-        <column name="OCCURRENCE_ID" not-null="true" precision="131089" scale="0"/>
-      </key>
-      <one-to-many class="org.inbio.neoportal.core.entity.OccurrenceGeospatialExtension"/>
-    </set>
-  </class>
+    <class name="org.inbio.neoportal.core.entity.Occurrence" table="occurrence" schema="public">
+        <id name="occurrenceId" type="big_decimal">
+            <column name="occurrence_id" precision="131089" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="location" class="org.inbio.neoportal.core.entity.Location" fetch="select">
+            <column name="location_id" precision="131089" scale="0" />
+        </many-to-one>
+        <many-to-one name="dataProvider" class="org.inbio.neoportal.core.entity.DataProvider" fetch="select">
+            <column name="data_provider_id" precision="131089" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="taxon" class="org.inbio.neoportal.core.entity.Taxon" fetch="select">
+            <column name="taxon_id" precision="131089" scale="0" />
+        </many-to-one>
+        <property name="globalUniqueIdentifier" type="string">
+            <column name="global_unique_identifier" />
+        </property>
+        <property name="dateLastModified" type="string">
+            <column name="date_last_modified" />
+        </property>
+        <property name="institutionCode" type="string">
+            <column name="institution_code" />
+        </property>
+        <property name="collectionCode" type="string">
+            <column name="collection_code" />
+        </property>
+        <property name="catalogNumber" type="string">
+            <column name="catalog_number" />
+        </property>
+        <property name="scientificName" type="string">
+            <column name="scientific_name" />
+        </property>
+        <property name="basisOfRecord" type="string">
+            <column name="basis_of_record" />
+        </property>
+        <property name="informationWithheld" type="string">
+            <column name="information_withheld" />
+        </property>
+        <property name="higherTaxon" type="string">
+            <column name="higher_taxon" />
+        </property>
+        <property name="kingdom" type="string">
+            <column name="kingdom" />
+        </property>
+        <property name="phylum" type="string">
+            <column name="phylum" />
+        </property>
+        <property name="class_" type="string">
+            <column name="class" />
+        </property>
+        <property name="orders" type="string">
+            <column name="orders" />
+        </property>
+        <property name="family" type="string">
+            <column name="family" />
+        </property>
+        <property name="genus" type="string">
+            <column name="genus" />
+        </property>
+        <property name="specificEpithet" type="string">
+            <column name="specific_epithet" />
+        </property>
+        <property name="infraspecificEpithet" type="string">
+            <column name="infraspecific_epithet" />
+        </property>
+        <property name="infraspecificRank" type="string">
+            <column name="infraspecific_rank" />
+        </property>
+        <property name="authorYearOfScientificName" type="string">
+            <column name="author_year_of_scientific_name" />
+        </property>
+        <property name="nomenclaturalCode" type="string">
+            <column name="nomenclatural_code" />
+        </property>
+        <property name="identificationQualifier" type="string">
+            <column name="identification_qualifier" />
+        </property>
+        <property name="collectingMethod" type="string">
+            <column name="collecting_method" />
+        </property>
+        <property name="validDistributionFlag" type="string">
+            <column name="valid_distribution_flag" />
+        </property>
+        <property name="collector" type="string">
+            <column name="collector" />
+        </property>
+        <property name="earliestDateCollected" type="string">
+            <column name="earliest_date_collected" />
+        </property>
+        <property name="latestDateCollected" type="string">
+            <column name="latest_date_collected" />
+        </property>
+        <property name="dayOfYear" type="big_decimal">
+            <column name="day_of_year" precision="131089" scale="0" />
+        </property>
+        <property name="higherGeography" type="string">
+            <column name="higher_geography" />
+        </property>
+        <property name="continent" type="string">
+            <column name="continent" />
+        </property>
+        <property name="waterBody" type="string">
+            <column name="water_body" />
+        </property>
+        <property name="islandGroup" type="string">
+            <column name="island_group" />
+        </property>
+        <property name="island" type="string">
+            <column name="island" />
+        </property>
+        <property name="country" type="string">
+            <column name="country" />
+        </property>
+        <property name="stateProvince" type="string">
+            <column name="state_province" />
+        </property>
+        <property name="county" type="string">
+            <column name="county" />
+        </property>
+        <property name="locality" type="string">
+            <column name="locality" />
+        </property>
+        <property name="minimumElevationInMeters" type="string">
+            <column name="minimum_elevation_in_meters" />
+        </property>
+        <property name="maximumElevationInMeters" type="string">
+            <column name="maximum_elevation_in_meters" />
+        </property>
+        <property name="minimumDepthInmeters" type="string">
+            <column name="minimum_depth_inmeters" />
+        </property>
+        <property name="maximumDepthInmeters" type="string">
+            <column name="maximum_depth_inmeters" />
+        </property>
+        <property name="sex" type="string">
+            <column name="sex" />
+        </property>
+        <property name="lifeStage" type="string">
+            <column name="life_stage" />
+        </property>
+        <property name="remarks" type="string">
+            <column name="remarks" />
+        </property>
+        <property name="attributes" type="string">
+            <column name="attributes" />
+        </property>
+        <property name="imageUrl" type="string">
+            <column name="image_url" />
+        </property>
+        <property name="relatedInformation" type="string">
+            <column name="related_information" />
+        </property>
+    </class>
 </hibernate-mapping>

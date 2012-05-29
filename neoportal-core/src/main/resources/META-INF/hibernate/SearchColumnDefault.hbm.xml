@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN" 
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 19/04/2012 02:15:06 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.inbio.neoportal.core.entity.SearchColumnDefault" table="search_column_default" schema="public">
+        <comment>Contain column defaults for Advanced Search functionality</comment>
+        <id name="columnDefaultId" type="big_decimal">
+            <column name="column_default_id" precision="131089" scale="0" />
+            <generator class="assigned" />
+        </id>
+        <many-to-one name="searchGroup" class="org.inbio.neoportal.core.entity.SearchGroup" fetch="select">
+            <column name="search_group_id" precision="131089" scale="0" not-null="true" />
+        </many-to-one>
+        <property name="columnDefaultKey" type="string">
+            <column name="column_default_key" />
+        </property>
+    </class>
+</hibernate-mapping>

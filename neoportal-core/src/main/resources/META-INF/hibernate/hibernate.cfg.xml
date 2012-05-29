@@ -4,10 +4,15 @@
   <session-factory>
     <!-- Hibernate specific configuration -->
     <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+    <!-- Database connection -->
+    <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+    <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/neoportal</property>
+    <property name="hibernate.connection.username">postgres</property>
+    <property name="hibernate.connection.password">inbio</property>
     <!-- Hibernate search configuration -->
     <property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
-    <property name="hibernate.search.default.indexBase">/home/arturo/LuceneIndex/</property>
-    <!--    <property name="hibernate.search.default.indexBase">/var/LuceneIndex/</property>-->
+<!--    <property name="hibernate.search.default.indexBase">/home/arturo/LuceneIndex/Test/</property>-->
+    <property name="hibernate.search.default.indexBase">/var/LuceneIndex/</property>
     <property name="hibernate.search.default.locking_strategy">simple</property>
     <!-- Mappings -->
     <mapping resource="META-INF/hibernate/TaxonHasAssociatedAttribute.hbm.xml"/>
@@ -17,7 +22,8 @@
     <mapping resource="META-INF/hibernate/DataProvider.hbm.xml"/>
     <mapping resource="META-INF/hibernate/TaxonHasReferenceElement.hbm.xml"/>
     <mapping resource="META-INF/hibernate/OccurrenceCuratorialExtension.hbm.xml"/>
-    <mapping resource="META-INF/hibernate/OccurrenceGeospatialExtension.hbm.xml"/>
+    <!-- Deprecated   -->
+    <!--    <mapping resource="META-INF/hibernate/OccurrenceGeospatialExtension.hbm.xml"/>-->
     <mapping resource="META-INF/hibernate/TaxonDescription.hbm.xml"/>
     <mapping resource="META-INF/hibernate/AssociatedAttribute.hbm.xml"/>
     <mapping resource="META-INF/hibernate/Service.hbm.xml"/>
@@ -25,18 +31,14 @@
     <mapping resource="META-INF/hibernate/TaxonDescriptionHasReferenceElement.hbm.xml"/>
     <mapping resource="META-INF/hibernate/CommonName.hbm.xml"/>
     <mapping resource="META-INF/hibernate/TaxonAssociatedAttributeHasReferenceElement.hbm.xml"/>
-    <mapping resource="META-INF/hibernate/ColumnList.hbm.xml"/>
-    <mapping resource="META-INF/hibernate/ColumnDefault.hbm.xml"/>
-    <mapping resource="META-INF/hibernate/FilterList.hbm.xml"/>
-    <!-- Hibernate search event listeners -->
-    <!--    <event type="post-update">
-      <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
-    </event>
-    <event type="post-insert">
-      <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
-    </event>
-    <event type="post-delete">
-      <listener class="org.hibernate.search.event.FullTextIndexEventListener"/>
-    </event>-->
+    <mapping resource="META-INF/hibernate/SearchGroup.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/SearchColumnDefault.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/SearchFilter.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/SearchColumn.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/ImportDwc.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/GeoFeature.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/GeoLayer.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/Location.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/Images.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

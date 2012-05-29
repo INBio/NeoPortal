@@ -22,10 +22,14 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.inbio.neoportal.core.dao.OccurrenceDAO;
 import org.inbio.neoportal.core.dto.transformers.OccurrenceDWCTransformer;
 import org.inbio.neoportal.core.dto.transformers.OccurrenceTransformer;
 import org.inbio.neoportal.core.entity.Occurrence;
+import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -114,5 +118,21 @@ public class OccurrenceDAOImpl
                             searchText,
                             offset,
                             quantity);
+    }
+    
+    @Override
+    public Occurrence findByLocationId(
+            final String locationId){
+        HibernateTemplate template = getHibernateTemplate();
+		return (Occurrence) template.execute(new HibernateCallback() {
+            @Override
+			public Object doInHibernate(Session session) {
+                Query query = session.createQuery(
+						"from Occurrence as oc"
+						+ " where oc.locationId = :locationId");
+				query.setParameter("locationId", locationId);
+				return query.list().get(0);
+			}
+		});
     }
 }

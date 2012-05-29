@@ -65,4 +65,10 @@ public interface OccurrenceDAO
             final int offset,
             final int quantity);
 
+    /**
+     * 
+     * @param locationId 
+     */
+    public Occurrence findByLocationId(
+            final String locationId);
 }

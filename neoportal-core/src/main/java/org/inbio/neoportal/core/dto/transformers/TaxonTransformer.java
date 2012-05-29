@@ -22,8 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.transform.ResultTransformer;
 import org.inbio.neoportal.core.dto.commonname.CommonNameLiteCDTO;
+import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.entity.CommonName;
+import org.inbio.neoportal.core.entity.Images;
 import org.inbio.neoportal.core.entity.Taxon;
 
 
@@ -40,6 +42,9 @@ public class TaxonTransformer
     List commonNameList =
         new ArrayList<CommonNameLiteCDTO>();
     
+    ImagesTransformer imagesRT = 
+            new ImagesTransformer();
+    
     @Override
     public List transformList(List list) {
         List<Taxon> taxonList = (List<Taxon>) list;
@@ -50,10 +55,18 @@ public class TaxonTransformer
             commonNameList =  commonNameRT.transformList(
                 new ArrayList<CommonName>(taxon.getCommonNames()));
             
-            newList.add(
-                new TaxonLiteCDTO(
-                    taxon.getDefaultName(),
-                    (ArrayList<CommonNameLiteCDTO>) commonNameList));
+            ArrayList<ImagesCDTO> imgList = new ArrayList<ImagesCDTO>();
+            for(Images img: taxon.getImages()){
+                imgList.add((ImagesCDTO)imagesRT.transformTuple(new Object[]{img}, null));
+            }
+            
+            TaxonLiteCDTO taxonCDTO = new TaxonLiteCDTO();
+            taxonCDTO.setScientificName(taxon.getDefaultName());
+            taxonCDTO.setCommonNameList((ArrayList<CommonNameLiteCDTO>) commonNameList);
+            taxonCDTO.setImageList(imgList);
+            taxonCDTO.setImageUrl(taxon.getImageUrl());
+            
+            newList.add(taxonCDTO);
         }
         
         return newList;

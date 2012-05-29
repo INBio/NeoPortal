@@ -21,6 +21,7 @@ package org.inbio.neoportal.core.dao;
 import java.math.BigDecimal;
 import java.util.List;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
+import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
 import org.inbio.neoportal.core.entity.Taxon;
 
 /**
@@ -54,8 +55,22 @@ public interface TaxonDAO
         final int quantity) ;
 
     
-    public List<TaxonLiteCDTO> searchBoost(
+    public List<TaxonDescriptionFullCDTO> searchBoost(
         final String searchText,
         final int offset, 
         final int quantity) ;
+    
+    /**
+     * 
+     */
+    public List<Taxon> findAllByScientificName(
+       final String scientificName);
+    
+    /**
+     * 
+     * @param scientificName
+     * @return 
+     */
+    public List<TaxonLiteCDTO> findCDTOByScientificName(
+       final String scientificName);
 }
