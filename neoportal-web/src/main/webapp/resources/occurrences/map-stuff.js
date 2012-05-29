@@ -21,7 +21,7 @@ var clusterMaxLenght;
 function initMap2(divId){
     map = new OpenLayers.Map( divId );
     var googleLayer = new OpenLayers.Layer.Google('Google Hybrid', {
-                        type: google.maps.MapTypeId.HYBRID,
+                        type: google.maps.MapTypeId.TERRAIN,
                         numZoomLevels: 15,
                         minZoomLevel: 2
                 });

@@ -5,6 +5,7 @@
  * Author: avargas
  * 
  */
+var isInfoLoaded = false;
 
 /*
  * 
@@ -31,7 +32,7 @@ function showTab(tab){
     
     switch (tab) {
         case 'images':
-
+            showImages();
             break;
         case 'occurrences':
             showOccurrences();
@@ -50,6 +51,9 @@ function showTab(tab){
 
 function showTaxonDescription(provider){
     $("#taxonDescription").show();
+    
+    if(isInfoLoaded)
+        return;
     //
     //get taxon description by provider
     //Prepare URL for XHR request:
@@ -59,9 +63,18 @@ function showTaxonDescription(provider){
         type: "get",
         url: sUrl,
         dataType: 'json',
-        contentType: 'application/json; charset=utf-8',
+        contentType: 'application/json; charset=UTF-8',
         success: function(data){
             debugger;
+            
+            if(data == null){
+                //add message of no data found
+                $("li.menu-top").not("#item-externalSource").addClass("menu-disable");
+                $("div.data-panel").not("div.externalSource").hide();
+                $("div.externalSource").prepend("<h4>"+ noDataFound + "</h4>");
+                
+                return;
+            }
             
             // Natural history
             var nhContent = "";
@@ -190,7 +203,11 @@ function showTaxonDescription(provider){
             }
             
             $("div.data-panel").hide();
-            $("div.naturalHistory").show();
+            
+            if(!$("#item-naturalHistory").hasClass("menu-disable"))
+                $("div.naturalHistory").show();
+            else
+                $("div.habitatDistribution").show();
             
             $("#menu-species li").click(function(){
                 var itemName = $(this).attr('id').split('-')[1];
@@ -200,6 +217,8 @@ function showTaxonDescription(provider){
                 });
                 
             });
+            
+            isInfoLoaded = true;
             
         }
         
@@ -291,4 +310,57 @@ function showOccurrences(){
         if(map)
             map.updateSize();
     });
+}
+
+function showImages(){
+    var sUrl = contextPath+"/api/species/"+scientificName+"/images";
+
+    $divImages = $("#images");
+    
+    if($divImages.length > 0){
+        $divImages.show();
+        return;
+    }else{
+        $divImages = $("<div/>",{id: 'images'}).addClass("tab_wrapper data_wrapper");
+        $("#content").append($divImages);
+    }
+
+    $.ajax({
+        type: "get",
+        url: sUrl,
+        dataType: 'json',
+        contentType: 'application/json; charset=UTF-8',
+        success: function(data){
+            debugger;
+            $("<div/>", {id: 'imageInner'}).appendTo("#images");
+            for(i=0; i < data.length; i++){
+                $("<div/>").addClass("imageContainer").html(
+                $("<a/>", 
+                    {
+                        href: "http://multimedia.inbio.ac.cr/m3sINBio/getImage?size=big&id=" + data[i].m3sImageId,
+                        title: data[i].author + " - " + data[i].rights
+                    }).html($("<img/>",
+                        {
+                            src: "http://multimedia.inbio.ac.cr/m3sINBio/getImage?size=thumb&id=" + data[i].m3sImageId
+                        }).width(120))).appendTo("#imageInner");
+                    
+            }
+            
+            $("#imageInner a").lightBox({
+                imageLoading: contextPath + "/resources/plugins/jquery-lightbox-0.5/images/lightbox-ico-loading.gif",
+                imageBtnClose: contextPath + "/resources/plugins/jquery-lightbox-0.5/images/lightbox-btn-close.gif",
+                imageBtnPrev: contextPath + "/resources/plugins/jquery-lightbox-0.5/images/lightbox-btn-prev.gif",
+                imageBtnNext: contextPath + "/resources/plugins/jquery-lightbox-0.5/images/lightbox-btn-next.gif",
+                imageBlank: contextPath + "/resources/plugins/jquery-lightbox-0.5/images/lightbox-blank.gif"
+            });
+            
+            $("#imageInner").imagesLoaded(function(){
+                $(this).masonry({
+                    itemSelector: '.imageContainer',
+                    isFitWidth: true
+                });
+            });
+        }
+    });
+    
 }

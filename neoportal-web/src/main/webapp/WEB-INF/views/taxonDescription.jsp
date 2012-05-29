@@ -17,9 +17,9 @@
         <link rel="stylesheet" type="text/css" href="<c:out value="${pageContext.request.contextPath}"/><spring:theme code='jquery-ui'/>"/>
         
         <!-- Open Layers and Google Maps API-->
-        <script src="http://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.6&sensor=false"></script>
         <link rel="stylesheet" type="text/css" href="<c:url value="/resources/openlayers/style.css"/>">
-        <script type="text/JavaScript" src="http://openlayers.org/api/OpenLayers.js"></script>
+        <script type="text/JavaScript" src="http://openlayers.org/api/2.10/OpenLayers.js"></script>
         
         <!-- jquery -->
         <script type="text/javascript" src="<c:url value="/resources/js/jquery-1.6.1.min.js" />"></script>
@@ -27,6 +27,13 @@
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.dataTables.min.js" />" ></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.xslt.js" />" ></script>
 
+        <!--   jQuery LightBox     -->
+        <script type="text/javascript" src="<c:url value="/resources/plugins/jquery-lightbox-0.5/js/jquery.lightbox-0.5.min.js" />"></script>
+        <link rel="stylesheet" type="text/css" href="<c:url value="/resources/plugins/jquery-lightbox-0.5/css/jquery.lightbox-0.5.css"/>"</link>
+        
+        <!--   jQuery Masonry plugin - dynamic layout for images  -->
+        <script type="text/javascript" src="<c:url value="/resources/plugins/jquery.masonry.min.js" />"></script>
+        
         <!-- Util javaScript -->
         <script type="text/javascript" >
             var scientificName = "${scientificName}";
@@ -78,6 +85,8 @@
             var taxonRecordIdT = '<fmt:message key="taxonDes_taxonRecordId"/>';
             var dateLastModifiedT = '<fmt:message key="taxonDes_dateLastModified"/>';
             var dateCreatedT = '<fmt:message key="taxonDes_dateCreated"/>';
+            
+            var noDataFound = '<fmt:message key="noDataFound"/>';
         </script>
         
         <script type="text/javascript" src="<c:url value="/resources/occurrences/map-stuff.js" />"></script>
@@ -96,8 +105,8 @@
                         <div id="tabsContainer">
                             <ul>
                                 <li class="currentTab"><a href="#info"><fmt:message key="tab_taxonDescription"/></a></li>
-<!--                                <li><a href="#images"><fmt:message key="tab_images"/></a></li>-->
                                 <li><a href="#occurrences"><fmt:message key="tab_occurrences"/></a></li>
+                                <li><a href="#images"><fmt:message key="tab_images"/></a></li>
                             </ul>
                         </div>
                     </div>

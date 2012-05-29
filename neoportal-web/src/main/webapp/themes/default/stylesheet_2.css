@@ -77,6 +77,9 @@ body {
     background-color: #fff;
     padding-bottom: 20px;
     overflow: auto;
+    
+    min-height: 300px;
+    
 }
 
 .data_wrapper{
@@ -616,4 +619,27 @@ div.results span.showingControl{
 }
 div.paginate_group{
     text-align: center;
+}
+
+/*   IMAGES section  */
+div#images{
+    margin-top: 20px;
+    text-align: center;
+    width: 900px;
+}
+div#imageInner{
+    margin: 0 auto;
+}
+div#images .imageContainer{
+    float: left;
+    width: 140px;
+    text-align: center;
+    
+    padding: 4px;
+    margin: 4px;
+    border: 1px solid #ccc;
+    
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
 }

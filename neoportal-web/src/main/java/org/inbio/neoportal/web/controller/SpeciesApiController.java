@@ -146,6 +146,9 @@ public class SpeciesApiController {
                     speciesManagerImpl.taxonDescriptionByProvider(scientificName, provider);
             
             // TODO: fix non data scenary
+            if(taxonDescription.isEmpty())
+                return null;
+            
             TaxonDescriptionFullSDTO taxon = taxonDescription.get(0);
             
             //transforme SDTO to species record form
@@ -278,5 +281,15 @@ public class SpeciesApiController {
         }
         
         return tdw;
+    }
+    
+    @RequestMapping(
+            value="/{scientificName}/images",
+            method= RequestMethod.GET,
+            headers = "Accept=application/json")
+    public @ResponseBody Object getImages(
+            @PathVariable(value = "scientificName") String scientificName){
+        
+        return speciesManagerImpl.imagesByScientificName(scientificName);
     }
 }
