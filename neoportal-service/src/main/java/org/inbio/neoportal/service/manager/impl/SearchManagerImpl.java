@@ -29,6 +29,7 @@ import org.inbio.neoportal.core.dao.TaxonDescriptionDAO;
 import org.inbio.neoportal.core.dto.commonname.CommonNameLiteCDTO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceGeospatialLiteCDTO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceLiteCDTO;
+import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionLiteCDTO;
@@ -124,7 +125,7 @@ public class SearchManagerImpl implements SearchManager{
         taxonPaginatedSearch(String searchText, int offset, int quantity)
             throws ParseException{
 
-        List<TaxonLiteCDTO> occurrenceList = null;
+        List<TaxonLiteCDTO> taxonList = null;
         SpeciesLiteSDTO sp = null;
                 
         //Set to store all the diferent scientific names
@@ -133,18 +134,31 @@ public class SearchManagerImpl implements SearchManager{
         //Result List of SpeciesLiteDTO Objects
         List<SpeciesLiteSDTO> result = new ArrayList<SpeciesLiteSDTO>();
 
-
-
         // Search the results of the query
-        occurrenceList = taxonDAO.search(searchText, offset, quantity);
+        taxonList = taxonDAO.search(searchText, offset, quantity);
         
-        for (TaxonLiteCDTO tldto: occurrenceList ){
+        for (TaxonLiteCDTO tldto: taxonList ){
              
             sp = new SpeciesLiteSDTO();
              
              sp.setCommonName(this.joinCommonNames(tldto.getCommonNameList()));
              sp.setScientificName(tldto.getScientificName());
-             sp.setImageURL("http://pulsatrix.inbio.ac.cr/projects/atta2/chrome/site/header.png");
+             
+//             if(tldto.getImageList().size() > 0){
+//                sp.setImageURL(
+//                        "http://multimedia.inbio.ac.cr/m3sINBio/getImage?size=thumb&id=" + 
+//                        tldto.getImageList().get(0).getM3sImageId() );
+//             }
+             if(tldto.getImageUrl() != null){
+                 sp.setImageURL(tldto.getImageUrl());
+             }
+             else if(tldto.getImageList().size() > 0){
+                sp.setImageURL(
+                        "http://multimedia.inbio.ac.cr/m3sINBio/getImage?size=thumb&id=" + 
+                        tldto.getImageList().get(0).getM3sImageId() );
+             }
+             else
+                 sp.setImageURL("http://pulsatrix.inbio.ac.cr/projects/atta2/chrome/site/header.png");
              
              speciesList.add(sp);
         }
@@ -280,4 +294,5 @@ public class SearchManagerImpl implements SearchManager{
         
         return taxonList;
     }
+    
 }

@@ -6,8 +6,12 @@ package org.inbio.neoportal.service.manager.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.inbio.neoportal.core.dao.TaxonDAO;
 import org.inbio.neoportal.core.dao.TaxonDescriptionDAO;
+import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
+import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
+import org.inbio.neoportal.core.entity.Taxon;
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO;
 import org.inbio.neoportal.service.manager.SpeciesManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +19,7 @@ import org.springframework.stereotype.Service;
 
 /**
  *
- * @author arturo
+ * @author avargas
  */
 @Service
 public class SpeciesManagerImpl
@@ -23,6 +27,9 @@ public class SpeciesManagerImpl
 
     @Autowired
     private TaxonDescriptionDAO taxonDescriptionDAO;
+    
+    @Autowired
+    private TaxonDAO taxonDAO;
     
     @Override
     public List<TaxonDescriptionFullSDTO> taxonDescriptionByProvider
@@ -161,6 +168,20 @@ public class SpeciesManagerImpl
         }
         
         return result;
+    }
+    
+    /**
+     * 
+     * @param scientificName
+     * @return 
+     */
+    public List<ImagesCDTO> imagesByScientificName(String scientificName){
+        List<TaxonLiteCDTO> taxonCDTO = taxonDAO.findCDTOByScientificName(scientificName);
+        
+        if(taxonCDTO.size() > 0)
+            return taxonCDTO.get(0).getImageList();
+        else
+            return null;
     }
     
 }
