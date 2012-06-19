@@ -17,9 +17,9 @@
         <link rel="stylesheet" type="text/css" href="<c:out value="${pageContext.request.contextPath}"/><spring:theme code='jquery-ui'/>"/>
         
         <!-- Open Layers and Google Maps API-->
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.6&sensor=false"></script>
+        <script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.8&sensor=false"></script>
         <link rel="stylesheet" type="text/css" href="<c:url value="/resources/openlayers/style.css"/>">
-        <script type="text/JavaScript" src="http://openlayers.org/api/2.10/OpenLayers.js"></script>
+        <script type="text/JavaScript" src="http://openlayers.org/api/2.12-rc7/OpenLayers.js"></script>
         
         <!-- jquery -->
         <script type="text/javascript" src="<c:url value="/resources/js/jquery-1.6.1.min.js" />"></script>

@@ -37,6 +37,13 @@ var myColumnDefs = [ {
  * To initialize the page
  */
 function initSearch(context){
+
+    //associated enter keypress
+    $("#searchInput").keypress(function(event){
+        if(event.which == 13){
+            $("#simple").trigger('click');
+        }
+    });
     //Sets the focus over search input
     $("#searchInput").focus();
     //Set the variable that contains the context path

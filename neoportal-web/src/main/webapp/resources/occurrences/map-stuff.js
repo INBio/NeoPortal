@@ -19,7 +19,11 @@ var clusterMaxLenght;
  * This function initializes the gis functionality for occurrences page
  */
 function initMap2(divId){
-    map = new OpenLayers.Map( divId );
+    map = new OpenLayers.Map( {
+        div: divId,
+        projection: new OpenLayers.Projection("EPSG:900913")
+    });
+    
     var googleLayer = new OpenLayers.Layer.Google('Google Hybrid', {
                         type: google.maps.MapTypeId.TERRAIN,
                         numZoomLevels: 15,
