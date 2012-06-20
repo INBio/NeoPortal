@@ -41,6 +41,7 @@
             var tableNext = '<fmt:message key="table_pagination_next"/>';
             var tablePrevious = '<fmt:message key="table_pagination_previous"/>';
             
+            var noResultsFoundT = '<fmt:message key="noResultsFound"/>';
             
         </script>
 

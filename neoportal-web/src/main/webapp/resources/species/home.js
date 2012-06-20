@@ -69,8 +69,6 @@ function initSearch(context){
         
         homeSearch_();
         
-        $("div.dataTables_paginate").show();
-        
         externalSearch();
     }
 }
@@ -332,6 +330,17 @@ function homeSearch_(){
                     
                     itemList += newItem;
                 });
+                
+                if($(xmlData).find("element").length > 0){
+                    //show paginated bottoms 
+                    $("div.dataTables_paginate").show();
+                }
+                else
+                {
+                    //show no results found
+                    itemList = "<p>" + noResultsFoundT + "</p>";
+
+                }
                 
                 //return the html string
                 //the plugin add this to the container
