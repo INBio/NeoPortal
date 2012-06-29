@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated 29/06/2012 11:15:08 AM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+  <class name="org.inbio.neoportal.core.entity.GroupNav" schema="public" table="group_nav">
+    <comment>Tabla para soporte de navegacion por grupos de nombres comunes</comment>
+    <id name="groupNavId" type="big_decimal">
+      <column name="group_nav_id" precision="131089" scale="0"/>
+      <generator class="assigned"/>
+    </id>
+    <many-to-one class="org.inbio.neoportal.core.entity.GroupNav" fetch="select" name="groupNavParent">
+      <column name="group_nav_parent" precision="131089" scale="0"/>
+    </many-to-one>
+    <property name="taxonId" type="big_decimal">
+      <column name="taxon_id" precision="131089" scale="0"/>
+    </property>
+    <set inverse="true" name="groupNavChilds">
+      <key>
+        <column name="group_nav_parent" precision="131089" scale="0"/>
+      </key>
+      <one-to-many class="org.inbio.neoportal.core.entity.GroupNav"/>
+    </set>
+  </class>
+</hibernate-mapping>

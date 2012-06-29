@@ -11,8 +11,8 @@
     <property name="hibernate.connection.password">inbio</property>
     <!-- Hibernate search configuration -->
     <property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
-<!--    <property name="hibernate.search.default.indexBase">/home/arturo/LuceneIndex/Test/</property>-->
-    <property name="hibernate.search.default.indexBase">/var/LuceneIndex/</property>
+    <property name="hibernate.search.default.indexBase">/home/arturo/LuceneIndex/</property>
+    <!--    <property name="hibernate.search.default.indexBase">/var/LuceneIndex/</property>-->
     <property name="hibernate.search.default.locking_strategy">simple</property>
     <!-- Mappings -->
     <mapping resource="META-INF/hibernate/TaxonHasAssociatedAttribute.hbm.xml"/>
@@ -40,5 +40,6 @@
     <mapping resource="META-INF/hibernate/GeoLayer.hbm.xml"/>
     <mapping resource="META-INF/hibernate/Location.hbm.xml"/>
     <mapping resource="META-INF/hibernate/Images.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/GroupNav.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>
