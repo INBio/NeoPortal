@@ -1,0 +1,3 @@
+neoportal-indexer/src/main/resources/hibernate.cfg.xml
+neoportal-indexer/src/main/resources/applicationContext.xml
+neoportal-web/src/main/resources/database.properties
