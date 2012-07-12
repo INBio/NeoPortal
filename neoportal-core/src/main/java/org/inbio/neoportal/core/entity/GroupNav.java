@@ -11,11 +11,10 @@ import java.util.Set;
  */
 public class GroupNav implements java.io.Serializable {
 
-
      private BigDecimal groupNavId;
      private GroupNav groupNavParent;
      private BigDecimal taxonId;
-     private Set groupNavChilds = new HashSet(0);
+     private Set<GroupNav> groupNavChilds = new HashSet<GroupNav>();
 
     public GroupNav() {
     }
@@ -58,7 +57,7 @@ public class GroupNav implements java.io.Serializable {
 		this.taxonId = taxonId;
 	}
 
-	public Set getGroupNavChilds() {
+	public Set<GroupNav> getGroupNavChilds() {
 		return groupNavChilds;
 	}
 

@@ -14,7 +14,7 @@
     <property name="taxonId" type="big_decimal">
       <column name="taxon_id" precision="131089" scale="0"/>
     </property>
-    <set inverse="true" name="groupNavChilds">
+    <set inverse="true" name="groupNavChilds" fetch="select">
       <key>
         <column name="group_nav_parent" precision="131089" scale="0"/>
       </key>

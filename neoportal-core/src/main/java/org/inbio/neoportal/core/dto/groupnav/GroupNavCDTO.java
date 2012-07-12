@@ -18,7 +18,7 @@ public class GroupNavCDTO extends BaseDTO
 	private String groupNavParentId;
 	private String taxonId;
 	private List<GroupNavCDTO> groupNavChilds;
-
+	
 	@Override
 	public int compareTo(Object o) {
 		return groupNavId.compareTo(((GroupNavCDTO)o).getGroupNavId());
