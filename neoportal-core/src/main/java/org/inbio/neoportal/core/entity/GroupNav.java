@@ -20,49 +20,82 @@ public class GroupNav  implements java.io.Serializable {
     public GroupNav() {
     }
 
-	
     public GroupNav(BigDecimal groupNavId) {
         this.groupNavId = groupNavId;
     }
-    public GroupNav(BigDecimal groupNavId, GroupNav groupNav, BigDecimal taxonId, Set groupNavs) {
-       this.groupNavId = groupNavId;
-       this.groupNavParent = groupNav;
-       this.taxonId = taxonId;
-       this.groupNavChilds = groupNavs;
-    }
+
+	public GroupNav(BigDecimal groupNavId, GroupNav groupNavParent,
+			BigDecimal taxonId, Set groupNavChilds) {
+		super();
+		this.groupNavId = groupNavId;
+		this.groupNavParent = groupNavParent;
+		this.taxonId = taxonId;
+		this.groupNavChilds = groupNavChilds;
+	}
+
+	/**
+	 * @return the groupNavId
+	 */
+	public BigDecimal getGroupNavId() {
+		return groupNavId;
+	}
+
+
+	/**
+	 * @param groupNavId the groupNavId to set
+	 */
+	public void setGroupNavId(BigDecimal groupNavId) {
+		this.groupNavId = groupNavId;
+	}
+
+
+	/**
+	 * @return the groupNavParent
+	 */
+	public GroupNav getGroupNavParent() {
+		return groupNavParent;
+	}
+
+
+	/**
+	 * @param groupNavParent the groupNavParent to set
+	 */
+	public void setGroupNavParent(GroupNav groupNavParent) {
+		this.groupNavParent = groupNavParent;
+	}
+
+
+	/**
+	 * @return the taxonId
+	 */
+	public BigDecimal getTaxonId() {
+		return taxonId;
+	}
+
+
+	/**
+	 * @param taxonId the taxonId to set
+	 */
+	public void setTaxonId(BigDecimal taxonId) {
+		this.taxonId = taxonId;
+	}
+
+
+	/**
+	 * @return the groupNavChilds
+	 */
+	public Set getGroupNavChilds() {
+		return groupNavChilds;
+	}
+
+
+	/**
+	 * @param groupNavChilds the groupNavChilds to set
+	 */
+	public void setGroupNavChilds(Set groupNavChilds) {
+		this.groupNavChilds = groupNavChilds;
+	}
    
-    public BigDecimal getGroupNavId() {
-        return this.groupNavId;
-    }
-    
-    public void setGroupNavId(BigDecimal groupNavId) {
-        this.groupNavId = groupNavId;
-    }
-    public GroupNav getGroupNav() {
-        return this.groupNavParent;
-    }
-    
-    public void setGroupNav(GroupNav groupNav) {
-        this.groupNavParent = groupNav;
-    }
-    public BigDecimal getTaxonId() {
-        return this.taxonId;
-    }
-    
-    public void setTaxonId(BigDecimal taxonId) {
-        this.taxonId = taxonId;
-    }
-    public Set getGroupNavs() {
-        return this.groupNavChilds;
-    }
-    
-    public void setGroupNavs(Set groupNavs) {
-        this.groupNavChilds = groupNavs;
-    }
-
-
-
-
 }
 
 
