@@ -58,5 +58,19 @@ public class GroupNavDAOImpl
 			}
 		});
 	}
+	
+	@Override
+	public List<GroupNav> findAll(Class<GroupNav> entityClass) {
+		HibernateTemplate template = getHibernateTemplate();
+		return (List<GroupNav>) template.execute(new HibernateCallback() {
+			public Object doInHibernate(Session session) {       
+                Query query = session.createQuery(
+						"select distinct gn from GroupNav gn " +
+						"left join fetch gn.groupNavChilds left join fetch gn.groupNavParent");
+                
+				return query.list();
+			}
+		});			
+	}
 
 }
