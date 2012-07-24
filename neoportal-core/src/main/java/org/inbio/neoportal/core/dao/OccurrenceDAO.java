@@ -60,7 +60,7 @@ public interface OccurrenceDAO
      * @param quantity
      * @return 
      */
-    public List advancedSearch(
+    public List advancedSearchPaginated(
             final String searchText,
             final int offset,
             final int quantity);
@@ -71,4 +71,11 @@ public interface OccurrenceDAO
      */
     public Occurrence findByLocationId(
             final String locationId);
+    
+    /**
+     * 
+     * @return string list the list of distinct sex values, useful for advancedSearch
+     */
+    public List<String> getSexValues();
+    
 }

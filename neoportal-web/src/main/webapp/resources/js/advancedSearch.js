@@ -6,6 +6,7 @@
 var filtersUrl = "/neoportal-web/api/advancedSearch/getColumnList";
 var occurrencesUrl = "/neoportal-web/api/advancedSearch/getOccurrences";
 var countOccurrenceUrl = "/neoportal-web/api/advancedSearch/countOccurrences";
+var exportUrl = "/neoportal-web/api/advancedSearch/exportOccurrences";
 var baseAPIUrl = "/neoportal-web/api/";
 
 //pagination info
@@ -46,6 +47,11 @@ $(document).ready(function(){
         });
         
         
+    });
+    
+    $('#exportBtn').click(function(){
+    	var searchData = generatedQueryData();
+        exportOccurrences(searchData);
     });
     
 });
@@ -97,15 +103,19 @@ function addSearchPanel(searchContainer){
                 
                 var filter = data[i].searchFilterList[j];
                 
+                //search if the filter has a column
+                var columnItem = $(".columnItem input[name=" + filter.filterKey + "]", filterDiv);
+                
                 //filter types...
                 switch (filter.type) {
                     case "text":
                         filterString = "<span class='filterItem'>";
-                        filterString += filter.label + ": ";
+                        //add label if there's no 
+                        if(columnItem.length == 0)
+                        	filterString += filter.label + ": ";
                         filterString += "<input type='text' class='filterText' ";
                         filterString += " name='" + filter.filterKey + "' />";
                         filterString += "</span>";
-                        filterString = "<div>" + filterString + "</div>";
                         break;
                     case "combo":
                         filterString = "<span class='filterItem'>";
@@ -125,14 +135,14 @@ function addSearchPanel(searchContainer){
                         break;
                 }
                                 
-                
                 //search if the filter has a column
-                var columnItem = $(".columnItem input[name=" + filter.filterKey + "]", filterDiv);
                 if(columnItem.length > 0){
                     //insert filter like last child of column parent
                     $(columnItem).parent().append(filterString);
                 }
                 else{
+                	if(filter.type == "text")
+                		filterString = "<div>" + filterString + "</div>";
                     $(filterDiv).append(filterString);
                 }
             }
@@ -220,7 +230,7 @@ function expandFilterGroup(filterGroup){
  * the appropiate results
  */
 function generatedQueryData(){
-    var filterGroups = ["taxonomic_information", "geographic_information"];
+    var filterGroups = ["taxonomic_information", "geographic_information", "specimen_information"];
     var queryData = new Object();
         queryData.filterGroups = new Array();
     
@@ -394,4 +404,25 @@ function generatedTableRows(data){
     }
     
     return rows;
+}
+
+
+function exportOccurrences(searchData){
+    $("form#exportForm input").val(JSON.stringify(searchData));
+    
+    $("form#exportForm").submit();
+	
+    return;
+    
+	//get total count of regs
+    $.ajax({
+        type: 'post',
+        url: exportUrl,
+        data: JSON.stringify(searchData),
+        success: function(data){
+            //set count variable
+            
+        },
+        contentType: 'application/json; charset=utf-8'
+    });
 }

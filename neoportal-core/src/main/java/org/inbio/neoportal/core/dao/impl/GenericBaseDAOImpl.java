@@ -194,7 +194,6 @@ public class GenericBaseDAOImpl<E ,I>
                         .log(Level.SEVERE, null, ex);
                     
                 }
-
                 
                 // Wrap Lucene query in a org.hibernate.Query
                 FullTextQuery hsQuery =

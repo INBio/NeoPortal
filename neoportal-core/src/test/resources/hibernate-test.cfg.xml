@@ -30,6 +30,7 @@
     <mapping resource="META-INF/hibernate/GeoLayer.hbm.xml"/>
     <mapping resource="META-INF/hibernate/Location.hbm.xml"/>
     <mapping resource="META-INF/hibernate/Images.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/SearchFilterValue.hbm.xml"/>
     
     <!-- Hibernate search event listeners -->
 <!--        <event type="post-update">

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 09/05/2012 05:39:55 PM by Hibernate Tools 3.2.1.GA -->
+<hibernate-mapping>
+    <class name="org.inbio.neoportal.core.entity.SearchFilterValue" table="search_filter_value" schema="public">
+        <id name="searchFilterValueId" column="search_filter_value_id" type="long" />
+        <property name="value" type="string">
+            <column name="value" />
+        </property>
+        <many-to-one name="searchFilter" class="org.inbio.neoportal.core.entity.SearchFilter" fetch="select">
+            <column name="search_filter_id" precision="131089" scale="0" />
+        </many-to-one>
+    </class>
+</hibernate-mapping>

@@ -50,6 +50,7 @@ public class Occurrence  implements java.io.Serializable {
     private String dateLastModified;
     private String institutionCode;
     private String collectionCode;
+    @Field
     private String catalogNumber;
 
      @Field

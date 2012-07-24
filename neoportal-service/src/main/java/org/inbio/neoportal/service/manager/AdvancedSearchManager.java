@@ -80,4 +80,12 @@ public interface AdvancedSearchManager {
      */
     public Long occurrenceSearchCount(
             FilterSDTO filters);
+    
+    /**
+     * 
+     * @param filters
+     * @return list of all occurrences matching the query
+     */
+    public List<OccurrenceSDTO> occurrenceSearch(
+    		FilterSDTO filters);
 }

@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+
+import org.apache.log4j.Logger;
 import org.inbio.neoportal.core.dao.ColumnDefaultDAO;
 import org.inbio.neoportal.core.dao.GeoLayerDAO;
 import org.inbio.neoportal.core.dao.SearchColumnDAO;
@@ -117,22 +119,28 @@ public class AdvancedSearchManagerImpl
                 //add value list for combos
                 if("combo".equals(searchFilterCDTO.getType())){
                     //load filter values
-                    List<GeoLayerCDTO> geoLayers = 
-                            geoLayerDAO.getGeoLayerByName(searchFilterCDTO.getFilterKey());
-
-                    GeoLayerCDTO geoLayer = geoLayers.get(0);
-                    
-                    if(geoLayer != null){
-                        List<String> geoFeaturesValues = new ArrayList<String>();
-                        
-                        //add all option
-                        geoFeaturesValues.add("all");
-                        for(GeoFeatureCDTO feature: geoLayer.getGeoFeatures()){
-                            geoFeaturesValues.add(feature.getName());
-                        }
-
-                        searchFilterCDTO.setValues(geoFeaturesValues);
-                    }
+                	/*if("sex".equals(searchFilterCDTO.getFilterKey())){
+                		searchFilterCDTO.setValues(occurrenceDAO.getSexValues());                		
+                	}*/
+                	//else{
+                	
+	                    List<GeoLayerCDTO> geoLayers = 
+	                            geoLayerDAO.getGeoLayerByName(searchFilterCDTO.getFilterKey());
+	
+	                    GeoLayerCDTO geoLayer = geoLayers.get(0);
+	                    
+	                    if(geoLayer != null){
+	                        List<String> geoFeaturesValues = new ArrayList<String>();
+	                        
+	                        //add all option
+	                        geoFeaturesValues.add("all");
+	                        for(GeoFeatureCDTO feature: geoLayer.getGeoFeatures()){
+	                            geoFeaturesValues.add(feature.getName());
+	                        }
+	
+	                        searchFilterCDTO.setValues(geoFeaturesValues);
+	                    }
+                	//}
                 }
             }
         }
@@ -148,9 +156,9 @@ public class AdvancedSearchManagerImpl
         
         //create search text base on filters
         String query = createQuery(filters);
-        
+                
         List<OccurrenceCDTO> occurrenceCDTO = 
-                occurrenceDAO.advancedSearch(query, offset, quantity);
+                occurrenceDAO.advancedSearchPaginated(query, offset, quantity);
         
         //transform to OccurrenceSDTO 
         return occurrenceCDTOtoSDTO(occurrenceCDTO);
@@ -194,7 +202,8 @@ public class AdvancedSearchManagerImpl
                     }
                 }
             }
-            else if("geographic".equals(groupData.getKey())){
+            //else if("geographic".equals(groupData.getKey())){
+            else{
                 for (LinkedHashMap filter : groupData.getFilters()) {
                     if ("all".equals(filter.get("value")))
                         continue;
@@ -206,6 +215,9 @@ public class AdvancedSearchManagerImpl
                 }
             }
         }
+        
+        Logger.getLogger(this.getClass().getName()).
+        	debug("Query: " + query);
         
         return query;
     }
@@ -268,4 +280,30 @@ public class AdvancedSearchManagerImpl
         
         return result;        
     }
+
+	@Override
+	public List<OccurrenceSDTO> occurrenceSearch(FilterSDTO filters) {
+		//create search text base on filters
+        String query = createQuery(filters);
+            
+        Long total = occurrenceDAO.searchCount(query);
+        
+        if (total == 0)
+        	return new ArrayList<OccurrenceSDTO>();
+        
+        ArrayList<OccurrenceCDTO> occurrenceCDTOs = new ArrayList<OccurrenceCDTO>();
+        
+        int index = 0;
+        
+        do {
+        	List<OccurrenceCDTO> blockList = 
+        			occurrenceDAO.advancedSearchPaginated(query, index, 100); 
+        	occurrenceCDTOs.addAll(blockList);
+        	
+        	index += 100;
+		} while (index <= total);
+        
+        //transform to OccurrenceSDTO 
+        return occurrenceCDTOtoSDTO(occurrenceCDTOs);
+	}
 }

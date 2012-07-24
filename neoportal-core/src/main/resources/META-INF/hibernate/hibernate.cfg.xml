@@ -41,5 +41,6 @@
     <mapping resource="META-INF/hibernate/Location.hbm.xml"/>
     <mapping resource="META-INF/hibernate/Images.hbm.xml"/>
     <mapping resource="META-INF/hibernate/GroupNav.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/SearchFilterValue.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>

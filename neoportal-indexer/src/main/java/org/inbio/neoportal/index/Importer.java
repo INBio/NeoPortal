@@ -21,6 +21,7 @@ package org.inbio.neoportal.index;
 import au.com.bytecode.opencsv.CSVReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -109,7 +110,6 @@ public class Importer {
         DefaultTransactionDefinition transaction = new DefaultTransactionDefinition();
         TransactionStatus status = transactionManager.getTransaction(transaction);
         
-        //ScrollableResults occurrencesDwcList = 
         List<ImportDwc> occurrencesDwcList =
                 importDwcDAO.scrollAll(ImportDwc.class,
                         maxResults,
@@ -183,7 +183,7 @@ public class Importer {
                occurrence.setIdentificationQualifier(importDwc.getIdentificationqualifier());
                occurrence.setCollectingMethod(null);
                occurrence.setValidDistributionFlag(null);
-               occurrence.setCollector(null);
+               occurrence.setCollector(importDwc.getRecordedBy());
                occurrence.setEarliestDateCollected(null);
                occurrence.setLatestDateCollected(null);
                occurrence.setDayOfYear(new BigDecimal(importDwc.getDay()));

@@ -108,7 +108,7 @@ public class OccurrenceDAOImpl
     * @return 
     */
     @Override
-    public List advancedSearch(
+    public List advancedSearchPaginated(
         final String searchText,
         final int offset, 
         final int quantity){
@@ -135,4 +135,22 @@ public class OccurrenceDAOImpl
 			}
 		});
     }
+
+	/* (non-Javadoc)
+	 * @see org.inbio.neoportal.core.dao.OccurrenceDAO#getSexValues()
+	 */
+	@Override
+	public List<String> getSexValues() {
+		HibernateTemplate template = getHibernateTemplate();
+		return (List<String>) template.execute(new HibernateCallback() {
+            @Override
+			public Object doInHibernate(Session session) {
+                Query query = session.createQuery(
+						"select distinct oc.sex from Occurrence as oc");
+                query.setCacheable(true);
+				return query.list();
+			}
+		});
+		
+	}
 }

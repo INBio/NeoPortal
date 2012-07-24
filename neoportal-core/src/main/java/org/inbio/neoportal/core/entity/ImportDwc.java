@@ -8,6 +8,7 @@ import java.io.Serializable;
  */
 public class ImportDwc implements Serializable {
     
+	//Record-level terms
     private String type;
     private String modified;
     private String language;
@@ -15,6 +16,7 @@ public class ImportDwc implements Serializable {
     private String rightsholder;
     private String accessrights;
     private String bibliographiccitation;
+    private String references;
     private String institutionid;
     private String collectionid;
     private String datasetid;
@@ -26,10 +28,12 @@ public class ImportDwc implements Serializable {
     private String informationwithheld;
     private String datageneralizations;
     private String dynamicproperties;
+    //Occurrence
     private String occurrenceid;
     private String catalognumber;
     private String occurrenceremarks;
     private String recordnumber;
+    private String recordedBy;
     private String individualid;
     private String individualcount;
     private String sex;
@@ -47,6 +51,7 @@ public class ImportDwc implements Serializable {
     private String associatedoccurrences;
     private String associatedsequences;
     private String associatedtaxa;
+    //Event
     private String eventid;
     private String samplingprotocol;
     private String samplingeffort;
@@ -62,6 +67,7 @@ public class ImportDwc implements Serializable {
     private String fieldnumber;
     private String fieldnotes;
     private String eventremarks;
+    //Locations
     private String locationid;
     private String highergeographyid;
     private String highergeography;
@@ -82,8 +88,8 @@ public class ImportDwc implements Serializable {
     private String verbatimdepth;
     private String minimumdepthinmeters;
     private String maximumdepthinmeters;
-    private String mindistabovesurfaceinmeters;
-    private String maxdistabovesurfaceinmeters;
+    private String minimumDistanceAboveSurfaceInMeters;
+    private String maximumDistanceAboveSurfaceInMeters;
     private String locationaccordingto;
     private String locationremarks;
     private String verbatimcoordinates;
@@ -101,10 +107,12 @@ public class ImportDwc implements Serializable {
     private String footprintsrs;
     private String footprintspatialfit;
     private String georeferencedby;
+    private String georeferencedDate;
     private String georeferenceprotocol;
     private String georeferencesources;
     private String georeferenceverificationstatus;
     private String georeferenceremarks;
+    //GeologicalContext
     private String geologicalcontextid;
     private String earliesteonorlowesteonothem;
     private String latesteonorhighesteonothem;
@@ -119,17 +127,20 @@ public class ImportDwc implements Serializable {
     private String lowestbiostratigraphiczone;
     private String highestbiostratigraphiczone;
     private String lithostratigraphicterms;
-    private String lithostratigraphicGroup;
+    private String group;
     private String formation;
     private String member;
     private String bed;
+    //Identification
     private String identificationid;
     private String identifiedby;
     private String dateidentified;
     private String identificationreferences;
+    private String identificationVerificationStatus;
     private String identificationremarks;
     private String identificationqualifier;
     private String typestatus;
+    //Taxon
     private String taxonid;
     private String scientificnameid;
     private String acceptednameusageid;
@@ -144,6 +155,7 @@ public class ImportDwc implements Serializable {
     private String originalnameusage;
     private String nameaccordingto;
     private String namepublishedin;
+    private String namePublishedInYear;
     private String higherclassification;
     private String kingdom;
     private String phylum;
@@ -228,7 +240,21 @@ public class ImportDwc implements Serializable {
         this.bibliographiccitation = bibliographiccitation;
     }
 
-    public String getInstitutionid() {
+    /**
+	 * @return the references
+	 */
+	public String getReferences() {
+		return references;
+	}
+
+	/**
+	 * @param references the references to set
+	 */
+	public void setReferences(String references) {
+		this.references = references;
+	}
+
+	public String getInstitutionid() {
         return institutionid;
     }
 
@@ -348,6 +374,20 @@ public class ImportDwc implements Serializable {
         this.recordnumber = recordnumber;
     }
 
+    /**
+	 * @return the recordedBy
+	 */
+	public String getRecordedBy() {
+		return recordedBy;
+	}
+
+	/**
+	 * @param recordedBy the recordedBy to set
+	 */
+	public void setRecordedBy(String recordedBy) {
+		this.recordedBy = recordedBy;
+	}
+    
     public String getIndividualid() {
         return individualid;
     }
@@ -764,23 +804,37 @@ public class ImportDwc implements Serializable {
         this.maximumdepthinmeters = maximumdepthinmeters;
     }
 
-    public String getMindistabovesurfaceinmeters() {
-        return mindistabovesurfaceinmeters;
-    }
+    /**
+	 * @return the minimumDistanceAboveSurfaceInMeters
+	 */
+	public String getMinimumDistanceAboveSurfaceInMeters() {
+		return minimumDistanceAboveSurfaceInMeters;
+	}
 
-    public void setMindistabovesurfaceinmeters(String mindistabovesurfaceinmeters) {
-        this.mindistabovesurfaceinmeters = mindistabovesurfaceinmeters;
-    }
+	/**
+	 * @param minimumDistanceAboveSurfaceInMeters the minimumDistantAboveSurfaceInMeters to set
+	 */
+	public void setMinimumDistanceAboveSurfaceInMeters(
+			String minimumDistantAboveSurfaceInMeters) {
+		this.minimumDistanceAboveSurfaceInMeters = minimumDistantAboveSurfaceInMeters;
+	}
 
-    public String getMaxdistabovesurfaceinmeters() {
-        return maxdistabovesurfaceinmeters;
-    }
+	/**
+	 * @return the maximumDistanceAboveSurfaceInMeters
+	 */
+	public String getMaximumDistanceAboveSurfaceInMeters() {
+		return maximumDistanceAboveSurfaceInMeters;
+	}
 
-    public void setMaxdistabovesurfaceinmeters(String maxdistabovesurfaceinmeters) {
-        this.maxdistabovesurfaceinmeters = maxdistabovesurfaceinmeters;
-    }
+	/**
+	 * @param maximumDistanceAboveSurfaceInMeters the maximumDistanceAboveSurfaceInMeters to set
+	 */
+	public void setMaximumDistanceAboveSurfaceInMeters(
+			String maximumDistanceAboveSurfaceInMeters) {
+		this.maximumDistanceAboveSurfaceInMeters = maximumDistanceAboveSurfaceInMeters;
+	}
 
-    public String getLocationaccordingto() {
+	public String getLocationaccordingto() {
         return locationaccordingto;
     }
 
@@ -916,7 +970,21 @@ public class ImportDwc implements Serializable {
         this.georeferencedby = georeferencedby;
     }
 
-    public String getGeoreferenceprotocol() {
+    /**
+	 * @return the georeferencedDate
+	 */
+	public String getGeoreferencedDate() {
+		return georeferencedDate;
+	}
+
+	/**
+	 * @param georeferencedDate the georeferencedDate to set
+	 */
+	public void setGeoreferencedDate(String georeferencedDate) {
+		this.georeferencedDate = georeferencedDate;
+	}
+
+	public String getGeoreferenceprotocol() {
         return georeferenceprotocol;
     }
 
@@ -1060,12 +1128,12 @@ public class ImportDwc implements Serializable {
         this.lithostratigraphicterms = lithostratigraphicterms;
     }
 
-    public String getLithostratigraphicGroup() {
-        return lithostratigraphicGroup;
+    public String getGroup() {
+        return group;
     }
 
-    public void setLithostratigraphicGroup(String lithostratigraphicGroup) {
-        this.lithostratigraphicGroup = lithostratigraphicGroup;
+    public void setGroup(String group) {
+        this.group = group;
     }
 
     public String getFormation() {
@@ -1123,8 +1191,23 @@ public class ImportDwc implements Serializable {
     public void setIdentificationreferences(String identificationreferences) {
         this.identificationreferences = identificationreferences;
     }
+    
+    /**
+	 * @return the identificationVerificationStatus
+	 */
+	public String getIdentificationVerificationStatus() {
+		return identificationVerificationStatus;
+	}
 
-    public String getIdentificationremarks() {
+	/**
+	 * @param identificationVerificationStatus the identificationVerificationStatus to set
+	 */
+	public void setIdentificationVerificationStatus(
+			String identificationVerificationStatus) {
+		this.identificationVerificationStatus = identificationVerificationStatus;
+	}
+
+	public String getIdentificationremarks() {
         return identificationremarks;
     }
 
@@ -1260,7 +1343,21 @@ public class ImportDwc implements Serializable {
         this.namepublishedin = namepublishedin;
     }
 
-    public String getHigherclassification() {
+    /**
+	 * @return the namePublishedInYear
+	 */
+	public String getNamePublishedInYear() {
+		return namePublishedInYear;
+	}
+
+	/**
+	 * @param namePublishedInYear the namePublishedInYear to set
+	 */
+	public void setNamePublishedInYear(String namePublishedInYear) {
+		this.namePublishedInYear = namePublishedInYear;
+	}
+
+	public String getHigherclassification() {
         return higherclassification;
     }
 
@@ -1411,8 +1508,8 @@ public class ImportDwc implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
-    @Override
+    
+	@Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);

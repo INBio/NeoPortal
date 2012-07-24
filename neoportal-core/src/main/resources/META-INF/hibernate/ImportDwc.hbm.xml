@@ -30,6 +30,9 @@
         <property name="bibliographiccitation" type="string">
             <column name="bibliographiccitation" />
         </property>
+        <property name="references" type="string">
+            <column name="references" />
+        </property>
         <property name="institutionid" type="string">
             <column name="institutionid" />
         </property>
@@ -74,6 +77,9 @@
         </property>
         <property name="recordnumber" type="string">
             <column name="recordnumber" />
+        </property>
+        <property name="recordedBy" type="string">
+            <column name="recorded_by" />
         </property>
         <property name="individualid" type="string">
             <column name="individualid" />
@@ -231,10 +237,10 @@
         <property name="maximumdepthinmeters" type="string">
             <column name="maximumdepthinmeters" />
         </property>
-        <property name="mindistabovesurfaceinmeters" type="string">
+        <property name="minimumDistanceAboveSurfaceInMeters" type="string">
             <column name="mindistabovesurfaceinmeters" />
         </property>
-        <property name="maxdistabovesurfaceinmeters" type="string">
+        <property name="maximumDistanceAboveSurfaceInMeters" type="string">
             <column name="maxdistabovesurfaceinmeters" />
         </property>
         <property name="locationaccordingto" type="string">
@@ -287,6 +293,9 @@
         </property>
         <property name="georeferencedby" type="string">
             <column name="georeferencedby" />
+        </property>
+        <property name="georeferencedDate" type="string">
+            <column name="georeferenced_date" />
         </property>
         <property name="georeferenceprotocol" type="string">
             <column name="georeferenceprotocol" />
@@ -342,7 +351,7 @@
         <property name="lithostratigraphicterms" type="string">
             <column name="lithostratigraphicterms" />
         </property>
-        <property name="lithostratigraphicGroup" type="string">
+        <property name="group" type="string">
             <column name="lithostratigraphic_group" />
         </property>
         <property name="formation" type="string">
@@ -365,6 +374,9 @@
         </property>
         <property name="identificationreferences" type="string">
             <column name="identificationreferences" />
+        </property>
+        <property name="identificationVerificationStatus" type="string">
+        	<column name="identification_verification_status"></column>
         </property>
         <property name="identificationremarks" type="string">
             <column name="identificationremarks" />
@@ -416,6 +428,9 @@
         </property>
         <property name="namepublishedin" type="string">
             <column name="namepublishedin" />
+        </property>
+        <property name="namePublishedInYear" type="string">
+        	<column name="name_published_in_year" />
         </property>
         <property name="higherclassification" type="string">
             <column name="higherclassification" />
