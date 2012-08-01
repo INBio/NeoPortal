@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.tree.TreeNode;
+
 import org.inbio.neoportal.core.dao.GroupNavDAO;
 import org.inbio.neoportal.core.dto.groupnav.GroupNavCDTO;
 import org.inbio.neoportal.core.entity.GroupNav;
@@ -47,6 +49,9 @@ public class GroupNavManagerImpl
         try {
         	
     		List<GroupNav> groupNavAll = groupNavDAO.findAll(GroupNav.class);
+    		
+    		//create the groupNavCDTO like a tree
+    		
     	
     		transactionManager.commit(status);
 		} catch (Exception e) {

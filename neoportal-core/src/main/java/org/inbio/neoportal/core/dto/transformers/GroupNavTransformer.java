@@ -16,6 +16,7 @@ public class GroupNavTransformer implements ResultTransformer {
 		GroupNavCDTO gnCDTO = new GroupNavCDTO();
 		
 		gnCDTO.setGroupNavId(gn.getGroupNavId().toString());
+		gnCDTO.setLabel(gn.getLabel());
 		if (gn.getGroupNavParent() != null){
 			gnCDTO.setGroupNavParentId(gn.getGroupNavParent().getGroupNavId().toString());
 		}
@@ -45,8 +46,8 @@ public class GroupNavTransformer implements ResultTransformer {
 	private GroupNavCDTO entityToDto(GroupNav groupNav){
 		GroupNavCDTO groupNavCDTO = new GroupNavCDTO();
 		
-		
 		groupNavCDTO.setGroupNavId(groupNav.getGroupNavId().toString());
+		groupNavCDTO.setLabel(groupNav.getLabel());
 		if (groupNav.getGroupNavParent() != null){
 			groupNavCDTO.setGroupNavParentId(groupNav.getGroupNavParent().getGroupNavId().toString());
 		}

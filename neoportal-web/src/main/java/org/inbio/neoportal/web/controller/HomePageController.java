@@ -16,14 +16,20 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.inbio.neoportal.web.controller;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
 import org.inbio.neoportal.service.manager.GroupNavManager;
+import org.inbio.neoportal.core.dto.groupnav.GroupNavCDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
 
 /**
  * 
@@ -31,37 +37,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
  *
  */
 @Controller
-@RequestMapping("/api/groupNav/*")
-public class GroupNavApiController {
+public class HomePageController {
 
 	@Autowired
 	private GroupNavManager groupNavManager;
 	
-	@RequestMapping(
-			value="getFirstLevel")
-    @ResponseBody
-    public Object firstLevel(){
+	public HomePageController() {}
+	
+	@RequestMapping("/")
+	protected ModelAndView homePage() {
 		
+		List<GroupNavCDTO> groupNav = groupNavManager.getFirstLevel();
 		
-		return groupNavManager.getFirstLevel();
+		Collections.sort(groupNav);
+		
+		return new ModelAndView("home", "group_nav", groupNav);
 	}
 	
-	@RequestMapping(
-			value="", 
-			headers="Accept=application/json")
-    @ResponseBody
-	public Object groupNavById(
-			@RequestParam (value="gni", required=true) int id
-			) {
-	
-		return groupNavManager.getGroupNavById(id);
-	}
-	
-	@RequestMapping(
-			value="getAllTree")
-    @ResponseBody
-	public Object getAllTree() {
-	
-		return groupNavManager.getAllTree();
-	}
 }

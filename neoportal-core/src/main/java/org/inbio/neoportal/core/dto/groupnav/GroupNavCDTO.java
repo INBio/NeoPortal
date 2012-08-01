@@ -15,13 +15,15 @@ public class GroupNavCDTO extends BaseDTO
 		implements Comparable{
 	
 	private String groupNavId;
+	private String label;
 	private String groupNavParentId;
 	private String taxonId;
 	private List<GroupNavCDTO> groupNavChilds;
 	
 	@Override
 	public int compareTo(Object o) {
-		return groupNavId.compareTo(((GroupNavCDTO)o).getGroupNavId());
+		return Integer.parseInt(this.groupNavId) - 
+				Integer.parseInt(((GroupNavCDTO)o).getGroupNavId());
 	}
 	
 	public GroupNavCDTO() {
@@ -93,8 +95,20 @@ public class GroupNavCDTO extends BaseDTO
 	public void setGroupNavChilds(List<GroupNavCDTO> groupNavChilds) {
 		this.groupNavChilds = groupNavChilds;
 	}
-	
 
+	/**
+	 * @return the label
+	 */
+	public String getLabel() {
+		return label;
+	}
+
+	/**
+	 * @param label the label to set
+	 */
+	public void setLabel(String label) {
+		this.label = label;
+	}
 	
 	
 }

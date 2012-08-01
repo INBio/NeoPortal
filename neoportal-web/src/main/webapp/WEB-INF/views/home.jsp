@@ -69,6 +69,10 @@
                     <p><fmt:message key="home_help"/></p>
                 </div>
             </div>
+            
+            <c:forEach items="${group_nav}" var="gn">
+            <a href="groupNav/<c:out value='${gn.groupNavId}'/>"><c:out value="${gn.label}" /></a>
+            </c:forEach>
 
             <!-- Results panel -->
             <div id="resultsPanel" class="section">
@@ -76,14 +80,7 @@
                 <div class="home_paginate dataTables_paginate paging_full_numbers">
                     <span class="firstControl paginate_button" id="resultTable_first">Inicio</span>
                     <span class="previousControl paginate_button" id="resultTable_previous">Anterior</span>
-                    <!--
-                    <span class="paginate_numbers">
-                        <span class="paginate_active">1</span>
-                        <span class="paginate_button">2</span>
-                        <span class="paginate_button">3</span>
-                        <span class="paginate_button">4</span>
-                        <span class="paginate_button">5</span></span>
-                        -->
+                    
                     <span class="nextControl paginate_button" id="resultTable_next">Siguiente</span>
                     <span class="lastControl paginate_button" id="resultTable_last">Último</span>
                 </div>
@@ -96,14 +93,7 @@
                 <div class="home_paginate dataTables_paginate paging_full_numbers">
                     <span class="firstControl paginate_button" id="resultTable_first">Inicio</span>
                     <span class="previousControl paginate_button" id="resultTable_previous">Anterior</span>
-                    <!--
-                    <span class="paginate_numbers">
-                        <span class="paginate_active">1</span>
-                        <span class="paginate_button">2</span>
-                        <span class="paginate_button">3</span>
-                        <span class="paginate_button">4</span>
-                        <span class="paginate_button">5</span></span>
-                        -->
+                    
                     <span class="nextControl paginate_button" id="resultTable_next">Siguiente</span>
                     <span class="lastControl paginate_button" id="resultTable_last">Último</span>
                 </div>

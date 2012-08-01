@@ -12,6 +12,7 @@ import java.util.Set;
 public class GroupNav implements java.io.Serializable {
 
      private BigDecimal groupNavId;
+     private String label;
      private GroupNav groupNavParent;
      private BigDecimal taxonId;
      private Set<GroupNav> groupNavChilds = new HashSet<GroupNav>();
@@ -64,8 +65,23 @@ public class GroupNav implements java.io.Serializable {
 	public void setGroupNavChilds(Set groupNavChilds) {
 		this.groupNavChilds = groupNavChilds;
 	}
+
+
+	/**
+	 * @return the label
+	 */
+	public String getLabel() {
+		return label;
+	}
+
+
+	/**
+	 * @param label the label to set
+	 */
+	public void setLabel(String label) {
+		this.label = label;
+	}
     
-	
 }
 
 
