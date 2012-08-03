@@ -32,9 +32,12 @@
 		<level value="info" />
 	</logger>
 
+	<logger name="org.hibernate">
+		<level value="all" />
+	</logger>
 	<!-- Root Logger -->
 	<root>
-		<priority value="warn" />
+		<priority value="all" />
 		<appender-ref ref="console" />
 	</root>
 	
