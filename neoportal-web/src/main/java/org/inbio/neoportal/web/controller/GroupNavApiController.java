@@ -58,6 +58,17 @@ public class GroupNavApiController {
 	}
 	
 	@RequestMapping(
+			value="species",
+			headers="Accept=application/json")
+	@ResponseBody
+	public Object getSpeciesByGn(
+			@RequestParam (value="gni", required=true) int id
+			){
+		
+		return null;
+	}
+	
+	@RequestMapping(
 			value="getAllTree")
     @ResponseBody
 	public Object getAllTree() {

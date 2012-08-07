@@ -20,7 +20,8 @@ package org.inbio.neoportal.service.manager;
 
 import java.util.List;
 
-import org.inbio.neoportal.core.dto.groupnav.*;
+import org.inbio.neoportal.core.dto.groupnav.GroupNavCDTO;
+import org.inbio.neoportal.service.dto.species.SpeciesLiteSDTO;
 
 /**
  * 
@@ -48,4 +49,11 @@ public interface GroupNavManager {
 	 * is made by many nodes
 	 */
 	public List<GroupNavCDTO> getAllTree();
+	
+	/**
+	 * Find all the species corresponding to indicate groupNav item
+	 * @param id the GroupNav identification
+	 * @return list of lite taxon description of the species
+	 */
+	public List<SpeciesLiteSDTO> getSpeciesByGroupNav(int id);
 }

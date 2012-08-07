@@ -4,12 +4,14 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.tree.TreeNode;
-
 import org.inbio.neoportal.core.dao.GroupNavDAO;
+import org.inbio.neoportal.core.dao.TaxonDAO;
 import org.inbio.neoportal.core.dto.groupnav.GroupNavCDTO;
 import org.inbio.neoportal.core.entity.GroupNav;
+import org.inbio.neoportal.core.entity.Taxon;
+import org.inbio.neoportal.service.dto.species.SpeciesLiteSDTO;
 import org.inbio.neoportal.service.manager.GroupNavManager;
+import org.inbio.neoportal.service.manager.SearchManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTransactionManager;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,12 @@ public class GroupNavManagerImpl
 
 	@Autowired
 	private GroupNavDAO groupNavDAO;
+	
+	@Autowired
+	private TaxonDAO taxonDAO;
+	
+	@Autowired
+	private SearchManager searchManager;
 	
 	@Autowired
     private HibernateTransactionManager transactionManager;
@@ -59,6 +67,36 @@ public class GroupNavManagerImpl
 		}
         		
 		return groupNavCDTO;
+	}
+
+	@Override
+	public List<SpeciesLiteSDTO> getSpeciesByGroupNav(int id) {
+
+		List<SpeciesLiteSDTO> result = new ArrayList<SpeciesLiteSDTO>();
+		
+		//start new transaction
+        DefaultTransactionDefinition transaction = new DefaultTransactionDefinition();
+        TransactionStatus status = transactionManager.getTransaction(transaction);
+        
+		GroupNavCDTO gn = groupNavDAO.getById(new BigDecimal(id));
+
+		try {
+        	
+			Taxon taxon = taxonDAO.findById(Taxon.class, new BigDecimal(gn.getTaxonId()));
+			
+			String query = "family:\"" + taxon.getFamily() + "\" -scientificName:[* TO *]";
+			
+			long total = searchManager.taxonSearchCount(query);
+			
+			result = searchManager.taxonPaginatedSearch(query, 0, (int)total);
+    	
+    		transactionManager.commit(status);
+		} catch (Exception e) {
+			transactionManager.rollback(status);
+		}
+				
+		
+		return result;
 	}
 
 }

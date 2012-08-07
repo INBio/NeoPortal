@@ -28,6 +28,8 @@
             
         </script>
 
+		<script type="text/javascript" src="<c:url value="/resources/js/groupNav.js" />"></script>
+
     </head>
 
     <body>
@@ -38,12 +40,12 @@
         <div id="content">
         	<ul>
 	            <c:forEach items="${groupNavList}" var="gn">
-	            <li>
-	            	<a id="gn_<c:out value='${gn.groupNavId}'/>" href="#" class="gn-firstLevel<c:if test="${gn.groupNavId == selectedGN}"> current</c:if>"><fmt:message key="${gn.label}" /></a>
+	            <li class="gn-firstLevel<c:if test="${gn.groupNavId == selectedGN}"> current</c:if>">
+	            	<a id="gn_<c:out value='${gn.groupNavId}'/>" href="#"><fmt:message key="${gn.label}" /></a>
 	            	<c:forEach items="${gn.groupNavChilds}" var="gnChild">
 	            	<ul>
-	            		<li>
-	            			<a id="child_<c:out value='${gnChild.groupNavId}'/>" href="#" class="gn-child"><fmt:message key="${gnChild.label}" /></a>
+	            		<li class="gn-child">
+	            			<a id="child_<c:out value='${gnChild.groupNavId}'/>" href="#"><fmt:message key="${gnChild.label}" /></a>
 	            		</li>
 	            	</ul>
 	            	</c:forEach>
