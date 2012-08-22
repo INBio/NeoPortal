@@ -25,17 +25,13 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.inbio.neoportal.core.dto.advancedsearch.ColumnDefaultCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchColumnCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchFilterCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchGroupCDTO;
-import org.inbio.neoportal.core.dto.occurrence.OccurrenceCDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.FilterSDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.OccurrenceSDTO;
 import org.inbio.neoportal.service.entity.AdvancedSearchData;
@@ -47,16 +43,11 @@ import org.inbio.neoportal.web.view.CSVview;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -69,7 +60,6 @@ public class AdvancedSearchApiController{
     
     @Autowired
     private AdvancedSearchManager advancedSearchManager;
-    private FilterSDTO filterSDTO;
     
     @Autowired
     private MessageSource messageSource;

@@ -28,9 +28,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         <property name="poolPreparedStatements" value="true"/>
 
 		<!-- Estas propiedad serán sobre escritas por el archivo /WEB-INF/classes/config.properties -->
-        <property name="url" value="jdbc:postgresql://localhost:5432/neoportal"/>
-        <property name="username" value="postgres"/>
-        <property name="password" value="postgres"/>
+<!--         <property name="url" value="jdbc:postgresql://localhost:5432/neoportal"/> -->
+<!--         <property name="username" value="postgres"/> -->
+<!--         <property name="password" value="postgres"/> -->
     </bean>
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">

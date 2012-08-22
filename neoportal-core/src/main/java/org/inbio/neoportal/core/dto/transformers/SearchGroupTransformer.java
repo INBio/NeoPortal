@@ -29,6 +29,7 @@ import org.inbio.neoportal.core.dto.advancedsearch.SearchGroupCDTO;
 import org.inbio.neoportal.core.entity.SearchColumn;
 import org.inbio.neoportal.core.entity.SearchColumnDefault;
 import org.inbio.neoportal.core.entity.SearchFilter;
+import org.inbio.neoportal.core.entity.SearchFilterValue;
 import org.inbio.neoportal.core.entity.SearchGroup;
 
 
@@ -74,7 +75,8 @@ public class SearchGroupTransformer
                 new SearchColumnCDTO(
                     searchColumn.getColumnId().toString(),
                     searchGroup.getSearchGroupId().toString(),
-                    searchColumn.getColumnKey()));
+                    searchColumn.getColumnKey(),
+                    searchColumn.getSort()));
         }
 
         for(Iterator it= searchGroup.getSearchColumnDefaults().iterator(); it.hasNext();){
@@ -89,12 +91,19 @@ public class SearchGroupTransformer
         for(Iterator it= searchGroup.getSearchFilters().iterator(); it.hasNext();){
             SearchFilter searchFilter = (SearchFilter) it.next();
         
+            List<String> values = new ArrayList<String>();
+            for(Iterator valuesIt= searchFilter.getSearchFilterValues().iterator(); valuesIt.hasNext();){
+            	SearchFilterValue sValue = (SearchFilterValue) valuesIt.next();
+            	values.add(sValue.getValue());
+            }
+            
             searchFilterList.add(
                 new SearchFilterCDTO(
                     searchFilter.getFilterId().toString(), 
                     searchGroup.getSearchGroupId().toString(),
                     searchFilter.getFilterKey(), 
-                    searchFilter.getType()));
+                    searchFilter.getType(),
+                    values));
         }
         
         searchGroupCDTO.setSearchColumnList(searchColumnList);

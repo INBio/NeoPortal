@@ -65,8 +65,8 @@
                 <div class="leftPanel">
                     <div class="controls">
                         <a id="searchBtn" href="#">search</a>
-                        <span id="countLabel"></span>
                         <a id="exportBtn" href="#">export</a>
+                        <div id="countLabel"></div>
                     </div>
                 </div>
                  

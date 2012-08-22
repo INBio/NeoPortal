@@ -34,7 +34,7 @@ $(document).ready(function(){
                 //set count variable
                 totalItems = countData.count;
                 //change label
-                $("#countLabel").html(totalItems + " registros");
+                $("#countLabel").html("Cerca de " + totalItems + " registros");
                 
                 if(totalItems == 0)
                     return;
@@ -285,7 +285,8 @@ function showTable(searchContainer, data){
         $("div.results table tbody").html(generatedTableRows(data));
     }
     else{   //create buttons for pagination and table elements
-        var divResults = "<div class=\"results filterGroup\">";
+        var divResults = "<div class=\"contentColumn\">";
+        divResults += "<div class=\"results filterGroup\">";
         
         divResults += "<span class=\"showingControl\"></span>";
         //paginated elements
@@ -298,6 +299,7 @@ function showTable(searchContainer, data){
         
 
        //table
+        divResults += "<div class=\"wrapper\">";
         divResults += "<table class=\"tablePanel\">";
         divResults += "<thead><tr>";
 
@@ -312,6 +314,7 @@ function showTable(searchContainer, data){
         divResults += generatedTableRows(data);
         
         divResults += "</table>";
+        divResults += "</div>";	//close wrapper
         
         //paginated elements bottom
         divResults += "<div class=\"paginate_group\">";
@@ -319,7 +322,9 @@ function showTable(searchContainer, data){
         divResults += "<span class=\"previousControl paginate_button\">Anterior</span>";
         divResults += "<span class=\"nextControl paginate_button\">Siguiente</span>";
         divResults += "<span class=\"lastControl paginate_button\">Último</span>";
-        divResults += "</div>";
+        divResults += "</div>"; //close div.paginate_group 
+        divResults += "</div>"; //close div.results
+        divResults += "</div>"; //close div.contentColumn
         
         $(searchContainer).append(divResults);
         

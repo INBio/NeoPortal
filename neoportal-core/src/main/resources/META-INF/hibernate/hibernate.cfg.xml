@@ -8,11 +8,11 @@
     <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
     <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/neoportal</property>
     <property name="hibernate.connection.username">postgres</property>
-    <property name="hibernate.connection.password">inbio</property>
+<!--     <property name="hibernate.connection.password">inbio</property> -->
     <!-- Hibernate search configuration -->
     <property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
     <property name="hibernate.search.default.indexBase">/home/arturo/LuceneIndex/</property>
-    <!--    <property name="hibernate.search.default.indexBase">/var/LuceneIndex/</property>-->
+<!-- 	<property name="hibernate.search.default.indexBase">/var/LuceneIndex/</property> -->
     <property name="hibernate.search.default.locking_strategy">simple</property>
     <!-- Mappings -->
     <mapping resource="META-INF/hibernate/TaxonHasAssociatedAttribute.hbm.xml"/>

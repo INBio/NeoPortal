@@ -4,11 +4,20 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 26/04/2012 11:26:47 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="org.inbio.neoportal.core.entity.ImportDwc" table="import_dwc" schema="public">
-        <id name="id" type="long">
+    <class name="org.inbio.neoportal.core.entity.OccurrenceDwc" table="occurrence_dwc" schema="public">
+        <id name="Id" type="long">
             <column name="id" />
             <generator class="assigned" />
         </id>
+        <many-to-one name="location" class="org.inbio.neoportal.core.entity.Location" fetch="select">
+            <column name="location_id" precision="131089" scale="0" />
+        </many-to-one>
+        <many-to-one name="dataProvider" class="org.inbio.neoportal.core.entity.DataProvider" fetch="select">
+            <column name="data_provider_id" precision="131089" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="taxon" class="org.inbio.neoportal.core.entity.Taxon" fetch="select">
+            <column name="taxon_id" precision="131089" scale="0" />
+        </many-to-one>
         <property name="type" type="string">
             <column name="type" />
         </property>

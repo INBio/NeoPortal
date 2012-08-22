@@ -1,13 +1,54 @@
+/*
+ *  NeoPortal - New implementation of the INBio Species and Occurrences portal.
+ *  
+ *  Copyright (C) 2010 INBio - Instituto Nacional de Biodiversidad, Costa Rica
+ * 
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ * 
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ * 
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.inbio.neoportal.core.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+
+import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 
 /**
  *
  * @author avargas
  */
-public class ImportDwc implements Serializable {
+@Indexed
+public class OccurrenceDwc implements Serializable {
     
+	/**
+	 * Additional id, the occurrences has occurrenceId but with this database manage id 
+	 * the system support datasets with occurrenceId fields containing not numbers values.
+	 */
+	@DocumentId
+    private BigDecimal Id;
+    
+    @IndexedEmbedded
+    private Location location;
+    
+    @IndexedEmbedded
+    private DataProvider dataProvider;
+    
+    @IndexedEmbedded
+    private Taxon taxon;
+    
+    /* Darwin Core Terms http://rs.tdwg.org/dwc/terms/ */
 	//Record-level terms
     private String type;
     private String modified;
@@ -175,13 +216,93 @@ public class ImportDwc implements Serializable {
     private String nomenclaturalStatus;
     private String taxonRemarks; //159
 
-    private Long id;
 
-    public ImportDwc() {
+    public OccurrenceDwc() {
     }
 
+
     
     
+	/**
+	 * @return the id
+	 */
+	public BigDecimal getId() {
+		return Id;
+	}
+
+
+
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(BigDecimal id) {
+		Id = id;
+	}
+
+
+
+
+	/**
+	 * @return the location
+	 */
+	public Location getLocation() {
+		return location;
+	}
+
+
+
+
+	/**
+	 * @param location the location to set
+	 */
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+
+
+
+	/**
+	 * @return the dataProvider
+	 */
+	public DataProvider getDataProvider() {
+		return dataProvider;
+	}
+
+
+
+
+	/**
+	 * @param dataProvider the dataProvider to set
+	 */
+	public void setDataProvider(DataProvider dataProvider) {
+		this.dataProvider = dataProvider;
+	}
+
+
+
+
+	/**
+	 * @return the taxon
+	 */
+	public Taxon getTaxon() {
+		return taxon;
+	}
+
+
+
+
+	/**
+	 * @param taxon the taxon to set
+	 */
+	public void setTaxon(Taxon taxon) {
+		this.taxon = taxon;
+	}
+
+
+
+
 	/**
 	 * @return the type
 	 */
@@ -3027,16 +3148,12 @@ public class ImportDwc implements Serializable {
 		this.nomenclaturalStatus = nomenclaturalStatus;
 	}
 
-
-
 	/**
 	 * @return the taxonRemarks
 	 */
 	public String getTaxonRemarks() {
 		return taxonRemarks;
 	}
-
-
 
 	/**
 	 * @param taxonRemarks the taxonRemarks to set
@@ -3045,41 +3162,21 @@ public class ImportDwc implements Serializable {
 		this.taxonRemarks = taxonRemarks;
 	}
 
-
-
-	/**
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-
-
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-
-
 	@Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (Id != null ? Id.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ImportDwc)) {
+        if (!(object instanceof OccurrenceDwc)) {
             return false;
         }
-        ImportDwc other = (ImportDwc) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        OccurrenceDwc other = (OccurrenceDwc) object;
+        if ((this.Id == null && other.Id != null) || (this.Id != null && !this.Id.equals(other.Id))) {
             return false;
         }
         return true;
@@ -3087,7 +3184,7 @@ public class ImportDwc implements Serializable {
 
     @Override
     public String toString() {
-        return "org.inbio.neoportal.core.entity.ImportDwc[ id=" + id + " ]";
+        return "org.inbio.neoportal.core.entity.OccurrenceDwc[ id=" + this.Id + " ]";
     }
     
 }

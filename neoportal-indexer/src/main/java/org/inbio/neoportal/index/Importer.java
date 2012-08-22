@@ -125,12 +125,12 @@ public class Importer {
                 //avoid repeated occurrenceId
                 Occurrence occurrence = occurrenceDAO.findById(
                         Occurrence.class, 
-                        new BigDecimal(importDwc.getCatalognumber().replace("\"", "")));
+                        new BigDecimal(importDwc.getCatalogNumber().replace("\"", "")));
                 
                 if(occurrence != null){
                     Logger.getLogger(Importer.class.getName()).log
                         (Level.INFO, "OccurrenceId {0} already exist!", 
-                                new BigDecimal(importDwc.getCatalognumber().replace("\"", "")));
+                                new BigDecimal(importDwc.getCatalogNumber().replace("\"", "")));
             
                     continue;
                 }
@@ -140,31 +140,31 @@ public class Importer {
                 
                Taxon taxon;
                //check if taxonId is empty (unidentify specimens)
-               if(importDwc.getTaxonid().isEmpty()){
+               if(importDwc.getTaxonId().isEmpty()){
                    taxon = null;
                }else{
                 //find taxon entity
                 taxon = (Taxon) genericBaseDAO.findById(
-                        Taxon.class, new BigDecimal(importDwc.getTaxonid().replace("\"", "")));
+                        Taxon.class, new BigDecimal(importDwc.getTaxonId().replace("\"", "")));
                }
 
                 // TODO: fix, use specimenId instead
                occurrence.setOccurrenceId(
-                       new BigDecimal(importDwc.getCatalognumber().replace("\"", "")));
+                       new BigDecimal(importDwc.getCatalogNumber().replace("\"", "")));
                        
                occurrence.setDataProvider(dp);
                occurrence.setTaxon(taxon);
                occurrence.setGlobalUniqueIdentifier(
-                       importDwc.getInstitutioncode() + ":" +
-                       importDwc.getCollectioncode() + ":" +
-                       importDwc.getCatalognumber());
+                       importDwc.getInstitutionCode() + ":" +
+                       importDwc.getCollectionCode() + ":" +
+                       importDwc.getCatalogNumber());
                occurrence.setDateLastModified(dateLastModified);
-               occurrence.setInstitutionCode(importDwc.getInstitutioncode());
-               occurrence.setCollectionCode(importDwc.getCollectioncode());
-               occurrence.setCatalogNumber(importDwc.getCatalognumber());
-               occurrence.setScientificName(importDwc.getScientificname());
-               occurrence.setBasisOfRecord(importDwc.getBasisofrecord());
-               occurrence.setInformationWithheld(importDwc.getInformationwithheld());
+               occurrence.setInstitutionCode(importDwc.getInstitutionCode());
+               occurrence.setCollectionCode(importDwc.getCollectionCode());
+               occurrence.setCatalogNumber(importDwc.getCatalogNumber());
+               occurrence.setScientificName(importDwc.getScientificName());
+               occurrence.setBasisOfRecord(importDwc.getBasisOfRecord());
+               occurrence.setInformationWithheld(importDwc.getInformationWithheld());
                // TODO: change field to update Darwin Core standard
       //       occurrence.setHigherTaxon(taxon.getTaxonByAncestorTaxonId().getDefaultName());
                occurrence.setKingdom(importDwc.getKingdom());
@@ -173,35 +173,35 @@ public class Importer {
                occurrence.setOrders(importDwc.getTaxonOrder());
                occurrence.setFamily(importDwc.getFamily());
                occurrence.setGenus(importDwc.getGenus());
-               occurrence.setSpecificEpithet(importDwc.getSpecificepithet());
-               occurrence.setInfraspecificEpithet(importDwc.getInfraspecificepithet());
+               occurrence.setSpecificEpithet(importDwc.getSpecificEpithet());
+               occurrence.setInfraspecificEpithet(importDwc.getInfraspecificEpithet());
                occurrence.setInfraspecificRank(null);
                // TODO: change field to update Darwin Core standard
                occurrence.setAuthorYearOfScientificName(
-                       importDwc.getScientificnameauthorship() + ", ");
-               occurrence.setNomenclaturalCode(importDwc.getNomenclaturalcode());
-               occurrence.setIdentificationQualifier(importDwc.getIdentificationqualifier());
+                       importDwc.getScientificNameAuthorship() + ", ");
+               occurrence.setNomenclaturalCode(importDwc.getNomenclaturalCode());
+               occurrence.setIdentificationQualifier(importDwc.getIdentificationQualifier());
                occurrence.setCollectingMethod(null);
                occurrence.setValidDistributionFlag(null);
                occurrence.setCollector(importDwc.getRecordedBy());
                occurrence.setEarliestDateCollected(null);
                occurrence.setLatestDateCollected(null);
                occurrence.setDayOfYear(new BigDecimal(importDwc.getDay()));
-               occurrence.setHigherGeography(importDwc.getHighergeography());
+               occurrence.setHigherGeography(importDwc.getHigherGeography());
                occurrence.setContinent(importDwc.getContinent());
-               occurrence.setWaterBody(importDwc.getWaterbody());
-               occurrence.setIslandGroup(importDwc.getIslandgroup());
+               occurrence.setWaterBody(importDwc.getWaterBody());
+               occurrence.setIslandGroup(importDwc.getIslandGroup());
                occurrence.setIsland(importDwc.getIsland());
                occurrence.setCountry(importDwc.getCountry());
-               occurrence.setStateProvince(importDwc.getStateprovince());
+               occurrence.setStateProvince(importDwc.getStateProvince());
                occurrence.setCounty(importDwc.getCounty());
                occurrence.setLocality(importDwc.getLocality());
-               occurrence.setMinimumElevationInMeters(importDwc.getMinimumelevationinmeters());
-               occurrence.setMaximumElevationInMeters(importDwc.getMaximumelevationinmeters());
-               occurrence.setMinimumDepthInmeters(importDwc.getMinimumdepthinmeters());
-               occurrence.setMaximumDepthInmeters(importDwc.getMaximumdepthinmeters());
+               occurrence.setMinimumElevationInMeters(importDwc.getMinimumElevationInMeters());
+               occurrence.setMaximumElevationInMeters(importDwc.getMaximumElevationInMeters());
+               occurrence.setMinimumDepthInmeters(importDwc.getMinimumDepthInMeters());
+               occurrence.setMaximumDepthInmeters(importDwc.getMaximumDepthInMeters());
                occurrence.setSex(importDwc.getSex());
-               occurrence.setLifeStage(importDwc.getLifestage());
+               occurrence.setLifeStage(importDwc.getLifeStage());
                occurrence.setRemarks(null);
                occurrence.setAttributes(null);			
                occurrence.setImageUrl(null);	
@@ -212,14 +212,14 @@ public class Importer {
                 Location location = (Location)
                         genericBaseDAO.findById(
                             Location.class, 
-                            new BigDecimal(importDwc.getLocationid()));
+                            new BigDecimal(importDwc.getLocationId()));
 
                 if(location == null){
                     location = new Location(
-                                    new BigDecimal(importDwc.getLocationid()));
+                                    new BigDecimal(importDwc.getLocationId()));
                     //set coordinates values
-                    location.setDecimalLatitude(importDwc.getDecimallatitude());
-                    location.setDecimalLongitude(importDwc.getDecimallongitude());
+                    location.setDecimalLatitude(importDwc.getDecimalLatitude());
+                    location.setDecimalLongitude(importDwc.getDecimalLongitude());
 
                     genericBaseDAO.create(location);
                 }

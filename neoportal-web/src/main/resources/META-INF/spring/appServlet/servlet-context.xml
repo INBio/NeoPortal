@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+<beans:beans xmlns:mvc="http://www.springframework.org/schema/mvc"
     xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
@@ -12,11 +12,22 @@
 	<context:component-scan base-package="org.inbio.neoportal" />
 
 	<!-- Enables the Spring MVC @Controller programming model -->
-	<annotation-driven />
+	<mvc:annotation-driven />
+	
+<!-- 	revisar!!!! -->
+	<mvc:interceptors>
+		<beans:bean class="org.inbio.neoportal.web.common.RequestTimeInterceptor"/>
+	</mvc:interceptors>
+	
+<!-- 	<beans:bean id="handlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"> -->
+<!-- 	   <beans:property name="interceptors"> -->
+<!-- 	     <beans:bean class="org.inbio.neoportal.web.common.RequestTimeInterceptor"/> -->
+<!-- 	   </beans:property> -->
+<!-- 	 </beans:bean> -->
     	
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources/ directory -->
-	<resources mapping="/resources/**" location="/resources/" />
-    <resources mapping="/themes/**" location="/themes/" />
+	<mvc:resources mapping="/resources/**" location="/resources/" />
+    <mvc:resources mapping="/themes/**" location="/themes/" />
 
 <!-- VIEW RESOLVERS -->
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->

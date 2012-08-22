@@ -19,6 +19,7 @@
 package org.inbio.neoportal.service.manager.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -26,9 +27,9 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.inbio.neoportal.core.dao.ColumnDefaultDAO;
 import org.inbio.neoportal.core.dao.GeoLayerDAO;
+import org.inbio.neoportal.core.dao.OccurrenceDAO;
 import org.inbio.neoportal.core.dao.SearchColumnDAO;
 import org.inbio.neoportal.core.dao.SearchFilterDAO;
-import org.inbio.neoportal.core.dao.OccurrenceDAO;
 import org.inbio.neoportal.core.dao.SearchGroupDAO;
 import org.inbio.neoportal.core.dto.advancedsearch.ColumnDefaultCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.GeoFeatureCDTO;
@@ -37,6 +38,7 @@ import org.inbio.neoportal.core.dto.advancedsearch.SearchColumnCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchFilterCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchGroupCDTO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceCDTO;
+import org.inbio.neoportal.core.entity.SearchGroup;
 import org.inbio.neoportal.service.dto.advancedSearch.FilterSDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.OccurrenceSDTO;
 import org.inbio.neoportal.service.entity.AdvancedSearchData;
@@ -52,6 +54,7 @@ import org.springframework.stereotype.Service;
 public class AdvancedSearchManagerImpl
             implements AdvancedSearchManager{
     
+	
     @Autowired
     private SearchColumnDAO columnListDAO;
     
@@ -106,24 +109,23 @@ public class AdvancedSearchManagerImpl
         return flCDTO;
     }
     
-    @Override
+	@Override
     public List<SearchGroupCDTO> getAllSearchGroup(){
         List<SearchGroupCDTO> sgCDTO;
         sgCDTO = searchGroupDAO.getAllSearchGroups();
         
         //prepare filters with their value list
         for (SearchGroupCDTO searchGroup: sgCDTO){
+        	
+        	//sort every column list based on sort field
+        	Collections.sort(searchGroup.getSearchColumnList());
         
             for (SearchFilterCDTO searchFilterCDTO : searchGroup.getSearchFilterList()) {
                 
-                //add value list for combos
+                //add value list for particular filters
                 if("combo".equals(searchFilterCDTO.getType())){
-                    //load filter values
-                	/*if("sex".equals(searchFilterCDTO.getFilterKey())){
-                		searchFilterCDTO.setValues(occurrenceDAO.getSexValues());                		
-                	}*/
-                	//else{
-                	
+                	//manage geographic select value list
+                	if(searchGroup.getKey().equals(SearchGroup.Group.GEOGRAPHIC.toString())){
 	                    List<GeoLayerCDTO> geoLayers = 
 	                            geoLayerDAO.getGeoLayerByName(searchFilterCDTO.getFilterKey());
 	
@@ -132,15 +134,18 @@ public class AdvancedSearchManagerImpl
 	                    if(geoLayer != null){
 	                        List<String> geoFeaturesValues = new ArrayList<String>();
 	                        
-	                        //add all option
-	                        geoFeaturesValues.add("all");
 	                        for(GeoFeatureCDTO feature: geoLayer.getGeoFeatures()){
 	                            geoFeaturesValues.add(feature.getName());
 	                        }
 	
 	                        searchFilterCDTO.setValues(geoFeaturesValues);
 	                    }
-                	//}
+                	}
+                	
+                	//sort by values
+                	Collections.sort(searchFilterCDTO.getValues());
+                    //add all option
+                	searchFilterCDTO.getValues().add(0, "all");
                 }
             }
         }
@@ -188,8 +193,8 @@ public class AdvancedSearchManagerImpl
                     if(query.length() > 0)
                         query += " AND ";
             
-                    // Taxon terms
-                    if("taxon_name".equals(filter.get("key"))){
+                    // Taxon terms only if the user write something
+                    if("taxon_name".equals(filter.get("key")) && filter.get("value").toString().length() > 0){
                         query += " (";
                         query += "defaultName: \"" + filter.get("value") + "\" OR ";
                         query += "kingdom: \"" + filter.get("value") + "\" OR ";
@@ -202,10 +207,9 @@ public class AdvancedSearchManagerImpl
                     }
                 }
             }
-            //else if("geographic".equals(groupData.getKey())){
             else{
                 for (LinkedHashMap filter : groupData.getFilters()) {
-                    if ("all".equals(filter.get("value")))
+                    if ("all".equals(filter.get("value")) || filter.get("value").toString().length() == 0)
                         continue;
                     
                     if(query.length() > 0)

@@ -81,7 +81,9 @@ body {
     min-height: 300px;
     
 }
-
+.wrapper{
+	overflow: auto;
+}
 .data_wrapper{
     margin: 0 auto;
     width: 900px;
@@ -545,7 +547,7 @@ div.search{
     padding-top: 20px;
 }
 div.controls{
-    margin: 0px 0px 12px 50px;
+    margin: 0px 0px 12px 30px;
 }
 div.controls a{
     font-size: 14px;
@@ -553,9 +555,13 @@ div.controls a{
     padding: 2px 10px;
     margin-right: 10px;
 }
+div#countLabel{
+	margin: 5px 0 0 0;
+}
 div.leftPanel{
     float: left;
-    width: 250px;
+    width: 20%;
+    min-width: 250px;
     padding: 0 18px;
 }
 div.filterGroup{
@@ -589,11 +595,12 @@ div.filterGroup p.resume{
     color: #555;
     font-size: 12px;
 }
+div.contentColumn{
+	margin: 10px 20px 0 290px;
+}
 div.results{
     float: left;
-    /*display: inline-block;*/
-    margin-left: 40px;
-    padding-left: 15px;
+    max-width: 100%;
 }
 
 /* advanced search result table */

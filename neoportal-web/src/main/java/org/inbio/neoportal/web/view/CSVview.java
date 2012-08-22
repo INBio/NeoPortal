@@ -2,9 +2,10 @@ package org.inbio.neoportal.web.view;
 
 import java.beans.PropertyDescriptor;
 import java.io.BufferedWriter;
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,11 +19,10 @@ public class CSVview extends AbstractView {
 	protected void renderMergedOutputModel(Map<String, Object> model,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-
 		
 		BufferedWriter writer = new BufferedWriter(response.getWriter());
 
-		response.setContentType("text/csv;charset=utf-8"); 
+		response.setContentType("text/csv"); 
 		response.setHeader("Content-Disposition","attachment; filename=\"export.csv\"");
 
 		List list = (List) model.get("data");
@@ -43,6 +43,10 @@ public class CSVview extends AbstractView {
 		writer.write(stringB.toString());
 		writer.newLine();
 		
+		Logger.getLogger(
+				this.getClass().getName()).log(
+						Level.INFO, "Exporting {0} records", list.size());
+		
 		//
 		for (Object item : list) {
 			stringB = new StringBuilder();
@@ -60,9 +64,13 @@ public class CSVview extends AbstractView {
 			writer.newLine();
 		}
 		
+		Logger.getLogger(
+				this.getClass().getName()).log(
+						Level.INFO, "Last line: {0}", stringB.toString());
+		
+				
 		writer.flush();
 		writer.close();
-
 	}
 
 }

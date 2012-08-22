@@ -13,7 +13,7 @@ import org.inbio.neoportal.common.dto.BaseDTO;
  */
 public class SearchGroupCDTO 
         extends BaseDTO
-            implements Comparable {
+            implements Comparable<SearchGroupCDTO> {
     
     private String searchGroupId;
     private String key;
@@ -21,6 +21,7 @@ public class SearchGroupCDTO
     private List<SearchColumnCDTO> searchColumnList;
     private List<SearchFilterCDTO> searchFilterList;
     private List<ColumnDefaultCDTO> columnDefaultList;
+    //private List<Sea>
 
     public SearchGroupCDTO() {
     }
@@ -34,8 +35,7 @@ public class SearchGroupCDTO
     }
 
     @Override
-    public int compareTo(Object t){
-        SearchGroupCDTO sgDTO = (SearchGroupCDTO)t;
+    public int compareTo(SearchGroupCDTO sgDTO){
         return this.key.compareTo(sgDTO.getKey());
     }
     

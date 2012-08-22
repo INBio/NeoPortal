@@ -26,11 +26,12 @@ public class SearchFilterCDTO
         
     }
 
-    public SearchFilterCDTO(String searchFilterId, String searchGroupId, String filterKey, String type) {
+    public SearchFilterCDTO(String searchFilterId, String searchGroupId, String filterKey, String type, List values) {
         this.searchFilterId = searchFilterId;
         this.searchGroupId = searchGroupId;
         this.filterKey = filterKey;
         this.type = type;
+        this.values = values;
     }
     
     

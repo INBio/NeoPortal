@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
 	<!-- Appenders -->
@@ -10,9 +11,36 @@
 		</layout>
 	</appender>
 	
+	<!-- Appender for stats -->
+	<appender name="stats" class="org.apache.log4j.RollingFileAppender">
+		<param name="file" value="neoportal-web-stats.log"/>
+		<param name="MaxFileSize" value="10MB"/>
+	    <!-- Keep one backup file -->
+	    <param name="MaxBackupIndex" value="4"/>
+	    <layout class="org.apache.log4j.PatternLayout"> 
+	      <param name="ConversionPattern" value="%p %t %c - %m%n"/> 
+	    </layout> 
+	</appender>
+	
+	<!-- Appender for stats -->
+	<appender name="advancedSearch" class="org.apache.log4j.RollingFileAppender">
+		<param name="file" value="neoportal-web-advancedSearch.log"/>
+		<param name="MaxFileSize" value="10MB"/>
+	    <!-- Keep one backup file -->
+	    <param name="MaxBackupIndex" value="4"/>
+	    <layout class="org.apache.log4j.PatternLayout"> 
+	      <param name="ConversionPattern" value="%p %t %c - %m%n"/> 
+	    </layout> 
+	</appender>
+	
 	<!-- Application Loggers -->
 	<logger name="org.inbio.neoportal">
 		<level value="all" />
+	</logger>
+	
+	<logger name="org.inbio.neoportal.web.common.RequestTimeInterceptor">
+		<level value="info" />
+		<appender-ref ref="stats" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->
@@ -34,7 +62,7 @@
 
 	<!-- Root Logger -->
 	<root>
-		<priority value="warn" />
+		<priority value="WARN" />
 		<appender-ref ref="console" />
 	</root>
 	

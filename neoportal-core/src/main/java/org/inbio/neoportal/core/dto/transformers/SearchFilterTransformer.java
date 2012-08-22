@@ -5,11 +5,13 @@
 package org.inbio.neoportal.core.dto.transformers;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.hibernate.transform.ResultTransformer;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchFilterCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchGroupCDTO;
 import org.inbio.neoportal.core.entity.SearchFilter;
+import org.inbio.neoportal.core.entity.SearchFilterValue;
 
 /**
  *
@@ -29,13 +31,19 @@ public class SearchFilterTransformer
         List<SearchFilterCDTO> newList = new ArrayList<SearchFilterCDTO>();
         
         for(SearchFilter searchFilter: searchFilterArray){
+            List<String> values = new ArrayList<String>();
+            for(Iterator it= searchFilter.getSearchFilterValues().iterator(); it.hasNext();){
+            	SearchFilterValue sValue = (SearchFilterValue) it.next();
+            	values.add(sValue.getValue());
+            }
             
             newList.add(
                 new SearchFilterCDTO(
                         searchFilter.getFilterId().toString(),
                         searchFilter.getSearchGroup().getSearchGroupId().toString(),
                         searchFilter.getFilterKey(),
-                        searchFilter.getType()
+                        searchFilter.getType(),
+                        values
                 ));
         }
         
