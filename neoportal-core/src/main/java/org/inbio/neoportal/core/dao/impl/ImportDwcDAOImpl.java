@@ -28,13 +28,9 @@ import org.inbio.neoportal.core.entity.ImportDwc;
  * @author avargas
  */
 public class ImportDwcDAOImpl
-        extends GenericBaseDAOImpl<ImportDwc, BigDecimal>
+        extends GenericDAOImpl<ImportDwc, BigDecimal>
         implements ImportDwcDAO{
 
-    @Override
-    public List<ImportDwc> getAll() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
+    
     
 }

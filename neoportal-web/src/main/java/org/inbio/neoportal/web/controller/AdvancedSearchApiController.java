@@ -32,6 +32,7 @@ import org.inbio.neoportal.core.dto.advancedsearch.ColumnDefaultCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchColumnCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchFilterCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchGroupCDTO;
+import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.FilterSDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.OccurrenceSDTO;
 import org.inbio.neoportal.service.entity.AdvancedSearchData;
@@ -192,7 +193,7 @@ public class AdvancedSearchApiController{
         @RequestParam (value = "results", defaultValue="10", required=false) int results
        ){
 
-        List<OccurrenceSDTO> occurrenceSDTO =
+        List<OccurrenceDwcCDTO> occurrenceDwcCDTO =
                 advancedSearchManager.occurrencePaginatedSearch(
                 filterSDTO,
                 startIndex, 
@@ -201,7 +202,7 @@ public class AdvancedSearchApiController{
         /* TODO: usar columnList para retornar solo los datos solicitados
         * y reducir tamaño de los datos transferidos */
                 
-        return occurrenceSDTO;
+        return occurrenceDwcCDTO;
     }
     
     

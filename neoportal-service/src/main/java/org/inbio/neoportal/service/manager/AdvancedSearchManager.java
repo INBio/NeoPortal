@@ -23,6 +23,7 @@ import org.inbio.neoportal.core.dto.advancedsearch.ColumnDefaultCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchColumnCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchFilterCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchGroupCDTO;
+import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.FilterSDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.OccurrenceSDTO;
 
@@ -70,7 +71,7 @@ public interface AdvancedSearchManager {
      * @param quantity
      * @return 
      */
-    public List<OccurrenceSDTO> occurrencePaginatedSearch(
+    public List<OccurrenceDwcCDTO> occurrencePaginatedSearch(
             FilterSDTO filters, int offset, int quantity);
     
     /**

@@ -29,7 +29,6 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
-import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.search.FullTextQuery;
@@ -314,14 +313,15 @@ public class GenericBaseDAOImpl<E ,I>
             final Class<E> entityClass,
             final int maxResults,
             final int firstResult){
-        HibernateTemplate template = getHibernateTemplate();
+    	//Session session = getSessionFactory().getCurrentSession();
+    	    	
+    	HibernateTemplate template = getHibernateTemplate();
         
         return (List<E>) template.execute(new HibernateCallback() {
             @Override
 			public Object doInHibernate(Session session) {
                 org.hibernate.Query query = session.createQuery(
-						"from " + entityClass.getSimpleName()
-                        + " order by ID");
+						"from " + entityClass.getSimpleName());
 				query.setMaxResults(maxResults);
                 query.setFirstResult(firstResult);
                 return query.list();

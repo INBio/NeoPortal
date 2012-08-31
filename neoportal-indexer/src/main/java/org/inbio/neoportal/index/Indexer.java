@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
@@ -35,7 +36,7 @@ import org.hibernate.search.Search;
 import org.inbio.neoportal.core.entity.CommonName;
 import org.inbio.neoportal.core.entity.GeoFeature;
 import org.inbio.neoportal.core.entity.Location;
-import org.inbio.neoportal.core.entity.Occurrence;
+import org.inbio.neoportal.core.entity.OccurrenceDwc;
 import org.inbio.neoportal.core.entity.Taxon;
 import org.inbio.neoportal.core.entity.TaxonDescription;
 import org.inbio.neoportal.index.util.HibernateUtil;
@@ -75,22 +76,29 @@ public class Indexer {
         System.out.println("# - Inicio de la indexación \n");
 
         System.out.println("# - Taxon");
-        fullTextSession.createIndexer(Taxon.class).startAndWait();
+//        fullTextSession.createIndexer(Taxon.class).startAndWait();
 
         System.out.println("# - CommonName");
-        fullTextSession.createIndexer(CommonName.class).startAndWait();
+//        fullTextSession.createIndexer(CommonName.class).startAndWait();
         
         System.out.println("# - TaxonDescription");
-        fullTextSession.createIndexer(TaxonDescription.class).startAndWait();
-        
-        System.out.println("# - Occurrence");
-        fullTextSession.createIndexer(Occurrence.class).startAndWait();
+ //       fullTextSession.createIndexer(TaxonDescription.class).startAndWait();
         
         System.out.println("# - GeoFeatures");
         fullTextSession.createIndexer(GeoFeature.class).startAndWait();
         
         System.out.println("# - Locations");
         fullTextSession.createIndexer(Location.class).startAndWait();
+        
+        System.out.println("# - Occurrence");
+        fullTextSession
+        	.createIndexer(OccurrenceDwc.class)
+        	.batchSizeToLoadObjects( 40 )
+			 .threadsToLoadObjects( 5 )
+			 .threadsForIndexWriter( 3 )
+			 .threadsForSubsequentFetching( 5 )
+        	.startAndWait();
+        
 
         System.out.println("# - Fin de la indexación \n");
     }

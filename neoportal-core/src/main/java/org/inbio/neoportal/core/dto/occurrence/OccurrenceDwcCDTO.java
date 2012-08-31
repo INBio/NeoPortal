@@ -18,6 +18,8 @@
  */
 package org.inbio.neoportal.core.dto.occurrence;
 
+import java.util.HashMap;
+
 import org.hibernate.search.annotations.IndexedEmbedded;
 import org.inbio.neoportal.common.dto.*;
 import org.inbio.neoportal.core.dto.LocationCDTO;
@@ -99,7 +101,7 @@ public class OccurrenceDwcCDTO
     private String fieldNumber;
     private String fieldNotes;
     private String eventRemarks; //56
-    //Locations
+    //Location
     private String locationId;
     private String higherGeographyId;
     private String higherGeography;
@@ -208,6 +210,10 @@ public class OccurrenceDwcCDTO
     private String taxonRemarks; //159
 	
 
+    /**
+     * Additional properties from other entities
+     */
+    private HashMap<String, String> properties;
     
     /**
      * Make posible the search only different species method on SearchManager
@@ -2516,6 +2522,14 @@ public class OccurrenceDwcCDTO
 	 */
 	public void setTaxonRemarks(String taxonRemarks) {
 		this.taxonRemarks = taxonRemarks;
+	}
+
+	public HashMap<String, String> getProperties() {
+		return properties;
+	}
+
+	public void setProperties(HashMap<String, String> properties) {
+		this.properties = properties;
 	}
 
     

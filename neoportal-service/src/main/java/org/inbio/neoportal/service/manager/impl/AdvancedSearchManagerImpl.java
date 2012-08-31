@@ -38,6 +38,7 @@ import org.inbio.neoportal.core.dto.advancedsearch.SearchColumnCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchFilterCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchGroupCDTO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceCDTO;
+import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
 import org.inbio.neoportal.core.entity.SearchGroup;
 import org.inbio.neoportal.service.dto.advancedSearch.FilterSDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.OccurrenceSDTO;
@@ -154,7 +155,7 @@ public class AdvancedSearchManagerImpl
     }
     
     @Override
-    public List<OccurrenceSDTO> occurrencePaginatedSearch(
+    public List<OccurrenceDwcCDTO> occurrencePaginatedSearch(
             FilterSDTO filters, 
             int offset, 
             int quantity) {
@@ -162,11 +163,10 @@ public class AdvancedSearchManagerImpl
         //create search text base on filters
         String query = createQuery(filters);
                 
-        List<OccurrenceCDTO> occurrenceCDTO = 
-                occurrenceDAO.advancedSearchPaginated(query, offset, quantity);
+        return occurrenceDAO.advancedSearchPaginated(query, offset, quantity);
         
         //transform to OccurrenceSDTO 
-        return occurrenceCDTOtoSDTO(occurrenceCDTO);
+        //return occurrenceCDTOtoSDTO(occurrenceCDTO);
     }
 
     @Override
