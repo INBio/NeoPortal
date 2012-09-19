@@ -177,7 +177,7 @@ public class OccurrenceDWCTransformer
             
             newCDTO.setIdentificationId(oc.getIdentificationId());
             newCDTO.setIdentifiedBy(oc.getIdentifiedBy());
-            newCDTO.setDateIdentified(oc.getDateIdentified());
+            newCDTO.setDateIdentified(oc.getDateIdentified().toString());
             newCDTO.setIdentificationReferences(oc.getIdentificationReferences());
             newCDTO.setIdentificationVerificationStatus(oc.getIdentificationVerificationStatus());
             newCDTO.setIdentificationRemarks(oc.getIdentificationRemarks());

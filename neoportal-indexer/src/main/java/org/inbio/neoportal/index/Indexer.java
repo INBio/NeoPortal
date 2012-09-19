@@ -28,6 +28,7 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.util.Version;
+import org.hibernate.CacheMode;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.search.FullTextQuery;
@@ -77,7 +78,7 @@ public class Indexer {
 
         System.out.println("# - Taxon");
 //        fullTextSession.createIndexer(Taxon.class).startAndWait();
-
+        
         System.out.println("# - CommonName");
 //        fullTextSession.createIndexer(CommonName.class).startAndWait();
         
@@ -85,18 +86,19 @@ public class Indexer {
  //       fullTextSession.createIndexer(TaxonDescription.class).startAndWait();
         
         System.out.println("# - GeoFeatures");
-        fullTextSession.createIndexer(GeoFeature.class).startAndWait();
+//        fullTextSession.createIndexer(GeoFeature.class).startAndWait();
         
         System.out.println("# - Locations");
-        fullTextSession.createIndexer(Location.class).startAndWait();
+//        fullTextSession.createIndexer(Location.class).startAndWait();
         
         System.out.println("# - Occurrence");
         fullTextSession
         	.createIndexer(OccurrenceDwc.class)
-        	.batchSizeToLoadObjects( 40 )
-			 .threadsToLoadObjects( 5 )
+        /*	.threadsToLoadObjects( 5 )
+        /*	.batchSizeToLoadObjects( 40 )
+			 
 			 .threadsForIndexWriter( 3 )
-			 .threadsForSubsequentFetching( 5 )
+			 .threadsForSubsequentFetching( 5 )*/
         	.startAndWait();
         
 

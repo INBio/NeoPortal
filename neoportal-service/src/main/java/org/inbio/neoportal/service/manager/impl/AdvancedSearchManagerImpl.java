@@ -164,9 +164,6 @@ public class AdvancedSearchManagerImpl
         String query = createQuery(filters);
                 
         return occurrenceDAO.advancedSearchPaginated(query, offset, quantity);
-        
-        //transform to OccurrenceSDTO 
-        //return occurrenceCDTOtoSDTO(occurrenceCDTO);
     }
 
     @Override
@@ -215,7 +212,27 @@ public class AdvancedSearchManagerImpl
                     if(query.length() > 0)
                         query += " AND ";
                     
-                    query += filter.get("key") + ":\"" + filter.get("value") + "\" ";
+                    //date range
+                    if(filter.get("key").toString().compareTo("dateIdentified") == 0){
+                    	String range = "";
+                    	String [] dates = filter.get("value").toString().split("[|]"); 
+                    	
+                    	if(dates.length > 0){
+                    		String [] date = dates[0].split("/");
+                    		range = "[" + date[2] + date[1] + date[0];
+                    		range += " TO ";
+                    		
+                    		date = dates[1].split("/");
+                    		range += date[2] + date[1] + date[0] + "]";
+                    	}
+                    	
+                    	query += filter.get("key") + ":" + range + " ";
+                    }
+                    else{
+                    	query += filter.get("key") + ":\"" + filter.get("value") + "\" ";
+                    }
+                    
+                    
                 }
             }
         }
@@ -227,87 +244,28 @@ public class AdvancedSearchManagerImpl
     }
 
     
-    private List<OccurrenceSDTO> occurrenceCDTOtoSDTO(List<OccurrenceCDTO> occurrenceCDTOs){
-        List<OccurrenceSDTO> result = new ArrayList<OccurrenceSDTO>();
-        
-        for(OccurrenceCDTO occurrence: occurrenceCDTOs){
-            OccurrenceSDTO newOccurrence = new OccurrenceSDTO();
-            
-            /*  Occurrence Terms  */    
-            newOccurrence.setOccurrenceId(occurrence.getOccurrenceId());
-            newOccurrence.setCatalogNumber(occurrence.getCatalogNumber());
-            newOccurrence.setRemarks(occurrence.getRemarks()); /* dwc = occurrenceRemarks */
-
-            newOccurrence.setCollector(occurrence.getCollector());  /* dwc = recordedBy */
-            newOccurrence.setSex(occurrence.getSex());
-            newOccurrence.setLifeStage(occurrence.getLifeStage());
-
-            /*  Taxon terms */
-            newOccurrence.setTaxonId(occurrence.getTaxonId());
-            newOccurrence.setScientificName(occurrence.getScientificName());
-            newOccurrence.setAcceptedNameUsage(occurrence.getAcceptedNameUsage());
-            newOccurrence.setParentNameUsage(occurrence.getParentNameUsage());
-            newOccurrence.setOriginalNameUsage(occurrence.getOriginalNameUsage());
-            newOccurrence.setNameAccordingTo(occurrence.getNameAccordingTo());
-            newOccurrence.setNamePublishedIn(occurrence.getNamePublishedIn());
-            newOccurrence.setNamePublishedInYear(occurrence.getNamePublishedInYear());
-            newOccurrence.setHigherClassification(occurrence.getHigherClassification());
-            newOccurrence.setKingdom(occurrence.getKingdom());
-            newOccurrence.setPhylum(occurrence.getPhylum());  /*  dwc = phylum  */
-            newOccurrence.setClass_(occurrence.getClass_());  /*  dwc = class  */
-            newOccurrence.setOrder(occurrence.getOrder());
-            newOccurrence.setFamily(occurrence.getFamily());
-            newOccurrence.setGenus(occurrence.getGenus());
-            newOccurrence.setSubgenus(occurrence.getSubgenus());
-            newOccurrence.setSpecificEpithet(occurrence.getSpecificEpithet());
-            newOccurrence.setInfraspecificEpithet(occurrence.getInfraspecificEpithet());
-            newOccurrence.setInfraspecificRank(occurrence.getInfraspecificRank());   /*  dwc = taxonRank  */
-            newOccurrence.setVerbatimTaxonRank(occurrence.getVerbatimTaxonRank());
-            newOccurrence.setScientificNameAuthorship(occurrence.getScientificNameAuthorship());
-            newOccurrence.setVernacularName(occurrence.getVernacularName());
-            newOccurrence.setNomenclaturalCode(occurrence.getNomenclaturalCode());
-            newOccurrence.setTaxonomicStatus(occurrence.getTaxonomicStatus());
-            newOccurrence.setNomenclaturalStatus(occurrence.getNomenclaturalStatus());
-            newOccurrence.setTaxonRemarks(occurrence.getTaxonRemarks());
-
-            HashMap<String, String> geoFeatures = new HashMap<String, String>();
-            if(occurrence.getLocation() != null){
-                for(GeoFeatureCDTO feature: occurrence.getLocation().getGeoFeaturesCDTO()){
-                    geoFeatures.put(feature.getGeoLayerName(), feature.getName());
-                }
-            }
-            
-            newOccurrence.setProperties(geoFeatures);
-            
-            result.add(newOccurrence);
-        }
-        
-        return result;        
-    }
-
 	@Override
-	public List<OccurrenceSDTO> occurrenceSearch(FilterSDTO filters) {
+	public List<OccurrenceDwcCDTO> occurrenceSearch(FilterSDTO filters) {
 		//create search text base on filters
         String query = createQuery(filters);
             
         Long total = occurrenceDAO.searchCount(query);
         
         if (total == 0)
-        	return new ArrayList<OccurrenceSDTO>();
+        	return new ArrayList<OccurrenceDwcCDTO>();
         
-        ArrayList<OccurrenceCDTO> occurrenceCDTOs = new ArrayList<OccurrenceCDTO>();
+        ArrayList<OccurrenceDwcCDTO> occurrenceCDTOs = new ArrayList<OccurrenceDwcCDTO>();
         
         int index = 0;
         
         do {
-        	List<OccurrenceCDTO> blockList = 
+        	List<OccurrenceDwcCDTO> blockList = 
         			occurrenceDAO.advancedSearchPaginated(query, index, 100); 
         	occurrenceCDTOs.addAll(blockList);
         	
         	index += 100;
 		} while (index <= total);
-        
-        //transform to OccurrenceSDTO 
-        return occurrenceCDTOtoSDTO(occurrenceCDTOs);
+
+        return occurrenceCDTOs;
 	}
 }

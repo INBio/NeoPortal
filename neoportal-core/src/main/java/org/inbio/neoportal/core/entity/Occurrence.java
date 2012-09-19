@@ -53,7 +53,7 @@ public class Occurrence  implements java.io.Serializable {
     @Field
     private String catalogNumber;
 
-     @Field
+    @Field
     private String scientificName;
     private String basisOfRecord;
     private String informationWithheld;

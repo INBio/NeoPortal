@@ -109,7 +109,7 @@ function addSearchPanel(searchContainer){
                 //filter types...
                 switch (filter.type) {
                     case "text":
-                        filterString = "<span class='filterItem'>";
+                        filterString = "<span class='filterItem filterText'>";
                         //add label if there's no 
                         if(columnItem.length == 0)
                         	filterString += filter.label + ": ";
@@ -118,7 +118,7 @@ function addSearchPanel(searchContainer){
                         filterString += "</span>";
                         break;
                     case "combo":
-                        filterString = "<span class='filterItem'>";
+                        filterString = "<span class='filterItem filterCombo'>";
                         filterString += "<select class='filterCombo' name='" + 
                             filter.filterKey + "'>";
                         
@@ -131,6 +131,16 @@ function addSearchPanel(searchContainer){
                         filterString += "</select>";
                         filterString += "</span>";
                         break;
+                        
+                    case "date":
+                    	filterString += "<span class='filterItem filterDate'>";
+                    	//filterString += "<label for='from'>from</label>";
+                    	filterString += "<input type='text' id='" + filter.filterKey + "_from' name='from' class='datePicker' />";
+                    	filterString += "<label for='to'>to</label>";
+                    	filterString += "<input type='text' id='" + filter.filterKey + "_to' name='to' class='datePicker' />";
+                    	filterString += "<input type='hidden' name='" + filter.filterKey + "' />";
+                    	filterString += "</span>";
+                    	break;
                     default:
                         break;
                 }
@@ -171,6 +181,17 @@ function addSearchPanel(searchContainer){
         
         
         //special filters properties
+        $("input.datePicker").datepicker({
+        	dateFormat: "dd/mm/yy",
+        	altFormat: "yymmdd",
+        	onSelect: function( selectedDate ) {
+				$(this).nextAll("input").datepicker( "option", "minDate", selectedDate );
+				//$(this).prevAll("input").datepicker( "option", "maxDate", selectedDate );
+				
+        		//$( "#to" ).datepicker( "option", "minDate", selectedDate );
+			}
+        });
+        
         /*$('input[name$="taxon"]').autocomplete({
             source: baseAPIUrl + "search/taxon",
             minLength: 2
@@ -230,7 +251,7 @@ function expandFilterGroup(filterGroup){
  * the appropiate results
  */
 function generatedQueryData(){
-    var filterGroups = ["taxonomic_information", "geographic_information", "specimen_information"];
+    var filterGroups = ["taxonomic_information", "geographic_information", "specimen_information", "event_information", "identification_information"];
     var queryData = new Object();
         queryData.filterGroups = new Array();
     
@@ -252,15 +273,35 @@ function generatedQueryData(){
             var newFilter = new Object();
 
             var $filter;
+            
+            if($(item).hasClass('filterText')) {
+            	$filter = $("input[type=text]", item);
+            	newFilter.key = $filter.attr("name");
+                newFilter.value = $filter.val();
+            }
+            
+            else if($(item).hasClass('filterCombo')) {
+            	$filter = $("select", item);
+            	newFilter.key = $filter.attr("name");
+                newFilter.value = $filter.val();
+            }
+            
+            else if($(item).hasClass('filterDate')) {
+            	newFilter.key = $("input[type=hidden]", item).attr('name');
+            	newFilter.value = $("input#" + newFilter.key + "_from", item).val() +
+            				"|" + $("input#" + newFilter.key + "_to", item).val();
+            	
+            }
+
+            newFilterGroup.filters[index] = newFilter;
+            
+            /*
             if($("input[type='text']", item).length > 0)
                 $filter = $("input[type='text']", item);
             else if($("select", item).length > 0)
                 $filter = $("select", item);
-                
-            newFilter.key = $filter.attr("name");
-            newFilter.value = $filter.val();
+                */
 
-            newFilterGroup.filters[index] = newFilter;
         });
     
         queryData.filterGroups[i] = newFilterGroup;
@@ -398,12 +439,14 @@ function generatedTableRows(data){
     for(i=0; i < data.length; i++){
         rows += "<tr>";
         for(j=0; j < columnList.length; j++){
-            //debugger;
-            if(data[i][$(columnList[j]).attr("name")] != undefined){
-                rows += "<td>" + data[i][$(columnList[j]).attr("name")] + "</td>";
-            }
-            else
-                rows += "<td>" + data[i]['properties'][$(columnList[j]).attr("name")] + "</td>";
+            debugger;
+            //if(data[i][$(columnList[j]).attr("name")] != undefined){
+                rows += "<td>" + 
+                	(!data[i][$(columnList[j]).attr("name")]?"":data[i][$(columnList[j]).attr("name")]) + 
+                	"</td>";
+            //}
+            //else
+            //    rows += "<td>" + data[i]['properties'][$(columnList[j]).attr("name")] + "</td>";
         }
         rows += "</tr>";
     }

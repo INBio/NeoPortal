@@ -20,10 +20,14 @@ package org.inbio.neoportal.core.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
+import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Resolution;
 
 /**
  *
@@ -62,6 +66,7 @@ public class OccurrenceDwc implements Serializable {
     private String collectionId;
     private String datasetId;
     private String institutionCode;
+    @Field
     private String collectionCode;
     private String datasetName;
     private String ownerInstitutionCode;
@@ -71,18 +76,23 @@ public class OccurrenceDwc implements Serializable {
     private String dynamicProperties;
     //Occurrence
     private String occurrenceId;
+    @Field
     private String catalogNumber;
     private String occurrenceRemarks;
     private String recordNumber;
     private String recordedBy;
     private String individualId;
     private String individualCount;
+    @Field
     private String sex;
+    @Field
     private String lifeStage;
     private String reproductiveCondition;
     private String behavior;
+    @Field
     private String establishmentMeans;
     private String occurrenceStatus;
+    @Field
     private String preparations;
     private String disposition;
     private String otherCatalogNumbers;
@@ -93,7 +103,9 @@ public class OccurrenceDwc implements Serializable {
     private String associatedSequences;
     private String associatedTaxa;
     //Event
+    @Field
     private String eventId;
+    @Field
     private String samplingProtocol;
     private String samplingEffort;
     private String eventDate;
@@ -175,7 +187,9 @@ public class OccurrenceDwc implements Serializable {
     //Identification
     private String identificationId;
     private String identifiedBy;
-    private String dateIdentified;
+    @Field
+    @DateBridge(resolution=Resolution.DAY)
+    private Date dateIdentified;
     private String identificationReferences;
     private String identificationVerificationStatus;
     private String identificationRemarks;
@@ -190,6 +204,7 @@ public class OccurrenceDwc implements Serializable {
     private String nameAccordingToId;
     private String namePublishedInId;
     private String taxonConceptId;
+    @Field
     private String scientificName;
     private String acceptedNameUsage;
     private String parentNameUsage;
@@ -198,11 +213,17 @@ public class OccurrenceDwc implements Serializable {
     private String namePublishedIn;
     private String namePublishedInYear;
     private String higherClassification;
+    @Field
     private String kingdom;
+    @Field
     private String phylum;
+    @Field
     private String class_;
+    @Field
     private String taxonOrder;
+    @Field
     private String family;
+    @Field
     private String genus;
     private String subgenus;
     private String specificEpithet;
@@ -220,9 +241,185 @@ public class OccurrenceDwc implements Serializable {
     public OccurrenceDwc() {
     }
 
+    
+	public OccurrenceDwc(BigDecimal id, Location location,
+			DataProvider dataProvider, Taxon taxon, String type,
+			String modified, String language, String rights,
+			String rightsHolder, String accessRights,
+			String bibliographicCitation, String references,
+			String institutionId, String collectionId, String datasetId,
+			String institutionCode, String collectionCode, String datasetName,
+			String ownerInstitutionCode, String basisOfRecord,
+			String informationWithheld, String dataGeneralizations,
+			String dynamicProperties, String occurrenceId,
+			String catalogNumber, String occurrenceRemarks,
+			String recordNumber, String recordedBy, String individualId,
+			String individualCount, String sex, String lifeStage,
+			String reproductiveCondition, String behavior,
+			String establishmentMeans, String occurrenceStatus,
+			String preparations, String disposition,
+			String otherCatalogNumbers, String previousIdentifications,
+			String associatedMedia, String associatedReferences,
+			String associatedOccurrences, String associatedSequences,
+			String associatedTaxa, String eventId, String samplingProtocol,
+			String samplingEffort, String eventDate, String eventTime,
+			String startDayOfYear, String endDayOfYear, String year,
+			String month, String day, String verbatimEventDate, String habitat,
+			String fieldNumber, String fieldNotes, String eventRemarks,
+			String geologicalContextId, String earliestEonOrLowestEonothem,
+			String latestEonOrHighestEonothem,
+			String earliestEraOrLowestErathem,
+			String latestEraOrHighestErathem,
+			String earliestPeriodOrLowestSystem,
+			String latestPeriodOrHighestSystem,
+			String earliestEpochOrLowestSeries,
+			String latestEpochOrHighestSeries, String earliestAgeOrLowestStage,
+			String latestAgeOrHighestStage, String lowestBiostratigraphicZone,
+			String highestBiostratigraphicZone, String lithostratigraphicTerms,
+			String group, String formation, String member, String bed,
+			String identificationId, String identifiedBy,
+			Date dateIdentified, String identificationReferences,
+			String identificationVerificationStatus,
+			String identificationRemarks, String identificationQualifier,
+			String typeStatus, String taxonId, String scientificNameId,
+			String acceptedNameUsageId, String parentNameUsageId,
+			String originalNameUsageId, String nameAccordingToId,
+			String namePublishedInId, String taxonConceptId,
+			String scientificName, String acceptedNameUsage,
+			String parentNameUsage, String originalNameUsage,
+			String nameAccordingTo, String namePublishedIn,
+			String namePublishedInYear, String higherClassification,
+			String kingdom, String phylum, String class_, String taxonOrder,
+			String family, String genus, String subgenus,
+			String specificEpithet, String infraspecificEpithet,
+			String taxonRank, String verbatimTaxonRank,
+			String scientificNameAuthorship, String vernacularName,
+			String nomenclaturalCode, String taxonomicStatus,
+			String nomenclaturalStatus, String taxonRemarks) {
+		Id = id;
+		this.location = location;
+		this.dataProvider = dataProvider;
+		this.taxon = taxon;
+		this.type = type;
+		this.modified = modified;
+		this.language = language;
+		this.rights = rights;
+		this.rightsHolder = rightsHolder;
+		this.accessRights = accessRights;
+		this.bibliographicCitation = bibliographicCitation;
+		this.references = references;
+		this.institutionId = institutionId;
+		this.collectionId = collectionId;
+		this.datasetId = datasetId;
+		this.institutionCode = institutionCode;
+		this.collectionCode = collectionCode;
+		this.datasetName = datasetName;
+		this.ownerInstitutionCode = ownerInstitutionCode;
+		this.basisOfRecord = basisOfRecord;
+		this.informationWithheld = informationWithheld;
+		this.dataGeneralizations = dataGeneralizations;
+		this.dynamicProperties = dynamicProperties;
+		this.occurrenceId = occurrenceId;
+		this.catalogNumber = catalogNumber;
+		this.occurrenceRemarks = occurrenceRemarks;
+		this.recordNumber = recordNumber;
+		this.recordedBy = recordedBy;
+		this.individualId = individualId;
+		this.individualCount = individualCount;
+		this.sex = sex;
+		this.lifeStage = lifeStage;
+		this.reproductiveCondition = reproductiveCondition;
+		this.behavior = behavior;
+		this.establishmentMeans = establishmentMeans;
+		this.occurrenceStatus = occurrenceStatus;
+		this.preparations = preparations;
+		this.disposition = disposition;
+		this.otherCatalogNumbers = otherCatalogNumbers;
+		this.previousIdentifications = previousIdentifications;
+		this.associatedMedia = associatedMedia;
+		this.associatedReferences = associatedReferences;
+		this.associatedOccurrences = associatedOccurrences;
+		this.associatedSequences = associatedSequences;
+		this.associatedTaxa = associatedTaxa;
+		this.eventId = eventId;
+		this.samplingProtocol = samplingProtocol;
+		this.samplingEffort = samplingEffort;
+		this.eventDate = eventDate;
+		this.eventTime = eventTime;
+		this.startDayOfYear = startDayOfYear;
+		this.endDayOfYear = endDayOfYear;
+		this.year = year;
+		this.month = month;
+		this.day = day;
+		this.verbatimEventDate = verbatimEventDate;
+		this.habitat = habitat;
+		this.fieldNumber = fieldNumber;
+		this.fieldNotes = fieldNotes;
+		this.eventRemarks = eventRemarks;
+		this.geologicalContextId = geologicalContextId;
+		this.earliestEonOrLowestEonothem = earliestEonOrLowestEonothem;
+		this.latestEonOrHighestEonothem = latestEonOrHighestEonothem;
+		this.earliestEraOrLowestErathem = earliestEraOrLowestErathem;
+		this.latestEraOrHighestErathem = latestEraOrHighestErathem;
+		this.earliestPeriodOrLowestSystem = earliestPeriodOrLowestSystem;
+		this.latestPeriodOrHighestSystem = latestPeriodOrHighestSystem;
+		this.earliestEpochOrLowestSeries = earliestEpochOrLowestSeries;
+		this.latestEpochOrHighestSeries = latestEpochOrHighestSeries;
+		this.earliestAgeOrLowestStage = earliestAgeOrLowestStage;
+		this.latestAgeOrHighestStage = latestAgeOrHighestStage;
+		this.lowestBiostratigraphicZone = lowestBiostratigraphicZone;
+		this.highestBiostratigraphicZone = highestBiostratigraphicZone;
+		this.lithostratigraphicTerms = lithostratigraphicTerms;
+		this.group = group;
+		this.formation = formation;
+		this.member = member;
+		this.bed = bed;
+		this.identificationId = identificationId;
+		this.identifiedBy = identifiedBy;
+		this.dateIdentified = dateIdentified;
+		this.identificationReferences = identificationReferences;
+		this.identificationVerificationStatus = identificationVerificationStatus;
+		this.identificationRemarks = identificationRemarks;
+		this.identificationQualifier = identificationQualifier;
+		this.typeStatus = typeStatus;
+		this.taxonId = taxonId;
+		this.scientificNameId = scientificNameId;
+		this.acceptedNameUsageId = acceptedNameUsageId;
+		this.parentNameUsageId = parentNameUsageId;
+		this.originalNameUsageId = originalNameUsageId;
+		this.nameAccordingToId = nameAccordingToId;
+		this.namePublishedInId = namePublishedInId;
+		this.taxonConceptId = taxonConceptId;
+		this.scientificName = scientificName;
+		this.acceptedNameUsage = acceptedNameUsage;
+		this.parentNameUsage = parentNameUsage;
+		this.originalNameUsage = originalNameUsage;
+		this.nameAccordingTo = nameAccordingTo;
+		this.namePublishedIn = namePublishedIn;
+		this.namePublishedInYear = namePublishedInYear;
+		this.higherClassification = higherClassification;
+		this.kingdom = kingdom;
+		this.phylum = phylum;
+		this.class_ = class_;
+		this.taxonOrder = taxonOrder;
+		this.family = family;
+		this.genus = genus;
+		this.subgenus = subgenus;
+		this.specificEpithet = specificEpithet;
+		this.infraspecificEpithet = infraspecificEpithet;
+		this.taxonRank = taxonRank;
+		this.verbatimTaxonRank = verbatimTaxonRank;
+		this.scientificNameAuthorship = scientificNameAuthorship;
+		this.vernacularName = vernacularName;
+		this.nomenclaturalCode = nomenclaturalCode;
+		this.taxonomicStatus = taxonomicStatus;
+		this.nomenclaturalStatus = nomenclaturalStatus;
+		this.taxonRemarks = taxonRemarks;
+	}
 
-    
-    
+
+
+
 	/**
 	 * @return the id
 	 */
@@ -292,14 +489,9 @@ public class OccurrenceDwc implements Serializable {
 
 
 
-
-	/**
-	 * @param taxon the taxon to set
-	 */
 	public void setTaxon(Taxon taxon) {
 		this.taxon = taxon;
 	}
-
 
 
 
@@ -1672,7 +1864,7 @@ public class OccurrenceDwc implements Serializable {
 	/**
 	 * @return the dateIdentified
 	 */
-	public String getDateIdentified() {
+	public Date getDateIdentified() {
 		return dateIdentified;
 	}
 
@@ -1681,7 +1873,7 @@ public class OccurrenceDwc implements Serializable {
 	/**
 	 * @param dateIdentified the dateIdentified to set
 	 */
-	public void setDateIdentified(String dateIdentified) {
+	public void setDateIdentified(Date dateIdentified) {
 		this.dateIdentified = dateIdentified;
 	}
 

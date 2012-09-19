@@ -235,7 +235,7 @@ public class AdvancedSearchApiController{
             
 
     		ModelAndView mav = new ModelAndView(new CSVview());;
-    		List<OccurrenceSDTO> occurrenceSDTO;
+    		List<OccurrenceDwcCDTO> occurrenceCDTO;
     		List<String> columns;
     		ObjectMapper mapper = new ObjectMapper();
     		try {
@@ -243,7 +243,7 @@ public class AdvancedSearchApiController{
 				FilterSDTO filterSDTO = mapper.readValue(filters, FilterSDTO.class);
 				
 	    		//get all occurrences
-				occurrenceSDTO =
+				occurrenceCDTO =
 	                    advancedSearchManager.occurrenceSearch(filterSDTO);
 	            
 	            //get columns selected by the user
@@ -252,7 +252,7 @@ public class AdvancedSearchApiController{
 					columns.addAll(data.getColumns());
 				}
 	    		
-	            mav.addObject("data", occurrenceSDTO);
+	            mav.addObject("data", occurrenceCDTO);
 	            mav.addObject("columns", columns);
 	            
 			} catch (JsonParseException e) {

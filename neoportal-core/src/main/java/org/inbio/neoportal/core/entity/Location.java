@@ -73,8 +73,79 @@ public class Location  implements java.io.Serializable {
     public Location() {
     }
 
-	
-    public Location(BigDecimal locationId) {
+    public Location(BigDecimal locationId, String higherGeographyId,
+			String higherGeography, String continent, String waterBody,
+			String islandGroup, String island, String country,
+			String countryCode, String stateProvince, String county,
+			String municipality, String locality, String verbatimLocality,
+			String verbatimElevation, String minimumElevationInMeters,
+			String maximumElevationInMeters, String verbatimDepth,
+			String minimumDepthInMeters, String maximumDepthInMeters,
+			String minimumDistanceAboveSurfaceInMeters,
+			String maximumDistanceAboveSurfaceInMeters,
+			String locationAccordingTo, String locationRemarks,
+			String verbatimCoordinates, String verbatimLatitude,
+			String verbatimLongitude, String verbatimCoordinateSystem,
+			String verbatimSRS, String decimalLatitude,
+			String decimalLongitude, String geodeticDatum,
+			String coordinateUncertaintyInMeters, String coordinatePrecision,
+			String pointRadiusSpatialFit, String footprintWKT,
+			String footprintSRS, String footprintSpatialFit,
+			String georeferencedBy, String georeferencedDate,
+			String georeferenceProtocol, String georeferenceSources,
+			String georeferenceVerificationStatus, String georeferenceRemarks,
+			Set occurrences, Set features) {
+		this.locationId = locationId;
+		this.higherGeographyId = higherGeographyId;
+		this.higherGeography = higherGeography;
+		this.continent = continent;
+		this.waterBody = waterBody;
+		this.islandGroup = islandGroup;
+		this.island = island;
+		this.country = country;
+		this.countryCode = countryCode;
+		this.stateProvince = stateProvince;
+		this.county = county;
+		this.municipality = municipality;
+		this.locality = locality;
+		this.verbatimLocality = verbatimLocality;
+		this.verbatimElevation = verbatimElevation;
+		this.minimumElevationInMeters = minimumElevationInMeters;
+		this.maximumElevationInMeters = maximumElevationInMeters;
+		this.verbatimDepth = verbatimDepth;
+		this.minimumDepthInMeters = minimumDepthInMeters;
+		this.maximumDepthInMeters = maximumDepthInMeters;
+		this.minimumDistanceAboveSurfaceInMeters = minimumDistanceAboveSurfaceInMeters;
+		this.maximumDistanceAboveSurfaceInMeters = maximumDistanceAboveSurfaceInMeters;
+		this.locationAccordingTo = locationAccordingTo;
+		this.locationRemarks = locationRemarks;
+		this.verbatimCoordinates = verbatimCoordinates;
+		this.verbatimLatitude = verbatimLatitude;
+		this.verbatimLongitude = verbatimLongitude;
+		this.verbatimCoordinateSystem = verbatimCoordinateSystem;
+		this.verbatimSRS = verbatimSRS;
+		this.decimalLatitude = decimalLatitude;
+		this.decimalLongitude = decimalLongitude;
+		this.geodeticDatum = geodeticDatum;
+		this.coordinateUncertaintyInMeters = coordinateUncertaintyInMeters;
+		this.coordinatePrecision = coordinatePrecision;
+		this.pointRadiusSpatialFit = pointRadiusSpatialFit;
+		this.footprintWKT = footprintWKT;
+		this.footprintSRS = footprintSRS;
+		this.footprintSpatialFit = footprintSpatialFit;
+		this.georeferencedBy = georeferencedBy;
+		this.georeferencedDate = georeferencedDate;
+		this.georeferenceProtocol = georeferenceProtocol;
+		this.georeferenceSources = georeferenceSources;
+		this.georeferenceVerificationStatus = georeferenceVerificationStatus;
+		this.georeferenceRemarks = georeferenceRemarks;
+		this.occurrences = occurrences;
+		this.features = features;
+	}
+
+
+
+	public Location(BigDecimal locationId) {
         this.locationId = locationId;
     }
     

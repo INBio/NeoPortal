@@ -8,7 +8,7 @@
         <id name="Id" type="big_decimal">
             <column name="id" precision="131089" scale="0" />
             <generator class="sequence">
-            	<param name="sequence">occurrence_dwc_occurrence_id_seq</param>
+            	<param name="sequence">occurrence_dwc_id_seq</param>
             </generator>
         </id>
         <many-to-one name="location" class="org.inbio.neoportal.core.entity.Location" fetch="select">
@@ -381,7 +381,7 @@
         <property name="identifiedBy" type="string">
             <column name="identifiedby" />
         </property>
-        <property name="dateIdentified" type="string">
+        <property name="dateIdentified" type="date">
             <column name="dateidentified" />
         </property>
         <property name="identificationReferences" type="string">

@@ -22,10 +22,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -110,6 +112,8 @@ public class Importer {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date = new Date();
         String dateLastModified = dateFormat.format(date);
+        
+        DateFormat sourceDateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.ENGLISH);
         
         DataProvider dp = (DataProvider)
                        genericBaseDAO.findAll(DataProvider.class).get(0);
@@ -313,7 +317,8 @@ public class Importer {
                
                occurrence.setIdentificationId(importDwc.getIdentificationId());
                occurrence.setIdentifiedBy(importDwc.getIdentifiedBy());
-               occurrence.setDateIdentified(importDwc.getDateIdentified());
+               if(importDwc.getDateIdentified() != null && importDwc.getDateIdentified().length() > 0)
+            	   occurrence.setDateIdentified(sourceDateFormat.parse(importDwc.getDateIdentified()));
                occurrence.setIdentificationReferences(importDwc.getIdentificationReferences());
                occurrence.setIdentificationVerificationStatus(importDwc.getIdentificationVerificationStatus());
                occurrence.setIdentificationRemarks(importDwc.getIdentificationRemarks());
@@ -368,32 +373,21 @@ public class Importer {
                             new Object[]{importDwc.getId(),ex.getStackTrace()});
                     
                     System.exit(-1);
-                }
+                } catch (ParseException e) {
+//					Logger.getLogger(Importer.class.getName()).log
+//                        (Level.SEVERE, 
+//                            "ParseException occurrenceId {0} {1}", 
+//                            new Object[]{importDwc.getId(),e.});
+                	e.printStackTrace();
+				}
             } // end for, 1000 importDwc rows
             
-            /*
-            setCounter++;
-            
-            if(setCounter % 100 == 0){
-              Logger.getLogger(Importer.class.getName()).log
-              (Level.INFO, "Adding {0}000 occurrences", new Object[]{setCounter});
-
-            }
-            */
             
             session.flush();
             session.clear();
             
-            //store data every 1000 regs
-            //transactionManager.commit(status);
-                        
-            //create new transaction for the next 1000 regs
-            //transaction = new DefaultTransactionDefinition();
-            //status = transactionManager.getTransaction(transaction);
-            
             firstResult += maxResults;
                 
-            //ScrollableResults occurrencesDwcList = 
             occurrencesDwcList =
                     importDwcDAO.scrollAll(ImportDwc.class,
                         maxResults,

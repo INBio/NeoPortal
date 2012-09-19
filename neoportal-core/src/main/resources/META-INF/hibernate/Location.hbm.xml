@@ -142,7 +142,7 @@
             </key>
             <one-to-many class="org.inbio.neoportal.core.entity.OccurrenceDwc" />
         </set>
-        <set name="features" table="location_features">
+        <set name="features" table="location_features" >
             <key>
                 <column name="location_id"></column>
             </key>

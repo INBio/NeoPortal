@@ -87,6 +87,6 @@ public interface AdvancedSearchManager {
      * @param filters
      * @return list of all occurrences matching the query
      */
-    public List<OccurrenceSDTO> occurrenceSearch(
+    public List<OccurrenceDwcCDTO> occurrenceSearch(
     		FilterSDTO filters);
 }

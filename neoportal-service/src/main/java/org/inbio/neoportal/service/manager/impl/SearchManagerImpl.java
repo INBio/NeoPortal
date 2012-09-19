@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.apache.lucene.queryParser.ParseException;
 import org.inbio.neoportal.core.dao.OccurrenceDAO;
 import org.inbio.neoportal.core.dao.TaxonDAO;
@@ -29,7 +30,6 @@ import org.inbio.neoportal.core.dao.TaxonDescriptionDAO;
 import org.inbio.neoportal.core.dto.commonname.CommonNameLiteCDTO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceGeospatialLiteCDTO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceLiteCDTO;
-import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionLiteCDTO;
