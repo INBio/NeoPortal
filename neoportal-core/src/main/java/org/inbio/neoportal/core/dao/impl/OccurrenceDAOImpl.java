@@ -28,6 +28,7 @@ import org.inbio.neoportal.core.dao.OccurrenceDAO;
 import org.inbio.neoportal.core.dto.transformers.OccurrenceDWCTransformer;
 import org.inbio.neoportal.core.dto.transformers.OccurrenceTransformer;
 import org.inbio.neoportal.core.entity.Occurrence;
+import org.inbio.neoportal.core.entity.OccurrenceDwc;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -38,7 +39,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class OccurrenceDAOImpl 
-    extends GenericBaseDAOImpl<Occurrence, BigDecimal>
+    extends GenericBaseDAOImpl<OccurrenceDwc, BigDecimal>
         implements OccurrenceDAO{ 
     
        /**
@@ -65,7 +66,7 @@ public class OccurrenceDAOImpl
         ArrayList<String> fieldList = new ArrayList<String>();
         fieldList.addAll(Arrays.asList(occurrence));
         
-        return super.search(Occurrence.class,
+        return super.search(OccurrenceDwc.class,
                             new OccurrenceTransformer(),
                             fieldList.toArray(new String[fieldList.size()]),
                             searchText,
@@ -92,7 +93,7 @@ public class OccurrenceDAOImpl
         ArrayList<String> fieldList = new ArrayList<String>();
         fieldList.addAll(Arrays.asList(occurrence));
         
-        return super.searchCount(Occurrence.class, 
+        return super.searchCount(OccurrenceDwc.class, 
                                  new OccurrenceTransformer(),
                                  fieldList.toArray(new String[fieldList.size()]),
                                  searchText);
@@ -108,12 +109,12 @@ public class OccurrenceDAOImpl
     * @return 
     */
     @Override
-    public List advancedSearch(
+    public List advancedSearchPaginated(
         final String searchText,
         final int offset, 
         final int quantity){
         
-        return super.search(Occurrence.class,
+        return super.search(OccurrenceDwc.class,
                             new OccurrenceDWCTransformer(),
                             searchText,
                             offset,
@@ -121,18 +122,50 @@ public class OccurrenceDAOImpl
     }
     
     @Override
-    public Occurrence findByLocationId(
+    public OccurrenceDwc findByLocationId(
             final String locationId){
         HibernateTemplate template = getHibernateTemplate();
-		return (Occurrence) template.execute(new HibernateCallback() {
+		return (OccurrenceDwc) template.execute(new HibernateCallback() {
             @Override
 			public Object doInHibernate(Session session) {
                 Query query = session.createQuery(
-						"from Occurrence as oc"
+						"from OccurrenceDwc as oc"
 						+ " where oc.locationId = :locationId");
 				query.setParameter("locationId", locationId);
 				return query.list().get(0);
 			}
 		});
     }
+
+	/* (non-Javadoc)
+	 * @see org.inbio.neoportal.core.dao.OccurrenceDAO#getSexValues()
+	 */
+	@Override
+	public List<String> getSexValues() {
+		HibernateTemplate template = getHibernateTemplate();
+		return (List<String>) template.execute(new HibernateCallback() {
+            @Override
+			public Object doInHibernate(Session session) {
+                Query query = session.createQuery(
+						"select distinct oc.sex from OccurrenceDwc as oc");
+                query.setCacheable(true);
+				return query.list();
+			}
+		});
+		
+	}
+	
+	@Override
+	public OccurrenceDwc findByCatalogNumber(final String catalogNumber){
+		HibernateTemplate template = getHibernateTemplate();
+		return (OccurrenceDwc) template.execute(new HibernateCallback() {
+            @Override
+			public Object doInHibernate(Session session) {
+                Query query = session.createQuery(
+						"from OccurrenceDwc where CatalogNumber = ?");
+                query.setString(0, catalogNumber);
+				return query.uniqueResult();
+			}
+		});	
+	}
 }

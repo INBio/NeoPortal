@@ -108,7 +108,7 @@ public class Taxon
      private Set<TaxonDescription> taxonDescriptions = new HashSet<TaxonDescription>(0);
 
      @ContainedIn
-     private Set<Occurrence> occurrences = new HashSet<Occurrence>(0);
+     private Set<OccurrenceDwc> occurrences = new HashSet<OccurrenceDwc>(0);
 
 
      private Set<TaxonHasReferenceElement> taxonHasReferenceElements 
@@ -461,7 +461,7 @@ public class Taxon
         this.domain = domain;
     }
 
-    public void setOccurrences(Set<Occurrence> occurrences) {
+    public void setOccurrences(Set<OccurrenceDwc> occurrences) {
         this.occurrences = occurrences;
     }
 

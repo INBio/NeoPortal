@@ -18,20 +18,25 @@
  */
 package org.inbio.neoportal.index;
 
-import au.com.bytecode.opencsv.CSVReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.hibernate.Session;
 import org.inbio.neoportal.core.dao.GenericBaseDAO;
-import org.inbio.neoportal.core.dao.OccurrenceDAO;
+import org.inbio.neoportal.core.dao.LocationDAO;
+import org.inbio.neoportal.core.dao.OccurrenceNewDAO;
 import org.inbio.neoportal.core.dao.TaxonDAO;
+import org.inbio.neoportal.core.dao.TaxonNewDAO;
 import org.inbio.neoportal.core.dao.impl.GenericBaseDAOImpl;
 import org.inbio.neoportal.core.entity.DataProvider;
 import org.inbio.neoportal.core.entity.GeoFeature;
@@ -39,7 +44,7 @@ import org.inbio.neoportal.core.entity.GeoFeatureId;
 import org.inbio.neoportal.core.entity.GeoLayer;
 import org.inbio.neoportal.core.entity.ImportDwc;
 import org.inbio.neoportal.core.entity.Location;
-import org.inbio.neoportal.core.entity.Occurrence;
+import org.inbio.neoportal.core.entity.OccurrenceDwc;
 import org.inbio.neoportal.core.entity.Taxon;
 import org.inbio.neoportal.core.entity.TaxonDescription;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +53,8 @@ import org.springframework.orm.hibernate3.HibernateTransactionManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
+
+import au.com.bytecode.opencsv.CSVReader;
 
 /**
  *
@@ -71,10 +78,16 @@ public class Importer {
     private GenericBaseDAO genericBaseDAO;
         
     @Autowired
-    private OccurrenceDAO occurrenceDAO;
+    private OccurrenceNewDAO occurrenceDAO;
     
     @Autowired
     private TaxonDAO taxonDAO;
+    
+    @Autowired
+    private TaxonNewDAO taxonNewDAO;
+    
+    @Autowired
+    private LocationDAO locationDAO;
     
     public Importer() {
         super();
@@ -85,11 +98,11 @@ public class Importer {
             String geoFeatureFile, 
             String locationFeatureFile,
             String taxonDescriptionFile){
-    //    importOccurrences();
+        importOccurrences();
     //    importGeoLayers(geoLayerFile);
     //    importGeoFeatures(geoFeatureFile);
     //    importLocationFeatures(locationFeatureFile);
-        importTaxonDescription(taxonDescriptionFile);
+    //    importTaxonDescription(taxonDescriptionFile);
     }
 
     public void importOccurrences(){
@@ -100,20 +113,27 @@ public class Importer {
         Date date = new Date();
         String dateLastModified = dateFormat.format(date);
         
+        DateFormat sourceDateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.ENGLISH);
+        
         DataProvider dp = (DataProvider)
                        genericBaseDAO.findAll(DataProvider.class).get(0);
         
         int firstResult = 0;
-                
+        int setCounter = 0; //every 100 (the jdbc batch size) call flush 
+        
         //start new transaction
         DefaultTransactionDefinition transaction = new DefaultTransactionDefinition();
         TransactionStatus status = transactionManager.getTransaction(transaction);
         
-        //ScrollableResults occurrencesDwcList = 
+        Session session = transactionManager.getSessionFactory().getCurrentSession();
+
         List<ImportDwc> occurrencesDwcList =
                 importDwcDAO.scrollAll(ImportDwc.class,
                         maxResults,
+                		//1,
                         firstResult);
+        
+        boolean update;
         
         while(!occurrencesDwcList.isEmpty()){
             Logger.getLogger(Importer.class.getName()).log
@@ -122,111 +142,230 @@ public class Importer {
             for (ImportDwc importDwc : occurrencesDwcList) {
 
                 try{
+                
+                /*
                 //avoid repeated occurrenceId
-                Occurrence occurrence = occurrenceDAO.findById(
-                        Occurrence.class, 
-                        new BigDecimal(importDwc.getCatalognumber().replace("\"", "")));
+                OccurrenceDwc occurrence = occurrenceDAO.findByCatalogNumber(
+                        importDwc.getCatalogNumber().replace("\"", ""));
                 
                 if(occurrence != null){
                     Logger.getLogger(Importer.class.getName()).log
                         (Level.INFO, "OccurrenceId {0} already exist!", 
-                                new BigDecimal(importDwc.getCatalognumber().replace("\"", "")));
+                                new BigDecimal(importDwc.getCatalogNumber().replace("\"", "")));
             
+                    //update = true;
                     continue;
                 }
                 else {
-                    occurrence = new Occurrence();
+                	update = false;
+                    occurrence = new OccurrenceDwc();
                 }
+                */
+                OccurrenceDwc occurrence = new OccurrenceDwc();
                 
                Taxon taxon;
                //check if taxonId is empty (unidentify specimens)
-               if(importDwc.getTaxonid().isEmpty()){
+               if(importDwc.getTaxonId().isEmpty()){
                    taxon = null;
                }else{
                 //find taxon entity
-                taxon = (Taxon) genericBaseDAO.findById(
-                        Taxon.class, new BigDecimal(importDwc.getTaxonid().replace("\"", "")));
+                taxon = taxonNewDAO.findById(new BigDecimal(importDwc.getTaxonId().replace("\"", "")));
+            	//   taxon = taxonDAO.findById(Taxon.class, new BigDecimal(importDwc.getTaxonId().replace("\"", "")));
                }
 
                 // TODO: fix, use specimenId instead
-               occurrence.setOccurrenceId(
-                       new BigDecimal(importDwc.getCatalognumber().replace("\"", "")));
+               occurrence.setOccurrenceId(importDwc.getCatalogNumber().replace("\"", ""));
                        
                occurrence.setDataProvider(dp);
                occurrence.setTaxon(taxon);
-               occurrence.setGlobalUniqueIdentifier(
-                       importDwc.getInstitutioncode() + ":" +
-                       importDwc.getCollectioncode() + ":" +
-                       importDwc.getCatalognumber());
-               occurrence.setDateLastModified(dateLastModified);
-               occurrence.setInstitutionCode(importDwc.getInstitutioncode());
-               occurrence.setCollectionCode(importDwc.getCollectioncode());
-               occurrence.setCatalogNumber(importDwc.getCatalognumber());
-               occurrence.setScientificName(importDwc.getScientificname());
-               occurrence.setBasisOfRecord(importDwc.getBasisofrecord());
-               occurrence.setInformationWithheld(importDwc.getInformationwithheld());
-               // TODO: change field to update Darwin Core standard
-      //       occurrence.setHigherTaxon(taxon.getTaxonByAncestorTaxonId().getDefaultName());
+               
+             //find or create location
+               Location location = locationDAO.findById(new BigDecimal(importDwc.getLocationId())); 
+//            		   (Location)
+//                       genericBaseDAO.findById(
+//                           Location.class, 
+//                           new BigDecimal(importDwc.getLocationId()));
+
+               if(location == null){
+                   location = new Location(
+                                   new BigDecimal(importDwc.getLocationId()));
+                   location.setHigherGeographyId(importDwc.getHigherGeographyId());
+                   location.setHigherGeography(importDwc.getHigherGeography());
+                   location.setContinent(importDwc.getContinent());
+                   location.setWaterBody(importDwc.getWaterBody());
+                   location.setIslandGroup(importDwc.getIslandGroup());
+                   location.setIsland(importDwc.getIsland());
+                   location.setCountry(importDwc.getCountry());
+                   location.setCountryCode(importDwc.getCountryCode());
+                   location.setStateProvince(importDwc.getStateProvince());
+                   location.setCounty(importDwc.getCounty());
+                   location.setMunicipality(importDwc.getMunicipality());
+                   location.setLocality(importDwc.getLocality());
+                   location.setVerbatimLocality(importDwc.getVerbatimLocality());
+                   location.setVerbatimElevation(importDwc.getVerbatimElevation());
+                   location.setMinimumElevationInMeters(importDwc.getMinimumElevationInMeters());
+                   location.setMaximumElevationInMeters(importDwc.getMaximumElevationInMeters());
+                   location.setVerbatimDepth(importDwc.getVerbatimDepth());
+                   location.setMinimumDepthInMeters(importDwc.getMinimumDepthInMeters());
+                   location.setMaximumDepthInMeters(importDwc.getMaximumDepthInMeters());
+                   location.setMinimumDistanceAboveSurfaceInMeters(importDwc.getMinimumDistanceAboveSurfaceInMeters());
+                   location.setMaximumDistanceAboveSurfaceInMeters(importDwc.getMaximumDistanceAboveSurfaceInMeters());
+                   location.setLocationAccordingTo(importDwc.getLocationAccordingTo());
+                   location.setLocationRemarks(importDwc.getLocationRemarks());
+                   location.setVerbatimCoordinates(importDwc.getVerbatimCoordinates());
+                   location.setVerbatimLatitude(importDwc.getVerbatimLatitude());
+                   location.setVerbatimLongitude(importDwc.getVerbatimLongitude());
+                   location.setVerbatimCoordinateSystem(importDwc.getVerbatimCoordinateSystem());
+                   location.setVerbatimSRS(importDwc.getVerbatimSRS());
+                   location.setDecimalLatitude(importDwc.getDecimalLatitude());
+                   location.setDecimalLongitude(importDwc.getDecimalLongitude());
+                   location.setGeodeticDatum(importDwc.getGeodeticDatum());
+                   location.setCoordinateUncertaintyInMeters(importDwc.getCoordinateUncertaintyInMeters());
+                   location.setCoordinatePrecision(importDwc.getCoordinatePrecision());
+                   location.setPointRadiusSpatialFit(importDwc.getPointRadiusSpatialFit());
+                   location.setFootprintWKT(importDwc.getFootprintWKT());
+                   location.setFootprintSRS(importDwc.getFootprintSRS());
+                   location.setFootprintSpatialFit(importDwc.getFootprintSpatialFit());
+                   location.setGeoreferencedBy(importDwc.getGeoreferencedBy());
+                   location.setGeoreferencedDate(importDwc.getGeoreferencedDate());
+                   location.setGeoreferenceProtocol(importDwc.getGeoreferenceProtocol());
+                   location.setGeoreferenceSources(importDwc.getGeoreferenceSources());
+                   location.setGeoreferenceVerificationStatus(importDwc.getGeoreferenceVerificationStatus());
+                   location.setGeoreferenceRemarks(importDwc.getGeoreferenceRemarks());
+                   
+                   locationDAO.create(location);
+               }
+               occurrence.setLocation(location);
+               
+               occurrence.setType(importDwc.getType());
+               occurrence.setModified(importDwc.getModified());
+               occurrence.setLanguage(importDwc.getLanguage());
+               occurrence.setRights(importDwc.getRights());
+               occurrence.setRightsHolder(importDwc.getRightsHolder());
+               occurrence.setAccessRights(importDwc.getAccessRights());
+               occurrence.setBibliographicCitation(importDwc.getBibliographicCitation());
+               occurrence.setReferences(importDwc.getReferences());
+               occurrence.setInstitutionId(importDwc.getInstitutionId());
+               occurrence.setCollectionId(importDwc.getCollectionId());
+               occurrence.setDatasetId(importDwc.getDatasetId());
+               occurrence.setInstitutionCode(importDwc.getInstitutionCode());
+               occurrence.setCollectionCode(importDwc.getCollectionCode());
+               occurrence.setDatasetName(importDwc.getDatasetName());
+               occurrence.setOwnerInstitutionCode(importDwc.getOwnerInstitutionCode());
+               occurrence.setBasisOfRecord(importDwc.getBasisOfRecord());
+               occurrence.setInformationWithheld(importDwc.getInformationWithheld());
+               occurrence.setDataGeneralizations(importDwc.getDataGeneralizations());
+               occurrence.setDynamicProperties(importDwc.getDynamicProperties());
+               
+       	   	   occurrence.setOccurrenceId(importDwc.getOccurrenceId().toString());
+               occurrence.setCatalogNumber(importDwc.getCatalogNumber());
+               occurrence.setOccurrenceRemarks(importDwc.getOccurrenceRemarks());
+               occurrence.setRecordNumber(importDwc.getRecordNumber());
+               occurrence.setRecordedBy(importDwc.getRecordedBy());
+               occurrence.setIndividualId(importDwc.getIndividualId());
+               occurrence.setIndividualCount(importDwc.getIndividualCount());
+               occurrence.setSex(importDwc.getSex());
+               occurrence.setLifeStage(importDwc.getLifeStage());
+               occurrence.setReproductiveCondition(importDwc.getReproductiveCondition());
+               occurrence.setBehavior(importDwc.getBehavior());
+               occurrence.setEstablishmentMeans(importDwc.getEstablishmentMeans());
+               occurrence.setOccurrenceStatus(importDwc.getOccurrenceStatus());
+               occurrence.setPreparations(importDwc.getPreparations());
+               occurrence.setDisposition(importDwc.getDisposition());
+               occurrence.setOtherCatalogNumbers(importDwc.getOtherCatalogNumbers());
+               occurrence.setPreviousIdentifications(importDwc.getPreviousIdentifications());
+               occurrence.setAssociatedMedia(importDwc.getAssociatedMedia());
+               occurrence.setAssociatedReferences(importDwc.getAssociatedReferences());
+               occurrence.setAssociatedOccurrences(importDwc.getAssociatedOccurrences());
+               occurrence.setAssociatedSequences(importDwc.getAssociatedSequences());
+               occurrence.setAssociatedTaxa(importDwc.getAssociatedTaxa());
+               
+               occurrence.setEventId(importDwc.getEventId());
+               occurrence.setSamplingProtocol(importDwc.getSamplingProtocol());
+               occurrence.setSamplingEffort(importDwc.getSamplingEffort());
+               occurrence.setEventDate(importDwc.getEventDate());
+               occurrence.setEventTime(importDwc.getEventTime());
+               occurrence.setStartDayOfYear(importDwc.getStartDayOfYear());
+               occurrence.setEndDayOfYear(importDwc.getEndDayOfYear());
+               occurrence.setYear(importDwc.getYear());
+               occurrence.setMonth(importDwc.getMonth());
+               occurrence.setDay(importDwc.getDay());
+               occurrence.setVerbatimEventDate(importDwc.getVerbatimEventDate());
+               occurrence.setHabitat(importDwc.getHabitat());
+               occurrence.setFieldNotes(importDwc.getFieldNumber());
+               occurrence.setFieldNotes(importDwc.getFieldNotes());
+               occurrence.setEventRemarks(importDwc.getEventRemarks());
+               
+               occurrence.setGeologicalContextId(importDwc.getGeologicalContextId());
+               occurrence.setEarliestEonOrLowestEonothem(importDwc.getEarliestEonOrLowestEonothem());
+               occurrence.setLatestEonOrHighestEonothem(importDwc.getLatestEonOrHighestEonothem());
+               occurrence.setEarliestEraOrLowestErathem(importDwc.getEarliestEraOrLowestErathem());
+               occurrence.setLatestEraOrHighestErathem(importDwc.getLatestEraOrHighestErathem());
+               occurrence.setEarliestPeriodOrLowestSystem(importDwc.getEarliestPeriodOrLowestSystem());
+               occurrence.setLatestPeriodOrHighestSystem(importDwc.getLatestPeriodOrHighestSystem());
+               occurrence.setEarliestEpochOrLowestSeries(importDwc.getEarliestEpochOrLowestSeries());
+               occurrence.setLatestEpochOrHighestSeries(importDwc.getLatestEpochOrHighestSeries());
+               occurrence.setEarliestAgeOrLowestStage(importDwc.getEarliestAgeOrLowestStage());
+               occurrence.setLatestAgeOrHighestStage(importDwc.getLatestAgeOrHighestStage());
+               occurrence.setLowestBiostratigraphicZone(importDwc.getLowestBiostratigraphicZone());
+               occurrence.setHighestBiostratigraphicZone(importDwc.getHighestBiostratigraphicZone());
+               occurrence.setLithostratigraphicTerms(importDwc.getLithostratigraphicTerms());
+               occurrence.setGroup(importDwc.getGroup());
+               occurrence.setFormation(importDwc.getFormation());
+               occurrence.setMember(importDwc.getMember());
+               occurrence.setBed(importDwc.getBed());
+               
+               occurrence.setIdentificationId(importDwc.getIdentificationId());
+               occurrence.setIdentifiedBy(importDwc.getIdentifiedBy());
+               if(importDwc.getDateIdentified() != null && importDwc.getDateIdentified().length() > 0)
+            	   occurrence.setDateIdentified(sourceDateFormat.parse(importDwc.getDateIdentified()));
+               occurrence.setIdentificationReferences(importDwc.getIdentificationReferences());
+               occurrence.setIdentificationVerificationStatus(importDwc.getIdentificationVerificationStatus());
+               occurrence.setIdentificationRemarks(importDwc.getIdentificationRemarks());
+               occurrence.setIdentificationQualifier(importDwc.getIdentificationQualifier());
+               occurrence.setTypeStatus(importDwc.getTypeStatus());
+               
+               occurrence.setTaxonId(importDwc.getTaxonId());
+               occurrence.setScientificNameId(importDwc.getScientificNameId());
+               occurrence.setAcceptedNameUsageId(importDwc.getAcceptedNameUsageId());
+               occurrence.setParentNameUsageId(importDwc.getParentNameUsageId());
+               occurrence.setOriginalNameUsageId(importDwc.getOriginalNameUsageId());
+               occurrence.setNameAccordingToId(importDwc.getNameAccordingToId());
+               occurrence.setNamePublishedInId(importDwc.getNamePublishedInId());
+               occurrence.setTaxonConceptId(importDwc.getTaxonConceptId());
+               occurrence.setScientificName(importDwc.getScientificName());
+               occurrence.setAcceptedNameUsage(importDwc.getAcceptedNameUsage());
+               occurrence.setParentNameUsage(importDwc.getParentNameUsage());
+               occurrence.setOriginalNameUsage(importDwc.getOriginalNameUsage());
+               occurrence.setNameAccordingTo(importDwc.getNameAccordingTo());
+               occurrence.setNamePublishedIn(importDwc.getNamePublishedIn());
+               occurrence.setNamePublishedInYear(importDwc.getNamePublishedInYear());
+               occurrence.setHigherClassification(importDwc.getHigherClassification());
                occurrence.setKingdom(importDwc.getKingdom());
                occurrence.setPhylum(importDwc.getPhylum());
                occurrence.setClass_(importDwc.getClass_());
-               occurrence.setOrders(importDwc.getTaxonOrder());
+               occurrence.setTaxonOrder(importDwc.getTaxonOrder());
                occurrence.setFamily(importDwc.getFamily());
                occurrence.setGenus(importDwc.getGenus());
-               occurrence.setSpecificEpithet(importDwc.getSpecificepithet());
-               occurrence.setInfraspecificEpithet(importDwc.getInfraspecificepithet());
-               occurrence.setInfraspecificRank(null);
-               // TODO: change field to update Darwin Core standard
-               occurrence.setAuthorYearOfScientificName(
-                       importDwc.getScientificnameauthorship() + ", ");
-               occurrence.setNomenclaturalCode(importDwc.getNomenclaturalcode());
-               occurrence.setIdentificationQualifier(importDwc.getIdentificationqualifier());
-               occurrence.setCollectingMethod(null);
-               occurrence.setValidDistributionFlag(null);
-               occurrence.setCollector(null);
-               occurrence.setEarliestDateCollected(null);
-               occurrence.setLatestDateCollected(null);
-               occurrence.setDayOfYear(new BigDecimal(importDwc.getDay()));
-               occurrence.setHigherGeography(importDwc.getHighergeography());
-               occurrence.setContinent(importDwc.getContinent());
-               occurrence.setWaterBody(importDwc.getWaterbody());
-               occurrence.setIslandGroup(importDwc.getIslandgroup());
-               occurrence.setIsland(importDwc.getIsland());
-               occurrence.setCountry(importDwc.getCountry());
-               occurrence.setStateProvince(importDwc.getStateprovince());
-               occurrence.setCounty(importDwc.getCounty());
-               occurrence.setLocality(importDwc.getLocality());
-               occurrence.setMinimumElevationInMeters(importDwc.getMinimumelevationinmeters());
-               occurrence.setMaximumElevationInMeters(importDwc.getMaximumelevationinmeters());
-               occurrence.setMinimumDepthInmeters(importDwc.getMinimumdepthinmeters());
-               occurrence.setMaximumDepthInmeters(importDwc.getMaximumdepthinmeters());
-               occurrence.setSex(importDwc.getSex());
-               occurrence.setLifeStage(importDwc.getLifestage());
-               occurrence.setRemarks(null);
-               occurrence.setAttributes(null);			
-               occurrence.setImageUrl(null);	
-               occurrence.setRelatedInformation(null);
+               occurrence.setSubgenus(importDwc.getSubgenus());
+               occurrence.setSpecificEpithet(importDwc.getSpecificEpithet());
+               occurrence.setInfraspecificEpithet(importDwc.getInfraspecificEpithet());
+               occurrence.setTaxonRank(importDwc.getTaxonRank());
+               occurrence.setVerbatimTaxonRank(importDwc.getVerbatimTaxonRank());
+               occurrence.setScientificNameAuthorship(importDwc.getScientificNameAuthorship());
+               occurrence.setVernacularName(importDwc.getVernacularName());
+               occurrence.setNomenclaturalCode(importDwc.getNomenclaturalCode());
+               occurrence.setTaxonomicStatus(importDwc.getTaxonomicStatus());
+               occurrence.setNomenclaturalStatus(importDwc.getNomenclaturalStatus());
+               occurrence.setTaxonRemarks(importDwc.getTaxonRemarks());
 
-               
-               //find or create location
-                Location location = (Location)
-                        genericBaseDAO.findById(
-                            Location.class, 
-                            new BigDecimal(importDwc.getLocationid()));
-
-                if(location == null){
-                    location = new Location(
-                                    new BigDecimal(importDwc.getLocationid()));
-                    //set coordinates values
-                    location.setDecimalLatitude(importDwc.getDecimallatitude());
-                    location.setDecimalLongitude(importDwc.getDecimallongitude());
-
-                    genericBaseDAO.create(location);
-                }
-                occurrence.setLocation(location);
-
-               occurrenceDAO.create(occurrence);
-               
+//               if(!update)
+        	   occurrenceDAO.create(occurrence);
+        	   
+        	   
+//               else
+//            	   occurrenceDAO.update(occurrence);
+            	   
                 }catch(NumberFormatException ex){
                     Logger.getLogger(Importer.class.getName()).log
                         (Level.SEVERE, 
@@ -234,26 +373,29 @@ public class Importer {
                             new Object[]{importDwc.getId(),ex.getStackTrace()});
                     
                     System.exit(-1);
-                }
-               
-
-            }
+                } catch (ParseException e) {
+//					Logger.getLogger(Importer.class.getName()).log
+//                        (Level.SEVERE, 
+//                            "ParseException occurrenceId {0} {1}", 
+//                            new Object[]{importDwc.getId(),e.});
+                	e.printStackTrace();
+				}
+            } // end for, 1000 importDwc rows
             
-            //store data every 1000 regs
-            transactionManager.commit(status);
-                        
-            //create new transaction for the next 1000 regs
-            transaction = new DefaultTransactionDefinition();
-            status = transactionManager.getTransaction(transaction);            
+            
+            session.flush();
+            session.clear();
             
             firstResult += maxResults;
                 
-            //ScrollableResults occurrencesDwcList = 
             occurrencesDwcList =
                     importDwcDAO.scrollAll(ImportDwc.class,
                         maxResults,
                         firstResult);
-        }
+        } // end while, no more importDwc rows
+        
+        transactionManager.commit(status);
+        session.close();
                 
     }
     

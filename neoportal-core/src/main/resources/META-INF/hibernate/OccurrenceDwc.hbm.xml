@@ -4,11 +4,22 @@
     "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated 26/04/2012 11:26:47 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
-    <class name="org.inbio.neoportal.core.entity.ImportDwc" table="import_dwc" schema="public">
-        <id name="id" type="long">
-            <column name="id" />
-            <generator class="assigned" />
+    <class name="org.inbio.neoportal.core.entity.OccurrenceDwc" table="occurrence_dwc" schema="public">
+        <id name="Id" type="big_decimal">
+            <column name="id" precision="131089" scale="0" />
+            <generator class="sequence">
+            	<param name="sequence">occurrence_dwc_id_seq</param>
+            </generator>
         </id>
+        <many-to-one name="location" class="org.inbio.neoportal.core.entity.Location" fetch="select">
+            <column name="location_id" precision="131089" scale="0" />
+        </many-to-one>
+        <many-to-one name="dataProvider" class="org.inbio.neoportal.core.entity.DataProvider" fetch="select">
+            <column name="data_provider_id" precision="131089" scale="0" not-null="true" />
+        </many-to-one>
+        <many-to-one name="taxon" class="org.inbio.neoportal.core.entity.Taxon" fetch="select">
+            <column name="taxon_id" precision="131089" scale="0" />
+        </many-to-one>
         <property name="type" type="string">
             <column name="type" />
         </property>
@@ -31,7 +42,7 @@
             <column name="bibliographiccitation" />
         </property>
         <property name="references" type="string">
-            <column name="references" />
+            <column name='"references"' />
         </property>
         <property name="institutionId" type="string">
             <column name="institutionid" />
@@ -177,138 +188,139 @@
         <property name="eventRemarks" type="string">
             <column name="eventremarks" />
         </property>
-        <property name="locationId" type="string">
-            <column name="locationid" />
-        </property>
-        <property name="higherGeographyId" type="string">
-            <column name="highergeographyid" />
-        </property>
-        <property name="higherGeography" type="string">
-            <column name="highergeography" />
-        </property>
-        <property name="continent" type="string">
-            <column name="continent" />
-        </property>
-        <property name="waterBody" type="string">
-            <column name="waterbody" />
-        </property>
-        <property name="islandGroup" type="string">
-            <column name="islandgroup" />
-        </property>
-        <property name="island" type="string">
-            <column name="island" />
-        </property>
-        <property name="country" type="string">
-            <column name="country" />
-        </property>
-        <property name="countryCode" type="string">
-            <column name="countrycode" />
-        </property>
-        <property name="stateProvince" type="string">
-            <column name="stateprovince" />
-        </property>
-        <property name="county" type="string">
-            <column name="county" />
-        </property>
-        <property name="municipality" type="string">
-            <column name="municipality" />
-        </property>
-        <property name="locality" type="string">
-            <column name="locality" />
-        </property>
-        <property name="verbatimLocality" type="string">
-            <column name="verbatimlocality" />
-        </property>
-        <property name="verbatimElevation" type="string">
-            <column name="verbatimelevation" />
-        </property>
-        <property name="minimumElevationInMeters" type="string">
-            <column name="minimumelevationinmeters" />
-        </property>
-        <property name="maximumElevationInMeters" type="string">
-            <column name="maximumelevationinmeters" />
-        </property>
-        <property name="verbatimDepth" type="string">
-            <column name="verbatimdepth" />
-        </property>
-        <property name="minimumDepthInMeters" type="string">
-            <column name="minimumdepthinmeters" />
-        </property>
-        <property name="maximumDepthInMeters" type="string">
-            <column name="maximumdepthinmeters" />
-        </property>
-        <property name="minimumDistanceAboveSurfaceInMeters" type="string">
-            <column name="mindistabovesurfaceinmeters" />
-        </property>
-        <property name="maximumDistanceAboveSurfaceInMeters" type="string">
-            <column name="maxdistabovesurfaceinmeters" />
-        </property>
-        <property name="locationAccordingTo" type="string">
-            <column name="locationaccordingto" />
-        </property>
-        <property name="locationRemarks" type="string">
-            <column name="locationremarks" />
-        </property>
-        <property name="verbatimCoordinates" type="string">
-            <column name="verbatimcoordinates" />
-        </property>
-        <property name="verbatimLatitude" type="string">
-            <column name="verbatimlatitude" />
-        </property>
-        <property name="verbatimLongitude" type="string">
-            <column name="verbatimlongitude" />
-        </property>
-        <property name="verbatimCoordinateSystem" type="string">
-            <column name="verbatimcoordinatesystem" />
-        </property>
-        <property name="verbatimSRS" type="string">
-            <column name="verbatimsrs" />
-        </property>
-        <property name="decimalLatitude" type="string">
-            <column name="decimallatitude" />
-        </property>
-        <property name="decimalLongitude" type="string">
-            <column name="decimallongitude" />
-        </property>
-        <property name="geodeticDatum" type="string">
-            <column name="geodeticdatum" />
-        </property>
-        <property name="coordinateUncertaintyInMeters" type="string">
-            <column name="coordinateuncertaintyinmeters" />
-        </property>
-        <property name="coordinatePrecision" type="string">
-            <column name="coordinateprecision" />
-        </property>
-        <property name="pointRadiusSpatialFit" type="string">
-            <column name="pointradiusspatialfit" />
-        </property>
-        <property name="footprintWKT" type="string">
-            <column name="footprintwkt" />
-        </property>
-        <property name="footprintSRS" type="string">
-            <column name="footprintsrs" />
-        </property>
-        <property name="footprintSpatialFit" type="string">
-            <column name="footprintspatialfit" />
-        </property>
-        <property name="georeferencedBy" type="string">
-            <column name="georeferencedby" />
-        </property>
-        <property name="georeferencedDate" type="string">
-            <column name="georeferenced_date" />
-        </property>
-        <property name="georeferenceProtocol" type="string">
-            <column name="georeferenceprotocol" />
-        </property>
-        <property name="georeferenceSources" type="string">
-            <column name="georeferencesources" />
-        </property>
-        <property name="georeferenceVerificationStatus" type="string">
-            <column name="georeferenceverificationstatus" />
-        </property>
-        <property name="georeferenceRemarks" type="string">
-            <column name="georeferenceremarks" />
-        </property>
+<!--         locations are store in another place -->
+<!--         <property name="locationId" type="string"> -->
+<!--             <column name="locationid" /> -->
+<!--         </property> -->
+<!--         <property name="higherGeographyId" type="string"> -->
+<!--             <column name="highergeographyid" /> -->
+<!--         </property> -->
+<!--         <property name="higherGeography" type="string"> -->
+<!--             <column name="highergeography" /> -->
+<!--         </property> -->
+<!--         <property name="continent" type="string"> -->
+<!--             <column name="continent" /> -->
+<!--         </property> -->
+<!--         <property name="waterBody" type="string"> -->
+<!--             <column name="waterbody" /> -->
+<!--         </property> -->
+<!--         <property name="islandGroup" type="string"> -->
+<!--             <column name="islandgroup" /> -->
+<!--         </property> -->
+<!--         <property name="island" type="string"> -->
+<!--             <column name="island" /> -->
+<!--         </property> -->
+<!--         <property name="country" type="string"> -->
+<!--             <column name="country" /> -->
+<!--         </property> -->
+<!--         <property name="countryCode" type="string"> -->
+<!--             <column name="countrycode" /> -->
+<!--         </property> -->
+<!--         <property name="stateProvince" type="string"> -->
+<!--             <column name="stateprovince" /> -->
+<!--         </property> -->
+<!--         <property name="county" type="string"> -->
+<!--             <column name="county" /> -->
+<!--         </property> -->
+<!--         <property name="municipality" type="string"> -->
+<!--             <column name="municipality" /> -->
+<!--         </property> -->
+<!--         <property name="locality" type="string"> -->
+<!--             <column name="locality" /> -->
+<!--         </property> -->
+<!--         <property name="verbatimLocality" type="string"> -->
+<!--             <column name="verbatimlocality" /> -->
+<!--         </property> -->
+<!--         <property name="verbatimElevation" type="string"> -->
+<!--             <column name="verbatimelevation" /> -->
+<!--         </property> -->
+<!--         <property name="minimumElevationInMeters" type="string"> -->
+<!--             <column name="minimumelevationinmeters" /> -->
+<!--         </property> -->
+<!--         <property name="maximumElevationInMeters" type="string"> -->
+<!--             <column name="maximumelevationinmeters" /> -->
+<!--         </property> -->
+<!--         <property name="verbatimDepth" type="string"> -->
+<!--             <column name="verbatimdepth" /> -->
+<!--         </property> -->
+<!--         <property name="minimumDepthInMeters" type="string"> -->
+<!--             <column name="minimumdepthinmeters" /> -->
+<!--         </property> -->
+<!--         <property name="maximumDepthInMeters" type="string"> -->
+<!--             <column name="maximumdepthinmeters" /> -->
+<!--         </property> -->
+<!--         <property name="minimumDistanceAboveSurfaceInMeters" type="string"> -->
+<!--             <column name="mindistabovesurfaceinmeters" /> -->
+<!--         </property> -->
+<!--         <property name="maximumDistanceAboveSurfaceInMeters" type="string"> -->
+<!--             <column name="maxdistabovesurfaceinmeters" /> -->
+<!--         </property> -->
+<!--         <property name="locationAccordingTo" type="string"> -->
+<!--             <column name="locationaccordingto" /> -->
+<!--         </property> -->
+<!--         <property name="locationRemarks" type="string"> -->
+<!--             <column name="locationremarks" /> -->
+<!--         </property> -->
+<!--         <property name="verbatimCoordinates" type="string"> -->
+<!--             <column name="verbatimcoordinates" /> -->
+<!--         </property> -->
+<!--         <property name="verbatimLatitude" type="string"> -->
+<!--             <column name="verbatimlatitude" /> -->
+<!--         </property> -->
+<!--         <property name="verbatimLongitude" type="string"> -->
+<!--             <column name="verbatimlongitude" /> -->
+<!--         </property> -->
+<!--         <property name="verbatimCoordinateSystem" type="string"> -->
+<!--             <column name="verbatimcoordinatesystem" /> -->
+<!--         </property> -->
+<!--         <property name="verbatimSRS" type="string"> -->
+<!--             <column name="verbatimsrs" /> -->
+<!--         </property> -->
+<!--         <property name="decimalLatitude" type="string"> -->
+<!--             <column name="decimallatitude" /> -->
+<!--         </property> -->
+<!--         <property name="decimalLongitude" type="string"> -->
+<!--             <column name="decimallongitude" /> -->
+<!--         </property> -->
+<!--         <property name="geodeticDatum" type="string"> -->
+<!--             <column name="geodeticdatum" /> -->
+<!--         </property> -->
+<!--         <property name="coordinateUncertaintyInMeters" type="string"> -->
+<!--             <column name="coordinateuncertaintyinmeters" /> -->
+<!--         </property> -->
+<!--         <property name="coordinatePrecision" type="string"> -->
+<!--             <column name="coordinateprecision" /> -->
+<!--         </property> -->
+<!--         <property name="pointRadiusSpatialFit" type="string"> -->
+<!--             <column name="pointradiusspatialfit" /> -->
+<!--         </property> -->
+<!--         <property name="footprintWKT" type="string"> -->
+<!--             <column name="footprintwkt" /> -->
+<!--         </property> -->
+<!--         <property name="footprintSRS" type="string"> -->
+<!--             <column name="footprintsrs" /> -->
+<!--         </property> -->
+<!--         <property name="footprintSpatialFit" type="string"> -->
+<!--             <column name="footprintspatialfit" /> -->
+<!--         </property> -->
+<!--         <property name="georeferencedBy" type="string"> -->
+<!--             <column name="georeferencedby" /> -->
+<!--         </property> -->
+<!--         <property name="georeferencedDate" type="string"> -->
+<!--             <column name="georeferenced_date" /> -->
+<!--         </property> -->
+<!--         <property name="georeferenceProtocol" type="string"> -->
+<!--             <column name="georeferenceprotocol" /> -->
+<!--         </property> -->
+<!--         <property name="georeferenceSources" type="string"> -->
+<!--             <column name="georeferencesources" /> -->
+<!--         </property> -->
+<!--         <property name="georeferenceVerificationStatus" type="string"> -->
+<!--             <column name="georeferenceverificationstatus" /> -->
+<!--         </property> -->
+<!--         <property name="georeferenceRemarks" type="string"> -->
+<!--             <column name="georeferenceremarks" /> -->
+<!--         </property> -->
         <property name="geologicalContextId" type="string">
             <column name="geologicalcontextid" />
         </property>
@@ -369,7 +381,7 @@
         <property name="identifiedBy" type="string">
             <column name="identifiedby" />
         </property>
-        <property name="dateIdentified" type="string">
+        <property name="dateIdentified" type="date">
             <column name="dateidentified" />
         </property>
         <property name="identificationReferences" type="string">

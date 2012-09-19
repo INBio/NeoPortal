@@ -18,5 +18,11 @@
         <property name="type" type="string">
             <column name="type" length="30" />
         </property>
+        <set name="searchFilterValues" inverse="true">
+            <key>
+                <column name="search_filter_id" not-null="true" precision="131089" scale="0" />
+            </key>
+            <one-to-many class="org.inbio.neoportal.core.entity.SearchFilterValue" />
+        </set>
     </class>
 </hibernate-mapping>

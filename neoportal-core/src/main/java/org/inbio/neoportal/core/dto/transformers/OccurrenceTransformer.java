@@ -25,6 +25,7 @@ import org.inbio.neoportal.core.dto.occurrence.OccurrenceGeospatialLiteCDTO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceLiteCDTO;
 import org.inbio.neoportal.core.entity.Location;
 import org.inbio.neoportal.core.entity.Occurrence;
+import org.inbio.neoportal.core.entity.OccurrenceDwc;
 import org.inbio.neoportal.core.entity.OccurrenceGeospatialExtension;
 
 
@@ -41,14 +42,14 @@ public class OccurrenceTransformer
         ArrayList<OccurrenceGeospatialExtension> temp = null;
         ArrayList<OccurrenceGeospatialLiteCDTO> ogl = null;
         
-        List<Occurrence> occurrenceList = (List<Occurrence>) list;
+        List<OccurrenceDwc> occurrenceList = (List<OccurrenceDwc>) list;
         
         List<OccurrenceLiteCDTO> newList = new ArrayList<OccurrenceLiteCDTO>();
         
         OccurrenceGeospatialTransformer ogt = 
             new OccurrenceGeospatialTransformer();
                 
-       for(Occurrence oc: occurrenceList){
+       for(OccurrenceDwc oc: occurrenceList){
            Location location = oc.getLocation();
            
            // FIXME: OccurrenceGeoSpatial is deprecated
@@ -63,10 +64,10 @@ public class OccurrenceTransformer
                                 oc.getOccurrenceId().toString(),
                                 oc.getScientificName(),
                                 oc.getInstitutionCode(),
-                                oc.getCountry(),
-                                oc.getStateProvince(),
-                                oc.getCounty(),
-                                oc.getLocality(),
+                                oc.getLocation().getCountry(),
+                                oc.getLocation().getStateProvince(),
+                                oc.getLocation().getCounty(),
+                                oc.getLocation().getLocality(),
                                 oc.getCatalogNumber(),
                                 ogl));
         }

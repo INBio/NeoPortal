@@ -17,6 +17,22 @@ public class SearchGroup  implements java.io.Serializable {
      private Set searchFilters = new HashSet(0);
      private Set searchColumnDefaults = new HashSet(0);
      private Set searchColumns = new HashSet(0);
+     
+     public enum Group {
+    	 TAXONOMIC, GEOGRAPHIC, SPECIMEN;
+    	 
+    	 @Override
+    	 public String toString(){
+    		 if(this.name() == "TAXONOMIC")
+				return "taxonomic_information";
+    		 else if(this.name() == "GEOGRAPHIC")
+				return "geographic_information";
+    		 else if(this.name() == "SPECIMEN")
+				return "specimen_information";
+    		 
+    		 return "";
+    	 }
+     };
 
     public SearchGroup() {
     }

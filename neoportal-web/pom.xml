@@ -16,6 +16,7 @@
 	 <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
 	 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+	
 	<dependencies>
 		<!-- Spring -->
 		<dependency>
@@ -197,6 +198,11 @@
 	  <groupId>org.springframework.roo</groupId>
 	  <artifactId>org.springframework.roo.annotations</artifactId>
 	  <version>1.2.0.RELEASE</version>
+	 </dependency>
+	 <dependency>
+	 	<groupId>org.inbio.neoportal</groupId>
+	 	<artifactId>neoportal-core</artifactId>
+	 	<version>1.0-SNAPSHOT</version>
 	 </dependency>
 	</dependencies>
 	<repositories>

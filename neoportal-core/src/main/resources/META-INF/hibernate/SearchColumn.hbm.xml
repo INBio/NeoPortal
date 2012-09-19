@@ -16,5 +16,8 @@
         <property name="columnKey" type="string">
             <column name="column_key" length="100" />
         </property>
+        <property name="sort" type="big_decimal">
+            <column name="sort" />
+        </property>
     </class>
 </hibernate-mapping>

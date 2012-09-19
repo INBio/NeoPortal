@@ -1,33 +1,80 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<!-- Generated 10/05/2012 09:55:45 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="org.inbio.neoportal.core.entity.Location" table="location" schema="public">
         <id name="locationId" type="big_decimal">
             <column name="location_id" precision="131089" scale="0" />
             <generator class="assigned" />
         </id>
-        <property name="decimalLatitude" type="string">
-            <column name="decimal_latitude" />
+        <property name="higherGeographyId" type="string">
+            <column name="higher_geography_id" />
         </property>
-        <property name="decimalLongitude" type="string">
-            <column name="decimal_longitude" />
+        <property name="higherGeography" type="string">
+            <column name="higher_geography" />
         </property>
-        <property name="geodeticDatum" type="string">
-            <column name="geodetic_datum" />
+        <property name="continent" type="string">
+            <column name="continent" />
         </property>
-        <property name="coordinateUncertaintyInMeters" type="string">
-            <column name="coordinate_uncertainty_in_meters" />
+        <property name="waterBody" type="string">
+            <column name="water_body" />
         </property>
-        <property name="pointRadiusSpatialFit" type="string">
-            <column name="point_radius_spatial_fit" />
+        <property name="islandGroup" type="string">
+            <column name="island_group" />
         </property>
-        <property name="footprintWkt" type="string">
-            <column name="footprint_wkt" />
+        <property name="island" type="string">
+            <column name="island" />
         </property>
-        <property name="footPrintSpatialFit" type="string">
-            <column name="foot_print_spatial_fit" />
+        <property name="country" type="string">
+            <column name="country" />
+        </property>
+        <property name="countryCode" type="string">
+            <column name="country_code" />
+        </property>
+        <property name="stateProvince" type="string">
+            <column name="state_province" />
+        </property>
+        <property name="county" type="string">
+            <column name="county" />
+        </property>
+        <property name="municipality" type="string">
+            <column name="municipality" />
+        </property>
+        <property name="locality" type="string">
+            <column name="locality" />
+        </property>
+        <property name="verbatimLocality" type="string">
+            <column name="verbatim_locality" />
+        </property>
+        <property name="verbatimElevation" type="string">
+            <column name="verbatim_elevation" />
+        </property>
+        <property name="minimumElevationInMeters" type="string">
+            <column name="minimum_elevation_in_meters" />
+        </property>
+        <property name="maximumElevationInMeters" type="string">
+            <column name="maximum_elevation_in_meters" />
+        </property>
+        <property name="verbatimDepth" type="string">
+            <column name="verbatim_depth" />
+        </property>
+        <property name="minimumDepthInMeters" type="string">
+            <column name="minimum_depth_in_meters" />
+        </property>
+        <property name="maximumDepthInMeters" type="string">
+            <column name="maximum_depth_in_meters" />
+        </property>
+        <property name="minimumDistanceAboveSurfaceInMeters" type="string">
+            <column name="minimum_distance_above_surface_in_meters" />
+        </property>
+        <property name="maximumDistanceAboveSurfaceInMeters" type="string">
+            <column name="maximum_distance_above_surface_in_meters" />
+        </property>
+        <property name="locationAccordingTo" type="string">
+            <column name="location_according_to" />
+        </property>
+        <property name="locationRemarks" type="string">
+            <column name="location_remarks" />
         </property>
         <property name="verbatimCoordinates" type="string">
             <column name="verbatim_coordinates" />
@@ -41,11 +88,47 @@
         <property name="verbatimCoordinateSystem" type="string">
             <column name="verbatim_coordinate_system" />
         </property>
+        <property name="verbatimSRS" type="string">
+            <column name="verbatim_srs" />
+        </property>
+        <property name="decimalLatitude" type="string">
+            <column name="decimal_latitude" />
+        </property>
+        <property name="decimalLongitude" type="string">
+            <column name="decimal_longitude" />
+        </property>
+        <property name="geodeticDatum" type="string">
+            <column name="geodetic_datum" />
+        </property>
+        <property name="coordinateUncertaintyInMeters" type="string">
+            <column name="coordinate_uncertainty_in_meters" />
+        </property>
+        <property name="coordinatePrecision" type="string">
+            <column name="coordinate_precision" />
+        </property>
+        <property name="pointRadiusSpatialFit" type="string">
+            <column name="point_radius_spatial_fit" />
+        </property>
+        <property name="footprintWKT" type="string">
+            <column name="footprint_wkt" />
+        </property>
+        <property name="footprintSRS" type="string">
+            <column name="footprint_srs" />
+        </property>
+        <property name="footprintSpatialFit" type="string">
+            <column name="footprint_spatial_fit" />
+        </property>
+        <property name="georeferencedBy" type="string">
+            <column name="georeferenced_by" />
+        </property>
+        <property name="georeferencedDate" type="string">
+            <column name="georeferenced_date" />
+        </property>
         <property name="georeferenceProtocol" type="string">
             <column name="georeference_protocol" />
         </property>
         <property name="georeferenceSources" type="string">
-            <column name="georeference_sources" />
+            <column name="georeferences_ources" />
         </property>
         <property name="georeferenceVerificationStatus" type="string">
             <column name="georeference_verification_status" />
@@ -57,9 +140,9 @@
             <key>
                 <column name="location_id" precision="131089" scale="0" />
             </key>
-            <one-to-many class="org.inbio.neoportal.core.entity.Occurrence" />
+            <one-to-many class="org.inbio.neoportal.core.entity.OccurrenceDwc" />
         </set>
-        <set name="features" table="location_features">
+        <set name="features" table="location_features" >
             <key>
                 <column name="location_id"></column>
             </key>

@@ -1,13 +1,58 @@
+/*
+ *  NeoPortal - New implementation of the INBio Species and Occurrences portal.
+ *  
+ *  Copyright (C) 2010 INBio - Instituto Nacional de Biodiversidad, Costa Rica
+ * 
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ * 
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ * 
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.inbio.neoportal.core.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+
+import org.hibernate.search.annotations.DateBridge;
+import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
+import org.hibernate.search.annotations.Resolution;
 
 /**
  *
  * @author avargas
  */
-public class ImportDwc implements Serializable {
+@Indexed
+public class OccurrenceDwc implements Serializable {
     
+	/**
+	 * Additional id, the occurrences has occurrenceId but with this database manage id 
+	 * the system support datasets with occurrenceId fields containing not numbers values.
+	 */
+	@DocumentId
+    private BigDecimal Id;
+    
+    @IndexedEmbedded
+    private Location location;
+    
+    //@IndexedEmbedded
+    private DataProvider dataProvider;
+    
+    @IndexedEmbedded
+    private Taxon taxon;
+    
+    /* Darwin Core Terms http://rs.tdwg.org/dwc/terms/ */
 	//Record-level terms
     private String type;
     private String modified;
@@ -21,6 +66,7 @@ public class ImportDwc implements Serializable {
     private String collectionId;
     private String datasetId;
     private String institutionCode;
+    @Field
     private String collectionCode;
     private String datasetName;
     private String ownerInstitutionCode;
@@ -30,18 +76,23 @@ public class ImportDwc implements Serializable {
     private String dynamicProperties;
     //Occurrence
     private String occurrenceId;
+    @Field
     private String catalogNumber;
     private String occurrenceRemarks;
     private String recordNumber;
     private String recordedBy;
     private String individualId;
     private String individualCount;
+    @Field
     private String sex;
+    @Field
     private String lifeStage;
     private String reproductiveCondition;
     private String behavior;
+    @Field
     private String establishmentMeans;
     private String occurrenceStatus;
+    @Field
     private String preparations;
     private String disposition;
     private String otherCatalogNumbers;
@@ -52,7 +103,9 @@ public class ImportDwc implements Serializable {
     private String associatedSequences;
     private String associatedTaxa;
     //Event
+    @Field
     private String eventId;
+    @Field
     private String samplingProtocol;
     private String samplingEffort;
     private String eventDate;
@@ -68,50 +121,50 @@ public class ImportDwc implements Serializable {
     private String fieldNotes;
     private String eventRemarks; //56
     //Locations
-    private String locationId;
-    private String higherGeographyId;
-    private String higherGeography;
-    private String continent;
-    private String waterBody;
-    private String islandGroup;
-    private String island;
-    private String country;
-    private String countryCode;
-    private String stateProvince;
-    private String county;
-    private String municipality;
-    private String locality;
-    private String verbatimLocality;
-    private String verbatimElevation;
-    private String minimumElevationInMeters;
-    private String maximumElevationInMeters;
-    private String verbatimDepth;
-    private String minimumDepthInMeters;
-    private String maximumDepthInMeters;
-    private String minimumDistanceAboveSurfaceInMeters;
-    private String maximumDistanceAboveSurfaceInMeters;
-    private String locationAccordingTo;
-    private String locationRemarks;
-    private String verbatimCoordinates;
-    private String verbatimLatitude;
-    private String verbatimLongitude;
-    private String verbatimCoordinateSystem;
-    private String verbatimSRS;
-    private String decimalLatitude;
-    private String decimalLongitude;
-    private String geodeticDatum;
-    private String coordinateUncertaintyInMeters;
-    private String coordinatePrecision;
-    private String pointRadiusSpatialFit;
-    private String footprintWKT;
-    private String footprintSRS;
-    private String footprintSpatialFit;
-    private String georeferencedBy;
-    private String georeferencedDate;
-    private String georeferenceProtocol;
-    private String georeferenceSources;
-    private String georeferenceVerificationStatus;
-    private String georeferenceRemarks; //100
+//    private String locationId;
+//    private String higherGeographyId;
+//    private String higherGeography;
+//    private String continent;
+//    private String waterBody;
+//    private String islandGroup;
+//    private String island;
+//    private String country;
+//    private String countryCode;
+//    private String stateProvince;
+//    private String county;
+//    private String municipality;
+//    private String locality;
+//    private String verbatimLocality;
+//    private String verbatimElevation;
+//    private String minimumElevationInMeters;
+//    private String maximumElevationInMeters;
+//    private String verbatimDepth;
+//    private String minimumDepthInMeters;
+//    private String maximumDepthInMeters;
+//    private String minimumDistanceAboveSurfaceInMeters;
+//    private String maximumDistanceAboveSurfaceInMeters;
+//    private String locationAccordingTo;
+//    private String locationRemarks;
+//    private String verbatimCoordinates;
+//    private String verbatimLatitude;
+//    private String verbatimLongitude;
+//    private String verbatimCoordinateSystem;
+//    private String verbatimSRS;
+//    private String decimalLatitude;
+//    private String decimalLongitude;
+//    private String geodeticDatum;
+//    private String coordinateUncertaintyInMeters;
+//    private String coordinatePrecision;
+//    private String pointRadiusSpatialFit;
+//    private String footprintWKT;
+//    private String footprintSRS;
+//    private String footprintSpatialFit;
+//    private String georeferencedBy;
+//    private String georeferencedDate;
+//    private String georeferenceProtocol;
+//    private String georeferenceSources;
+//    private String georeferenceVerificationStatus;
+//    private String georeferenceRemarks; //100
     //GeologicalContext
     private String geologicalContextId;
     private String earliestEonOrLowestEonothem;
@@ -134,7 +187,9 @@ public class ImportDwc implements Serializable {
     //Identification
     private String identificationId;
     private String identifiedBy;
-    private String dateIdentified;
+    @Field
+    @DateBridge(resolution=Resolution.DAY)
+    private Date dateIdentified;
     private String identificationReferences;
     private String identificationVerificationStatus;
     private String identificationRemarks;
@@ -149,6 +204,7 @@ public class ImportDwc implements Serializable {
     private String nameAccordingToId;
     private String namePublishedInId;
     private String taxonConceptId;
+    @Field
     private String scientificName;
     private String acceptedNameUsage;
     private String parentNameUsage;
@@ -157,11 +213,17 @@ public class ImportDwc implements Serializable {
     private String namePublishedIn;
     private String namePublishedInYear;
     private String higherClassification;
+    @Field
     private String kingdom;
+    @Field
     private String phylum;
+    @Field
     private String class_;
+    @Field
     private String taxonOrder;
+    @Field
     private String family;
+    @Field
     private String genus;
     private String subgenus;
     private String specificEpithet;
@@ -175,13 +237,264 @@ public class ImportDwc implements Serializable {
     private String nomenclaturalStatus;
     private String taxonRemarks; //159
 
-    private Long id;
 
-    public ImportDwc() {
+    public OccurrenceDwc() {
     }
 
     
-    
+	public OccurrenceDwc(BigDecimal id, Location location,
+			DataProvider dataProvider, Taxon taxon, String type,
+			String modified, String language, String rights,
+			String rightsHolder, String accessRights,
+			String bibliographicCitation, String references,
+			String institutionId, String collectionId, String datasetId,
+			String institutionCode, String collectionCode, String datasetName,
+			String ownerInstitutionCode, String basisOfRecord,
+			String informationWithheld, String dataGeneralizations,
+			String dynamicProperties, String occurrenceId,
+			String catalogNumber, String occurrenceRemarks,
+			String recordNumber, String recordedBy, String individualId,
+			String individualCount, String sex, String lifeStage,
+			String reproductiveCondition, String behavior,
+			String establishmentMeans, String occurrenceStatus,
+			String preparations, String disposition,
+			String otherCatalogNumbers, String previousIdentifications,
+			String associatedMedia, String associatedReferences,
+			String associatedOccurrences, String associatedSequences,
+			String associatedTaxa, String eventId, String samplingProtocol,
+			String samplingEffort, String eventDate, String eventTime,
+			String startDayOfYear, String endDayOfYear, String year,
+			String month, String day, String verbatimEventDate, String habitat,
+			String fieldNumber, String fieldNotes, String eventRemarks,
+			String geologicalContextId, String earliestEonOrLowestEonothem,
+			String latestEonOrHighestEonothem,
+			String earliestEraOrLowestErathem,
+			String latestEraOrHighestErathem,
+			String earliestPeriodOrLowestSystem,
+			String latestPeriodOrHighestSystem,
+			String earliestEpochOrLowestSeries,
+			String latestEpochOrHighestSeries, String earliestAgeOrLowestStage,
+			String latestAgeOrHighestStage, String lowestBiostratigraphicZone,
+			String highestBiostratigraphicZone, String lithostratigraphicTerms,
+			String group, String formation, String member, String bed,
+			String identificationId, String identifiedBy,
+			Date dateIdentified, String identificationReferences,
+			String identificationVerificationStatus,
+			String identificationRemarks, String identificationQualifier,
+			String typeStatus, String taxonId, String scientificNameId,
+			String acceptedNameUsageId, String parentNameUsageId,
+			String originalNameUsageId, String nameAccordingToId,
+			String namePublishedInId, String taxonConceptId,
+			String scientificName, String acceptedNameUsage,
+			String parentNameUsage, String originalNameUsage,
+			String nameAccordingTo, String namePublishedIn,
+			String namePublishedInYear, String higherClassification,
+			String kingdom, String phylum, String class_, String taxonOrder,
+			String family, String genus, String subgenus,
+			String specificEpithet, String infraspecificEpithet,
+			String taxonRank, String verbatimTaxonRank,
+			String scientificNameAuthorship, String vernacularName,
+			String nomenclaturalCode, String taxonomicStatus,
+			String nomenclaturalStatus, String taxonRemarks) {
+		Id = id;
+		this.location = location;
+		this.dataProvider = dataProvider;
+		this.taxon = taxon;
+		this.type = type;
+		this.modified = modified;
+		this.language = language;
+		this.rights = rights;
+		this.rightsHolder = rightsHolder;
+		this.accessRights = accessRights;
+		this.bibliographicCitation = bibliographicCitation;
+		this.references = references;
+		this.institutionId = institutionId;
+		this.collectionId = collectionId;
+		this.datasetId = datasetId;
+		this.institutionCode = institutionCode;
+		this.collectionCode = collectionCode;
+		this.datasetName = datasetName;
+		this.ownerInstitutionCode = ownerInstitutionCode;
+		this.basisOfRecord = basisOfRecord;
+		this.informationWithheld = informationWithheld;
+		this.dataGeneralizations = dataGeneralizations;
+		this.dynamicProperties = dynamicProperties;
+		this.occurrenceId = occurrenceId;
+		this.catalogNumber = catalogNumber;
+		this.occurrenceRemarks = occurrenceRemarks;
+		this.recordNumber = recordNumber;
+		this.recordedBy = recordedBy;
+		this.individualId = individualId;
+		this.individualCount = individualCount;
+		this.sex = sex;
+		this.lifeStage = lifeStage;
+		this.reproductiveCondition = reproductiveCondition;
+		this.behavior = behavior;
+		this.establishmentMeans = establishmentMeans;
+		this.occurrenceStatus = occurrenceStatus;
+		this.preparations = preparations;
+		this.disposition = disposition;
+		this.otherCatalogNumbers = otherCatalogNumbers;
+		this.previousIdentifications = previousIdentifications;
+		this.associatedMedia = associatedMedia;
+		this.associatedReferences = associatedReferences;
+		this.associatedOccurrences = associatedOccurrences;
+		this.associatedSequences = associatedSequences;
+		this.associatedTaxa = associatedTaxa;
+		this.eventId = eventId;
+		this.samplingProtocol = samplingProtocol;
+		this.samplingEffort = samplingEffort;
+		this.eventDate = eventDate;
+		this.eventTime = eventTime;
+		this.startDayOfYear = startDayOfYear;
+		this.endDayOfYear = endDayOfYear;
+		this.year = year;
+		this.month = month;
+		this.day = day;
+		this.verbatimEventDate = verbatimEventDate;
+		this.habitat = habitat;
+		this.fieldNumber = fieldNumber;
+		this.fieldNotes = fieldNotes;
+		this.eventRemarks = eventRemarks;
+		this.geologicalContextId = geologicalContextId;
+		this.earliestEonOrLowestEonothem = earliestEonOrLowestEonothem;
+		this.latestEonOrHighestEonothem = latestEonOrHighestEonothem;
+		this.earliestEraOrLowestErathem = earliestEraOrLowestErathem;
+		this.latestEraOrHighestErathem = latestEraOrHighestErathem;
+		this.earliestPeriodOrLowestSystem = earliestPeriodOrLowestSystem;
+		this.latestPeriodOrHighestSystem = latestPeriodOrHighestSystem;
+		this.earliestEpochOrLowestSeries = earliestEpochOrLowestSeries;
+		this.latestEpochOrHighestSeries = latestEpochOrHighestSeries;
+		this.earliestAgeOrLowestStage = earliestAgeOrLowestStage;
+		this.latestAgeOrHighestStage = latestAgeOrHighestStage;
+		this.lowestBiostratigraphicZone = lowestBiostratigraphicZone;
+		this.highestBiostratigraphicZone = highestBiostratigraphicZone;
+		this.lithostratigraphicTerms = lithostratigraphicTerms;
+		this.group = group;
+		this.formation = formation;
+		this.member = member;
+		this.bed = bed;
+		this.identificationId = identificationId;
+		this.identifiedBy = identifiedBy;
+		this.dateIdentified = dateIdentified;
+		this.identificationReferences = identificationReferences;
+		this.identificationVerificationStatus = identificationVerificationStatus;
+		this.identificationRemarks = identificationRemarks;
+		this.identificationQualifier = identificationQualifier;
+		this.typeStatus = typeStatus;
+		this.taxonId = taxonId;
+		this.scientificNameId = scientificNameId;
+		this.acceptedNameUsageId = acceptedNameUsageId;
+		this.parentNameUsageId = parentNameUsageId;
+		this.originalNameUsageId = originalNameUsageId;
+		this.nameAccordingToId = nameAccordingToId;
+		this.namePublishedInId = namePublishedInId;
+		this.taxonConceptId = taxonConceptId;
+		this.scientificName = scientificName;
+		this.acceptedNameUsage = acceptedNameUsage;
+		this.parentNameUsage = parentNameUsage;
+		this.originalNameUsage = originalNameUsage;
+		this.nameAccordingTo = nameAccordingTo;
+		this.namePublishedIn = namePublishedIn;
+		this.namePublishedInYear = namePublishedInYear;
+		this.higherClassification = higherClassification;
+		this.kingdom = kingdom;
+		this.phylum = phylum;
+		this.class_ = class_;
+		this.taxonOrder = taxonOrder;
+		this.family = family;
+		this.genus = genus;
+		this.subgenus = subgenus;
+		this.specificEpithet = specificEpithet;
+		this.infraspecificEpithet = infraspecificEpithet;
+		this.taxonRank = taxonRank;
+		this.verbatimTaxonRank = verbatimTaxonRank;
+		this.scientificNameAuthorship = scientificNameAuthorship;
+		this.vernacularName = vernacularName;
+		this.nomenclaturalCode = nomenclaturalCode;
+		this.taxonomicStatus = taxonomicStatus;
+		this.nomenclaturalStatus = nomenclaturalStatus;
+		this.taxonRemarks = taxonRemarks;
+	}
+
+
+
+
+	/**
+	 * @return the id
+	 */
+	public BigDecimal getId() {
+		return Id;
+	}
+
+
+
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(BigDecimal id) {
+		Id = id;
+	}
+
+
+
+
+	/**
+	 * @return the location
+	 */
+	public Location getLocation() {
+		return location;
+	}
+
+
+
+
+	/**
+	 * @param location the location to set
+	 */
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+
+
+
+	/**
+	 * @return the dataProvider
+	 */
+	public DataProvider getDataProvider() {
+		return dataProvider;
+	}
+
+
+
+
+	/**
+	 * @param dataProvider the dataProvider to set
+	 */
+	public void setDataProvider(DataProvider dataProvider) {
+		this.dataProvider = dataProvider;
+	}
+
+
+
+
+	/**
+	 * @return the taxon
+	 */
+	public Taxon getTaxon() {
+		return taxon;
+	}
+
+
+
+	public void setTaxon(Taxon taxon) {
+		this.taxon = taxon;
+	}
+
+
+
 	/**
 	 * @return the type
 	 */
@@ -1191,802 +1504,6 @@ public class ImportDwc implements Serializable {
 
 
 	/**
-	 * @return the locationId
-	 */
-	public String getLocationId() {
-		return locationId;
-	}
-
-
-
-	/**
-	 * @param locationId the locationId to set
-	 */
-	public void setLocationId(String locationId) {
-		this.locationId = locationId;
-	}
-
-
-
-	/**
-	 * @return the higherGeographyId
-	 */
-	public String getHigherGeographyId() {
-		return higherGeographyId;
-	}
-
-
-
-	/**
-	 * @param higherGeographyId the higherGeographyId to set
-	 */
-	public void setHigherGeographyId(String higherGeographyId) {
-		this.higherGeographyId = higherGeographyId;
-	}
-
-
-
-	/**
-	 * @return the higherGeography
-	 */
-	public String getHigherGeography() {
-		return higherGeography;
-	}
-
-
-
-	/**
-	 * @param higherGeography the higherGeography to set
-	 */
-	public void setHigherGeography(String higherGeography) {
-		this.higherGeography = higherGeography;
-	}
-
-
-
-	/**
-	 * @return the continent
-	 */
-	public String getContinent() {
-		return continent;
-	}
-
-
-
-	/**
-	 * @param continent the continent to set
-	 */
-	public void setContinent(String continent) {
-		this.continent = continent;
-	}
-
-
-
-	/**
-	 * @return the waterBody
-	 */
-	public String getWaterBody() {
-		return waterBody;
-	}
-
-
-
-	/**
-	 * @param waterBody the waterBody to set
-	 */
-	public void setWaterBody(String waterBody) {
-		this.waterBody = waterBody;
-	}
-
-
-
-	/**
-	 * @return the islandGroup
-	 */
-	public String getIslandGroup() {
-		return islandGroup;
-	}
-
-
-
-	/**
-	 * @param islandGroup the islandGroup to set
-	 */
-	public void setIslandGroup(String islandGroup) {
-		this.islandGroup = islandGroup;
-	}
-
-
-
-	/**
-	 * @return the island
-	 */
-	public String getIsland() {
-		return island;
-	}
-
-
-
-	/**
-	 * @param island the island to set
-	 */
-	public void setIsland(String island) {
-		this.island = island;
-	}
-
-
-
-	/**
-	 * @return the country
-	 */
-	public String getCountry() {
-		return country;
-	}
-
-
-
-	/**
-	 * @param country the country to set
-	 */
-	public void setCountry(String country) {
-		this.country = country;
-	}
-
-
-
-	/**
-	 * @return the countryCode
-	 */
-	public String getCountryCode() {
-		return countryCode;
-	}
-
-
-
-	/**
-	 * @param countryCode the countryCode to set
-	 */
-	public void setCountryCode(String countryCode) {
-		this.countryCode = countryCode;
-	}
-
-
-
-	/**
-	 * @return the stateProvince
-	 */
-	public String getStateProvince() {
-		return stateProvince;
-	}
-
-
-
-	/**
-	 * @param stateProvince the stateProvince to set
-	 */
-	public void setStateProvince(String stateProvince) {
-		this.stateProvince = stateProvince;
-	}
-
-
-
-	/**
-	 * @return the county
-	 */
-	public String getCounty() {
-		return county;
-	}
-
-
-
-	/**
-	 * @param county the county to set
-	 */
-	public void setCounty(String county) {
-		this.county = county;
-	}
-
-
-
-	/**
-	 * @return the municipality
-	 */
-	public String getMunicipality() {
-		return municipality;
-	}
-
-
-
-	/**
-	 * @param municipality the municipality to set
-	 */
-	public void setMunicipality(String municipality) {
-		this.municipality = municipality;
-	}
-
-
-
-	/**
-	 * @return the locality
-	 */
-	public String getLocality() {
-		return locality;
-	}
-
-
-
-	/**
-	 * @param locality the locality to set
-	 */
-	public void setLocality(String locality) {
-		this.locality = locality;
-	}
-
-
-
-	/**
-	 * @return the verbatimLocality
-	 */
-	public String getVerbatimLocality() {
-		return verbatimLocality;
-	}
-
-
-
-	/**
-	 * @param verbatimLocality the verbatimLocality to set
-	 */
-	public void setVerbatimLocality(String verbatimLocality) {
-		this.verbatimLocality = verbatimLocality;
-	}
-
-
-
-	/**
-	 * @return the verbatimElevation
-	 */
-	public String getVerbatimElevation() {
-		return verbatimElevation;
-	}
-
-
-
-	/**
-	 * @param verbatimElevation the verbatimElevation to set
-	 */
-	public void setVerbatimElevation(String verbatimElevation) {
-		this.verbatimElevation = verbatimElevation;
-	}
-
-
-
-	/**
-	 * @return the minimumElevationInMeters
-	 */
-	public String getMinimumElevationInMeters() {
-		return minimumElevationInMeters;
-	}
-
-
-
-	/**
-	 * @param minimumElevationInMeters the minimumElevationInMeters to set
-	 */
-	public void setMinimumElevationInMeters(String minimumElevationInMeters) {
-		this.minimumElevationInMeters = minimumElevationInMeters;
-	}
-
-
-
-	/**
-	 * @return the maximumElevationInMeters
-	 */
-	public String getMaximumElevationInMeters() {
-		return maximumElevationInMeters;
-	}
-
-
-
-	/**
-	 * @param maximumElevationInMeters the maximumElevationInMeters to set
-	 */
-	public void setMaximumElevationInMeters(String maximumElevationInMeters) {
-		this.maximumElevationInMeters = maximumElevationInMeters;
-	}
-
-
-
-	/**
-	 * @return the verbatimDepth
-	 */
-	public String getVerbatimDepth() {
-		return verbatimDepth;
-	}
-
-
-
-	/**
-	 * @param verbatimDepth the verbatimDepth to set
-	 */
-	public void setVerbatimDepth(String verbatimDepth) {
-		this.verbatimDepth = verbatimDepth;
-	}
-
-
-
-	/**
-	 * @return the minimumDepthInMeters
-	 */
-	public String getMinimumDepthInMeters() {
-		return minimumDepthInMeters;
-	}
-
-
-
-	/**
-	 * @param minimumDepthInMeters the minimumDepthInMeters to set
-	 */
-	public void setMinimumDepthInMeters(String minimumDepthInMeters) {
-		this.minimumDepthInMeters = minimumDepthInMeters;
-	}
-
-
-
-	/**
-	 * @return the maximumDepthInMeters
-	 */
-	public String getMaximumDepthInMeters() {
-		return maximumDepthInMeters;
-	}
-
-
-
-	/**
-	 * @param maximumDepthInMeters the maximumDepthInMeters to set
-	 */
-	public void setMaximumDepthInMeters(String maximumDepthInMeters) {
-		this.maximumDepthInMeters = maximumDepthInMeters;
-	}
-
-
-
-	/**
-	 * @return the minimumDistanceAboveSurfaceInMeters
-	 */
-	public String getMinimumDistanceAboveSurfaceInMeters() {
-		return minimumDistanceAboveSurfaceInMeters;
-	}
-
-
-
-	/**
-	 * @param minimumDistanceAboveSurfaceInMeters the minimumDistanceAboveSurfaceInMeters to set
-	 */
-	public void setMinimumDistanceAboveSurfaceInMeters(
-			String minimumDistanceAboveSurfaceInMeters) {
-		this.minimumDistanceAboveSurfaceInMeters = minimumDistanceAboveSurfaceInMeters;
-	}
-
-
-
-	/**
-	 * @return the maximumDistanceAboveSurfaceInMeters
-	 */
-	public String getMaximumDistanceAboveSurfaceInMeters() {
-		return maximumDistanceAboveSurfaceInMeters;
-	}
-
-
-
-	/**
-	 * @param maximumDistanceAboveSurfaceInMeters the maximumDistanceAboveSurfaceInMeters to set
-	 */
-	public void setMaximumDistanceAboveSurfaceInMeters(
-			String maximumDistanceAboveSurfaceInMeters) {
-		this.maximumDistanceAboveSurfaceInMeters = maximumDistanceAboveSurfaceInMeters;
-	}
-
-
-
-	/**
-	 * @return the locationAccordingTo
-	 */
-	public String getLocationAccordingTo() {
-		return locationAccordingTo;
-	}
-
-
-
-	/**
-	 * @param locationAccordingTo the locationAccordingTo to set
-	 */
-	public void setLocationAccordingTo(String locationAccordingTo) {
-		this.locationAccordingTo = locationAccordingTo;
-	}
-
-
-
-	/**
-	 * @return the locationRemarks
-	 */
-	public String getLocationRemarks() {
-		return locationRemarks;
-	}
-
-
-
-	/**
-	 * @param locationRemarks the locationRemarks to set
-	 */
-	public void setLocationRemarks(String locationRemarks) {
-		this.locationRemarks = locationRemarks;
-	}
-
-
-
-	/**
-	 * @return the verbatimCoordinates
-	 */
-	public String getVerbatimCoordinates() {
-		return verbatimCoordinates;
-	}
-
-
-
-	/**
-	 * @param verbatimCoordinates the verbatimCoordinates to set
-	 */
-	public void setVerbatimCoordinates(String verbatimCoordinates) {
-		this.verbatimCoordinates = verbatimCoordinates;
-	}
-
-
-
-	/**
-	 * @return the verbatimLatitude
-	 */
-	public String getVerbatimLatitude() {
-		return verbatimLatitude;
-	}
-
-
-
-	/**
-	 * @param verbatimLatitude the verbatimLatitude to set
-	 */
-	public void setVerbatimLatitude(String verbatimLatitude) {
-		this.verbatimLatitude = verbatimLatitude;
-	}
-
-
-
-	/**
-	 * @return the verbatimLongitude
-	 */
-	public String getVerbatimLongitude() {
-		return verbatimLongitude;
-	}
-
-
-
-	/**
-	 * @param verbatimLongitude the verbatimLongitude to set
-	 */
-	public void setVerbatimLongitude(String verbatimLongitude) {
-		this.verbatimLongitude = verbatimLongitude;
-	}
-
-
-
-	/**
-	 * @return the verbatimCoordinateSystem
-	 */
-	public String getVerbatimCoordinateSystem() {
-		return verbatimCoordinateSystem;
-	}
-
-
-
-	/**
-	 * @param verbatimCoordinateSystem the verbatimCoordinateSystem to set
-	 */
-	public void setVerbatimCoordinateSystem(String verbatimCoordinateSystem) {
-		this.verbatimCoordinateSystem = verbatimCoordinateSystem;
-	}
-
-
-
-	/**
-	 * @return the verbatimSRS
-	 */
-	public String getVerbatimSRS() {
-		return verbatimSRS;
-	}
-
-
-
-	/**
-	 * @param verbatimSRS the verbatimSRS to set
-	 */
-	public void setVerbatimSRS(String verbatimSRS) {
-		this.verbatimSRS = verbatimSRS;
-	}
-
-
-
-	/**
-	 * @return the decimalLatitude
-	 */
-	public String getDecimalLatitude() {
-		return decimalLatitude;
-	}
-
-
-
-	/**
-	 * @param decimalLatitude the decimalLatitude to set
-	 */
-	public void setDecimalLatitude(String decimalLatitude) {
-		this.decimalLatitude = decimalLatitude;
-	}
-
-
-
-	/**
-	 * @return the decimalLongitude
-	 */
-	public String getDecimalLongitude() {
-		return decimalLongitude;
-	}
-
-
-
-	/**
-	 * @param decimalLongitude the decimalLongitude to set
-	 */
-	public void setDecimalLongitude(String decimalLongitude) {
-		this.decimalLongitude = decimalLongitude;
-	}
-
-
-
-	/**
-	 * @return the geodeticDatum
-	 */
-	public String getGeodeticDatum() {
-		return geodeticDatum;
-	}
-
-
-
-	/**
-	 * @param geodeticDatum the geodeticDatum to set
-	 */
-	public void setGeodeticDatum(String geodeticDatum) {
-		this.geodeticDatum = geodeticDatum;
-	}
-
-
-
-	/**
-	 * @return the coordinateUncertaintyInMeters
-	 */
-	public String getCoordinateUncertaintyInMeters() {
-		return coordinateUncertaintyInMeters;
-	}
-
-
-
-	/**
-	 * @param coordinateUncertaintyInMeters the coordinateUncertaintyInMeters to set
-	 */
-	public void setCoordinateUncertaintyInMeters(
-			String coordinateUncertaintyInMeters) {
-		this.coordinateUncertaintyInMeters = coordinateUncertaintyInMeters;
-	}
-
-
-
-	/**
-	 * @return the coordinatePrecision
-	 */
-	public String getCoordinatePrecision() {
-		return coordinatePrecision;
-	}
-
-
-
-	/**
-	 * @param coordinatePrecision the coordinatePrecision to set
-	 */
-	public void setCoordinatePrecision(String coordinatePrecision) {
-		this.coordinatePrecision = coordinatePrecision;
-	}
-
-
-
-	/**
-	 * @return the pointRadiusSpatialFit
-	 */
-	public String getPointRadiusSpatialFit() {
-		return pointRadiusSpatialFit;
-	}
-
-
-
-	/**
-	 * @param pointRadiusSpatialFit the pointRadiusSpatialFit to set
-	 */
-	public void setPointRadiusSpatialFit(String pointRadiusSpatialFit) {
-		this.pointRadiusSpatialFit = pointRadiusSpatialFit;
-	}
-
-
-
-	/**
-	 * @return the footprintWKT
-	 */
-	public String getFootprintWKT() {
-		return footprintWKT;
-	}
-
-
-
-	/**
-	 * @param footprintWKT the footprintWKT to set
-	 */
-	public void setFootprintWKT(String footprintWKT) {
-		this.footprintWKT = footprintWKT;
-	}
-
-
-
-	/**
-	 * @return the footprintSRS
-	 */
-	public String getFootprintSRS() {
-		return footprintSRS;
-	}
-
-
-
-	/**
-	 * @param footprintSRS the footprintSRS to set
-	 */
-	public void setFootprintSRS(String footprintSRS) {
-		this.footprintSRS = footprintSRS;
-	}
-
-
-
-	/**
-	 * @return the footprintSpatialFit
-	 */
-	public String getFootprintSpatialFit() {
-		return footprintSpatialFit;
-	}
-
-
-
-	/**
-	 * @param footprintSpatialFit the footprintSpatialFit to set
-	 */
-	public void setFootprintSpatialFit(String footprintSpatialFit) {
-		this.footprintSpatialFit = footprintSpatialFit;
-	}
-
-
-
-	/**
-	 * @return the georeferencedBy
-	 */
-	public String getGeoreferencedBy() {
-		return georeferencedBy;
-	}
-
-
-
-	/**
-	 * @param georeferencedBy the georeferencedBy to set
-	 */
-	public void setGeoreferencedBy(String georeferencedBy) {
-		this.georeferencedBy = georeferencedBy;
-	}
-
-
-
-	/**
-	 * @return the georeferencedDate
-	 */
-	public String getGeoreferencedDate() {
-		return georeferencedDate;
-	}
-
-
-
-	/**
-	 * @param georeferencedDate the georeferencedDate to set
-	 */
-	public void setGeoreferencedDate(String georeferencedDate) {
-		this.georeferencedDate = georeferencedDate;
-	}
-
-
-
-	/**
-	 * @return the georeferenceProtocol
-	 */
-	public String getGeoreferenceProtocol() {
-		return georeferenceProtocol;
-	}
-
-
-
-	/**
-	 * @param georeferenceProtocol the georeferenceProtocol to set
-	 */
-	public void setGeoreferenceProtocol(String georeferenceProtocol) {
-		this.georeferenceProtocol = georeferenceProtocol;
-	}
-
-
-
-	/**
-	 * @return the georeferenceSources
-	 */
-	public String getGeoreferenceSources() {
-		return georeferenceSources;
-	}
-
-
-
-	/**
-	 * @param georeferenceSources the georeferenceSources to set
-	 */
-	public void setGeoreferenceSources(String georeferenceSources) {
-		this.georeferenceSources = georeferenceSources;
-	}
-
-
-
-	/**
-	 * @return the georeferenceVerificationStatus
-	 */
-	public String getGeoreferenceVerificationStatus() {
-		return georeferenceVerificationStatus;
-	}
-
-
-
-	/**
-	 * @param georeferenceVerificationStatus the georeferenceVerificationStatus to set
-	 */
-	public void setGeoreferenceVerificationStatus(
-			String georeferenceVerificationStatus) {
-		this.georeferenceVerificationStatus = georeferenceVerificationStatus;
-	}
-
-
-
-	/**
-	 * @return the georeferenceRemarks
-	 */
-	public String getGeoreferenceRemarks() {
-		return georeferenceRemarks;
-	}
-
-
-
-	/**
-	 * @param georeferenceRemarks the georeferenceRemarks to set
-	 */
-	public void setGeoreferenceRemarks(String georeferenceRemarks) {
-		this.georeferenceRemarks = georeferenceRemarks;
-	}
-
-
-
-	/**
 	 * @return the geologicalContextId
 	 */
 	public String getGeologicalContextId() {
@@ -2347,7 +1864,7 @@ public class ImportDwc implements Serializable {
 	/**
 	 * @return the dateIdentified
 	 */
-	public String getDateIdentified() {
+	public Date getDateIdentified() {
 		return dateIdentified;
 	}
 
@@ -2356,7 +1873,7 @@ public class ImportDwc implements Serializable {
 	/**
 	 * @param dateIdentified the dateIdentified to set
 	 */
-	public void setDateIdentified(String dateIdentified) {
+	public void setDateIdentified(Date dateIdentified) {
 		this.dateIdentified = dateIdentified;
 	}
 
@@ -3027,16 +2544,12 @@ public class ImportDwc implements Serializable {
 		this.nomenclaturalStatus = nomenclaturalStatus;
 	}
 
-
-
 	/**
 	 * @return the taxonRemarks
 	 */
 	public String getTaxonRemarks() {
 		return taxonRemarks;
 	}
-
-
 
 	/**
 	 * @param taxonRemarks the taxonRemarks to set
@@ -3045,41 +2558,21 @@ public class ImportDwc implements Serializable {
 		this.taxonRemarks = taxonRemarks;
 	}
 
-
-
-	/**
-	 * @return the id
-	 */
-	public Long getId() {
-		return id;
-	}
-
-
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-
-
 	@Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (Id != null ? Id.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ImportDwc)) {
+        if (!(object instanceof OccurrenceDwc)) {
             return false;
         }
-        ImportDwc other = (ImportDwc) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        OccurrenceDwc other = (OccurrenceDwc) object;
+        if ((this.Id == null && other.Id != null) || (this.Id != null && !this.Id.equals(other.Id))) {
             return false;
         }
         return true;
@@ -3087,7 +2580,7 @@ public class ImportDwc implements Serializable {
 
     @Override
     public String toString() {
-        return "org.inbio.neoportal.core.entity.ImportDwc[ id=" + id + " ]";
+        return "org.inbio.neoportal.core.entity.OccurrenceDwc[ id=" + this.Id + " ]";
     }
     
 }

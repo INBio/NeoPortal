@@ -6,6 +6,7 @@
 var filtersUrl = "/neoportal-web/api/advancedSearch/getColumnList";
 var occurrencesUrl = "/neoportal-web/api/advancedSearch/getOccurrences";
 var countOccurrenceUrl = "/neoportal-web/api/advancedSearch/countOccurrences";
+var exportUrl = "/neoportal-web/api/advancedSearch/exportOccurrences";
 var baseAPIUrl = "/neoportal-web/api/";
 
 //pagination info
@@ -33,7 +34,7 @@ $(document).ready(function(){
                 //set count variable
                 totalItems = countData.count;
                 //change label
-                $("#countLabel").html(totalItems + " registros");
+                $("#countLabel").html("Cerca de " + totalItems + " registros");
                 
                 if(totalItems == 0)
                     return;
@@ -46,6 +47,11 @@ $(document).ready(function(){
         });
         
         
+    });
+    
+    $('#exportBtn').click(function(){
+    	var searchData = generatedQueryData();
+        exportOccurrences(searchData);
     });
     
 });
@@ -97,18 +103,22 @@ function addSearchPanel(searchContainer){
                 
                 var filter = data[i].searchFilterList[j];
                 
+                //search if the filter has a column
+                var columnItem = $(".columnItem input[name=" + filter.filterKey + "]", filterDiv);
+                
                 //filter types...
                 switch (filter.type) {
                     case "text":
-                        filterString = "<span class='filterItem'>";
-                        filterString += filter.label + ": ";
+                        filterString = "<span class='filterItem filterText'>";
+                        //add label if there's no 
+                        if(columnItem.length == 0)
+                        	filterString += filter.label + ": ";
                         filterString += "<input type='text' class='filterText' ";
                         filterString += " name='" + filter.filterKey + "' />";
                         filterString += "</span>";
-                        filterString = "<div>" + filterString + "</div>";
                         break;
                     case "combo":
-                        filterString = "<span class='filterItem'>";
+                        filterString = "<span class='filterItem filterCombo'>";
                         filterString += "<select class='filterCombo' name='" + 
                             filter.filterKey + "'>";
                         
@@ -121,18 +131,28 @@ function addSearchPanel(searchContainer){
                         filterString += "</select>";
                         filterString += "</span>";
                         break;
+                        
+                    case "date":
+                    	filterString += "<span class='filterItem filterDate'>";
+                    	//filterString += "<label for='from'>from</label>";
+                    	filterString += "<input type='text' id='" + filter.filterKey + "_from' name='from' class='datePicker' />";
+                    	filterString += "<label for='to'>to</label>";
+                    	filterString += "<input type='text' id='" + filter.filterKey + "_to' name='to' class='datePicker' />";
+                    	filterString += "<input type='hidden' name='" + filter.filterKey + "' />";
+                    	filterString += "</span>";
+                    	break;
                     default:
                         break;
                 }
                                 
-                
                 //search if the filter has a column
-                var columnItem = $(".columnItem input[name=" + filter.filterKey + "]", filterDiv);
                 if(columnItem.length > 0){
                     //insert filter like last child of column parent
                     $(columnItem).parent().append(filterString);
                 }
                 else{
+                	if(filter.type == "text")
+                		filterString = "<div>" + filterString + "</div>";
                     $(filterDiv).append(filterString);
                 }
             }
@@ -161,6 +181,17 @@ function addSearchPanel(searchContainer){
         
         
         //special filters properties
+        $("input.datePicker").datepicker({
+        	dateFormat: "dd/mm/yy",
+        	altFormat: "yymmdd",
+        	onSelect: function( selectedDate ) {
+				$(this).nextAll("input").datepicker( "option", "minDate", selectedDate );
+				//$(this).prevAll("input").datepicker( "option", "maxDate", selectedDate );
+				
+        		//$( "#to" ).datepicker( "option", "minDate", selectedDate );
+			}
+        });
+        
         /*$('input[name$="taxon"]').autocomplete({
             source: baseAPIUrl + "search/taxon",
             minLength: 2
@@ -220,7 +251,7 @@ function expandFilterGroup(filterGroup){
  * the appropiate results
  */
 function generatedQueryData(){
-    var filterGroups = ["taxonomic_information", "geographic_information"];
+    var filterGroups = ["taxonomic_information", "geographic_information", "specimen_information", "event_information", "identification_information"];
     var queryData = new Object();
         queryData.filterGroups = new Array();
     
@@ -242,15 +273,35 @@ function generatedQueryData(){
             var newFilter = new Object();
 
             var $filter;
+            
+            if($(item).hasClass('filterText')) {
+            	$filter = $("input[type=text]", item);
+            	newFilter.key = $filter.attr("name");
+                newFilter.value = $filter.val();
+            }
+            
+            else if($(item).hasClass('filterCombo')) {
+            	$filter = $("select", item);
+            	newFilter.key = $filter.attr("name");
+                newFilter.value = $filter.val();
+            }
+            
+            else if($(item).hasClass('filterDate')) {
+            	newFilter.key = $("input[type=hidden]", item).attr('name');
+            	newFilter.value = $("input#" + newFilter.key + "_from", item).val() +
+            				"|" + $("input#" + newFilter.key + "_to", item).val();
+            	
+            }
+
+            newFilterGroup.filters[index] = newFilter;
+            
+            /*
             if($("input[type='text']", item).length > 0)
                 $filter = $("input[type='text']", item);
             else if($("select", item).length > 0)
                 $filter = $("select", item);
-                
-            newFilter.key = $filter.attr("name");
-            newFilter.value = $filter.val();
+                */
 
-            newFilterGroup.filters[index] = newFilter;
         });
     
         queryData.filterGroups[i] = newFilterGroup;
@@ -275,7 +326,8 @@ function showTable(searchContainer, data){
         $("div.results table tbody").html(generatedTableRows(data));
     }
     else{   //create buttons for pagination and table elements
-        var divResults = "<div class=\"results filterGroup\">";
+        var divResults = "<div class=\"contentColumn\">";
+        divResults += "<div class=\"results filterGroup\">";
         
         divResults += "<span class=\"showingControl\"></span>";
         //paginated elements
@@ -288,6 +340,7 @@ function showTable(searchContainer, data){
         
 
        //table
+        divResults += "<div class=\"wrapper\">";
         divResults += "<table class=\"tablePanel\">";
         divResults += "<thead><tr>";
 
@@ -302,6 +355,7 @@ function showTable(searchContainer, data){
         divResults += generatedTableRows(data);
         
         divResults += "</table>";
+        divResults += "</div>";	//close wrapper
         
         //paginated elements bottom
         divResults += "<div class=\"paginate_group\">";
@@ -309,7 +363,9 @@ function showTable(searchContainer, data){
         divResults += "<span class=\"previousControl paginate_button\">Anterior</span>";
         divResults += "<span class=\"nextControl paginate_button\">Siguiente</span>";
         divResults += "<span class=\"lastControl paginate_button\">Último</span>";
-        divResults += "</div>";
+        divResults += "</div>"; //close div.paginate_group 
+        divResults += "</div>"; //close div.results
+        divResults += "</div>"; //close div.contentColumn
         
         $(searchContainer).append(divResults);
         
@@ -383,15 +439,38 @@ function generatedTableRows(data){
     for(i=0; i < data.length; i++){
         rows += "<tr>";
         for(j=0; j < columnList.length; j++){
-            //debugger;
-            if(data[i][$(columnList[j]).attr("name")] != undefined){
-                rows += "<td>" + data[i][$(columnList[j]).attr("name")] + "</td>";
-            }
-            else
-                rows += "<td>" + data[i]['properties'][$(columnList[j]).attr("name")] + "</td>";
+            debugger;
+            //if(data[i][$(columnList[j]).attr("name")] != undefined){
+                rows += "<td>" + 
+                	(!data[i][$(columnList[j]).attr("name")]?"":data[i][$(columnList[j]).attr("name")]) + 
+                	"</td>";
+            //}
+            //else
+            //    rows += "<td>" + data[i]['properties'][$(columnList[j]).attr("name")] + "</td>";
         }
         rows += "</tr>";
     }
     
     return rows;
+}
+
+
+function exportOccurrences(searchData){
+    $("form#exportForm input").val(JSON.stringify(searchData));
+    
+    $("form#exportForm").submit();
+	
+    return;
+    
+	//get total count of regs
+    $.ajax({
+        type: 'post',
+        url: exportUrl,
+        data: JSON.stringify(searchData),
+        success: function(data){
+            //set count variable
+            
+        },
+        contentType: 'application/json; charset=utf-8'
+    });
 }

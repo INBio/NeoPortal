@@ -18,22 +18,29 @@
  */
 package org.inbio.neoportal.web.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.inbio.neoportal.core.dto.advancedsearch.ColumnDefaultCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchColumnCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchFilterCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchGroupCDTO;
-import org.inbio.neoportal.core.dto.occurrence.OccurrenceCDTO;
+import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.FilterSDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.OccurrenceSDTO;
+import org.inbio.neoportal.service.entity.AdvancedSearchData;
 import org.inbio.neoportal.service.manager.AdvancedSearchManager;
 import org.inbio.neoportal.web.dto.SearchColumnWDTO;
 import org.inbio.neoportal.web.dto.SearchFilterWDTO;
 import org.inbio.neoportal.web.dto.SearchGroupWDTO;
+import org.inbio.neoportal.web.view.CSVview;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -42,6 +49,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
@@ -53,7 +61,6 @@ public class AdvancedSearchApiController{
     
     @Autowired
     private AdvancedSearchManager advancedSearchManager;
-    private FilterSDTO filterSDTO;
     
     @Autowired
     private MessageSource messageSource;
@@ -186,7 +193,7 @@ public class AdvancedSearchApiController{
         @RequestParam (value = "results", defaultValue="10", required=false) int results
        ){
 
-        List<OccurrenceSDTO> occurrenceSDTO =
+        List<OccurrenceDwcCDTO> occurrenceDwcCDTO =
                 advancedSearchManager.occurrencePaginatedSearch(
                 filterSDTO,
                 startIndex, 
@@ -195,7 +202,7 @@ public class AdvancedSearchApiController{
         /* TODO: usar columnList para retornar solo los datos solicitados
         * y reducir tamaño de los datos transferidos */
                 
-        return occurrenceSDTO;
+        return occurrenceDwcCDTO;
     }
     
     
@@ -216,4 +223,49 @@ public class AdvancedSearchApiController{
         
         return result;
     }
+    
+    @RequestMapping (
+            value = "exportOccurrences",
+            method = RequestMethod.POST
+            )
+        public ModelAndView advancedSearchOccurrencesCSV (
+        //    @RequestParam (value = "filterSDTO") Object filterSDTOs
+        		@RequestParam ("filterSDTO") String filters
+           ){
+            
+
+    		ModelAndView mav = new ModelAndView(new CSVview());;
+    		List<OccurrenceDwcCDTO> occurrenceCDTO;
+    		List<String> columns;
+    		ObjectMapper mapper = new ObjectMapper();
+    		try {
+    			
+				FilterSDTO filterSDTO = mapper.readValue(filters, FilterSDTO.class);
+				
+	    		//get all occurrences
+				occurrenceCDTO =
+	                    advancedSearchManager.occurrenceSearch(filterSDTO);
+	            
+	            //get columns selected by the user
+	    		columns = new ArrayList<String>();
+	    		for (AdvancedSearchData data : filterSDTO.getFilterGroups()) {
+					columns.addAll(data.getColumns());
+				}
+	    		
+	            mav.addObject("data", occurrenceCDTO);
+	            mav.addObject("columns", columns);
+	            
+			} catch (JsonParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		
+    		return mav;
+        }
 }

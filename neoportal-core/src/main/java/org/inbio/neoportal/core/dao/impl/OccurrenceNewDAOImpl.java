@@ -1,7 +1,7 @@
 /*
  *  NeoPortal - New implementation of the INBio Species and Occurrences portal.
  *  
- *  Copyright (C) 2010 INBio - Instituto Nacional de Biodiversidad, Costa Rica
+ *  Copyright (C) 2012 INBio - Instituto Nacional de Biodiversidad, Costa Rica
  * 
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,18 +16,21 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.core.dao;
+package org.inbio.neoportal.core.dao.impl;
 
 import java.math.BigDecimal;
-import java.util.List;
-import org.inbio.neoportal.core.entity.ImportDwc;
+
+import org.inbio.neoportal.core.dao.OccurrenceNewDAO;
+import org.inbio.neoportal.core.entity.OccurrenceDwc;
+import org.springframework.stereotype.Repository;
 
 /**
- *
  * @author avargas
+ *
  */
+@Repository
+public class OccurrenceNewDAOImpl 
+	extends GenericDAOImpl<OccurrenceDwc, BigDecimal> implements
+		OccurrenceNewDAO {
 
-public interface ImportDwcDAO
-        extends GenericDAO<ImportDwc, BigDecimal> {
-    
 }

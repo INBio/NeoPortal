@@ -65,10 +65,14 @@
                 <div class="leftPanel">
                     <div class="controls">
                         <a id="searchBtn" href="#">search</a>
-                        <span id="countLabel"></span>
+                        <a id="exportBtn" href="#">export</a>
+                        <div id="countLabel"></div>
                     </div>
                 </div>
-                      
+                 
+                <form:form id="exportForm" action="${pageContext.request.contextPath}/api/advancedSearch/exportOccurrences">                      
+           			<input type="hidden" name="filterSDTO" id="filterSDTO" />
+            	</form:form>
             </div> <!-- end content -->
             
             <!-- Footer -->

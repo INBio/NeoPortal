@@ -13,6 +13,7 @@ public class SearchColumn  implements java.io.Serializable {
      private BigDecimal columnId;
      private SearchGroup searchGroup;
      private String columnKey;
+     private BigDecimal sort;
 
     public SearchColumn() {
     }
@@ -22,10 +23,11 @@ public class SearchColumn  implements java.io.Serializable {
         this.columnId = columnId;
         this.searchGroup = searchGroup;
     }
-    public SearchColumn(BigDecimal columnId, SearchGroup searchGroup, String columnKey) {
+    public SearchColumn(BigDecimal columnId, SearchGroup searchGroup, String columnKey, BigDecimal sort) {
        this.columnId = columnId;
        this.searchGroup = searchGroup;
        this.columnKey = columnKey;
+       this.sort = sort;
     }
    
     public BigDecimal getColumnId() {
@@ -51,8 +53,22 @@ public class SearchColumn  implements java.io.Serializable {
     }
 
 
+	/**
+	 * @return the sort
+	 */
+	public BigDecimal getSort() {
+		return sort;
+	}
 
 
+	/**
+	 * @param sort the sort to set
+	 */
+	public void setSort(BigDecimal sort) {
+		this.sort = sort;
+	}
+
+    
 }
 
 

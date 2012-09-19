@@ -21,13 +21,14 @@ package org.inbio.neoportal.core.dao;
 import java.math.BigDecimal;
 import java.util.List;
 import org.inbio.neoportal.core.entity.Occurrence;
+import org.inbio.neoportal.core.entity.OccurrenceDwc;
 
 /**
  *
  * @author asanabria
  */
 public interface OccurrenceDAO 
-    extends GenericBaseDAO<Occurrence, BigDecimal>{
+    extends GenericBaseDAO<OccurrenceDwc, BigDecimal>{
     
            /**
     * Return a generic search.
@@ -60,7 +61,7 @@ public interface OccurrenceDAO
      * @param quantity
      * @return 
      */
-    public List advancedSearch(
+    public List advancedSearchPaginated(
             final String searchText,
             final int offset,
             final int quantity);
@@ -69,6 +70,19 @@ public interface OccurrenceDAO
      * 
      * @param locationId 
      */
-    public Occurrence findByLocationId(
+    public OccurrenceDwc findByLocationId(
             final String locationId);
+    
+    /**
+     * 
+     * @return string list the list of distinct sex values, useful for advancedSearch
+     */
+    public List<String> getSexValues();
+    
+    /**
+     * Find a occurrence by the catalog number
+     * @param catalogNumber
+     * @return
+     */
+    public OccurrenceDwc findByCatalogNumber(String catalogNumber);
 }

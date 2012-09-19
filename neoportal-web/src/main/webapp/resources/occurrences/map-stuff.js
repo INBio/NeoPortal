@@ -35,7 +35,7 @@ function initMap2(divId){
     
     //estilo del mapa para uso de clusters
     var style = new OpenLayers.Style({
-        pointRadius: "${radius}",
+        pointRadius: "10",
         fillColor: "${fillColor}",
         fillOpacity: 0.7,
         strokeOpacity: 0,
@@ -44,9 +44,9 @@ function initMap2(divId){
         },
         {
             context: {
-                radius: function(feature){
+                /*radius: function(feature){
                     return Math.min(feature.attributes.count, 16) + 8;
-                },
+                },*/
                 fillColor: function(feature) {
 
                     var r = Math.round( 255 * feature.cluster.length / clusterMaxLenght);

@@ -130,7 +130,7 @@
             <key>
                 <column name="taxon_id" precision="131089" scale="0" />
             </key>
-            <one-to-many class="org.inbio.neoportal.core.entity.Occurrence" />
+            <one-to-many class="org.inbio.neoportal.core.entity.OccurrenceDwc" />
         </set>
         <set name="images" inverse="true" fetch="select">
             <key>

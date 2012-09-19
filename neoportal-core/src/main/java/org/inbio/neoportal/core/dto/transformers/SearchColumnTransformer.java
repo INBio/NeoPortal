@@ -33,7 +33,8 @@ public class SearchColumnTransformer
                 new SearchColumnCDTO(
                     searchColumn.getColumnId().toString(),
                     searchColumn.getSearchGroup().getSearchGroupId().toString(),
-                    searchColumn.getColumnKey()
+                    searchColumn.getColumnKey(),
+                    searchColumn.getSort()
                 ));
         }
         

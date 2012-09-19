@@ -19,15 +19,10 @@
 package org.inbio.neoportal.core.dao;
 
 import java.math.BigDecimal;
-import java.util.List;
-import org.inbio.neoportal.core.entity.ImportDwc;
 
-/**
- *
- * @author avargas
- */
+import org.inbio.neoportal.core.entity.Taxon;
 
-public interface ImportDwcDAO
-        extends GenericDAO<ImportDwc, BigDecimal> {
-    
+public interface TaxonNewDAO 
+	extends GenericDAO<Taxon, BigDecimal> {
+
 }
