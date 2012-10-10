@@ -8,8 +8,11 @@
       <column name="group_nav_id" precision="131089" scale="0"/>
       <generator class="assigned"/>
     </id>
-    <property name="label" type="string">
-    	<column name="label"></column>
+    <property name="name" type="string">
+    	<column name="name"></column>
+    </property>
+    <property name="nameEng" type="string">
+    	<column name="name_eng"></column>
     </property>
     <many-to-one class="org.inbio.neoportal.core.entity.GroupNav" fetch="select" name="groupNavParent">
       <column name="group_nav_parent" precision="131089" scale="0"/>

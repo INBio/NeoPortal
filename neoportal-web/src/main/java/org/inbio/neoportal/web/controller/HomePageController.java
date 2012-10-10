@@ -47,7 +47,7 @@ public class HomePageController {
 	@RequestMapping("/")
 	protected ModelAndView homePage() {
 		
-		List<GroupNavCDTO> groupNav = groupNavManager.getFirstLevel();
+		List<GroupNavCDTO> groupNav = groupNavManager.getFirstLevel("Nombres comunes");
 		
 		Collections.sort(groupNav);
 		

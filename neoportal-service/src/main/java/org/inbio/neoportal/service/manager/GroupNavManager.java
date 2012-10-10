@@ -34,7 +34,7 @@ public interface GroupNavManager {
 	 * 
 	 * @return Return the nodes with parent = null 
 	 */
-	public List<GroupNavCDTO> getFirstLevel();
+	public List<GroupNavCDTO> getFirstLevel(String groupNavName);
 	
 	/**
 	 * 

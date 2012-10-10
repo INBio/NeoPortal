@@ -37,14 +37,14 @@ public class GroupNavApiController {
 	@Autowired
 	private GroupNavManager groupNavManager;
 	
-	@RequestMapping(
-			value="getFirstLevel")
-    @ResponseBody
-    public Object firstLevel(){
-		
-		
-		return groupNavManager.getFirstLevel();
-	}
+//	@RequestMapping(
+//			value="getFirstLevel")
+//    @ResponseBody
+//    public Object firstLevel(){
+//		
+//		
+//		return groupNavManager.getFirstLevel();
+//	}
 	
 	@RequestMapping(
 			value="", 

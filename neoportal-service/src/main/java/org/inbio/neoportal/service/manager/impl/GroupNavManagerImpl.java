@@ -35,9 +35,9 @@ public class GroupNavManagerImpl
     private HibernateTransactionManager transactionManager;
 	
 	@Override
-	public List<GroupNavCDTO> getFirstLevel() {
+	public List<GroupNavCDTO> getFirstLevel(String groupNavName) {
 		
-		return groupNavDAO.getFirstLevel();
+		return groupNavDAO.getFirstLevel(groupNavName);
 	}
 
 	@Override

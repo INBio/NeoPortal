@@ -12,18 +12,17 @@ import org.inbio.neoportal.common.dto.BaseDTO;
  * only keep one level (groupNavChilds of a child would be null).
  */
 public class GroupNavCDTO extends BaseDTO
-		implements Comparable{
+		implements Comparable<GroupNavCDTO>{
 	
 	private String groupNavId;
-	private String label;
+	private String name;
 	private String groupNavParentId;
 	private String taxonId;
 	private List<GroupNavCDTO> groupNavChilds;
 	
 	@Override
-	public int compareTo(Object o) {
-		return Integer.parseInt(this.groupNavId) - 
-				Integer.parseInt(((GroupNavCDTO)o).getGroupNavId());
+	public int compareTo(GroupNavCDTO o) {
+		return name.compareTo(o.getName());
 	}
 	
 	public GroupNavCDTO() {
@@ -99,15 +98,15 @@ public class GroupNavCDTO extends BaseDTO
 	/**
 	 * @return the label
 	 */
-	public String getLabel() {
-		return label;
+	public String getName() {
+		return name;
 	}
 
 	/**
-	 * @param label the label to set
+	 * @param name the label to set
 	 */
-	public void setLabel(String label) {
-		this.label = label;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	

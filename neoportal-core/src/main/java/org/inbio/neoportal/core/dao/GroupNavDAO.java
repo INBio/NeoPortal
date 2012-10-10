@@ -34,5 +34,5 @@ public interface GroupNavDAO
 	
 	public GroupNavCDTO getById(final BigDecimal id);
 	
-	public List<GroupNavCDTO> getFirstLevel();
+	public List<GroupNavCDTO> getFirstLevel(String groupNavName);
 }

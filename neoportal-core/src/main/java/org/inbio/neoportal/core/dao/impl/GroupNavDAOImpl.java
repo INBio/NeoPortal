@@ -41,7 +41,7 @@ public class GroupNavDAOImpl
 	}
 	
 	@Override
-	public List<GroupNavCDTO> getFirstLevel(){
+	public List<GroupNavCDTO> getFirstLevel(final String groupNavName){
 		
 		HibernateTemplate template = getHibernateTemplate();
 		return (List<GroupNavCDTO>) template.execute(new HibernateCallback() {
@@ -49,8 +49,10 @@ public class GroupNavDAOImpl
                 Query query = session.createQuery(
 						//"select distinct gn from GroupNav gn " +
 						//"left join fetch gn.groupNavChilds left join fetch gn.groupNavParent" +
-                		"select gn from GroupNav gn" +
-						" where gn.groupNavParent = null");
+                		"from GroupNav gn " +
+						"inner join gn.groupNavParent p " +
+                		"where p.groupNavParent = null and p.name = :groupNavName");
+                query.setParameter("groupNavName", groupNavName);
                 query.setResultTransformer(new GroupNavTransformer());
                 //query.setResultTransformer(Transformers.aliasToBean(GroupNavCDTO.class));
                 

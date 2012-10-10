@@ -29,7 +29,7 @@
 
         <!--   jQuery LightBox     -->
         <script type="text/javascript" src="<c:url value="/resources/plugins/jquery-lightbox-0.5/js/jquery.lightbox-0.5.min.js" />"></script>
-        <link rel="stylesheet" type="text/css" href="<c:url value="/resources/plugins/jquery-lightbox-0.5/css/jquery.lightbox-0.5.css"/>"</link>
+        <link rel="stylesheet" type="text/css" href="<c:url value='/resources/plugins/jquery-lightbox-0.5/css/jquery.lightbox-0.5.css'/>" />
         
         <!--   jQuery Masonry plugin - dynamic layout for images  -->
         <script type="text/javascript" src="<c:url value="/resources/plugins/jquery.masonry.min.js" />"></script>

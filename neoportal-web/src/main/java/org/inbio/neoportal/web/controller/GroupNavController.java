@@ -18,7 +18,9 @@
  */
 package org.inbio.neoportal.web.controller;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import org.inbio.neoportal.core.dto.groupnav.GroupNavCDTO;
 import org.inbio.neoportal.service.manager.GroupNavManager;
@@ -43,17 +45,30 @@ public class GroupNavController {
 	@RequestMapping(
 			value="")
 	public ModelAndView groupNavById(
-			@RequestParam (value="gni", required=false) int id
+			@RequestParam (value="gni", required=false) String id,
+			Locale locale
 			) {
 	
 		ModelAndView modelAndView = new ModelAndView("groupNav");
 		
-		List<GroupNavCDTO> groupNavList = groupNavManager.getFirstLevel();
+		List<GroupNavCDTO> groupNavList = groupNavManager.getFirstLevel("Nombres comunes");
 		
+		sortList(groupNavList);
+		
+		modelAndView.addObject("language", locale.getLanguage());		
 		modelAndView.addObject("groupNavList", groupNavList);
 		modelAndView.addObject("selectedGN", id);
 		
 		return modelAndView;
+	}
+
+	private void sortList(List<GroupNavCDTO> groupNavList) {
+		Collections.sort(groupNavList);
+		
+		for (GroupNavCDTO groupNavCDTO : groupNavList) {
+			Collections.sort(groupNavCDTO.getGroupNavChilds());
+		}
+		
 	}
 	
 }

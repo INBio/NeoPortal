@@ -41,11 +41,11 @@
         	<ul>
 	            <c:forEach items="${groupNavList}" var="gn">
 	            <li class="gn-firstLevel<c:if test="${gn.groupNavId == selectedGN}"> current</c:if>">
-	            	<a id="gn_<c:out value='${gn.groupNavId}'/>" href="#"><fmt:message key="${gn.label}" /></a>
+	            	<a id="gn_<c:out value='${gn.groupNavId}'/>" href="#"><fmt:message key="${gn.name}" /></a>
 	            	<c:forEach items="${gn.groupNavChilds}" var="gnChild">
 	            	<ul>
 	            		<li class="gn-child">
-	            			<a id="child_<c:out value='${gnChild.groupNavId}'/>" href="#"><fmt:message key="${gnChild.label}" /></a>
+	            			<a id="child_<c:out value='${gnChild.groupNavId}'/>" href="#"><fmt:message key="${gnChild.name}" /></a>
 	            		</li>
 	            	</ul>
 	            	</c:forEach>

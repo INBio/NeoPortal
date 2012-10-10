@@ -71,7 +71,7 @@
             </div>
             
             <c:forEach items="${group_nav}" var="gn">
-            <a href="groupNav?gni=<c:out value='${gn.groupNavId}'/>"><fmt:message key="${gn.label}" /></a>
+            <a href="groupNav?gni=<c:out value='${gn.groupNavId}'/>"><fmt:message key="${gn.name}" /></a>
             </c:forEach>
 
             <!-- Results panel -->

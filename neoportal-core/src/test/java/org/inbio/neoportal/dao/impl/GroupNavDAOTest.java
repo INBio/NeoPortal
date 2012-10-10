@@ -41,24 +41,32 @@ public class GroupNavDAOTest
 	public void setup(){
 		if(groupNavDAO.findAll(GroupNav.class).isEmpty()){
 			GroupNav groupNav = new GroupNav();
+			GroupNav groupNavParent = new GroupNav();
+			
+			groupNavParent.setGroupNavId(new BigDecimal(0));
+			groupNavParent.setTaxonId(null);
+			groupNavParent.setGroupNavParent(null);
+			groupNavParent.setName("test");
+			
+			groupNavDAO.create(groupNavParent);
 			
 			//first level items
 			
 			groupNav.setGroupNavId(new BigDecimal(1));
 			groupNav.setTaxonId(null);
-			groupNav.setGroupNavParent(null);
+			groupNav.setGroupNavParent(groupNavParent);
 			
 			groupNavDAO.create(groupNav);
 			
 			groupNav.setGroupNavId(new BigDecimal(2));
 			groupNav.setTaxonId(null);
-			groupNav.setGroupNavParent(null);
+			groupNav.setGroupNavParent(groupNavParent);
 			
 			groupNavDAO.create(groupNav);
 			
 			groupNav.setGroupNavId(new BigDecimal(3));
 			groupNav.setTaxonId(null);
-			groupNav.setGroupNavParent(null);
+			groupNav.setGroupNavParent(groupNavParent);
 			
 			groupNavDAO.create(groupNav);
 						
@@ -82,7 +90,7 @@ public class GroupNavDAOTest
 	
 	@Test
 	public void testGetFirstLevel(){
-		List<GroupNavCDTO> items = groupNavDAO.getFirstLevel();
+		List<GroupNavCDTO> items = groupNavDAO.getFirstLevel("test");
 		
 		Assert.assertEquals(items.size(), 3);
 	}
