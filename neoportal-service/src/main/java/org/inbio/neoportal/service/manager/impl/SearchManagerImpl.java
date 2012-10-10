@@ -73,7 +73,7 @@ public class SearchManagerImpl implements SearchManager{
         
         TaxonDescriptionLiteSDTO sp = null;
                 
-        //Set to store all the diferent scientific names
+        //Set to store all the different scientific names
         List<TaxonDescriptionLiteCDTO> speciesList = new ArrayList<TaxonDescriptionLiteCDTO>();
         
         //Result List of SpeciesLiteDTO Objects
@@ -128,7 +128,7 @@ public class SearchManagerImpl implements SearchManager{
         List<TaxonLiteCDTO> taxonList = null;
         SpeciesLiteSDTO sp = null;
                 
-        //Set to store all the diferent scientific names
+        //Set to store all the different scientific names
         Set<SpeciesLiteSDTO> speciesList = new HashSet<SpeciesLiteSDTO>();
         
         //Result List of SpeciesLiteDTO Objects

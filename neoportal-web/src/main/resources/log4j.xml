@@ -60,6 +60,9 @@
 		<level value="info" />
 	</logger>
 
+	<logger name="org.hibernate">
+		<level value="all" />
+	</logger>
 	<!-- Root Logger -->
 	<root>
 		<priority value="WARN" />
