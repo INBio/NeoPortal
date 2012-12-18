@@ -18,6 +18,7 @@
  */
 package org.inbio.neoportal.service.manager.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -33,6 +34,7 @@ import org.inbio.neoportal.core.dto.occurrence.OccurrenceLiteCDTO;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionLiteCDTO;
+import org.inbio.neoportal.core.entity.Taxon;
 import org.inbio.neoportal.service.dto.occurrences.OccurrenceLiteSDTO;
 import org.inbio.neoportal.service.dto.species.SpeciesLiteSDTO;
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionLiteSDTO;
@@ -122,7 +124,7 @@ public class SearchManagerImpl implements SearchManager{
      */
     @Override
     public List<SpeciesLiteSDTO> 
-        taxonPaginatedSearch(String searchText, int offset, int quantity)
+        taxonPaginatedSearch(String searchTerms, int offset, int quantity)
             throws ParseException{
 
         List<TaxonLiteCDTO> taxonList = null;
@@ -134,8 +136,10 @@ public class SearchManagerImpl implements SearchManager{
         //Result List of SpeciesLiteDTO Objects
         List<SpeciesLiteSDTO> result = new ArrayList<SpeciesLiteSDTO>();
 
+        searchTerms = formatTaxonSearch(searchTerms);
+        
         // Search the results of the query
-        taxonList = taxonDAO.search(searchText, offset, quantity);
+        taxonList = taxonDAO.search(searchTerms, offset, quantity);
         
         for (TaxonLiteCDTO tldto: taxonList ){
              
@@ -144,11 +148,6 @@ public class SearchManagerImpl implements SearchManager{
              sp.setCommonName(this.joinCommonNames(tldto.getCommonNameList()));
              sp.setScientificName(tldto.getScientificName());
              
-//             if(tldto.getImageList().size() > 0){
-//                sp.setImageURL(
-//                        "http://multimedia.inbio.ac.cr/m3sINBio/getImage?size=thumb&id=" + 
-//                        tldto.getImageList().get(0).getM3sImageId() );
-//             }
              if(tldto.getImageUrl() != null){
                  sp.setImageURL(tldto.getImageUrl());
              }
@@ -176,10 +175,10 @@ public class SearchManagerImpl implements SearchManager{
      * @throws ParseException 
      */
     @Override
-    public Long taxonSearchCount(String searchText)
+    public Long taxonSearchCount(String searchTerms)
             throws ParseException{
-        
-        return taxonDAO.searchCount(searchText);
+    	searchTerms = formatTaxonSearch(searchTerms);
+        return taxonDAO.searchCount(searchTerms);
     }
     
     /**
@@ -192,9 +191,8 @@ public class SearchManagerImpl implements SearchManager{
      */
     @Override
     public List<OccurrenceLiteSDTO> occurrencePaginatedSearch
-        (String searchText, int offset, int quantity) 
+        (String searchTerms, int offset, int quantity) 
             throws ParseException{
-
       
         
         ArrayList<OccurrenceLiteSDTO> olsdto = new 
@@ -203,7 +201,7 @@ public class SearchManagerImpl implements SearchManager{
         // retrieve the search results
         ArrayList<OccurrenceLiteCDTO> ocList 
             =  (ArrayList<OccurrenceLiteCDTO>) occurrenceDAO.search(
-                    searchText, 
+            		searchTerms, 
                     offset, 
                     quantity);
         
@@ -294,5 +292,94 @@ public class SearchManagerImpl implements SearchManager{
         
         return taxonList;
     }
+    
+    private String formatTaxonSearch(String searchTerms){
+    	//filter taxon range to match only species
+        //TODO: change taxonomical Range number for enum
+        searchTerms = "(" + searchTerms + ") AND (taxonomicalRangeId:19 taxonomicalRangeId:20 taxonomicalRangeId:21 taxonomicalRangeId:22)";
+        
+    	return searchTerms;
+    }
+
+
+	@Override
+	public List<SpeciesLiteSDTO> taxonInPaginatedSearch(
+			List<BigDecimal> idList,
+			int offset, 
+			int quantity) throws ParseException {
+		List<TaxonLiteCDTO> taxonList = null;
+        SpeciesLiteSDTO sp = null;
+                
+        //Set to store all the different scientific names
+        Set<SpeciesLiteSDTO> speciesList = new HashSet<SpeciesLiteSDTO>();
+        
+        //Result List of SpeciesLiteDTO Objects
+        List<SpeciesLiteSDTO> result = new ArrayList<SpeciesLiteSDTO>();
+        
+        // Search the results of the query
+        taxonList = taxonDAO.searchIn(idList, offset, quantity);
+        
+        for (TaxonLiteCDTO tldto: taxonList ){
+             
+            sp = new SpeciesLiteSDTO();
+             
+             sp.setCommonName(this.joinCommonNames(tldto.getCommonNameList()));
+             sp.setScientificName(tldto.getScientificName());
+             
+             if(tldto.getImageUrl() != null){
+                 sp.setImageURL(tldto.getImageUrl());
+             }
+             else if(tldto.getImageList().size() > 0){
+                sp.setImageURL(
+                        "http://multimedia.inbio.ac.cr/m3sINBio/getImage?size=thumb&id=" + 
+                        tldto.getImageList().get(0).getM3sImageId() );
+             }
+             else
+                 sp.setImageURL("http://pulsatrix.inbio.ac.cr/projects/atta2/chrome/site/header.png");
+             
+             speciesList.add(sp);
+        }
+
+        result.addAll(speciesList);
+
+        return result;
+	}
+
+
+	@Override
+	public Long taxonInSearchCount(List<BigDecimal> idList) throws ParseException {
+		return taxonDAO.searchInCount(idList);
+	}
+
+
+	@Override
+	public List<SpeciesLiteSDTO> basicPaginatedSearch(String searchText,
+			int offset, int quantity) throws ParseException {
+		// analyze and prepare basis search
+		searchText = "(" + searchText + ")" + 
+				" AND (taxonomicalRangeId:" + Taxon.TaxonomicalRange.SPECIES.getId() +
+				" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.SUBSPECIES.getId() +
+				" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.VARIETY.getId() +
+				" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.FORM.getId() +
+				" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.DOMAIN.getId() +
+				")";
+		
+		return this.taxonPaginatedSearch(searchText, offset, quantity);
+	}
+
+
+	@Override
+	public Long basicSearchCount(String searchText) throws ParseException {
+		// analyze and prepare basis search
+		searchText = "(" + searchText + ")" + 
+				" AND (taxonomicalRangeId:" + Taxon.TaxonomicalRange.SPECIES.getId() +
+				" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.SUBSPECIES.getId() +
+				" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.VARIETY.getId() +
+				" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.FORM.getId() +
+				" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.DOMAIN.getId() +
+				")";
+		
+		return this.taxonSearchCount(searchText);
+	}
     
 }

@@ -33,7 +33,7 @@ import org.inbio.neoportal.core.entity.Taxon;
  * Transfrom a list of Taxon entities to OccurrenceLiteDTO
  * @author asanabria
  */
-public class TaxonTransformer 
+public class TaxonLiteTransformer 
     implements ResultTransformer {
 
     CommonNameTransformer commonNameRT =
@@ -74,6 +74,23 @@ public class TaxonTransformer
 
     @Override
     public Object transformTuple(Object[] os, String[] strings) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    	
+    	Taxon taxon = (Taxon)os[0];
+    	
+    	commonNameList =  commonNameRT.transformList(
+            new ArrayList<CommonName>(taxon.getCommonNames()));
+        
+        ArrayList<ImagesCDTO> imgList = new ArrayList<ImagesCDTO>();
+        for(Images img: taxon.getImages()){
+            imgList.add((ImagesCDTO)imagesRT.transformTuple(new Object[]{img}, null));
+        }
+        
+        TaxonLiteCDTO taxonCDTO = new TaxonLiteCDTO();
+        taxonCDTO.setScientificName(taxon.getDefaultName());
+        taxonCDTO.setCommonNameList((ArrayList<CommonNameLiteCDTO>) commonNameList);
+        taxonCDTO.setImageList(imgList);
+        taxonCDTO.setImageUrl(taxon.getImageUrl());
+        
+        return taxonCDTO;
     }
 }

@@ -41,13 +41,20 @@ public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 		HttpServletResponse response, Object handler)
 	    throws Exception {
  
-		if(!(handler instanceof ResourceHttpRequestHandler))
+		if(!(handler instanceof ResourceHttpRequestHandler)){
 		//logger.info("Start Request");
-			watch.start(new StringBuilder(
-					request.getRequestURI()).append(
-							"?").append(
-									request.getQueryString()).append(
-									" [Proccess request]").toString());
+			StringBuilder taskName = new StringBuilder(
+					request.getRequestURI());
+			if(request.getQueryString() == null)
+				taskName.append(" [Proccess request]");
+			else
+				taskName.append(
+						"?").append(
+								request.getQueryString()).append(
+								" [Proccess request]");
+			
+			watch.start(taskName.toString());
+		}
 
 		return true;
 	}

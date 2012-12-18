@@ -31,14 +31,16 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
+import org.hibernate.sql.Template;
 import org.inbio.neoportal.core.dao.TaxonDAO;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
 import org.inbio.neoportal.core.dto.transformers.TaxonDescriptionFullTransformer;
 import org.inbio.neoportal.core.entity.Taxon;
-import org.inbio.neoportal.core.dto.transformers.TaxonTransformer;
+import org.inbio.neoportal.core.dto.transformers.TaxonLiteTransformer;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -67,7 +69,7 @@ public class TaxonDAOImpl
         fieldList.addAll(Arrays.asList(taxon));
 
         return super.search(Taxon.class,
-                            new TaxonTransformer(), 
+                            new TaxonLiteTransformer(), 
                             fieldList.toArray(new String[fieldList.size()]), 
                             searchText, 
                             offset, 
@@ -88,7 +90,7 @@ public class TaxonDAOImpl
         fieldList.addAll(Arrays.asList(taxon));
         
         return super.searchCount(Taxon.class, 
-                                new TaxonTransformer(), 
+                                new TaxonLiteTransformer(), 
                                 fieldList.toArray(new String[fieldList.size()]), 
                                 searchText);
     }
@@ -203,11 +205,58 @@ public class TaxonDAOImpl
                 org.hibernate.Query hsQuery =
                         (org.hibernate.Query) fullTextSession.createFullTextQuery(query, Taxon.class);
                 
-                hsQuery.setResultTransformer(new TaxonTransformer());
+                hsQuery.setResultTransformer(new TaxonLiteTransformer());
                 
                 return hsQuery.list();
             }
         });
         
     }
+
+	@Override
+	public Long searchInCount(final List idList) {
+		
+		HibernateTemplate template = getHibernateTemplate();
+
+        return (Long) template.execute(new HibernateCallback() {
+                
+            @Override
+            public Object doInHibernate(Session session) {
+
+            	org.hibernate.Query query = session.createQuery(
+            			"select count(*) from Taxon" +
+            			" where id IN (:idList)");
+            	
+            	query.setParameterList("idList", idList);
+            	
+            	return (Long)query.uniqueResult();
+            }
+        });
+	}
+
+	@Override
+	public List<TaxonLiteCDTO> searchIn(
+			final List idList, 
+			final int offset, 
+			final int quantity) {
+		HibernateTemplate template = getHibernateTemplate();
+
+        return (List<TaxonLiteCDTO>) template.execute(new HibernateCallback() {
+                
+            @Override
+            public Object doInHibernate(Session session) {
+
+            	org.hibernate.Query query = session.createQuery(
+            			"from Taxon" +
+            			" where id IN (:idList)");
+            	
+            	query.setParameterList("idList", idList);
+            	query.setFirstResult(offset);
+            	query.setMaxResults(quantity);
+            	query.setResultTransformer(new TaxonLiteTransformer());
+            	
+            	return query.list();
+            }
+        });
+	}
 }

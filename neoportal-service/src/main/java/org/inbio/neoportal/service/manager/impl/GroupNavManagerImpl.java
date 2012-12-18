@@ -1,14 +1,19 @@
 package org.inbio.neoportal.service.manager.impl;
 
 import java.math.BigDecimal;
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.apache.lucene.queryParser.ParseException;
 import org.inbio.neoportal.core.dao.GroupNavDAO;
 import org.inbio.neoportal.core.dao.TaxonDAO;
 import org.inbio.neoportal.core.dto.groupnav.GroupNavCDTO;
+import org.inbio.neoportal.core.dto.taxon.TaxonCDTO;
 import org.inbio.neoportal.core.entity.GroupNav;
 import org.inbio.neoportal.core.entity.Taxon;
+import org.inbio.neoportal.service.dto.Response;
 import org.inbio.neoportal.service.dto.species.SpeciesLiteSDTO;
 import org.inbio.neoportal.service.manager.GroupNavManager;
 import org.inbio.neoportal.service.manager.SearchManager;
@@ -70,33 +75,66 @@ public class GroupNavManagerImpl
 	}
 
 	@Override
-	public List<SpeciesLiteSDTO> getSpeciesByGroupNav(int id) {
+	public Response getSpeciesByGroupNav(int id, int offset, int quantity) {
 
-		List<SpeciesLiteSDTO> result = new ArrayList<SpeciesLiteSDTO>();
+		Response response = new Response();
 		
-		//start new transaction
-        DefaultTransactionDefinition transaction = new DefaultTransactionDefinition();
-        TransactionStatus status = transactionManager.getTransaction(transaction);
-        
 		GroupNavCDTO gn = groupNavDAO.getById(new BigDecimal(id));
 
-		try {
-        	
-			Taxon taxon = taxonDAO.findById(Taxon.class, new BigDecimal(gn.getTaxonId()));
-			
-			String query = "family:\"" + taxon.getFamily() + "\" -scientificName:[* TO *]";
-			
-			long total = searchManager.taxonSearchCount(query);
-			
-			result = searchManager.taxonPaginatedSearch(query, 0, (int)total);
-    	
-    		transactionManager.commit(status);
-		} catch (Exception e) {
-			transactionManager.rollback(status);
-		}
-				
+		//get taxon list
+		List<TaxonCDTO> taxonList = getTaxonList(gn);
 		
-		return result;
+		//create query for lucene based on taxon
+		String query = taxonListToQuery(taxonList);
+		if(query.length() > 0){
+			query = "(" + query + ")" + 
+					" AND (taxonomicalRangeId:" + Taxon.TaxonomicalRange.SPECIES.getId() +
+					" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.SUBSPECIES.getId() +
+					" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.VARIETY.getId() +
+					" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.FORM.getId() +
+					" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.DOMAIN.getId() +
+					")";
+		}
+		//retrieve species list...
+		try {
+			response.setTotal(searchManager.taxonSearchCount(query));
+			response.setResult(searchManager.taxonPaginatedSearch(query, offset, quantity));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return response;
 	}
 
+	public List<TaxonCDTO> getTaxonList(GroupNavCDTO gn) {
+		if(gn.getTaxonCDTO() != null){
+			ArrayList<TaxonCDTO> finalList =new ArrayList<TaxonCDTO>();
+			finalList.add(gn.getTaxonCDTO());
+			return finalList;
+		}
+		
+		ArrayList<TaxonCDTO> list =new ArrayList<TaxonCDTO>();
+		
+		for (GroupNavCDTO gnCDTO : gn.getGroupNavChilds()) {
+			list.addAll(getTaxonList(gnCDTO));
+		}
+		
+		return list;
+	}
+
+	
+	public String taxonListToQuery(List<TaxonCDTO> taxonList){
+		String query = "";
+		
+		for(TaxonCDTO taxon: taxonList){
+			//FIXME: get taxon range to look for other than family
+			query += " family:\"" + taxon.getDefaultName() + "\" OR"; 
+		}
+		
+		if(query.length() > 0){
+			query = query.substring(0, query.length() - 2);
+		}
+		
+		return query;
+	}
 }

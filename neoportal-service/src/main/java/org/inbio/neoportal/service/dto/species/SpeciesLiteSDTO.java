@@ -27,9 +27,12 @@ import org.inbio.neoportal.common.dto.BaseDTO;
  */
 public class SpeciesLiteSDTO 
     extends BaseDTO 
-        implements Comparable {
+        implements Comparable<SpeciesLiteSDTO> {
 
-    private String imageURL;
+    /**
+	 * 
+	 */
+	private String imageURL;
 	private String commonName;
     private String scientificName;
     private String institution;
@@ -90,12 +93,10 @@ public class SpeciesLiteSDTO
      * Make posible the search only different species method on SearchManager
      * @return
      */
-    @Override
-    public int compareTo(Object o) {
-
-        SpeciesLiteSDTO ol = (SpeciesLiteSDTO)o;
-        return this.getScientificName().compareTo(ol.getScientificName());
-    }
+	@Override
+	public int compareTo(SpeciesLiteSDTO arg0) {
+		return this.scientificName.compareTo(arg0.scientificName);
+	}
 
     /**
      * @return the imageURL
@@ -170,4 +171,5 @@ public class SpeciesLiteSDTO
     public void setProvice(String provice) {
         this.provice = provice;
     }
+
 }

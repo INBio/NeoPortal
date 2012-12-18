@@ -15,7 +15,8 @@ public class GroupNav implements java.io.Serializable {
      private String name;
      private String nameEng;
      private GroupNav groupNavParent;
-     private BigDecimal taxonId;
+     private Taxon taxon;
+     private String imageUrl;
      private Set<GroupNav> groupNavChilds = new HashSet<GroupNav>();
 
     public GroupNav() {
@@ -26,11 +27,11 @@ public class GroupNav implements java.io.Serializable {
     }
 
 	public GroupNav(BigDecimal groupNavId, GroupNav groupNavParen, 
-			BigDecimal taxonId, Set groupNavChilds) {
+			Taxon taxon, Set groupNavChilds) {
 		super();
 		this.groupNavId = groupNavId;
 		this.groupNavParent = groupNavParent;
-		this.taxonId = taxonId;
+		this.taxon = taxon;
 		this.groupNavChilds = groupNavChilds;
 	}
 
@@ -90,18 +91,13 @@ public class GroupNav implements java.io.Serializable {
 		this.groupNavParent = groupNavParent;
 	}
 
-	/**
-	 * @return the taxonId
-	 */
-	public BigDecimal getTaxonId() {
-		return taxonId;
+
+	public Taxon getTaxon() {
+		return taxon;
 	}
 
-	/**
-	 * @param taxonId the taxonId to set
-	 */
-	public void setTaxonId(BigDecimal taxonId) {
-		this.taxonId = taxonId;
+	public void setTaxon(Taxon taxon) {
+		this.taxon = taxon;
 	}
 
 	/**
@@ -118,6 +114,13 @@ public class GroupNav implements java.io.Serializable {
 		this.groupNavChilds = groupNavChilds;
 	}
 
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
 
    
 }

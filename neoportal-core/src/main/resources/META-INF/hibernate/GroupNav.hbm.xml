@@ -17,8 +17,9 @@
     <many-to-one class="org.inbio.neoportal.core.entity.GroupNav" fetch="select" name="groupNavParent">
       <column name="group_nav_parent" precision="131089" scale="0"/>
     </many-to-one>
-    <property name="taxonId" type="big_decimal">
-      <column name="taxon_id" precision="131089" scale="0"/>
+    <one-to-one name="taxon" class="org.inbio.neoportal.core.entity.Taxon"></one-to-one>
+    <property name="imageUrl" type="string">
+    	<column name="image_url"></column>
     </property>
     <set inverse="true" name="groupNavChilds" fetch="select">
       <key>

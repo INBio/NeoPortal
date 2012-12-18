@@ -38,6 +38,74 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 public class Taxon  
     implements java.io.Serializable {
 
+	/**
+	 * Enum to get taxonomical range field names
+	 * @author avargas
+	 *
+	 */
+	public static enum TaxonomicalRange{
+		ROOT(new Long(0), ""),
+	    KINGDOM(new Long(1), "kingdom"),
+	    FHYLUM(new Long(2), "division"),
+	    SUBFHYLUM(new Long(3), "subphylumSubdivisionTaxonId"),
+	    CLASS(new Long(4),"class_"),
+	    SUBCLASS(new Long(5),"subclassTaxonId"),
+	    ORDER(new Long(6),"order"),
+	    SUBORDEN(new Long(7),"suborderTaxonId"),
+	    SUPERFAMILY(new Long(8),"superfamilyTaxonId"),
+	    FAMILY(new Long(9),"family"),
+	    SUBFAMILY(new Long(10),"subfamilyTaxonId"),
+	    TRIBE(new Long(11),"tribeTaxonId"),
+	    SUBTRIBE(new Long(12),"subtribeTaxonId"),
+	    GENUS(new Long(13),"genus"),
+	    SUBGENUS(new Long(14),"subgenusTaxonId"),
+	    SECTION(new Long(15),"sectionTaxonId"),
+	    SUBSECTION(new Long(16),"subsectionTaxonId"),
+	    STIRPS(new Long(18),"stirpsTaxonId"),
+	    SPECIES(new Long(19),"species"),
+	    SUBSPECIES(new Long(20),"subspeciesTaxonId"),
+	    VARIETY(new Long(21),"varietyTaxonId"),
+	    FORM(new Long(22),""),
+	    DOMAIN(new Long(23),"dominiumTaxonId");
+		
+		private Long id;
+	    private String taxonomicalRangeName;
+
+	    private TaxonomicalRange(Long id, String column){
+	        this.id = id;
+	        this.taxonomicalRangeName = column;
+	    }
+
+	    public static TaxonomicalRange getById(Long id) {
+
+	        TaxonomicalRange[] all = TaxonomicalRange.values();
+	        for (TaxonomicalRange tre : all) {
+	            System.out.println(tre.getId()+" = "+id);
+	            if (tre.getId().equals(id)) {
+	                System.out.println(tre.getTaxonomicalRangeName());
+	                return tre;
+	            }
+	        }
+	        return null;
+	    }
+
+		public Long getId() {
+			return id;
+		}
+
+		public void setId(Long id) {
+			this.id = id;
+		}
+
+		public String getTaxonomicalRangeName() {
+			return taxonomicalRangeName;
+		}
+
+		public void setTaxonomicalRangeName(String taxonomicalRangeName) {
+			this.taxonomicalRangeName = taxonomicalRangeName;
+		}
+
+	}
 
     // Fields    
 
@@ -118,6 +186,8 @@ public class Taxon
          = new HashSet<TaxonHasAssociatedAttribute>(0);
      
      private Set<Images> images = new HashSet<Images>(0);
+     
+     
 
     // Constructors
 

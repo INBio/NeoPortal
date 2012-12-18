@@ -5,33 +5,11 @@ var singleSelectDataTable;
 //Total count of species by searchCriteria (Use on pagination)
 var totalcount;
 //
-var url = "/neoportal-web/api/search/taxa"
-/*
- * This structure defines the requiered data to show in ocurrences page
- */
-var myColumnDefs = [ {
-    key : "cname",
-    sortable : false,
-    label : commonNameT
-}, {
-    key : "scname",
-    sortable : false,
-    label : scientificNameT
-}, {
-    key : "url",
-    sortable : false,
-    label : imageT,
-    formatter: function(el, oRecord, oColumn, oData) {
-        // el is the HTMLElement of the current cell
-        // oRecord gives you access to other fields from the DataSource, e.g.: oRecord.getData('scname')
-        // oData is the value of the current field
-        if (oData != null) {
-            el.innerHTML = '<img class="imagePreview" src="'+oData+'" alt="'+oData+'">';
-        } else {
-            el.innerHTML = '<img src="">';
-        }
-    }
-} ];
+var url = "/neoportal-web/api/search/taxa";
+
+$(document).ready(function(){
+	initSearch();
+});
 
 /*
  * To initialize the page
@@ -321,7 +299,7 @@ function homeSearch_(){
                 
                 $(xmlData).find("element").each(function(){
                     var newItem = "<div class='search_item'>";
-                    newItem += "<img src=\"" + $(this).find("url").text() + "\" />"
+                    newItem += "<img src=\"" + $(this).find("url").text() + "\" />";
                     newItem += "<span>\n\
                         <a href=\"species/" + $(this).find("scname").text() + "\">" 
                         + $(this).find("scname").text() + "</a></span>";

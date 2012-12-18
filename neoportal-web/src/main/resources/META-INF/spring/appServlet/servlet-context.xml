@@ -48,13 +48,14 @@
 	
 <!-- i18n -->	
     <!-- Configure message for i18n using spring. Add aditional properties files to the list -->
-    <beans:bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
-    <beans:property name="basenames">
-      <beans:list>
-        <beans:value>messages</beans:value>
-        <beans:value>messages_advancedSearch</beans:value>
-      </beans:list>
-    </beans:property>
+    <beans:bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+	    <beans:property name="basenames">
+	      <beans:list>
+	        <beans:value>classpath:messages</beans:value>
+	        <beans:value>classpath:messages_advancedSearch</beans:value>
+	      </beans:list>
+	    </beans:property>
+	    <beans:property name="defaultEncoding" value="UTF-8" />
     </beans:bean>
     
 </beans:beans>

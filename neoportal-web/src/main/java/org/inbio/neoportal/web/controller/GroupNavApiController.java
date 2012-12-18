@@ -18,6 +18,7 @@
  */
 package org.inbio.neoportal.web.controller;
 
+import org.inbio.neoportal.service.dto.Response;
 import org.inbio.neoportal.service.manager.GroupNavManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -62,10 +63,16 @@ public class GroupNavApiController {
 			headers="Accept=application/json")
 	@ResponseBody
 	public Object getSpeciesByGn(
-			@RequestParam (value="gni", required=true) int id
+			@RequestParam (value="gni", required=true) int id,
+			@RequestParam (value = "startIndex", defaultValue = "0", required=false) int startIndex,
+	        @RequestParam (value = "itemsPerPage", defaultValue = "10", required=false) int itemsPerPage
 			){
 		
-		return null;
+		//get species list to show on results
+		Response response = 
+				groupNavManager.getSpeciesByGroupNav(id, startIndex, itemsPerPage);
+		
+		return response;
 	}
 	
 	@RequestMapping(

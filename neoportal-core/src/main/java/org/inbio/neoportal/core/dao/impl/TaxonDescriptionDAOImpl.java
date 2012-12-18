@@ -39,7 +39,7 @@ import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionLiteCDTO;
 import org.inbio.neoportal.core.dto.transformers.TaxonDescriptionTransformer;
 import org.inbio.neoportal.core.dto.transformers.TaxonDescriptionFullTransformer;
-import org.inbio.neoportal.core.dto.transformers.TaxonTransformer;
+import org.inbio.neoportal.core.dto.transformers.TaxonLiteTransformer;
 import org.inbio.neoportal.core.entity.TaxonDescription;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -87,7 +87,7 @@ public class TaxonDescriptionDAOImpl
         fieldList.addAll(Arrays.asList(taxon));
         
         return super.searchCount(TaxonDescription.class, 
-                                new TaxonTransformer(), 
+                                new TaxonLiteTransformer(), 
                                 fieldList.toArray(new String[fieldList.size()]), 
                                 searchText);
     }

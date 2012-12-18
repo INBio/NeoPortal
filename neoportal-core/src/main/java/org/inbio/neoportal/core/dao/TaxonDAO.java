@@ -20,6 +20,8 @@ package org.inbio.neoportal.core.dao;
 
 import java.math.BigDecimal;
 import java.util.List;
+
+import org.hibernate.criterion.Restrictions;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
 import org.inbio.neoportal.core.entity.Taxon;
@@ -51,6 +53,30 @@ public interface TaxonDAO
      */
     public List<TaxonLiteCDTO> search(
         final String searchText,
+        final int offset, 
+        final int quantity) ;
+
+    
+    /**
+     * Return the total amount of items of a query.
+     * @param fields
+     * @param searchText
+     * @return
+     */
+    public Long searchInCount(
+    		final List idList);
+
+    /**
+     * Search the <code>searchText</code> in the lucene index in the <code>fields</code>
+     * Results are paginated.
+     * @param fields
+     * @param searchText
+     * @param offset: first result of the list.
+     * @param quantity: lengt of the result list.
+     * @return
+     */
+    public List<TaxonLiteCDTO> searchIn(
+        final List idList,
         final int offset, 
         final int quantity) ;
 

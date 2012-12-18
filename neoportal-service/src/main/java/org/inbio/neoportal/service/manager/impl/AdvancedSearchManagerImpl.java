@@ -209,11 +209,14 @@ public class AdvancedSearchManagerImpl
                     if ("all".equals(filter.get("value")) || filter.get("value").toString().length() == 0)
                         continue;
                     
-                    if(query.length() > 0)
-                        query += " AND ";
-                    
                     //date range
                     if(filter.get("key").toString().compareTo("dateIdentified") == 0){
+                    	if (filter.get("value").toString().compareTo("|") == 0)
+                    		continue;
+                    	
+                    	if(query.length() > 0)
+                            query += " AND ";
+                    	
                     	String range = "";
                     	String [] dates = filter.get("value").toString().split("[|]"); 
                     	
@@ -229,6 +232,9 @@ public class AdvancedSearchManagerImpl
                     	query += filter.get("key") + ":" + range + " ";
                     }
                     else{
+                    	if(query.length() > 0)
+                            query += " AND ";
+                        
                     	query += filter.get("key") + ":\"" + filter.get("value") + "\" ";
                     }
                     

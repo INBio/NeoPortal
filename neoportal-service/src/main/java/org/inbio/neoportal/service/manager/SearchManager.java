@@ -18,7 +18,9 @@
  */
 package org.inbio.neoportal.service.manager;
 
+import java.math.BigDecimal;
 import java.util.List;
+
 import org.apache.lucene.queryParser.ParseException;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
 import org.inbio.neoportal.service.dto.occurrences.OccurrenceLiteSDTO;
@@ -78,6 +80,50 @@ public interface SearchManager {
     public Long taxonSearchCount(String searchText)
             throws ParseException;
    
+    /**
+     * 
+     * @param searchText
+     * @param offset
+     * @param quantity
+     * @return
+     * @throws ParseException
+     */
+    public List<SpeciesLiteSDTO> basicPaginatedSearch
+        (String searchText, int offset, int quantity)
+            throws ParseException;
+
+    /**
+     * 
+     * @param searchText
+     * @return
+     * @throws ParseException
+     */
+    public Long basicSearchCount(String searchText)
+            throws ParseException;
+
+
+    /**
+     * Get taxon list with id's in <code>idList</code>
+     * @param idList
+     * @param offset
+     * @param quantity
+     * @return
+     * @throws ParseException
+     */
+    public List<SpeciesLiteSDTO> taxonInPaginatedSearch
+        (List<BigDecimal> idList, int offset, int quantity)
+            throws ParseException;
+
+    /**
+     * Get taxon list with id's in <code>idList</code> and count the result
+     * @param idList
+     * @return
+     * @throws ParseException
+     */
+    public Long taxonInSearchCount(
+    		List<BigDecimal> idList)
+            throws ParseException;
+    
     
     public List<TaxonDescriptionFullCDTO> taxonAutocomplete
             (String term)
@@ -85,7 +131,7 @@ public interface SearchManager {
   
       /**
      * Search <code>searchText</code> int the lucene index.
-     * Results are paginated
+     * Results are paginatedString
      * @param searchText
      * @return
      * @throws ParseException

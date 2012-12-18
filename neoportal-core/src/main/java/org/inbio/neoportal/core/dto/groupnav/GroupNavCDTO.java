@@ -3,6 +3,8 @@ package org.inbio.neoportal.core.dto.groupnav;
 import java.util.List;
 
 import org.inbio.neoportal.common.dto.BaseDTO;
+import org.inbio.neoportal.core.dto.taxon.TaxonCDTO;
+import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
 
 /**
  * @author avargas
@@ -16,8 +18,10 @@ public class GroupNavCDTO extends BaseDTO
 	
 	private String groupNavId;
 	private String name;
+	private String nameEng;
 	private String groupNavParentId;
-	private String taxonId;
+	private TaxonCDTO taxonCDTO;
+	private String imageUrl;
 	private List<GroupNavCDTO> groupNavChilds;
 	
 	@Override
@@ -31,11 +35,12 @@ public class GroupNavCDTO extends BaseDTO
 
 	
 	public GroupNavCDTO(String groupNavId, String groupNavParentId,
-			String taxonId, List<GroupNavCDTO> groupNavChilds) {
+			TaxonCDTO taxonCDTO, String imageUrl, List<GroupNavCDTO> groupNavChilds) {
 		super();
 		this.groupNavId = groupNavId;
 		this.groupNavParentId = groupNavParentId;
-		this.taxonId = taxonId;
+		this.taxonCDTO = taxonCDTO;
+		this.imageUrl = imageUrl;
 		this.groupNavChilds = groupNavChilds;
 	}
 
@@ -67,18 +72,12 @@ public class GroupNavCDTO extends BaseDTO
 		this.groupNavParentId = groupNavParentId;
 	}
 
-	/**
-	 * @return the taxonId
-	 */
-	public String getTaxonId() {
-		return taxonId;
+	public TaxonCDTO getTaxonCDTO() {
+		return taxonCDTO;
 	}
 
-	/**
-	 * @param taxonId the taxonId to set
-	 */
-	public void setTaxonId(String taxonId) {
-		this.taxonId = taxonId;
+	public void setTaxonCDTO(TaxonCDTO taxonCDTO) {
+		this.taxonCDTO = taxonCDTO;
 	}
 
 	/**
@@ -107,6 +106,28 @@ public class GroupNavCDTO extends BaseDTO
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @return the nameEng
+	 */
+	public String getNameEng() {
+		return nameEng;
+	}
+
+	/**
+	 * @param nameEng the nameEng to set
+	 */
+	public void setNameEng(String nameEng) {
+		this.nameEng = nameEng;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 	
 	

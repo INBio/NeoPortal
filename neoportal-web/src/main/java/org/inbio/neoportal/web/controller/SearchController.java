@@ -129,9 +129,6 @@ public class SearchController {
 
         XMLSpeciesWrapper rw = new XMLSpeciesWrapper();
         try {
-            //filter taxon range to match only species
-            //TODO: change taxonomical Range number for enum
-            searchTerms = "(" + searchTerms + ") AND (taxonomicalRangeId:19 taxonomicalRangeId:20 taxonomicalRangeId:21 taxonomicalRangeId:22)";
             
             //include the count, this reduce one server call
             rw.setCount(searchManager.taxonSearchCount(searchTerms));

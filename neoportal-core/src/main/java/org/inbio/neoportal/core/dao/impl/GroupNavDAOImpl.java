@@ -5,10 +5,9 @@ import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.transform.AliasToBeanResultTransformer;
-import org.hibernate.transform.Transformers;
 import org.inbio.neoportal.core.dao.GroupNavDAO;
 import org.inbio.neoportal.core.dto.groupnav.GroupNavCDTO;
+import org.inbio.neoportal.core.dto.transformers.GroupNavSimpleTransformer;
 import org.inbio.neoportal.core.dto.transformers.GroupNavTransformer;
 import org.inbio.neoportal.core.entity.GroupNav;
 import org.springframework.orm.hibernate3.HibernateCallback;
@@ -53,7 +52,7 @@ public class GroupNavDAOImpl
 						"inner join gn.groupNavParent p " +
                 		"where p.groupNavParent = null and p.name = :groupNavName");
                 query.setParameter("groupNavName", groupNavName);
-                query.setResultTransformer(new GroupNavTransformer());
+                query.setResultTransformer(new GroupNavSimpleTransformer());
                 //query.setResultTransformer(Transformers.aliasToBean(GroupNavCDTO.class));
                 
 				return query.list();
