@@ -23,6 +23,7 @@ import java.util.List;
 import org.hibernate.transform.ResultTransformer;
 import org.inbio.neoportal.core.dto.commonname.CommonNameLiteCDTO;
 import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
+import org.inbio.neoportal.core.dto.taxon.TaxonCDTO;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.entity.CommonName;
 import org.inbio.neoportal.core.entity.Images;
@@ -31,7 +32,7 @@ import org.inbio.neoportal.core.entity.Taxon;
 
 /**
  * Transfrom a list of Taxon entities to OccurrenceLiteDTO
- * @author asanabria
+ * @author avargas
  */
 public class TaxonTransformer 
     implements ResultTransformer {
@@ -48,25 +49,10 @@ public class TaxonTransformer
     @Override
     public List transformList(List list) {
         List<Taxon> taxonList = (List<Taxon>) list;
-        List<TaxonLiteCDTO> newList = new ArrayList<TaxonLiteCDTO>();
+        List<TaxonCDTO> newList = new ArrayList<TaxonCDTO>();
 
         for(Taxon taxon: taxonList){
-            
-            commonNameList =  commonNameRT.transformList(
-                new ArrayList<CommonName>(taxon.getCommonNames()));
-            
-            ArrayList<ImagesCDTO> imgList = new ArrayList<ImagesCDTO>();
-            for(Images img: taxon.getImages()){
-                imgList.add((ImagesCDTO)imagesRT.transformTuple(new Object[]{img}, null));
-            }
-            
-            TaxonLiteCDTO taxonCDTO = new TaxonLiteCDTO();
-            taxonCDTO.setScientificName(taxon.getDefaultName());
-            taxonCDTO.setCommonNameList((ArrayList<CommonNameLiteCDTO>) commonNameList);
-            taxonCDTO.setImageList(imgList);
-            taxonCDTO.setImageUrl(taxon.getImageUrl());
-            
-            newList.add(taxonCDTO);
+            newList.add(entityToDTO(taxon));
         }
         
         return newList;
@@ -74,6 +60,90 @@ public class TaxonTransformer
 
     @Override
     public Object transformTuple(Object[] os, String[] strings) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    	
+    	Taxon taxon = (Taxon)os[0];
+    	
+        return entityToDTO(taxon);
+    }
+    
+    public TaxonCDTO entityToDTO(Taxon taxon){
+    	commonNameList =  commonNameRT.transformList(
+                new ArrayList<CommonName>(taxon.getCommonNames()));
+            
+        ArrayList<ImagesCDTO> imgList = new ArrayList<ImagesCDTO>();
+        for(Images img: taxon.getImages()){
+            imgList.add((ImagesCDTO)imagesRT.transformTuple(new Object[]{img}, null));
+        }
+        
+        TaxonCDTO taxonCDTO = new TaxonCDTO();
+        taxonCDTO.setTaxonId(taxon.getTaxonId().toString());
+
+        taxonCDTO.setTaxonomicalRangeId(taxon.getTaxonomicalRangeId().toString());
+
+        taxonCDTO.setDefaultName(taxon.getDefaultName());
+
+        taxonCDTO.setKingdom(taxon.getKingdom());
+
+        taxonCDTO.setDivision(taxon.getDivision());
+
+        taxonCDTO.setClass_(taxon.getClass_());
+
+        taxonCDTO.setOrder(taxon.getOrder());
+
+        taxonCDTO.setFamily(taxon.getFamily());
+
+        taxonCDTO.setGenus(taxon.getGenus());
+
+        taxonCDTO.setSpecies(taxon.getSpecies());
+        if(taxon.getDominiumId() != null)
+        	taxonCDTO.setDominiumId(taxon.getDominiumId().toString());
+        if(taxon.getKingdomId() != null)
+        	taxonCDTO.setKingdomId(taxon.getKingdomId().toString());
+        if(taxon.getDivisionId() != null)
+        	taxonCDTO.setDivisionId(taxon.getDivisionId().toString());
+        if(taxon.getSubdivisionId() != null)
+        	taxonCDTO.setSubdivisionId(taxon.getSubdivisionId().toString());
+        if(taxon.getClassId() != null)
+        	taxonCDTO.setClassId(taxon.getClassId().toString());
+        if(taxon.getSubclassId() != null)
+        	taxonCDTO.setSubclassId(taxon.getSubclassId().toString());
+        if(taxon.getOrderId() != null)
+        	taxonCDTO.setOrderId(taxon.getOrderId().toString());
+        if(taxon.getSubOrderId() != null)
+        	taxonCDTO.setSubOrderId(taxon.getSubOrderId().toString());
+        if(taxon.getSuperFamilyId() != null)
+        	taxonCDTO.setSuperFamilyId(taxon.getSuperFamilyId().toString());
+        if(taxon.getFamilyId() != null)
+        	taxonCDTO.setFamilyId(taxon.getFamilyId().toString());
+        if(taxon.getSubFamilyId() != null)
+        	taxonCDTO.setSubFamilyId(taxon.getSubFamilyId().toString());
+        if(taxon.getTribeId() != null)
+        	taxonCDTO.setTribeId(taxon.getTribeId().toString());
+        if(taxon.getSubTribeId() != null)
+        	taxonCDTO.setSubTribeId(taxon.getSubTribeId().toString());
+        if(taxon.getGenusId() != null)
+        	taxonCDTO.setGenusId(taxon.getGenusId().toString());
+        if(taxon.getSubGenusId() != null)
+        	taxonCDTO.setSubGenusId(taxon.getSubGenusId().toString());
+        if(taxon.getSectionId() != null)
+        	taxonCDTO.setSectionId(taxon.getSectionId().toString());
+        if(taxon.getSubSectionId() != null)
+        	taxonCDTO.setSubSectionId(taxon.getSubSectionId().toString());
+        if(taxon.getRaceId() != null)
+        	taxonCDTO.setRaceId(taxon.getRaceId().toString());
+        if(taxon.getSpeciesId() != null)
+        	taxonCDTO.setSpeciesId(taxon.getSpeciesId().toString());
+        if(taxon.getSubSpeciesId() != null)
+        	taxonCDTO.setSubSpeciesId(taxon.getSubSpeciesId().toString());
+        if(taxon.getVarietyId() != null)
+        	taxonCDTO.setVarietyId(taxon.getVarietyId().toString());
+        if(taxon.getFormId() != null)
+        	taxonCDTO.setFormId(taxon.getFormId().toString());
+        taxonCDTO.setDomain(taxon.getDomain());
+    	taxonCDTO.setImageUrl(taxon.getImageUrl());
+    	taxonCDTO.setImageList(imgList);
+        
+        return taxonCDTO;
+
     }
 }

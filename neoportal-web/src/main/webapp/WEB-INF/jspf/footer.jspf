@@ -1,0 +1,28 @@
+<%-- 
+    Document   : footer
+    Created on : 12/11/2012
+    Author     : avargas
+	
+--%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	<!-- Footer -->
+        <footer class="data_wrapper">
+        	<nav>
+	            <ul>
+	                <li><a href="http://www.inbio.ac.cr">INBio</a></li>
+	                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/"><fmt:message key="menu_home"/></a></li>
+	                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/advancedSearch/"><fmt:message key="menu_advancedSearch"/></a></li>
+	                <li><a href="<c:out value="${pageContext.request.contextPath}"/>"><fmt:message key="menu_about"/></a></li>
+	                <li><a href="<c:out value="${pageContext.request.contextPath}"/>"><fmt:message key="menu_contact"/></a></li>
+	                <li><a href="<c:out value="${pageContext.request.contextPath}"/>"><fmt:message key="menu_donations"/></a></li>
+	            </ul>
+		    </nav>
+		    <p><fmt:message key="contact_us"></fmt:message> <a href="<c:out value="${pageContext.request.contextPath}"/>"><fmt:message key="menu_contact"/></a></p>
+		    <p class="light">
+		        <fmt:message key="footer_text"/>
+		        <a href="http://www.gnu.org/licenses/gpl.txt"><fmt:message key="license_text"/></a> - <fmt:message key="software_version"/>
+	        </p>
+	        <p class="light"><fmt:message key="copyrights"></fmt:message>
+        </footer>

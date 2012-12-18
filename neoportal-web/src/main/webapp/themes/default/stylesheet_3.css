@@ -1,0 +1,266 @@
+/* 
+    Document   : stylesheet_3
+    Created on : 23/10/2012, 02:35:00 PM
+    Author     : avargas
+    Description:
+        CSS to customize the GUI of portal project
+*/
+
+/* ------------- RESET -----------------------*/
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+a{
+    text-decoration: none;
+}
+
+/* ------------ GENERIC STYLES -----------------*/
+.light, .light a{
+	color: #888;
+}
+/* ------------ Fonts -------------------------- */
+body{
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	color: #333;
+}
+h1{
+	font-size: 2em;
+	margin: 15px 0px;
+}
+a{
+	color: #333;
+}
+
+/*---------------- Base Layout -------------------*/
+header, nav{
+	display: inline-block;
+}
+
+.data_wrapper{
+	width: 960px;
+	margin: 0 auto;
+}
+.full_width_wrapper{
+	margin: 0 15px;
+}
+.grid_wrapper{
+	max-width: 790px;
+	margin: 0 auto;
+}
+
+/* ----------- MENUS -----------------------------*/
+#header nav{
+	height: 60px;
+}
+nav li{
+	float: left;
+	padding: 0 10px;
+	border-left: 2px solid #555;
+}
+nav li:FIRST-CHILD {
+	border: none;
+}
+
+/* ----------- HEADER --------------------------- */
+div#header_inner{
+	height: 188px;
+}
+/* ------------ FOOTER ---------------------------*/
+footer{
+	clear: both;
+	text-align: center;
+	font-size: 0.8em;
+	padding: 15px 0;
+	background-color: #ddd;
+}
+footer p{
+	margin: 8px 0;
+}
+footer nav a{
+	color: #4D90FE;
+}
+footer nav li{
+	border-left: 2px solid #4D90FE;
+}
+	
+/* ---- basic search panel ----- */
+div#searchPanel input#searchInput{
+	width: 300px;
+	font-size: 1em;
+	border: 1px solid grey;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+}
+div#searchPanel a#simple{
+	background-color: #4D90FE;
+	color: white;
+	font-size: 0.9em;
+	padding: 6px 12px;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+}
+/* -------------------- GROUP NAV ----------------- */
+#groupNav.grid{
+	
+}
+#groupNav.grid div{
+	position: relative;
+	float: left;
+	width: 200px;
+	height: 120px;
+	margin: 0 20px 20px 20px;
+}
+#groupNav.grid h2{
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+}
+#groupNav.aside{
+	font-size: 14px;
+	float: left;
+}
+#groupNav.aside li{
+	margin: 4px 0;
+}
+#groupNav.aside li.current > a{
+	font-size: 17px;
+	margin-bottom: 8px;
+}
+#groupNav.aside li ul{
+	margin-left: 8px;
+}
+
+/*
+----------------- AdvancedSearch ----------------------------
+*/
+div.search{
+    padding-top: 20px;
+}
+div.controls{
+    margin: 0px 0px 12px 30px;
+}
+div.controls a{
+    font-size: 14px;
+    border: 1px solid #BBB;
+    padding: 2px 10px;
+    margin-right: 10px;
+}
+div#countLabel{
+	margin: 5px 0 0 0;
+}
+div.leftPanel{
+    float: left;
+    width: 20%;
+    min-width: 250px;
+    padding: 0 18px;
+}
+div.filterGroup{
+    background-color: #fff;
+    padding: 5px;
+    margin-bottom: 15px;
+    
+    border: 1px solid #AAA;
+    /*round corners*/
+    border-radius: 8px;
+    
+    /*shadow*/
+    -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+span.expand-button, span.reduce-button{
+    float: right;    
+    font-size: 11px;
+    color: #555;
+}
+span.expand-button:hover, span.reduce-button:hover{
+    cursor: pointer;
+}
+span.columnItem{
+    margin-right: 13px;
+    display: inline-table; /*checkbox and label in the same line*/
+}
+div.filterGroup p.resume{
+    margin-top: 5px;
+    color: #555;
+    font-size: 12px;
+}
+div.contentColumn{
+	margin: 10px 20px 0 290px;
+}
+div.results{
+    float: left;
+    max-width: 100%;
+}
+
+/* advanced search result table */
+table.tablePanel {
+    border-collapse: collapse;
+    margin: 10px 0;
+}
+table.tablePanel th{
+    /*color: #036;*/
+    border-bottom: 2px solid #039;
+    padding-bottom: 4px;
+    font-weight: bold;
+}
+table.tablePanel th,table.tablePanel td{
+    padding: 3px 12px 3px 4px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+}
+div.results span.showingControl{
+    display: block;
+    text-align: center;
+    color: #555;
+}
+div.paginate_group{
+    text-align: center;
+}
