@@ -16,7 +16,9 @@
   			<n:groupNav style="aside" groupNavList="${groupNavList}"></n:groupNav>
   			
   			<!-- taxon list -->
-			<n:taxonList taxonList="${taxonList}"></n:taxonList>
+  			<div class="content_column_right">
+				<n:taxonList taxonList="${taxonList}"></n:taxonList>
+			</div>
  		</div>
 
 	</jsp:body>

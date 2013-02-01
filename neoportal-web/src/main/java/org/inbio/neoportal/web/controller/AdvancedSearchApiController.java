@@ -34,7 +34,6 @@ import org.inbio.neoportal.core.dto.advancedsearch.SearchFilterCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchGroupCDTO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
 import org.inbio.neoportal.service.dto.advancedSearch.FilterSDTO;
-import org.inbio.neoportal.service.dto.advancedSearch.OccurrenceSDTO;
 import org.inbio.neoportal.service.entity.AdvancedSearchData;
 import org.inbio.neoportal.service.manager.AdvancedSearchManager;
 import org.inbio.neoportal.web.dto.SearchColumnWDTO;

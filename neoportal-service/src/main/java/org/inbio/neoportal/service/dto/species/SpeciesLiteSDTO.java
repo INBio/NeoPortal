@@ -18,6 +18,9 @@
  */
 package org.inbio.neoportal.service.dto.species;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import org.inbio.neoportal.common.dto.BaseDTO;
 
 /**

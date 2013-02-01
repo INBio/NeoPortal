@@ -6,12 +6,12 @@ package org.inbio.neoportal.service.manager.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.inbio.neoportal.core.dao.TaxonDAO;
 import org.inbio.neoportal.core.dao.TaxonDescriptionDAO;
 import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
-import org.inbio.neoportal.core.entity.Taxon;
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO;
 import org.inbio.neoportal.service.manager.SpeciesManager;
 import org.springframework.beans.factory.annotation.Autowired;

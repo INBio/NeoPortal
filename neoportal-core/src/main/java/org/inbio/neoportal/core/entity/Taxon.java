@@ -80,9 +80,9 @@ public class Taxon
 
 	        TaxonomicalRange[] all = TaxonomicalRange.values();
 	        for (TaxonomicalRange tre : all) {
-	            System.out.println(tre.getId()+" = "+id);
+	            //System.out.println(tre.getId()+" = "+id);
 	            if (tre.getId().equals(id)) {
-	                System.out.println(tre.getTaxonomicalRangeName());
+	                //System.out.println(tre.getTaxonomicalRangeName());
 	                return tre;
 	            }
 	        }

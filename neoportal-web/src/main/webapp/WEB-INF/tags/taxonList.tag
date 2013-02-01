@@ -15,8 +15,10 @@
 			<c:if test="${taxon.imageURL != ''}">
 			<img alt="image of ${taxon.scientificName}" src="${taxon.imageURL}" />
 			</c:if>
-			<h2>${taxon.scientificName}</h2>
+			<h3><a href="<c:out value="${pageContext.request.contextPath}"/>/species/${taxon.scientificName}">${taxon.scientificName}</a></h3>
+			<c:if test="${not empty taxon.commonName}">
 			<p><fmt:message key="common_name"></fmt:message>: ${taxon.commonName}</p>
+			</c:if>
 		</li>
 	</c:forEach>
 	</ul>

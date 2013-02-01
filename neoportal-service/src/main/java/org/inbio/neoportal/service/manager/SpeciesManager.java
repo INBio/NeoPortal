@@ -19,11 +19,12 @@
 package org.inbio.neoportal.service.manager;
 
 import java.util.List;
+
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO;
 
 /**
  *
- * @author arturo
+ * @author avargas
  */
 public interface SpeciesManager {
     

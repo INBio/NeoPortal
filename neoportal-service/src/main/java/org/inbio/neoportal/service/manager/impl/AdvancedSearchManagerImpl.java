@@ -20,7 +20,6 @@ package org.inbio.neoportal.service.manager.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -37,11 +36,9 @@ import org.inbio.neoportal.core.dto.advancedsearch.GeoLayerCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchColumnCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchFilterCDTO;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchGroupCDTO;
-import org.inbio.neoportal.core.dto.occurrence.OccurrenceCDTO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
 import org.inbio.neoportal.core.entity.SearchGroup;
 import org.inbio.neoportal.service.dto.advancedSearch.FilterSDTO;
-import org.inbio.neoportal.service.dto.advancedSearch.OccurrenceSDTO;
 import org.inbio.neoportal.service.entity.AdvancedSearchData;
 import org.inbio.neoportal.service.manager.AdvancedSearchManager;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -7,7 +7,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 
 	<context:annotation-config />
     <context:component-scan base-package="org.inbio.neoportal" />
-
+    
 	<bean id="propertyOverrideConfigurer" class="org.springframework.beans.factory.config.PropertyOverrideConfigurer"  lazy-init="false">
 		<property name="location" value="WEB-INF/classes/database.properties"/>
 		<property name="ignoreResourceNotFound" value="true"/>

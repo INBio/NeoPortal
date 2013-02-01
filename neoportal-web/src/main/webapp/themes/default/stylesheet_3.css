@@ -73,6 +73,17 @@ h1{
 	font-size: 2em;
 	margin: 15px 0px;
 }
+h2{
+	font-size: 1.9em;
+	margin: 15px 0px;
+}
+h3{
+	font-size: 1.3em;
+}
+h4{
+	font-size: 1em;
+	font-weight: bold;
+}
 a{
 	color: #333;
 }
@@ -92,6 +103,13 @@ header, nav{
 .grid_wrapper{
 	max-width: 790px;
 	margin: 0 auto;
+}
+.content_column{
+	width: 660px;
+}
+.content_column_right{
+	width: 680px;
+	float: right;
 }
 
 /* ----------- MENUS -----------------------------*/
@@ -165,6 +183,7 @@ div#searchPanel a#simple{
 #groupNav.aside{
 	font-size: 14px;
 	float: left;
+	max-width: 230px;
 }
 #groupNav.aside li{
 	margin: 4px 0;
@@ -263,4 +282,20 @@ div.results span.showingControl{
 }
 div.paginate_group{
     text-align: center;
+}
+
+/* ----------------------- SPECIES PAGE ----------------------------*/
+div.species_page nav li{
+	font-size: 0.8em;
+}
+div.species_page h2{
+	text-transform: capitalize;
+}
+div.species_page h3{
+	color: #004c6d;
+	margin: 15px 0 0 0;
+	font-weight: bold;
+}
+div.species_page h4{
+	margin: 10px 0 5px;
 }

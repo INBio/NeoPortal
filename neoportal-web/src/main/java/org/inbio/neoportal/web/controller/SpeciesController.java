@@ -18,6 +18,11 @@
  */
 package org.inbio.neoportal.web.controller;
 
+import java.util.List;
+
+import org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO;
+import org.inbio.neoportal.service.manager.SpeciesManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +32,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping("/species/*")
 public class SpeciesController {
+	
+	@Autowired
+    private SpeciesManager speciesManager;
     
     @RequestMapping (
             value = "/{scientificName}",
@@ -35,9 +43,22 @@ public class SpeciesController {
             Model model,
             @PathVariable(value = "scientificName") String scientificName) {
         
+        List<TaxonDescriptionFullSDTO> taxonDescription = null;
+        
+        scientificName = scientificName.replace('_', ' ');
+        
+        taxonDescription = 
+                speciesManager.taxonDescriptionByProvider(scientificName, "INB");
+        
+        if(taxonDescription.isEmpty())
+        	model.addAttribute("taxonDescription", null);
+        else
+        	model.addAttribute("taxonDescription", taxonDescription.get(0));
+        
         model.addAttribute("scientificName", scientificName);
         
-        return "taxonDescription";
+        
+        return "species";
     }
 }
 

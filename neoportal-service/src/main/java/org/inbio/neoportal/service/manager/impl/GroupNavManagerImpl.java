@@ -127,8 +127,9 @@ public class GroupNavManagerImpl
 		String query = "";
 		
 		for(TaxonCDTO taxon: taxonList){
+			Taxon.TaxonomicalRange taxonRange = Taxon.TaxonomicalRange.getById(Long.parseLong(taxon.getTaxonomicalRangeId()));
 			//FIXME: get taxon range to look for other than family
-			query += " family:\"" + taxon.getDefaultName() + "\" OR"; 
+			query += " " + taxonRange.getTaxonomicalRangeName() + ":\"" + taxon.getDefaultName() + "\" OR"; 
 		}
 		
 		if(query.length() > 0){

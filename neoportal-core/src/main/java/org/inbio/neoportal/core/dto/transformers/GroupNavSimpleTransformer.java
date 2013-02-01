@@ -32,9 +32,6 @@ public class GroupNavSimpleTransformer implements ResultTransformer {
 		else
 			gnCDTO.setGroupNavParentId(null);
 		
-//		if(gn.getTaxon() != null)
-//			gnCDTO.setTaxonCDTO(taxonTransformer.entityToDTO(gn.getTaxon()));
-		
 		List<GroupNavCDTO> childList = new ArrayList<GroupNavCDTO>(); 
 		
 		for (GroupNav item : gn.getGroupNavChilds()){
@@ -64,18 +61,7 @@ public class GroupNavSimpleTransformer implements ResultTransformer {
 		}
 		else
 			groupNavCDTO.setGroupNavParentId(null);
-		
-//		if(groupNav.getTaxon() != null)
-//			groupNavCDTO.setTaxonCDTO(taxonTransformer.entityToDTO(groupNav.getTaxon()));
-		
-		List<GroupNavCDTO> childList = new ArrayList<GroupNavCDTO>(); 
-		
-		for (GroupNav groupNavChild : groupNav.getGroupNavChilds()) {
-			childList.add(entityToDto(groupNavChild));
-		}
-		
-		groupNavCDTO.setGroupNavChilds(childList);
-		
+				
 		return groupNavCDTO;
 	}
 	

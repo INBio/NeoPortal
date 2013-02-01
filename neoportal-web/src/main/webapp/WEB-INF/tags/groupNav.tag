@@ -14,7 +14,7 @@
 <section id="groupNav" class="grid">
 		<c:forEach var="groupNav" items="${groupNavList}">
 			<div>
-				<h2>
+				<h3>
 					<c:choose>
 						<c:when test="${pageContext.request.locale.language == 'es'}">
 							${groupNav.name}
@@ -23,7 +23,7 @@
 							${groupNav.nameEng}
 						</c:otherwise>
 					</c:choose>
-				</h2>
+				</h3>
 				<a href="<c:out value="${pageContext.request.contextPath}"/>/groupNav?gni=${groupNav.groupNavId}">
 					<img alt="${groupNav.name}" src="${groupNav.imageUrl}">
 				</a>

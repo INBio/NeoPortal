@@ -22,7 +22,6 @@ import java.util.List;
 
 import org.inbio.neoportal.core.dto.groupnav.GroupNavCDTO;
 import org.inbio.neoportal.service.dto.Response;
-import org.inbio.neoportal.service.dto.species.SpeciesLiteSDTO;
 
 /**
  * 

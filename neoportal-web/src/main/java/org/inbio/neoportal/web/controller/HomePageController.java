@@ -92,6 +92,10 @@ public class HomePageController {
 			modelAndView.addObject("state","home");
 			//groupNav style, grid for home 
 			modelAndView.addObject("style", "grid");
+			//get the necessary data
+			List<GroupNavCDTO> groupNav = groupNavManager.getFirstLevel("Nombres comunes");
+			Collections.sort(groupNav);
+			modelAndView.addObject("group_nav", groupNav);
 		}
 		else{
 			modelAndView.addObject("state","search");
@@ -134,10 +138,7 @@ public class HomePageController {
 
 			
 		}
-		//get the necessary data
-		List<GroupNavCDTO> groupNav = groupNavManager.getFirstLevel("Nombres comunes");
-		Collections.sort(groupNav);
-		modelAndView.addObject("group_nav", groupNav);
+		
 		
 		return modelAndView;
 	}

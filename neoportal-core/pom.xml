@@ -8,7 +8,6 @@
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>NeoPortal Core</name>
-	<url>http://www.springframework.org</url>
 	<description> </description>
 
 	<properties>
@@ -236,24 +235,25 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+			    <groupId>org.codehaus.mojo</groupId>
+			    <artifactId>build-helper-maven-plugin</artifactId>
+			    <executions>
+			        <execution>
+			            <id>add-source</id>
+			            <phase>generate-sources</phase>
+			            <goals>
+			                <goal>add-source</goal>
+			            </goals>
+			            <configuration>
+			                <sources>
+			                    <source>${project.build.directory}/generated-sources/java/</source>
+			                </sources>
+			            </configuration>
+			        </execution>
+			    </executions>
+			 </plugin>
 		</plugins>
 	</build>
 
-	<distributionManagement>
-		<downloadUrl>http://www.springframework.org/download</downloadUrl>
-		<site>
-			<id>staging</id>
-			<url>file:///${user.dir}/target/staging/org.springframework.batch.archetype/${project.artifactId}</url>
-		</site>
-		<repository>
-			<id>spring-release</id>
-			<name>Spring Release Repository</name>
-			<url>file:///${user.dir}/target/staging/release</url>
-		</repository>
-		<snapshotRepository>
-			<id>spring-snapshot</id>
-			<name>Spring Snapshot Repository</name>
-			<url>file:///${user.dir}/target/staging/snapshot</url>
-		</snapshotRepository>
-	</distributionManagement>
 </project>

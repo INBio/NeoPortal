@@ -8,7 +8,6 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>NeoPortal Service</name>
-    <url>http://www.springframework.org</url>
     <description> </description>
 
     <properties>
@@ -31,9 +30,17 @@
             <groupId>org.inbio.neoportal</groupId>
             <artifactId>neoportal-core</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>test</scope>
+<!--             <scope>test</scope> -->
+<!--             <type>test-jar</type> -->
+        </dependency>
+        <dependency>
+            <groupId>org.inbio.neoportal</groupId>
+            <artifactId>neoportal-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+<!--             <scope>test</scope> -->
             <type>test-jar</type>
         </dependency>
+        
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
@@ -237,21 +244,4 @@
         </plugins>
     </build>
 
-    <distributionManagement>
-        <downloadUrl>http://www.springframework.org/download</downloadUrl>
-        <site>
-            <id>staging</id>
-            <url>file:///${user.dir}/target/staging/org.springframework.batch.archetype/${pom.artifactId}</url>
-        </site>
-        <repository>
-            <id>spring-release</id>
-            <name>Spring Release Repository</name>
-            <url>file:///${user.dir}/target/staging/release</url>
-        </repository>
-        <snapshotRepository>
-            <id>spring-snapshot</id>
-            <name>Spring Snapshot Repository</name>
-            <url>file:///${user.dir}/target/staging/snapshot</url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>
