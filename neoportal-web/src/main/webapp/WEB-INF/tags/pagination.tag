@@ -11,17 +11,25 @@
 <%@ attribute name="paginationBackUrl" description="The back url link"%>
 <%@ attribute name="paginationLastUrl" description="Url for the last page" %>
 	
-	<p><fmt:message key="pagination.info">
-		<fmt:param value="${paginationCurrent}" />
-		<fmt:param value="${paginationTotal}" />
-	</fmt:message></p>
-	<div>
-		<a href="${paginationFirstUrl}"><fmt:message key="pagination.first" /></a>
-		<c:if test="${paginationBackUrl != ''}">
-		<a href="${paginationBackUrl}"><fmt:message key="pagination.back" /></a>
-		</c:if>
-		<c:if test="${paginationNextUrl != ''}">
-		<a href="${paginationNextUrl}"><fmt:message key="pagination.next" /></a>
-		</c:if>
-		<a href="${paginationLastUrl}"><fmt:message key="pagination.last" /></a>
+	<div class="pagination">
+		<p><fmt:message key="pagination.info">
+			<fmt:param value="${paginationCurrent}" />
+			<fmt:param value="${paginationTotal}" />
+		</fmt:message></p>
+		<div>
+			<a href="${paginationFirstUrl}"><fmt:message key="pagination.first" /></a>
+			<c:choose>
+				<c:when test="${paginationBackUrl != ''}">
+					<a href="${paginationBackUrl}"><fmt:message key="pagination.back" /></a>
+				</c:when>
+				<c:otherwise>
+					<a href="#" class="disable"><fmt:message key="pagination.back" /></a>
+				</c:otherwise>
+			</c:choose>
+			
+			<c:if test="${paginationNextUrl != ''}">
+			<a href="${paginationNextUrl}"><fmt:message key="pagination.next" /></a>
+			</c:if>
+			<a href="${paginationLastUrl}"><fmt:message key="pagination.last" /></a>
+		</div>
 	</div>

@@ -9,7 +9,7 @@
 <%@ attribute name="taxonList" description="The taxon list with the elements" required="true" type="java.util.List" %>
 	
 	<n:pagination></n:pagination>
-	<ul>
+	<ul class="taxon_list">
 	<c:forEach var="taxon" items="${taxonList}">
 		<li>
 			<c:if test="${taxon.imageURL != ''}">

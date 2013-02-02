@@ -157,7 +157,8 @@ public class SearchManagerImpl implements SearchManager{
                         tldto.getImageList().get(0).getM3sImageId() );
              }
              else
-                 sp.setImageURL("http://pulsatrix.inbio.ac.cr/projects/atta2/chrome/site/header.png");
+                 //sp.setImageURL("http://pulsatrix.inbio.ac.cr/projects/atta2/chrome/site/header.png");
+            	 sp.setImageURL("");
              
              speciesList.add(sp);
         }
