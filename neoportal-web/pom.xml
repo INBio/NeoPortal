@@ -9,7 +9,7 @@
 	<version>1.0-SNAPSHOT</version>
 	<properties>
 		<java-version>1.6</java-version>
-		<org.springframework-version>3.0.4.RELEASE</org.springframework-version>
+		<org.springframework-version>3.0.5.RELEASE</org.springframework-version>
 		<org.springframework.roo-version>1.2.0.RELEASE</org.springframework.roo-version>
 		<org.aspectj-version>1.6.8</org.aspectj-version>
 		<org.slf4j-version>1.6.1</org.slf4j-version>
@@ -106,22 +106,10 @@
           </dependency>
 
 		<!-- Servlet -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>javax.servlet</groupId> -->
-<!-- 			<artifactId>servlet-api</artifactId> -->
-<!-- 			<version>2.5</version> -->
-<!-- 			<scope>provided</scope> -->
-<!-- 		</dependency> -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>javax.servlet.jsp</groupId> -->
-<!-- 			<artifactId>jsp-api</artifactId> -->
-<!-- 			<version>2.1</version> -->
-<!-- 			<scope>provided</scope> -->
-<!-- 		</dependency> -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
 		</dependency>
 
 		<!-- Test -->
@@ -183,9 +171,9 @@
 	  <type>jar</type>
 	 </dependency>
 	 <dependency>
-	  <groupId>org.springframework.roo</groupId>
-	  <artifactId>org.springframework.roo.annotations</artifactId>
-	  <version>1.2.0.RELEASE</version>
+		<groupId>org.springframework.roo</groupId>
+		<artifactId>org.springframework.roo.annotations</artifactId>
+		<version>1.2.0.RELEASE</version>
 	 </dependency>
 	 <dependency>
 	 	<groupId>org.inbio.neoportal</groupId>
@@ -194,22 +182,11 @@
 	 </dependency>
 	</dependencies>
 	<repositories>
-		<!-- For testing against latest Spring snapshots -->
 		<repository>
-			<id>org.springframework.maven.snapshot</id>
-			<name>Spring Maven Snapshot Repository</name>
-			<url>http://maven.springframework.org/snapshot</url>
-			<releases><enabled>false</enabled></releases>
-			<snapshots><enabled>true</enabled></snapshots>
+			<id>spring-roo-repository</id>
+			<name>Spring Roo Repository</name>
+			<url>http://spring-roo-repository.springsource.org/release</url>
 		</repository>
-		<!-- For developing against latest Spring milestones -->
-		<repository>
-			<id>org.springframework.maven.milestone</id>
-			<name>Spring Maven Milestone Repository</name>
-			<url>http://maven.springframework.org/milestone</url>
-			<snapshots><enabled>false</enabled></snapshots>
-		</repository>
-        
 	</repositories>
 	<organization>
 		<name>Instituto Nacional de Biodiversidad</name>
