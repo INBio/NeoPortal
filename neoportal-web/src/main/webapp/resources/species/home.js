@@ -5,7 +5,7 @@ var singleSelectDataTable;
 //Total count of species by searchCriteria (Use on pagination)
 var totalcount;
 //
-var url = "/neoportal-web/api/search/taxa";
+var url = "/neoportal-web/";
 
 $(document).ready(function(){
 	initSearch();
@@ -38,17 +38,14 @@ function initSearch(context){
         //var input = clearInput.replace(/ /g,"_");
         
         //put input on url
-        window.location.search = 'q=' + clearInput;
+        //window.location.origin comes with webkit browsers
+        if (!window.location.origin)
+        	window.location.origin = window.location.protocol+"//"+window.location.host;
+        
+        var newUrl = window.location.origin + url + '?q=' + clearInput;
+        window.location = newUrl;
     });
     
-    if(window.location.search != '')
-    {
-        //homeSearch();
-        
-        homeSearch_();
-        
-        externalSearch();
-    }
 }
 
 

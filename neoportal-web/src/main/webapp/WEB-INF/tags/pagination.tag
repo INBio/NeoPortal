@@ -27,9 +27,14 @@
 				</c:otherwise>
 			</c:choose>
 			
-			<c:if test="${paginationNextUrl != ''}">
-			<a href="${paginationNextUrl}"><fmt:message key="pagination.next" /></a>
-			</c:if>
+			<c:choose>
+				<c:when test="${paginationNextUrl != ''}">
+					<a href="${paginationNextUrl}"><fmt:message key="pagination.next" /></a>
+				</c:when>
+				<c:otherwise>
+					<a href="#" class="disable"><fmt:message key="pagination.next" /></a>
+				</c:otherwise>
+			</c:choose>
 			<a href="${paginationLastUrl}"><fmt:message key="pagination.last" /></a>
 		</div>
 	</div>

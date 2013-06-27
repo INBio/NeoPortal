@@ -96,7 +96,7 @@
     </head>
     <body>
             <!-- Header -->
-            <jsp:include page="/WEB-INF/views/header_inner.jsp"/>
+<%--             <jsp:include page="/WEB-INF/views/header_inner.jsp"/> --%>
 
             <div id="content">
                 <div id="content_header">

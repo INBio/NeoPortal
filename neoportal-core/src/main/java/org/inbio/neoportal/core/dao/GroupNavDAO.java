@@ -21,6 +21,7 @@ package org.inbio.neoportal.core.dao;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.hibernate.transform.ResultTransformer;
 import org.inbio.neoportal.core.dto.groupnav.GroupNavCDTO;
 import org.inbio.neoportal.core.entity.GroupNav;
 
@@ -31,8 +32,11 @@ import org.inbio.neoportal.core.entity.GroupNav;
 public interface GroupNavDAO 
 		extends GenericBaseDAO<GroupNav, BigDecimal> {
 
+	public enum TreePart{LEVEL, CHILD_SIBLING};
 	
 	public GroupNavCDTO getById(final BigDecimal id);
 	
 	public List<GroupNavCDTO> getFirstLevel(String groupNavName);
+	
+	public List<GroupNavCDTO> getTreePart(String groupNavName, String treePart );
 }

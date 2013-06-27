@@ -31,7 +31,7 @@
 		    var noResultsFoundT = '<fmt:message key="noResultsFound"/>';
 	            
 		</script>
-
+		<!-- 	FIXME: change home.js for a basic search script -->
         <script type="text/javascript" src="<c:url value="/resources/species/home.js" />"></script>
 	
 	</jsp:attribute>

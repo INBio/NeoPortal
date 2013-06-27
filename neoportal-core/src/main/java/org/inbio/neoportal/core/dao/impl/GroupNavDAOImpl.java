@@ -74,4 +74,10 @@ public class GroupNavDAOImpl
 		});			
 	}
 
+	@Override
+	public List<GroupNavCDTO> getTreePart(String groupNavName, String treePart) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

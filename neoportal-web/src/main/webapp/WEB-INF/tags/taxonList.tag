@@ -12,13 +12,17 @@
 	<ul class="taxon_list">
 	<c:forEach var="taxon" items="${taxonList}">
 		<li>
+			<div class="image_wrap">
 			<c:if test="${taxon.imageURL != ''}">
 			<img alt="image of ${taxon.scientificName}" src="${taxon.imageURL}" />
 			</c:if>
-			<h3><a href="<c:out value="${pageContext.request.contextPath}"/>/species/${taxon.scientificName}">${taxon.scientificName}</a></h3>
+			</div>
+			<div class="taxon_inner">
+			<a href="<c:out value="${pageContext.request.contextPath}"/>/species/${taxon.scientificName}"><h3>${taxon.scientificName}</h3></a>
 			<c:if test="${not empty taxon.commonName}">
 			<p><fmt:message key="common_name"></fmt:message>: ${taxon.commonName}</p>
 			</c:if>
+			</div>
 		</li>
 	</c:forEach>
 	</ul>

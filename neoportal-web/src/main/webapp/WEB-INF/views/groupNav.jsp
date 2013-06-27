@@ -10,6 +10,8 @@
 		</script>
 		<script type="text/javascript" src="<c:url value="/resources/js/groupNav.js" />"></script>
 		
+		<!-- 	FIXME: change home.js for a basic search script -->
+        <script type="text/javascript" src="<c:url value="/resources/species/home.js" />"></script>
 	</jsp:attribute>
 	<jsp:body>
         <div class="data_wrapper">

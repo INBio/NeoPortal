@@ -27,7 +27,7 @@
         <script type="text/javascript" >
             var scientificName = "${scientificName}";
             var provider = "";
-            var contextPath = "${pageContext.request.contextPath}"; 
+            var contextPath = "${pageContext.request.contextPath}";
             
             //labels
             var scientificNameT = '<fmt:message key="scientific_name"/>';
@@ -63,13 +63,21 @@
 			</nav>
 			<h2>${scientificName}</h2>
 			
-			<div class="content_column">
+			<div class="content_left_column">
 				<div id="shareThis"></div>
 				<div id="species_images"></div>
 				
 				<div id="taxonDescription">
 					<div id="naturalHistory">
+						<c:if test="${not empty taxonDescription.habit || 
+							not empty taxonDescription.reproduction ||
+							not empty taxonDescription.feeding ||
+							not empty taxonDescription.behavior ||
+							not empty taxonDescription.annualCycle ||
+							not empty taxonDescription.lifeCycle 
+						}">
 				    	<h3><fmt:message key="taxonDes.naturalHistory"/></h3>
+				    	</c:if>
 				    	<c:if test="${not empty taxonDescription.habit }">
 				    		<h4><fmt:message key="taxonDes.habit"/></h4>
 				    		<div>${taxonDescription.habit}</div>
@@ -98,7 +106,10 @@
 					</div>
 					
 					<div id="habitatDistribution">
+						<c:if test="${not empty taxonDescription.habitat ||
+							not empty taxonDescription.distribution }">
 					    <h3><fmt:message key="taxonDes.habitatDistribution"/></h3>
+					    </c:if>
 					    <c:if test="${not empty taxonDescription.habitat }">
 				    		<h4><fmt:message key="taxonDes.habitat"/></h4>
 				    		<div>${taxonDescription.habitat}</div>
@@ -111,7 +122,10 @@
 					</div>
 					
 					<div id="usesManagement">
+						<c:if test="${not empty taxonDescription.theUses ||
+							not empty taxonDescription.theManagement}">
 					    <h3><fmt:message key="taxonDes.usesManagement"/></h3>
+					    </c:if>
 					    <c:if test="${not empty taxonDescription.theUses }">
 				    		<h4><fmt:message key="taxonDes.uses"/></h4>
 				    		<div>${taxonDescription.theUses}</div>
@@ -124,7 +138,11 @@
 					</div>
 					
 					<div id="demographyConservation">
+					    <c:if test="${not empty taxonDescription.threatStatus ||
+					    	not empty taxonDescription.territory ||
+					    	not empty taxonDescription.populationBiology }">
 					    <h3><fmt:message key="taxonDes.demographyConservation"/></h3>
+					    </c:if>
 					    <c:if test="${not empty taxonDescription.threatStatus }">
 				    		<h4><fmt:message key="taxonDes.threatStatus"/></h4>
 				    		<div>${taxonDescription.threatStatus}</div>
@@ -141,13 +159,15 @@
 					</div>
 					
 					<div id="description">
-					    <h3><fmt:message key="taxonDes.description"/></h3>
 					    <c:if test="${not empty taxonDescription.scientificDescription }">
+					    	<h3><fmt:message key="taxonDes.description"/></h3>
 				    		<h4><fmt:message key="taxonDes.scientificDescription"/></h4>
 				    		<div>${taxonDescription.scientificDescription}</div>
 				    	</c:if>
 				    	
 					</div>
+					
+					<n:taxonomy taxonDescription="${taxonDescription}"></n:taxonomy>
 					
 					<div id="information">
 					    <h3><fmt:message key="taxonDes.information"/></h3>
@@ -175,7 +195,6 @@
 				    		<h4><fmt:message key="taxonDes.dateCreated"/></h4>
 				    		<div>${taxonDescription.dateCreated}</div>
 				    	</c:if>
-				    	
 					</div>
 					
 					<div id="externalSource">
@@ -189,10 +208,8 @@
 					</div>
 				</div>
 			</div>
-        </div>
-        
-		<div id="content">
-                
+			
+			<div class="sidebar_right">
                 <div id="occurrences" class="tab_wrapper data_wrapper">
                     <ul id="view_control">
                         <li><a rel="map" href="#"><fmt:message key="occurrences_map_label" /></a></li>
@@ -216,7 +233,9 @@
                     <!-- Extra Panel -->
                     <div id="extraPanel"></div>
                 </div>
-            </div> <!-- end content -->
+            </div> <!-- end sidebar right -->
+        </div>
+
 
 	</jsp:body>
 </n:base>
