@@ -21,19 +21,24 @@ package org.inbio.neoportal.core.dao.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.util.Version;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
+import org.hibernate.search.query.dsl.QueryBuilder;
 import org.hibernate.sql.Template;
 import org.inbio.neoportal.core.dao.TaxonDAO;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
@@ -95,30 +100,30 @@ public class TaxonDAOImpl
                                 searchText);
     }
 
-    @Override
-    public List<TaxonDescriptionFullCDTO> searchBoost(
-            final String searchText, 
-            final int offset, 
-            final int quantity) {
-        
-
-        String[] taxon =
-                new String[]{ "defaultName", "kingdom", "division", "class_",
-                                 "order", "family", "genus", "species",
-                                "taxonomicalRangeId" };
-
-        ArrayList<String> fieldList = new ArrayList<String>();
-
-        fieldList.addAll(Arrays.asList(taxon));
-
-        return super.search(Taxon.class,
-                            new TaxonDescriptionFullTransformer(), 
-                            fieldList.toArray(new String[fieldList.size()]), 
-                            searchText, 
-                            offset, 
-                            quantity);
-        
-    }
+//    @Override
+//    public List<TaxonDescriptionFullCDTO> searchBoost(
+//            final String searchText, 
+//            final int offset, 
+//            final int quantity) {
+//        
+//
+//        String[] taxon =
+//                new String[]{ "defaultName", "kingdom", "division", "class_",
+//                                 "order", "family", "genus", "species",
+//                                "taxonomicalRangeId" };
+//
+//        ArrayList<String> fieldList = new ArrayList<String>();
+//
+//        fieldList.addAll(Arrays.asList(taxon));
+//
+//        return super.search(Taxon.class,
+//                            new TaxonDescriptionFullTransformer(), 
+//                            fieldList.toArray(new String[fieldList.size()]), 
+//                            searchText, 
+//                            offset, 
+//                            quantity);
+//        
+//    }
     
     @Override
     public List<Taxon> findAllByScientificName(
@@ -258,5 +263,67 @@ public class TaxonDAOImpl
             	return query.list();
             }
         });
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<String> taxonSuggestions(final String searchTerm){
+		
+		HibernateTemplate template = getHibernateTemplate();
+		
+		return (List<String>) template.execute(new HibernateCallback<Object>() {
+			
+			@Override
+			public Object doInHibernate(Session session){
+                FullTextSession fullTextSession = Search.getFullTextSession(session);
+                BooleanQuery booleanQuery = new BooleanQuery();
+                QueryBuilder queryBuilder = fullTextSession.getSearchFactory()
+                		.buildQueryBuilder().forEntity(Taxon.class).get();
+                
+                String [] taxonFields = Taxon.TaxonFieldsForAutocomplete.split("\\|");
+                String searchTermLowerCase = searchTerm.toLowerCase();
+                
+                // create wildcard queries for every field
+                for (String taxonField : taxonFields) {
+					Query query = queryBuilder
+										.keyword()
+										.wildcard()
+										.onField(taxonField)
+										.matching(searchTermLowerCase + "*")
+										.createQuery();
+					
+					booleanQuery.add(query, BooleanClause.Occur.SHOULD);
+				}
+                
+                // Wrap Lucene query in a org.hibernate.Query
+                org.hibernate.search.FullTextQuery hsQuery =
+                        fullTextSession.createFullTextQuery(booleanQuery, Taxon.class);
+                
+                // return only the field values
+                hsQuery
+                	.setProjection(taxonFields)
+                	.setMaxResults(10);
+                
+                List<Object[]> results = hsQuery.list();
+                
+                List<String> suggestions = new ArrayList<String>();
+                Set<String> suggest = new HashSet<String>();
+                
+                for (Object[] result : results) {
+					for (int i = 0; i < taxonFields.length; i++) {
+						if(result[i] == null)
+							continue;
+						String fieldValue = result[i].toString();
+						fieldValue = fieldValue.toLowerCase();
+						if(fieldValue.contains(searchTermLowerCase)){
+							suggest.add(fieldValue);
+						}
+					}
+				}
+                
+                suggestions.addAll(suggest);
+                return suggestions;
+			}
+		});
 	}
 }

@@ -248,10 +248,7 @@ public class SearchController {
        ) throws ParseException{
                 
         
-        List<TaxonDescriptionFullCDTO> taxonList = 
-                searchManager.taxonAutocomplete(term);
-        
-        return taxonList;
+        return searchManager.taxonSuggestions(term);
     }
     
     public SearchManager getSearchManagerImpl() {

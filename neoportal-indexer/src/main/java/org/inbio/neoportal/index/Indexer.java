@@ -77,7 +77,7 @@ public class Indexer {
         System.out.println("# - Inicio de la indexación \n");
 
         System.out.println("# - Taxon");
-//        fullTextSession.createIndexer(Taxon.class).startAndWait();
+        fullTextSession.createIndexer(Taxon.class).startAndWait();
         
         System.out.println("# - CommonName");
 //        fullTextSession.createIndexer(CommonName.class).startAndWait();
@@ -92,14 +92,9 @@ public class Indexer {
 //        fullTextSession.createIndexer(Location.class).startAndWait();
         
         System.out.println("# - Occurrence");
-        fullTextSession
-        	.createIndexer(OccurrenceDwc.class)
-        /*	.threadsToLoadObjects( 5 )
-        /*	.batchSizeToLoadObjects( 40 )
-			 
-			 .threadsForIndexWriter( 3 )
-			 .threadsForSubsequentFetching( 5 )*/
-        	.startAndWait();
+//        fullTextSession
+//        	.createIndexer(OccurrenceDwc.class)
+//        	.startAndWait();
         
 
         System.out.println("# - Fin de la indexación \n");

@@ -222,7 +222,21 @@ ul.taxon_list li{
 	float: left;
 	width: 200px;
 	height: 120px;
-	margin: 0 20px 20px 20px;
+	margin: 0 20px 30px 20px;
+	overflow: hidden;
+}
+#groupNav.grid h3{
+	font-size: 1.3em;
+	position: absolute;
+	bottom: 0;
+	background: rgba(0,0,0);
+	background: rgba(0,0,0,.5);
+	width: 167px;
+	padding: 2px 0px 2px 3px;
+	color: white;
+}
+#groupNav.grid img{
+	width: 170px;
 }
 #groupNav.grid h2{
 	position: absolute;

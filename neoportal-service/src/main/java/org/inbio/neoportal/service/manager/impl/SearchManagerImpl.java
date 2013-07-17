@@ -285,13 +285,10 @@ public class SearchManagerImpl implements SearchManager{
     }
 
     @Override
-    public List<TaxonDescriptionFullCDTO> taxonAutocomplete(String term) 
+    public List<String> taxonSuggestions(String term) 
             throws ParseException {
         
-        List<TaxonDescriptionFullCDTO> taxonList =
-                taxonDescriptionDAO.searchFull(term, 0, 10);
-        
-        return taxonList;
+        return taxonDAO.taxonSuggestions(term);
     }
     
     private String formatTaxonSearch(String searchTerms){
@@ -356,7 +353,7 @@ public class SearchManagerImpl implements SearchManager{
 	@Override
 	public List<SpeciesLiteSDTO> basicPaginatedSearch(String searchText,
 			int offset, int quantity) throws ParseException {
-		// analyze and prepare basis search
+		// analyze and prepare basic search
 		searchText = "(" + searchText + ")" + 
 				" AND (taxonomicalRangeId:" + Taxon.TaxonomicalRange.SPECIES.getId() +
 				" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.SUBSPECIES.getId() +

@@ -43,12 +43,11 @@ public interface TaxonDAO
     public Long searchCount(final String searchText);
 
     /**
-     * Search the <code>searchText</code> in the lucene index in the <code>fields</code>
+     * Search the <code>searchText</code> in the lucene index
      * Results are paginated.
-     * @param fields
      * @param searchText
      * @param offset: first result of the list.
-     * @param quantity: lengt of the result list.
+     * @param quantity: length of the result list.
      * @return
      */
     public List<TaxonLiteCDTO> search(
@@ -67,9 +66,8 @@ public interface TaxonDAO
     		final List idList);
 
     /**
-     * Search the <code>searchText</code> in the lucene index in the <code>fields</code>
+     * Search the <code>searchText</code> in the lucene index
      * Results are paginated.
-     * @param fields
      * @param searchText
      * @param offset: first result of the list.
      * @param quantity: lengt of the result list.
@@ -81,10 +79,10 @@ public interface TaxonDAO
         final int quantity) ;
 
     
-    public List<TaxonDescriptionFullCDTO> searchBoost(
-        final String searchText,
-        final int offset, 
-        final int quantity) ;
+//    public List<TaxonDescriptionFullCDTO> searchBoost(
+//        final String searchText,
+//        final int offset, 
+//        final int quantity) ;
     
     /**
      * 
@@ -99,4 +97,12 @@ public interface TaxonDAO
      */
     public List<TaxonLiteCDTO> findCDTOByScientificName(
        final String scientificName);
+    
+    /**
+     * Suggest taxon names starting with <code>searchTerm</code>
+     * @param searchTerm
+     * @return a list of taxon names
+     */
+    public List<String> taxonSuggestions(final String searchTerm);
+    
 }

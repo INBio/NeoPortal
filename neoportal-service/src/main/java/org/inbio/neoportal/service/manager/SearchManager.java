@@ -125,7 +125,7 @@ public interface SearchManager {
             throws ParseException;
     
     
-    public List<TaxonDescriptionFullCDTO> taxonAutocomplete
+    public List<String> taxonSuggestions
             (String term)
             throws ParseException;
   
