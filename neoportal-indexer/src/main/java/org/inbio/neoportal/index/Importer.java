@@ -31,6 +31,11 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.hibernate.CacheMode;
+import org.hibernate.Criteria;
+import org.hibernate.FlushMode;
+import org.hibernate.ScrollMode;
+import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.inbio.neoportal.core.dao.GenericBaseDAO;
 import org.inbio.neoportal.core.dao.LocationDAO;
@@ -64,7 +69,9 @@ import au.com.bytecode.opencsv.CSVReader;
 //@Transactional
 public class Importer {
 
-    static int maxResults = 1000;
+    private static final int BATCH_SIZE = 30;
+
+	static int maxResults = 1000;
     
     @Autowired
     private HibernateTransactionManager transactionManager;
@@ -127,20 +134,33 @@ public class Importer {
         
         Session session = transactionManager.getSessionFactory().getCurrentSession();
 
-        List<ImportDwc> occurrencesDwcList =
-                importDwcDAO.scrollAll(ImportDwc.class,
-                        maxResults,
-                		//1,
-                        firstResult);
+//        List<ImportDwc> occurrencesDwcList =
+//                importDwcDAO.scrollAll(ImportDwc.class,
+//                        maxResults,
+//                		//1,
+//                        firstResult);
+        
+        // config session for bash job
+        session.setFlushMode(FlushMode.MANUAL);
+        session.setCacheMode(CacheMode.IGNORE);
+        
+        ScrollableResults scroll = session.createCriteria(ImportDwc.class)
+        		.setFetchSize(30)
+        		.scroll(ScrollMode.FORWARD_ONLY);
         
         boolean update;
         
-        while(!occurrencesDwcList.isEmpty()){
-            Logger.getLogger(Importer.class.getName()).log
-                (Level.INFO, "Adding {0} to {1} occurrences", new Object[]{firstResult, firstResult + maxResults});
-                
-            for (ImportDwc importDwc : occurrencesDwcList) {
-
+        int batch = 0;
+        
+//        scroll.beforeFirst();
+        
+        while(scroll.next()){
+        	batch++;
+        	    
+            ImportDwc importDwc = (ImportDwc) scroll.get(0);
+            
+//            for (ImportDwc importDwc : occurrencesDwcList) {
+//
                 try{
                 
                 /*
@@ -344,7 +364,7 @@ public class Importer {
                occurrence.setKingdom(importDwc.getKingdom());
                occurrence.setPhylum(importDwc.getPhylum());
                occurrence.setClass_(importDwc.getClass_());
-               occurrence.setTaxonOrder(importDwc.getTaxonOrder());
+               occurrence.setTaxonOrder(importDwc.getOrder());
                occurrence.setFamily(importDwc.getFamily());
                occurrence.setGenus(importDwc.getGenus());
                occurrence.setSubgenus(importDwc.getSubgenus());
@@ -380,18 +400,28 @@ public class Importer {
 //                            new Object[]{importDwc.getId(),e.});
                 	e.printStackTrace();
 				}
-            } // end for, 1000 importDwc rows
+//            } // end for, 1000 importDwc rows
             
-            
-            session.flush();
-            session.clear();
-            
-            firstResult += maxResults;
                 
-            occurrencesDwcList =
-                    importDwcDAO.scrollAll(ImportDwc.class,
-                        maxResults,
-                        firstResult);
+            if(batch % BATCH_SIZE == 0){
+            
+	            session.flush();
+	            session.clear();
+            }
+	    
+            if(batch % maxResults == 0){
+            	Logger.getLogger(Importer.class.getName()).log
+                (Level.INFO, "Adding {0} to {1} occurrences", new Object[]{batch, batch + maxResults});
+            
+            }
+            
+            
+//            firstResult += maxResults;
+                
+//            occurrencesDwcList =
+//                    importDwcDAO.scrollAll(ImportDwc.class,
+//                        maxResults,
+//                        firstResult);
         } // end while, no more importDwc rows
         
         transactionManager.commit(status);

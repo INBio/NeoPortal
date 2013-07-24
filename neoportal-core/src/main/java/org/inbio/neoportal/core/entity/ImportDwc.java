@@ -160,7 +160,7 @@ public class ImportDwc implements Serializable {
     private String kingdom;
     private String phylum;
     private String class_;
-    private String taxonOrder;
+    private String order;
     private String family;
     private String genus;
     private String subgenus;
@@ -2798,17 +2798,17 @@ public class ImportDwc implements Serializable {
 	/**
 	 * @return the taxonOrder
 	 */
-	public String getTaxonOrder() {
-		return taxonOrder;
+	public String getOrder() {
+		return order;
 	}
 
 
 
 	/**
-	 * @param taxonOrder the taxonOrder to set
+	 * @param order the taxonOrder to set
 	 */
-	public void setTaxonOrder(String taxonOrder) {
-		this.taxonOrder = taxonOrder;
+	public void setOrder(String order) {
+		this.order = order;
 	}
 
 

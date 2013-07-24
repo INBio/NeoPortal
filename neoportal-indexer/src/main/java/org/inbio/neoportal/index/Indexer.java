@@ -77,7 +77,7 @@ public class Indexer {
         System.out.println("# - Inicio de la indexación \n");
 
         System.out.println("# - Taxon");
-        fullTextSession.createIndexer(Taxon.class).startAndWait();
+//        fullTextSession.createIndexer(Taxon.class).startAndWait();
         
         System.out.println("# - CommonName");
 //        fullTextSession.createIndexer(CommonName.class).startAndWait();
@@ -92,9 +92,9 @@ public class Indexer {
 //        fullTextSession.createIndexer(Location.class).startAndWait();
         
         System.out.println("# - Occurrence");
-//        fullTextSession
-//        	.createIndexer(OccurrenceDwc.class)
-//        	.startAndWait();
+        fullTextSession
+        	.createIndexer(OccurrenceDwc.class)
+        	.startAndWait();
         
 
         System.out.println("# - Fin de la indexación \n");
@@ -119,11 +119,12 @@ public class Indexer {
             }
             else if (args[0].equals("import")){
                 //Importer importer = new Importer();
-                importer.importAll(
-                        "/home/arturo/Proyectos/atta2-portal/AttaExport/GeoCapas/AttaGeoLayersFromSnaps_v03.csv",
-                        "/home/arturo/Proyectos/atta2-portal/AttaExport/GeoCapas/AttaProvincias.csv",
-                        "/home/arturo/Proyectos/atta2-portal/AttaExport/GeoCapas/AttaGeoSitesFromSnaps_v03.csv",
-                        "/home/arturo/Proyectos/atta2-portal/AttaExport/ubis_20120518_2.csv");
+            	importer.importOccurrences();
+//                importer.importAll(
+//                        "/home/arturo/Proyectos/atta2-portal/AttaExport/GeoCapas/AttaGeoLayersFromSnaps_v03.csv",
+//                        "/home/arturo/Proyectos/atta2-portal/AttaExport/GeoCapas/AttaProvincias.csv",
+//                        "/home/arturo/Proyectos/atta2-portal/AttaExport/GeoCapas/AttaGeoSitesFromSnaps_v03.csv",
+//                        "/home/arturo/Proyectos/atta2-portal/AttaExport/ubis_20120518_2.csv");
                 return;
             }
 

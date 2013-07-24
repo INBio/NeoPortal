@@ -94,15 +94,22 @@ public class GroupNavManagerImpl
 					" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.FORM.getId() +
 					" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.DOMAIN.getId() +
 					")";
+			
+			//retrieve species list...
+			try {
+				response.setTotal(searchManager.taxonSearchCount(query));
+				response.setResult(searchManager.taxonPaginatedSearch(query, offset, quantity));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		//retrieve species list...
-		try {
-			response.setTotal(searchManager.taxonSearchCount(query));
-			response.setResult(searchManager.taxonPaginatedSearch(query, offset, quantity));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		else
+		{
+			response.setTotal(0);
+			response.setResult(taxonList);
 		}
+		
 		return response;
 	}
 
