@@ -21,17 +21,18 @@ package org.inbio.neoportal.core.entity;
 
 
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.OneToMany;
 
-import org.apache.lucene.analysis.LowerCaseFilter;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
-import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Fields;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
@@ -115,6 +116,62 @@ public class Taxon
 		}
 
 	}
+	
+	public static final Map<String, String> columnToProperty;
+    static {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("taxon_id","taxonId");
+        map.put("ancestor_taxon_id", "ancestorTaxonId");
+        map.put("sinonym_taxon_id", "sinonymTaxonId");
+        map.put("taxonomical_range_id", "taxonomicalRangeId");
+        map.put("default_name", "defaultName");
+        map.put("kingdom", "kingdom");
+        map.put("division", "division");
+        map.put("class", "class_");
+        map.put("order_", "order");
+        map.put("family", "family");
+        map.put("genus", "genus");
+        map.put("species", "species");
+        map.put("dominium_id", "dominiumId");
+        map.put("kingdom_id", "kingdomId");
+        map.put("division_id", "divisionId");
+        map.put("subdivision_id", "subdivisionId");
+        map.put("class_id", "classId");
+        map.put("subclass_id", "subclassId");
+        map.put("order_id", "orderId");
+        map.put("sub_order_id", "subOrderId");
+        map.put("super_family_id", "superFamilyId");
+        map.put("family_id", "familyId");
+        map.put("sub_family_id", "subFamilyId");
+        map.put("tribe_id", "tribeId");
+        map.put("sub_tribe_id", "subTribeId");
+        map.put("genus_id", "genusId");
+        map.put("sub_genus_id", "subGenusId");
+        map.put("section_id", "sectionId");
+        map.put("sub_section_id", "subSectionId");
+        map.put("race_id", "raceId");
+        map.put("species_id", "speciesId");
+        map.put("sub_species_id", "subSpeciesId");
+        map.put("variety_id", "varietyId");
+        map.put("form_id", "formId");
+        map.put("domain", "domain");
+        map.put("image_url", "imageUrl");
+        map.put("subdivision", "subDivision");
+        map.put("subclass", "subClass");
+        map.put("sub_order", "subOrder");
+        map.put("super_family", "superFamily");
+        map.put("sub_family", "subFamily");
+        map.put("tribe", "tribe");
+        map.put("sub_tribe", "subTribe");
+        map.put("sub_genus", "subGenus");
+        map.put("sub_section", "subSection");
+        map.put("race", "race");
+        map.put("sub_species", "subSpecies");
+        map.put("variety", "variety");
+        map.put("form", "form");
+        map.put("section", "section");
+        columnToProperty = Collections.unmodifiableMap(map);
+    }
 
 	/**
 	 * 
@@ -162,6 +219,22 @@ public class Taxon
 
      @Field(store=Store.YES)
      private String species;
+     
+     private String subDivision;
+     private String subClass;
+     private String subOrder;
+     private String superFamily;
+     private String subFamily;
+     private String tribe;
+     private String subTribe;
+     private String subGenus;
+     private String section;
+     private String subSection;
+     private String race;
+     private String subSpecies;
+     private String variety;
+     private String form;
+     
      private BigDecimal dominiumId;
      private BigDecimal kingdomId;
      private BigDecimal divisionId;
@@ -209,8 +282,6 @@ public class Taxon
      
      private Set<Images> images = new HashSet<Images>(0);
      
-     
-
     // Constructors
 
     /** default constructor */
@@ -221,47 +292,93 @@ public class Taxon
     public Taxon(BigDecimal taxonId) {
         this.taxonId = taxonId;
     }
-    public Taxon(BigDecimal taxonId, Taxon taxonBySinonymTaxonId, Taxon taxonByAncestorTaxonId, BigDecimal taxonomicalRangeId, String defaultName, String kingdom, String division, String class_, String order, String family, String genus, String species, BigDecimal dominiumId, BigDecimal kingdomId, BigDecimal divisionId, BigDecimal subdivisionId, BigDecimal classId, BigDecimal subclassId, BigDecimal orderId, BigDecimal subOrderId, BigDecimal superFamilyId, BigDecimal familyId, BigDecimal subFamilyId, BigDecimal tribeId, BigDecimal subTribeId, BigDecimal genusId, BigDecimal subGenusId, BigDecimal sectionId, BigDecimal subSectionId, BigDecimal raceId, BigDecimal speciesId, BigDecimal subSpeciesId, BigDecimal varietyId, BigDecimal formId, String domain, Set taxonsForAncestorTaxonId, Set taxonsForSinonymTaxonId, Set occurrences) {
-       this.taxonId = taxonId;
-       this.taxonBySinonymTaxonId = taxonBySinonymTaxonId;
-       this.taxonByAncestorTaxonId = taxonByAncestorTaxonId;
-       this.taxonomicalRangeId = taxonomicalRangeId;
-       this.defaultName = defaultName;
-       this.kingdom = kingdom;
-       this.division = division;
-       this.class_ = class_;
-       this.order = order;
-       this.family = family;
-       this.genus = genus;
-       this.species = species;
-       this.dominiumId = dominiumId;
-       this.kingdomId = kingdomId;
-       this.divisionId = divisionId;
-       this.subdivisionId = subdivisionId;
-       this.classId = classId;
-       this.subclassId = subclassId;
-       this.orderId = orderId;
-       this.subOrderId = subOrderId;
-       this.superFamilyId = superFamilyId;
-       this.familyId = familyId;
-       this.subFamilyId = subFamilyId;
-       this.tribeId = tribeId;
-       this.subTribeId = subTribeId;
-       this.genusId = genusId;
-       this.subGenusId = subGenusId;
-       this.sectionId = sectionId;
-       this.subSectionId = subSectionId;
-       this.raceId = raceId;
-       this.speciesId = speciesId;
-       this.subSpeciesId = subSpeciesId;
-       this.varietyId = varietyId;
-       this.formId = formId;
-       this.occurrences = occurrences;
-       this.taxonsForSinonymTaxonId = taxonsForSinonymTaxonId;
-       this.taxonsForAncestorTaxonId = taxonsForAncestorTaxonId;
-    }
+    
    
-    public BigDecimal getTaxonId() {
+    public Taxon(BigDecimal taxonId, Taxon taxonBySinonymTaxonId,
+			Taxon taxonByAncestorTaxonId, BigDecimal taxonomicalRangeId,
+			String defaultName, String kingdom, String division, String class_,
+			String order, String family, String genus, String species,
+			String subDivision, String subClass, String subOrder,
+			String superFamily, String subFamily, String tribe,
+			String subTribe, String subGenus, String section, String subSection, String race,
+			String subSpecies, String variety, String form,
+			BigDecimal dominiumId, BigDecimal kingdomId, BigDecimal divisionId,
+			BigDecimal subdivisionId, BigDecimal classId,
+			BigDecimal subclassId, BigDecimal orderId, BigDecimal subOrderId,
+			BigDecimal superFamilyId, BigDecimal familyId,
+			BigDecimal subFamilyId, BigDecimal tribeId, BigDecimal subTribeId,
+			BigDecimal genusId, BigDecimal subGenusId, BigDecimal sectionId,
+			BigDecimal subSectionId, BigDecimal raceId, BigDecimal speciesId,
+			BigDecimal subSpeciesId, BigDecimal varietyId, BigDecimal formId,
+			String domain, String imageUrl, Set taxonsForAncestorTaxonId,
+			Set taxonsForSinonymTaxonId, Set<CommonName> commonNames,
+			Set<TaxonDescription> taxonDescriptions,
+			Set<OccurrenceDwc> occurrences,
+			Set<TaxonHasReferenceElement> taxonHasReferenceElements,
+			Set<TaxonHasAssociatedAttribute> taxonHasAssociatedAttributes,
+			Set<Images> images) {
+		this.taxonId = taxonId;
+		this.taxonBySinonymTaxonId = taxonBySinonymTaxonId;
+		this.taxonByAncestorTaxonId = taxonByAncestorTaxonId;
+		this.taxonomicalRangeId = taxonomicalRangeId;
+		this.defaultName = defaultName;
+		this.kingdom = kingdom;
+		this.division = division;
+		this.class_ = class_;
+		this.order = order;
+		this.family = family;
+		this.genus = genus;
+		this.species = species;
+		this.subDivision = subDivision;
+		this.subClass = subClass;
+		this.subOrder = subOrder;
+		this.superFamily = superFamily;
+		this.subFamily = subFamily;
+		this.tribe = tribe;
+		this.subTribe = subTribe;
+		this.subGenus = subGenus;
+		this.section = section;
+		this.subSection = subSection;
+		this.race = race;
+		this.subSpecies = subSpecies;
+		this.variety = variety;
+		this.form = form;
+		this.dominiumId = dominiumId;
+		this.kingdomId = kingdomId;
+		this.divisionId = divisionId;
+		this.subdivisionId = subdivisionId;
+		this.classId = classId;
+		this.subclassId = subclassId;
+		this.orderId = orderId;
+		this.subOrderId = subOrderId;
+		this.superFamilyId = superFamilyId;
+		this.familyId = familyId;
+		this.subFamilyId = subFamilyId;
+		this.tribeId = tribeId;
+		this.subTribeId = subTribeId;
+		this.genusId = genusId;
+		this.subGenusId = subGenusId;
+		this.sectionId = sectionId;
+		this.subSectionId = subSectionId;
+		this.raceId = raceId;
+		this.speciesId = speciesId;
+		this.subSpeciesId = subSpeciesId;
+		this.varietyId = varietyId;
+		this.formId = formId;
+		this.domain = domain;
+		this.imageUrl = imageUrl;
+		this.taxonsForAncestorTaxonId = taxonsForAncestorTaxonId;
+		this.taxonsForSinonymTaxonId = taxonsForSinonymTaxonId;
+		this.commonNames = commonNames;
+		this.taxonDescriptions = taxonDescriptions;
+		this.occurrences = occurrences;
+		this.taxonHasReferenceElements = taxonHasReferenceElements;
+		this.taxonHasAssociatedAttributes = taxonHasAssociatedAttributes;
+		this.images = images;
+	}
+
+
+	public BigDecimal getTaxonId() {
         return this.taxonId;
     }
     
@@ -345,7 +462,149 @@ public class Taxon
     public void setSpecies(String species) {
         this.species = species;
     }
-    public BigDecimal getDominiumId() {
+    
+    
+    
+    public String getSubDivision() {
+		return subDivision;
+	}
+
+
+	public void setSubDivision(String subDivision) {
+		this.subDivision = subDivision;
+	}
+
+
+	public String getSubClass() {
+		return subClass;
+	}
+
+
+	public void setSubClass(String subClass) {
+		this.subClass = subClass;
+	}
+
+
+	public String getSubOrder() {
+		return subOrder;
+	}
+
+
+	public void setSubOrder(String subOrder) {
+		this.subOrder = subOrder;
+	}
+
+
+	public String getSuperFamily() {
+		return superFamily;
+	}
+
+
+	public void setSuperFamily(String superFamily) {
+		this.superFamily = superFamily;
+	}
+
+
+	public String getSubFamily() {
+		return subFamily;
+	}
+
+
+	public void setSubFamily(String subFamily) {
+		this.subFamily = subFamily;
+	}
+
+
+	public String getTribe() {
+		return tribe;
+	}
+
+
+	public void setTribe(String tribe) {
+		this.tribe = tribe;
+	}
+
+
+	public String getSubTribe() {
+		return subTribe;
+	}
+
+
+	public void setSubTribe(String subTribe) {
+		this.subTribe = subTribe;
+	}
+
+
+	public String getSubGenus() {
+		return subGenus;
+	}
+
+
+	public void setSubGenus(String subGenus) {
+		this.subGenus = subGenus;
+	}
+
+	public String getSection() {
+		return section;
+	}
+
+
+	public void setSection(String section) {
+		this.section = section;
+	}
+
+
+	public String getSubSection() {
+		return subSection;
+	}
+
+
+	public void setSubSection(String subSection) {
+		this.subSection = subSection;
+	}
+
+
+	public String getRace() {
+		return race;
+	}
+
+
+	public void setRace(String race) {
+		this.race = race;
+	}
+
+
+	public String getSubSpecies() {
+		return subSpecies;
+	}
+
+
+	public void setSubSpecies(String subSpecies) {
+		this.subSpecies = subSpecies;
+	}
+
+
+	public String getVariety() {
+		return variety;
+	}
+
+
+	public void setVariety(String variety) {
+		this.variety = variety;
+	}
+
+
+	public String getForm() {
+		return form;
+	}
+
+
+	public void setForm(String form) {
+		this.form = form;
+	}
+
+
+	public BigDecimal getDominiumId() {
         return this.dominiumId;
     }
     

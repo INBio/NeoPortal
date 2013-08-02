@@ -20,15 +20,20 @@ package org.inbio.neoportal.index;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Options;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.util.Version;
-import org.hibernate.CacheMode;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.search.FullTextQuery;
@@ -62,12 +67,24 @@ public class Indexer {
     }
 
     /**
-     * Create the Lucene index for the DarwinCore class
+     * Create the Lucene index for the indicated class. This method purge the existing documents before indexing.
+     * @param classToIndex The name of the class to reindex
+     * all - for all indexable classes
+     * (Taxon, CommonName, TaxonDescription, GeoFeature, Location, Ocurrences)
      * @throws InterruptedException
      */
-    public void createIndex() 
+    public void createIndex(String classToIndex) 
             throws InterruptedException{
 
+    	// list of indexable classes 
+    	HashMap<String, Object> classList = new HashMap<String, Object>();
+    	classList.put("Taxon", Taxon.class);
+    	classList.put("CommonName", CommonName.class);
+    	classList.put("TaxonDescription", TaxonDescription.class);
+    	classList.put("GeoFeature", GeoFeature.class);
+    	classList.put("Location", Location.class);
+    	classList.put("Occurrences", OccurrenceDwc.class);
+    	
         System.out.println("Creating Lucene index\n");
         HibernateUtil.getSessionFactory();
         Session session = HibernateUtil.getSessionFactory().openSession();
@@ -75,68 +92,105 @@ public class Indexer {
         FullTextSession fullTextSession = Search.getFullTextSession(session);
 
         System.out.println("# - Inicio de la indexación \n");
+        
+        if(classToIndex.equals("all")) {
+        	for (String indexKey: classList.keySet()) {
+        		System.out.println("# - " + indexKey);
+        		fullTextSession.purgeAll((Class)classList.get(indexKey));
+        		fullTextSession
+        			.createIndexer((Class)classList.get(indexKey))
+        			.startAndWait();
+			}
+        }
+        else {
+        	System.out.println("# - " + classToIndex);
+        	fullTextSession.purgeAll((Class)classList.get(classToIndex));
+    		fullTextSession.createIndexer((Class)classList.get(classToIndex)).startAndWait();
+        }
 
-        System.out.println("# - Taxon");
-//        fullTextSession.createIndexer(Taxon.class).startAndWait();
+//        System.out.println("# - Taxon");
+////        fullTextSession.createIndexer(Taxon.class).startAndWait();
+//        
+//        System.out.println("# - CommonName");
+////        fullTextSession.createIndexer(CommonName.class).startAndWait();
+//        
+//        System.out.println("# - TaxonDescription");
+// //       fullTextSession.createIndexer(TaxonDescription.class).startAndWait();
+//        
+//        System.out.println("# - GeoFeatures");
+////        fullTextSession.createIndexer(GeoFeature.class).startAndWait();
+//        
+//        System.out.println("# - Locations");
+////        fullTextSession.createIndexer(Location.class).startAndWait();
+//        
+//        System.out.println("# - Occurrence");
+//        fullTextSession
+//        	.createIndexer(OccurrenceDwc.class)
+//        	.startAndWait();
         
-        System.out.println("# - CommonName");
-//        fullTextSession.createIndexer(CommonName.class).startAndWait();
-        
-        System.out.println("# - TaxonDescription");
- //       fullTextSession.createIndexer(TaxonDescription.class).startAndWait();
-        
-        System.out.println("# - GeoFeatures");
-//        fullTextSession.createIndexer(GeoFeature.class).startAndWait();
-        
-        System.out.println("# - Locations");
-//        fullTextSession.createIndexer(Location.class).startAndWait();
-        
-        System.out.println("# - Occurrence");
-        fullTextSession
-        	.createIndexer(OccurrenceDwc.class)
-        	.startAndWait();
-        
-
         System.out.println("# - Fin de la indexación \n");
     }
 
     /**
      * Process the arguments that comes from the console.
      * @param args [action, search terms]
-     * @throws ParseException
      * @throws InterruptedException
      */
-    public void processArguments(String[] args)
-            throws ParseException, InterruptedException{
+    @SuppressWarnings("static-access")
+	public void processArguments(String[] args)
+            throws InterruptedException{
 
-        String searchType = null;
-        String searchText = null;
-
-        if(args.length == 1)
-            if (args[0].equals("index")){
-                this.createIndex();
-                return;
-            }
-            else if (args[0].equals("import")){
+    	// configure the command line options
+    	Options options = new Options();
+    	options.addOption(OptionBuilder.withArgName("class to index")
+    						.hasArgs(1)
+    						.withDescription("Index an entity (all|Taxon|CommonName|TaxonDescription|GeoFeature|Location|Occurrences)")
+    						.create("index") );
+    	options.addOption(OptionBuilder.withArgName("csvFile")
+    						.hasArgs(1)
+    						.withDescription("Import and index taxonomy")
+    						.create("t") );
+    	
+    	try {
+	    	CommandLineParser parser = new org.apache.commons.cli.GnuParser();
+	    	CommandLine cmd = parser.parse(options, args);
+	    	
+	    	// execute the appropriate functions
+	    	if(cmd.hasOption("index")) {
+	    		String entityName = cmd.getOptionValue("index");
+	    		this.createIndex(entityName);
+//	    		System.out.println("option index");
+	    	}
+	    	else if(cmd.hasOption("t")) {
+	    		String csvFile = cmd.getOptionValue("t");
+	    		importer.importTaxonomy(csvFile);
+//	    		System.out.println("option t");
+	    	}
+	    	else {
+	    		// automatically generate the help statement
+	    		HelpFormatter formatter = new HelpFormatter();
+	    		formatter.printHelp( "indexer", options );
+	    	}
+	
+            	
                 //Importer importer = new Importer();
-            	importer.importOccurrences();
+//            	importer.importOccurrences();
 //                importer.importAll(
 //                        "/home/arturo/Proyectos/atta2-portal/AttaExport/GeoCapas/AttaGeoLayersFromSnaps_v03.csv",
 //                        "/home/arturo/Proyectos/atta2-portal/AttaExport/GeoCapas/AttaProvincias.csv",
 //                        "/home/arturo/Proyectos/atta2-portal/AttaExport/GeoCapas/AttaGeoSitesFromSnaps_v03.csv",
 //                        "/home/arturo/Proyectos/atta2-portal/AttaExport/ubis_20120518_2.csv");
-                return;
-            }
 
-        if(args.length < 2){
-            System.out.println("Error: argumentos insuficientes");
-            return;
-        }
+    	}
+    	 catch (org.apache.commons.cli.ParseException e) {
+    		 System.out.print("Parse error: ");
+    		 System.out.println( e.getMessage() );
+    		 
+    		 // automatically generate the help statement
+    		 HelpFormatter formatter = new HelpFormatter();
+    		 formatter.printHelp( "indexer", options );
+    	 }
 
-        searchType = args[0];
-        searchText = args[1];
-
-        this.searchByAll(searchText);
     }
 
     /**
@@ -247,9 +301,10 @@ public class Indexer {
      * @param args
      * @throws InterruptedException
      * @throws ParseException
+     * @throws org.apache.commons.cli.ParseException 
      */
     public static void main(String[] args)
-            throws InterruptedException, ParseException{
+            throws InterruptedException, ParseException, org.apache.commons.cli.ParseException{
 
         ApplicationContext appContext = 
                 new ClassPathXmlApplicationContext("applicationContext.xml");

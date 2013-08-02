@@ -114,6 +114,49 @@
         <property name="imageUrl" type="string">
             <column name="image_url" />
         </property>
+        <property name="subDivision" type="string">
+        	<column name="subdivision" />
+        </property>
+        <property name="subClass">
+        	<column name="subclass" />
+        </property>
+        <property name="subOrder" type="string">
+        	<column name="sub_order" />
+        </property>
+        <property name="superFamily" type="string">
+        	<column name="super_family" />
+        </property>
+        <property name="subFamily" type="string">
+        	<column name="sub_family" />
+        </property>
+        <property name="tribe" type="string">
+        	<column name="tribe" />
+        </property>
+        <property name="subTribe" type="string">
+        	<column name="sub_tribe" />
+        </property>
+        <property name="subGenus" type="string">
+        	<column name="sub_genus" />
+        </property>
+        <property name="subSection" type="string">
+        	<column name="sub_section" />
+        </property>
+        <property name="race" type="string">
+        	<column name="race" />
+        </property>
+        <property name="subSpecies" type="string">
+        	<column name="sub_species" />
+        </property>
+        <property name="variety" type="string">
+        	<column name="variety" />
+        </property>
+        <property name="form" type="string">
+        	<column name="form" />
+        </property>
+        <property name="section" type="string">
+        	<column name="section" />
+        </property>
+        
         <set name="taxonsForAncestorTaxonId" inverse="true">
             <key>
                 <column name="ancestor_taxon_id" precision="131089" scale="0" />

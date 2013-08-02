@@ -18,18 +18,26 @@
  */
 package org.inbio.neoportal.index;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.IDN;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.text.StyledEditorKit.BoldAction;
 
 import org.hibernate.CacheMode;
 import org.hibernate.Criteria;
@@ -52,6 +60,9 @@ import org.inbio.neoportal.core.entity.Location;
 import org.inbio.neoportal.core.entity.OccurrenceDwc;
 import org.inbio.neoportal.core.entity.Taxon;
 import org.inbio.neoportal.core.entity.TaxonDescription;
+import org.inbio.neoportal.index.util.HibernateUtil;
+import org.springframework.beans.DirectFieldAccessor;
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.orm.hibernate3.HibernateTransactionManager;
@@ -722,6 +733,100 @@ public class Importer {
             Logger.getLogger(Importer.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+    }
+    
+    /**
+     * 
+     * @param csvFile the absolute root for the csvFile 
+     * @author avargas
+     */
+    @SuppressWarnings("static-access")
+	public void importTaxonomy(String csvFile){
+
+    	Taxon taxon;
+    	boolean update;
+		int batch = 0;
+    	
+    	try {
+    		// start transaction
+            DefaultTransactionDefinition transaction = new DefaultTransactionDefinition();
+            TransactionStatus status = transactionManager.getTransaction(transaction);
+            Session session = transactionManager.getSessionFactory().getCurrentSession();
+
+            // read csv file
+			CSVReader reader = new CSVReader(new FileReader(csvFile));
+			String [] header = reader.readNext();
+			String [] nextLine;
+			
+			// match header db columns with entity names
+			Map<String, Integer> columnProperties = new HashMap<String, Integer>();
+			for (int i=0; i < header.length; i++) {
+				columnProperties.put(Taxon.columnToProperty.get(header[i].toLowerCase()), i);
+			}
+			
+			while ((nextLine = reader.readNext()) != null) {
+				String taxonId = nextLine[columnProperties.get("taxonId")];
+				
+				taxon = taxonNewDAO.findById(new BigDecimal(taxonId));
+				
+				if(taxon != null)
+					update = true;
+				else {
+					update = false;
+					taxon = new Taxon();
+				}
+				
+				DirectFieldAccessor taxonAccessor = new DirectFieldAccessor(taxon);
+				
+				for (String indexKey : columnProperties.keySet()) {
+					if(indexKey == null)
+						continue;
+					taxonAccessor.setPropertyValue(indexKey, nextLine[columnProperties.get(indexKey)]);
+				}
+				
+				if(update)
+					taxonDAO.update(taxon);
+				else
+					taxonDAO.create(taxon);
+				
+				// flush session based on batch size
+				if(batch % BATCH_SIZE == 0){
+		            
+		            session.flush();
+		            session.clear();
+	            }
+		    
+	            if(batch % maxResults == 0){
+	            	Logger.getLogger(Importer.class.getName()).log
+	                (Level.INFO, "Adding {0} to {1} taxon", new Object[]{batch, batch + maxResults});
+	            
+	            }
+	            batch++;
+			}
+			
+			transactionManager.commit(status);
+			
+	        // reindex
+	        Indexer indexer = new Indexer();
+	        indexer.createIndex("Taxon");
+			
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TypeMismatchException e) {
+			// TODO: handle exception
+			Logger.getLogger(Importer.class.getName()).log
+            (Level.SEVERE, "NumberFormatException batch {0} ", new Object[]{batch });
+			e.printStackTrace();
+		}
+        
+	
     }
 
 }
