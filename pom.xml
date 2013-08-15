@@ -5,6 +5,7 @@
 	<artifactId>neoportal</artifactId>
 	<packaging>pom</packaging>
 	<version>1.0-SNAPSHOT</version>
+	<name>Neoportal</name>
 	<build>
 		<plugins>
 			<plugin>
@@ -18,5 +19,7 @@
 		<module>neoportal-core</module>
 		<module>neoportal-service</module>
 		<module>neoportal-web</module>
+		<module>neoportal-indexer</module>
+    		<module>neoportal-image-crawler</module>
 	</modules>
 </project>

@@ -18,16 +18,13 @@
  */
 package org.inbio.neoportal.index;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.IDN;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -37,10 +34,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.text.StyledEditorKit.BoldAction;
-
 import org.hibernate.CacheMode;
-import org.hibernate.Criteria;
 import org.hibernate.FlushMode;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
@@ -60,7 +54,6 @@ import org.inbio.neoportal.core.entity.Location;
 import org.inbio.neoportal.core.entity.OccurrenceDwc;
 import org.inbio.neoportal.core.entity.Taxon;
 import org.inbio.neoportal.core.entity.TaxonDescription;
-import org.inbio.neoportal.index.util.HibernateUtil;
 import org.springframework.beans.DirectFieldAccessor;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Autowired;

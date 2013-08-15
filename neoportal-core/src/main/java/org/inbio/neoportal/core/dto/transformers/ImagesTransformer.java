@@ -21,7 +21,7 @@ package org.inbio.neoportal.core.dto.transformers;
 import java.util.List;
 import org.hibernate.transform.ResultTransformer;
 import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
-import org.inbio.neoportal.core.entity.Images;
+import org.inbio.neoportal.core.entity.Image;
 
 /**
  *
@@ -36,13 +36,13 @@ public class ImagesTransformer
     public Object transformTuple(Object[] tuple, String[] aliases) {
         ImagesCDTO imagesCDTO = null;
         
-        Images img = (Images)tuple[0];
+        Image img = (Image)tuple[0];
         
         try {
             imagesCDTO = new ImagesCDTO();
             
             imagesCDTO.setImageId(img.getImageId().toString());
-            imagesCDTO.setM3sImageId(img.getM3sImageId().toString());
+            imagesCDTO.setM3sImageId(img.getExternalImageId().toString());
             imagesCDTO.setTaxonId(img.getTaxon().getTaxonId().toString());
             imagesCDTO.setAuthor(img.getAuthor());
             imagesCDTO.setRights(img.getRights());

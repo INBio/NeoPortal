@@ -21,6 +21,8 @@ package org.inbio.neoportal.core.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.DocumentId;
@@ -237,6 +239,8 @@ public class OccurrenceDwc implements Serializable {
     private String nomenclaturalStatus;
     private String taxonRemarks; //159
 
+
+    private Set<Image> images = new HashSet<Image>(0);
 
     public OccurrenceDwc() {
     }
@@ -2557,6 +2561,17 @@ public class OccurrenceDwc implements Serializable {
 	public void setTaxonRemarks(String taxonRemarks) {
 		this.taxonRemarks = taxonRemarks;
 	}
+
+	
+	public Set<Image> getImages() {
+		return images;
+	}
+
+
+	public void setImages(Set<Image> images) {
+		this.images = images;
+	}
+
 
 	@Override
     public int hashCode() {

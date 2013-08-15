@@ -498,5 +498,11 @@
         <property name="taxonRemarks" type="string">
             <column name="taxonremarks" />
         </property>
+        <set name="images" inverse="true" fetch="select">
+            <key>
+                <column name="occurrence_id"></column>
+            </key>
+            <one-to-many class="org.inbio.neoportal.core.entity.Image" />
+        </set>
     </class>
 </hibernate-mapping>

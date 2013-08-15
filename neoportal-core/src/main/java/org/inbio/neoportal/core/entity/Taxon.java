@@ -280,7 +280,7 @@ public class Taxon
      private Set<TaxonHasAssociatedAttribute> taxonHasAssociatedAttributes 
          = new HashSet<TaxonHasAssociatedAttribute>(0);
      
-     private Set<Images> images = new HashSet<Images>(0);
+     private Set<Image> images = new HashSet<Image>(0);
      
     // Constructors
 
@@ -316,7 +316,7 @@ public class Taxon
 			Set<OccurrenceDwc> occurrences,
 			Set<TaxonHasReferenceElement> taxonHasReferenceElements,
 			Set<TaxonHasAssociatedAttribute> taxonHasAssociatedAttributes,
-			Set<Images> images) {
+			Set<Image> images) {
 		this.taxonId = taxonId;
 		this.taxonBySinonymTaxonId = taxonBySinonymTaxonId;
 		this.taxonByAncestorTaxonId = taxonByAncestorTaxonId;
@@ -824,11 +824,11 @@ public class Taxon
         this.commonNames = commonNames;
     }
 
-    public Set<Images> getImages() {
+    public Set<Image> getImages() {
         return images;
     }
 
-    public void setImages(Set<Images> images) {
+    public void setImages(Set<Image> images) {
         this.images = images;
     }
 

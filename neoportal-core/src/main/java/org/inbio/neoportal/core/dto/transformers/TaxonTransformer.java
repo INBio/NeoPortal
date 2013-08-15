@@ -26,7 +26,7 @@ import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
 import org.inbio.neoportal.core.dto.taxon.TaxonCDTO;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.entity.CommonName;
-import org.inbio.neoportal.core.entity.Images;
+import org.inbio.neoportal.core.entity.Image;
 import org.inbio.neoportal.core.entity.Taxon;
 
 
@@ -71,7 +71,7 @@ public class TaxonTransformer
                 new ArrayList<CommonName>(taxon.getCommonNames()));
             
         ArrayList<ImagesCDTO> imgList = new ArrayList<ImagesCDTO>();
-        for(Images img: taxon.getImages()){
+        for(Image img: taxon.getImages()){
             imgList.add((ImagesCDTO)imagesRT.transformTuple(new Object[]{img}, null));
         }
         
