@@ -5,7 +5,9 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -17,7 +19,10 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.io.IOUtils;
+import org.inbio.neoportal.image_crawler.flickr.Flickr;
+import org.inbio.neoportal.image_crawler.flickr.GroupPoolsInterface;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -36,6 +41,9 @@ import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
 public class ImageCrawler 
 {
 	
+	@Autowired
+	private static ApplicationContext context;
+	
     @SuppressWarnings("static-access")
 	public static void main( String[] args )
     {
@@ -50,11 +58,11 @@ public class ImageCrawler
 			CommandLineParser parser = new GnuParser();
 			CommandLine cmd = parser.parse(options, args);
 			
-			ApplicationContext appContext = 
-	                new ClassPathXmlApplicationContext("applicationContext.xml");
+//			ApplicationContext appContext = 
+//	                new ClassPathXmlApplicationContext("applicationContext.xml");
 			
 			if(cmd.hasOption("crawler")) {
-				ImageCrawler imageCrawler = appContext.getBean(ImageCrawler.class);
+				ImageCrawler imageCrawler = context.getBean(ImageCrawler.class);
 				imageCrawler.index(1);
 			}
 			else {
@@ -80,52 +88,45 @@ public class ImageCrawler
     private void index(int threads) {
 		ExecutorService executor = Executors.newFixedThreadPool(threads);
 		
-		// get image list from flickr
-		getFlickrImages();
+		Properties properties = new Properties();
+		String flickrApiKey = null;
+		String groupId = null;
 		
-		// loop the list and start threads
-		
-		
-		// This will make the executor accept no new threads
-	    // and finish all existing threads in the queue
-	    executor.shutdown();
-	    // Wait until all threads are finish
-	    try {
-	    	  executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-	    	} catch (InterruptedException e) {
-	    	  
-	    	}
+		try {
+			properties.load(getClass().getResourceAsStream("/config.properties"));
+			flickrApiKey = properties.getProperty("flickr_api_key");
+			groupId = properties.getProperty("group_id");
+			
+			// get image list from flickr
+			Flickr flickr = new Flickr(flickrApiKey);
+			GroupPoolsInterface groupPoolsInterface = flickr.getGroupPoolsInterface();
+			JSONArray photos;
+			
+			while( groupPoolsInterface.hasNext()){
+				photos = groupPoolsInterface.nextPhotosPage(groupId);
+				// loop the list and start threads
+				for (int i = 0; i < photos.length(); i++) {
+					ImageIndexer imageIndexer = (ImageIndexer)context.getBean("ImageIndexer", photos.getJSONObject(i));
+					//imageIndexer = new ImageIndexer(photos.getJSONObject(i));
+					System.out.println("schedule: " + photos.getJSONObject(i).getString("title"));
+					executor.execute(imageIndexer);
+				}
+			}
+			// This will make the executor accept no new threaImagesds
+		    // and finish all existing threads in the queue
+		    executor.shutdown();
+		    // Wait until all threads are finish
+	    	executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+    	} catch (InterruptedException e) {
+    	  
+    	} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	    System.out.println("Finished all threads");
 	}
     
-    private List getFlickrImages(){
-    	String flickrPoolUrl = "http://api.flickr.com/services/rest/?method=flickr.groups.pools.getPhotos&api_key=5b084e281a611c38f0c045b969c7829d&group_id=2235531%40N20&format=json&nojsoncallback=1";
-    	InputStream in = null;
-    	com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
-    	mapper.registerModule((Module)new JsonOrgModule());
-    	
-    	try {
-			in = new URL(flickrPoolUrl).openStream();
-			
-			String json = IOUtils.toString(in);
-			
-			JSONArray jsonArray = mapper.readValue(json, JSONArray.class);
-			
-			
-			List<String> result = new ArrayList<String>();
-			
-			return result;
-			
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			IOUtils.closeQuietly(in);
-		}
-    	
-    	return null;
-    }
+    
 }
