@@ -80,7 +80,7 @@ public interface OccurrenceDAO
     public List<String> getSexValues();
     
     /**
-     * Find a occurrence by the catalog number
+     * Find a occurrence by the catalog number.
      * @param catalogNumber
      * @return
      */

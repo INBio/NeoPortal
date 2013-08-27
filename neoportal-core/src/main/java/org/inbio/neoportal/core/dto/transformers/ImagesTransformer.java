@@ -41,12 +41,31 @@ public class ImagesTransformer
         try {
             imagesCDTO = new ImagesCDTO();
             
+            String occurrenceId = 
+            		img.getOccurrence() != null? img.getOccurrence().getOccurrenceId() : null; 
+            
             imagesCDTO.setImageId(img.getImageId().toString());
-            imagesCDTO.setM3sImageId(img.getExternalImageId().toString());
+            imagesCDTO.setExternalImageId(img.getExternalImageId().toString());
             imagesCDTO.setTaxonId(img.getTaxon().getTaxonId().toString());
             imagesCDTO.setAuthor(img.getAuthor());
             imagesCDTO.setRights(img.getRights());
-
+            imagesCDTO.setOccurrenceId(occurrenceId);
+            imagesCDTO.setSource(img.getSource());
+            imagesCDTO.setSecret(img.getSecret());
+            imagesCDTO.setServer(String.valueOf(img.getServer()));
+            imagesCDTO.setFarm(String.valueOf(img.getFarm()));
+            imagesCDTO.setTitle(img.getTitle());
+            imagesCDTO.setDateAdded(img.getDateAdded().toString());
+            imagesCDTO.setDescription(img.getDescription());
+            imagesCDTO.setDateUpload(img.getDateUpload().toString());
+            imagesCDTO.setDateTaken(img.getDateTaken().toString());
+            imagesCDTO.setOriginalSecret(img.getOriginalSecret());
+            imagesCDTO.setOriginalFormat(img.getOriginalFormat());
+            imagesCDTO.setLastUpdate(img.getLastUpdate().toString());
+            imagesCDTO.setLatitude(img.getLatitude());
+            imagesCDTO.setLongitude(img.getLongitude());
+            imagesCDTO.setAccuracy(img.getAccuracy());
+            imagesCDTO.setTags(img.getTags());
             
         } catch (Exception e) {
             throw new RuntimeException(e);

@@ -22,13 +22,17 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.search.FullTextSession;
+import org.hibernate.search.Search;
+import org.hibernate.search.query.dsl.QueryBuilder;
 import org.inbio.neoportal.core.dao.OccurrenceDAO;
 import org.inbio.neoportal.core.dto.transformers.OccurrenceDWCTransformer;
 import org.inbio.neoportal.core.dto.transformers.OccurrenceTransformer;
-import org.inbio.neoportal.core.entity.Occurrence;
 import org.inbio.neoportal.core.entity.OccurrenceDwc;
+import org.inbio.neoportal.core.entity.Taxon;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
@@ -155,17 +159,27 @@ public class OccurrenceDAOImpl
 		
 	}
 	
+	/**
+	 * This function make a lucene query
+	 */
 	@Override
 	public OccurrenceDwc findByCatalogNumber(final String catalogNumber){
-		HibernateTemplate template = getHibernateTemplate();
-		return (OccurrenceDwc) template.execute(new HibernateCallback() {
-            @Override
-			public Object doInHibernate(Session session) {
-                Query query = session.createQuery(
-						"from OccurrenceDwc where CatalogNumber = ?");
-                query.setString(0, catalogNumber);
-				return query.uniqueResult();
-			}
-		});	
+		Session session = getSession();
+		FullTextSession fullTextSession = Search.getFullTextSession(session);
+		
+		// create Lucene query using the query DSL
+		QueryBuilder qb = fullTextSession.getSearchFactory()
+				.buildQueryBuilder().forEntity(OccurrenceDwc.class).get();
+		org.apache.lucene.search.Query query = qb
+				.keyword()
+				.onField("catalogNumber")
+				.matching(catalogNumber)
+				.createQuery();
+		
+		// wrap Lucene query in a org.hibernate.Query
+		org.hibernate.Query hQuery = 
+				fullTextSession.createFullTextQuery(query, OccurrenceDwc.class);
+		
+		return (OccurrenceDwc)hQuery.uniqueResult();
 	}
 }

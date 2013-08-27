@@ -60,18 +60,22 @@ public class SearchManagerImplTest extends NeoportalTestBase {
 
             taxon.setTaxonId(new BigDecimal(1));
             taxon.setDefaultName("Inga vera");
+            taxon.setTaxonomicalRangeId(new BigDecimal(Taxon.TaxonomicalRange.SPECIES.getId()));
             taxonDAOImpl.create(taxon);
 
             taxon.setTaxonId(new BigDecimal(2));
             taxon.setDefaultName("Inga vera subsp. spuria");
+            taxon.setTaxonomicalRangeId(new BigDecimal(Taxon.TaxonomicalRange.SUBSPECIES.getId()));
             taxonDAOImpl.create(taxon);
 
             taxon.setTaxonId(new BigDecimal(3));
             taxon.setDefaultName("Inga vera subsp. vera");
+            taxon.setTaxonomicalRangeId(new BigDecimal(Taxon.TaxonomicalRange.SUBSPECIES.getId()));
             taxonDAOImpl.create(taxon);
 
             taxon.setTaxonId(new BigDecimal(4));
             taxon.setDefaultName("Inga vera");
+            taxon.setTaxonomicalRangeId(new BigDecimal(Taxon.TaxonomicalRange.SPECIES.getId()));
             taxonDAOImpl.create(taxon);
 
             taxon.setTaxonId(new BigDecimal(5));
@@ -93,7 +97,7 @@ public class SearchManagerImplTest extends NeoportalTestBase {
     @Test
     public void testSpeciesPaginatedSearch() throws Exception {
         System.out.println("fullPaginatedSearch");
-        String searchText = "Inga_vera";
+        String searchText = "Inga vera";
         int offset = 0;
         int quantity = 20;
         Integer expResult = new Integer(3);

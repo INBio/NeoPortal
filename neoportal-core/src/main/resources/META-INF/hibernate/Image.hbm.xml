@@ -3,10 +3,12 @@
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
   <class name="org.inbio.neoportal.core.entity.Image" table="image">
-    <id name="imageId" type="big_decimal" column="image_id">
-        <generator class="sequence" />
+    <id name="imageId" type="big_integer" column="image_id">
+        <generator class="sequence" >
+        	<param name="sequence">images_image_id_seq</param>
+       	</generator>
     </id>
-    <property name="externalImageId" type="big_decimal" column="external_image_id" />
+    <property name="externalImageId" type="big_integer" column="external_image_id" />
     <property name="author" type="string" column="author" />
     <property name="rights" type="string" column="rights" />
     <property name="source" type="string" column="source" />

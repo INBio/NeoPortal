@@ -20,7 +20,6 @@ package org.inbio.neoportal.dao.impl;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.inbio.neoportal.core.dao.GroupNavDAO;
 import org.inbio.neoportal.core.dto.groupnav.GroupNavCDTO;

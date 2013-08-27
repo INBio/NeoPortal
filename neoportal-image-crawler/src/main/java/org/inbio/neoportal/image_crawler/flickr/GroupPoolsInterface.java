@@ -73,6 +73,8 @@ public class GroupPoolsInterface {
     	flickrPoolUrl += "&api_key=" + this.apiKey;
     	flickrPoolUrl += "&group_id=" + groupId;
     	flickrPoolUrl += "&page=" + page;
+    	//flickrPoolUrl += "&extras=description%2C+license%2C+date_upload%2C+date_taken%2C+owner_name%2C+icon_server%2C+original_format%2C+last_update%2C+geo%2C+tags%2C+machine_tags%2C+o_dims%2C+views%2C+media%2C+path_alias%2C+url_sq%2C+url_t%2C+url_s%2C+url_q%2C+url_m%2C+url_n%2C+url_z%2C+url_c%2C+url_l%2C+url_o";
+    	flickrPoolUrl += "&extras=description,license,date_upload,date_taken,owner_name,icon_server,original_format,last_update,geo,tags,machine_tags,o_dims,views,media,path_alias,url_sq,url_t,url_s,url_q,url_m,url_n,url_z,url_c,url_l,url_o";
     	flickrPoolUrl += "&format=json&nojsoncallback=1";
     	
     	InputStream in = null;

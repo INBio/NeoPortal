@@ -31,9 +31,11 @@ import org.inbio.neoportal.core.dao.TaxonDescriptionDAO;
 import org.inbio.neoportal.core.dto.commonname.CommonNameLiteCDTO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceGeospatialLiteCDTO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceLiteCDTO;
+import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionLiteCDTO;
+import org.inbio.neoportal.core.entity.Image;
 import org.inbio.neoportal.core.entity.Taxon;
 import org.inbio.neoportal.service.dto.occurrences.OccurrenceLiteSDTO;
 import org.inbio.neoportal.service.dto.species.SpeciesLiteSDTO;
@@ -152,9 +154,9 @@ public class SearchManagerImpl implements SearchManager{
                  sp.setImageURL(tldto.getImageUrl());
              }
              else if(tldto.getImageList().size() > 0){
-                sp.setImageURL(
-                        "http://multimedia.inbio.ac.cr/m3sINBio/getImage?size=thumb&id=" + 
-                        tldto.getImageList().get(0).getM3sImageId() );
+            	ImagesCDTO imagesCDTO = tldto.getImageList().get(0);
+            	 
+                sp.setImageURL(Image.getSmallUrl(imagesCDTO));
              }
              else
                  //sp.setImageURL("http://pulsatrix.inbio.ac.cr/projects/atta2/chrome/site/header.png");
@@ -328,9 +330,8 @@ public class SearchManagerImpl implements SearchManager{
                  sp.setImageURL(tldto.getImageUrl());
              }
              else if(tldto.getImageList().size() > 0){
-                sp.setImageURL(
-                        "http://multimedia.inbio.ac.cr/m3sINBio/getImage?size=thumb&id=" + 
-                        tldto.getImageList().get(0).getM3sImageId() );
+            	 ImagesCDTO imagesCDTO = tldto.getImageList().get(0);
+                sp.setImageURL(Image.getSmallUrl(imagesCDTO));
              }
              else
                  sp.setImageURL("http://pulsatrix.inbio.ac.cr/projects/atta2/chrome/site/header.png");

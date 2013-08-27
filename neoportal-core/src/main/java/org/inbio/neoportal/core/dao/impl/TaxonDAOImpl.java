@@ -326,4 +326,25 @@ public class TaxonDAOImpl
 			}
 		});
 	}
+	
+	@Override
+	public Taxon findByDefaultName(final String defaultName) {
+		Session session = getSession();
+		FullTextSession fullTextSession = Search.getFullTextSession(session);
+		
+		// create Lucene query using the query DSL
+		QueryBuilder qb = fullTextSession.getSearchFactory()
+				.buildQueryBuilder().forEntity(Taxon.class).get();
+		Query query = qb
+				.keyword()
+				.onField("defaultName")
+				.matching(defaultName)
+				.createQuery();
+		
+		// wrap Lucene query in a org.hibernate.Query
+		org.hibernate.Query hQuery = 
+				fullTextSession.createFullTextQuery(query, Taxon.class);
+		
+		return (Taxon)hQuery.uniqueResult();
+	}
 }

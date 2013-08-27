@@ -19,7 +19,10 @@
 package org.inbio.neoportal.core.entity;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
+
+import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
 
 /**
  *
@@ -29,8 +32,8 @@ import java.util.Date;
 public class Image
         implements java.io.Serializable{
     
-    private BigDecimal imageId;
-    private BigDecimal externalImageId;
+    private BigInteger imageId;
+    private BigInteger externalImageId;
     private Taxon taxon;
     private OccurrenceDwc occurrence;
     private String author;
@@ -53,22 +56,42 @@ public class Image
     private String accuracy;
     private String tags;
 
+    /**
+     * Create the appropriate url based on the external image source 
+     * @param imagesCDTO
+     * @return
+     */
+    public static String getSmallUrl(ImagesCDTO imagesCDTO) {
+		String url = "";
+		if (imagesCDTO.getSource().equalsIgnoreCase("flickr")){
+			url += "http://farm" + imagesCDTO.getFarm();
+			url += ".staticflickr.com/" + imagesCDTO.getServer();
+			url += "/" + imagesCDTO.getExternalImageId() + "_" + imagesCDTO.getSecret();
+			url += "_m.jpg";
+		}
+		else
+			url = "http://multimedia.inbio.ac.cr/m3sINBio/getImage?size=thumb&id=" + imagesCDTO.getExternalImageId();
+		
+		return url;
+    }
+    
     public Image() {
+
     }
 
-    public BigDecimal getImageId() {
+    public BigInteger getImageId() {
         return imageId;
     }
 
-    public void setImageId(BigDecimal ImageId) {
+    public void setImageId(BigInteger ImageId) {
         this.imageId = ImageId;
     }
 
-    public BigDecimal getExternalImageId() {
+    public BigInteger getExternalImageId() {
         return externalImageId;
     }
 
-    public void setExternalImageId(BigDecimal externalImageId) {
+    public void setExternalImageId(BigInteger externalImageId) {
         this.externalImageId = externalImageId;
     }
 

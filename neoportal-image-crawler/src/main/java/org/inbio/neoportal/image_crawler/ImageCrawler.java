@@ -41,8 +41,11 @@ import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
 public class ImageCrawler 
 {
 	
-	@Autowired
-	private static ApplicationContext context;
+	/**
+	 * 
+	 */
+	private static final int THREADS = 10;
+	
 	
     @SuppressWarnings("static-access")
 	public static void main( String[] args )
@@ -58,12 +61,12 @@ public class ImageCrawler
 			CommandLineParser parser = new GnuParser();
 			CommandLine cmd = parser.parse(options, args);
 			
-//			ApplicationContext appContext = 
-//	                new ClassPathXmlApplicationContext("applicationContext.xml");
+			ApplicationContext context = 
+	                new ClassPathXmlApplicationContext("applicationContext.xml");
 			
 			if(cmd.hasOption("crawler")) {
 				ImageCrawler imageCrawler = context.getBean(ImageCrawler.class);
-				imageCrawler.index(1);
+				imageCrawler.index(THREADS, context);
 			}
 			else {
 				// automatically generate the help statement
@@ -85,7 +88,7 @@ public class ImageCrawler
      * Get images from flickr and start threads for 
      * associate taxon and occurrence and then index 
      */
-    private void index(int threads) {
+    private void index(int threads, ApplicationContext context) {
 		ExecutorService executor = Executors.newFixedThreadPool(threads);
 		
 		Properties properties = new Properties();
@@ -106,13 +109,13 @@ public class ImageCrawler
 				photos = groupPoolsInterface.nextPhotosPage(groupId);
 				// loop the list and start threads
 				for (int i = 0; i < photos.length(); i++) {
-					ImageIndexer imageIndexer = (ImageIndexer)context.getBean("ImageIndexer", photos.getJSONObject(i));
+					ImageIndexer imageIndexer = (ImageIndexer)context.getBean("imageIndexer", photos.getJSONObject(i));
 					//imageIndexer = new ImageIndexer(photos.getJSONObject(i));
 					System.out.println("schedule: " + photos.getJSONObject(i).getString("title"));
 					executor.execute(imageIndexer);
 				}
 			}
-			// This will make the executor accept no new threaImagesds
+			// This will make the executor accept no new threaImages
 		    // and finish all existing threads in the queue
 		    executor.shutdown();
 		    // Wait until all threads are finish

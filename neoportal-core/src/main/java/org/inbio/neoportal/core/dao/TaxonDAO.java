@@ -105,4 +105,11 @@ public interface TaxonDAO
      */
     public List<String> taxonSuggestions(final String searchTerm);
     
+    /**
+     * Find the taxon with the <code>defaultName</code>
+     * @param defaultName
+     * @return Taxon entity
+     */
+    public Taxon findByDefaultName(final String defaultName);
+    
 }
