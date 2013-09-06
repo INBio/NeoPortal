@@ -20,20 +20,24 @@ import org.hibernate.search.Search;
 import org.hibernate.transform.ResultTransformer;
 import org.inbio.neoportal.core.dao.GenericDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+@Repository
+@Transactional
 public abstract class 
 	GenericDAOImpl<E, ID extends Serializable>
 		implements GenericDAO<E, ID> {
 
 	private Class<E> entityClass;
-	private SessionFactory sessionFactory;
 	
 	@Autowired
-	public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+	private SessionFactory sessionFactory;
+	
+//	@Autowired
+//	public void setSessionFactory(SessionFactory sessionFactory) {
+//        this.sessionFactory = sessionFactory;
+//    }
 	
 
 	public GenericDAOImpl() {
@@ -42,6 +46,12 @@ public abstract class
 					.getActualTypeArguments()[0];
 		
 	
+	}
+
+	
+
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
 	}
 
 
@@ -148,8 +158,9 @@ public abstract class
 	 * @see org.inbio.neoportal.core.dao.GenericDAO#searchCount(org.hibernate.transform.ResultTransformer, java.lang.String[], java.lang.String)
 	 */
 	@Override
-	public Long searchCount(ResultTransformer resultTransformer,
-			String[] fields, String searchText) {
+	public Long searchCount(
+			String[] fields,
+			String searchText) {
 		
 		Session session = this.sessionFactory.getCurrentSession();
 		

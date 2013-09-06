@@ -6,5 +6,5 @@
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<context:annotation-config />
-    <context:component-scan base-package="org.inbio.neoportal" />
+    <context:component-scan base-package="org.inbio.neoportal.web" />
 </beans>

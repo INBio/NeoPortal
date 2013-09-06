@@ -20,6 +20,8 @@ package org.inbio.neoportal.core.dao;
 
 import java.math.BigDecimal;
 import java.util.List;
+
+import org.hibernate.transform.ResultTransformer;
 import org.inbio.neoportal.core.entity.Occurrence;
 import org.inbio.neoportal.core.entity.OccurrenceDwc;
 
@@ -85,4 +87,26 @@ public interface OccurrenceDAO
      * @return
      */
     public OccurrenceDwc findByCatalogNumber(String catalogNumber);
+    
+    /**
+     * Count occurrences that match searchText on particular fields
+     * @param fields
+     * @param searchText
+     * @return
+     */
+    public long searchCount(String[] fields, String searchText);
+    
+    /**
+     * 
+     * @param fields
+     * @param searchText
+     * @param resultTransformer
+     * @return
+     */
+    public List search(
+    		String[] fields,
+    		String searchText,
+    		ResultTransformer resultTransformer,
+    		int offset,
+    		int quantity);
 }

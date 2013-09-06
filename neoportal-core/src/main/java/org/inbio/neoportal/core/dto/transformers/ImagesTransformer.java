@@ -18,6 +18,7 @@
  */
 package org.inbio.neoportal.core.dto.transformers;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.transform.ResultTransformer;
 import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
@@ -55,17 +56,20 @@ public class ImagesTransformer
             imagesCDTO.setServer(String.valueOf(img.getServer()));
             imagesCDTO.setFarm(String.valueOf(img.getFarm()));
             imagesCDTO.setTitle(img.getTitle());
-            imagesCDTO.setDateAdded(img.getDateAdded().toString());
+            imagesCDTO.setDateAdded(String.valueOf(img.getDateAdded()));
             imagesCDTO.setDescription(img.getDescription());
-            imagesCDTO.setDateUpload(img.getDateUpload().toString());
-            imagesCDTO.setDateTaken(img.getDateTaken().toString());
+            imagesCDTO.setDateUpload(String.valueOf(img.getDateUpload()));
+            imagesCDTO.setDateTaken(String.valueOf(img.getDateTaken()));
             imagesCDTO.setOriginalSecret(img.getOriginalSecret());
             imagesCDTO.setOriginalFormat(img.getOriginalFormat());
-            imagesCDTO.setLastUpdate(img.getLastUpdate().toString());
+            imagesCDTO.setLastUpdate(String.valueOf(img.getLastUpdate()));
             imagesCDTO.setLatitude(img.getLatitude());
             imagesCDTO.setLongitude(img.getLongitude());
             imagesCDTO.setAccuracy(img.getAccuracy());
             imagesCDTO.setTags(img.getTags());
+            
+            imagesCDTO.setMediumUrl(Image.getSmallUrl(imagesCDTO));
+            imagesCDTO.setBigUrl(Image.getBigUrl(imagesCDTO));
             
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -76,7 +80,12 @@ public class ImagesTransformer
 
     @Override
     public List transformList(List collection) {
-        return collection;
+    	List<ImagesCDTO> images = new ArrayList<ImagesCDTO>();
+    	
+    	for (Image image : (List<Image>)collection) {
+			images.add((ImagesCDTO)this.transformTuple(new Object[]{image}, null));
+		}
+        return images;
     }
     
 }

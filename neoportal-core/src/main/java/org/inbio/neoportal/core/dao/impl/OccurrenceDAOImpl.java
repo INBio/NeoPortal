@@ -28,6 +28,7 @@ import org.hibernate.Session;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
+import org.hibernate.transform.ResultTransformer;
 import org.inbio.neoportal.core.dao.OccurrenceDAO;
 import org.inbio.neoportal.core.dto.transformers.OccurrenceDWCTransformer;
 import org.inbio.neoportal.core.dto.transformers.OccurrenceTransformer;
@@ -182,4 +183,39 @@ public class OccurrenceDAOImpl
 		
 		return (OccurrenceDwc)hQuery.uniqueResult();
 	}
+	
+	@Override
+	public long searchCount (String[] fields, String searchText) {
+		Session session = getSession();
+		FullTextSession fullTextSession = Search.getFullTextSession(session);
+		
+		// create Lucene query using the query DSL
+		QueryBuilder qb = fullTextSession.getSearchFactory()
+				.buildQueryBuilder().forEntity(OccurrenceDwc.class).get();
+		org.apache.lucene.search.Query query = qb
+				.keyword()
+				.onFields(fields)
+				.matching(searchText)
+				.createQuery();
+		
+		// wrap Lucene query in a org.hibernate.Query
+		org.hibernate.search.FullTextQuery hQuery = 
+				fullTextSession.createFullTextQuery(query, OccurrenceDwc.class);
+		
+		return hQuery.getResultSize();
+	}
+	
+	 public List search(
+	    		String[] fields,
+	    		String searchText,
+	    		ResultTransformer resultTransformer,
+	    		int offset,
+	    		int quantity) {
+		 return super.search(
+				 OccurrenceDwc.class, 
+				 resultTransformer, 
+				 fields, 
+				 searchText, offset, quantity);
+				 
+	 }
 }

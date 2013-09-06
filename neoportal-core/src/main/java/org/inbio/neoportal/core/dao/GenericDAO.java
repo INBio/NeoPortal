@@ -59,13 +59,12 @@ public interface GenericDAO<E, ID extends Serializable> {
 
 	    /**
 	     * Return a search count
-	     * @param entityClass
 	     * @param fields
 	     * @param searchText
+	     * @param entityClass
 	     * @return 
 	     */
 	    public Long searchCount(
-	        final ResultTransformer resultTransformer,
 	        final String[] fields,
 	        final String searchText);
 

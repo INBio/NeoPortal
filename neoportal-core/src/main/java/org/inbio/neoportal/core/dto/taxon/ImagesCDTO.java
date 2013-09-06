@@ -51,6 +51,9 @@ public class ImagesCDTO
     private String longitude;
     private String accuracy;
     private String tags;
+    
+    private String mediumUrl;
+    private String bigUrl;
 
     @Override
     public int compareTo(Object t) {
@@ -267,6 +270,22 @@ public class ImagesCDTO
 
 	public void setTags(String tags) {
 		this.tags = tags;
+	}
+
+	public String getMediumUrl() {
+		return mediumUrl;
+	}
+
+	public void setMediumUrl(String mediumUrl) {
+		this.mediumUrl = mediumUrl;
+	}
+
+	public String getBigUrl() {
+		return bigUrl;
+	}
+
+	public void setBigUrl(String bigUrl) {
+		this.bigUrl = bigUrl;
 	}
     
     

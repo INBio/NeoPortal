@@ -148,7 +148,7 @@ public class SearchManagerImpl implements SearchManager{
             sp = new SpeciesLiteSDTO();
              
              sp.setCommonName(this.joinCommonNames(tldto.getCommonNameList()));
-             sp.setScientificName(tldto.getScientificName());
+             sp.setScientificName(tldto.getDefaultName());
              
              if(tldto.getImageUrl() != null){
                  sp.setImageURL(tldto.getImageUrl());
@@ -324,7 +324,7 @@ public class SearchManagerImpl implements SearchManager{
             sp = new SpeciesLiteSDTO();
              
              sp.setCommonName(this.joinCommonNames(tldto.getCommonNameList()));
-             sp.setScientificName(tldto.getScientificName());
+             sp.setScientificName(tldto.getDefaultName());
              
              if(tldto.getImageUrl() != null){
                  sp.setImageURL(tldto.getImageUrl());
@@ -380,5 +380,5 @@ public class SearchManagerImpl implements SearchManager{
 		
 		return this.taxonSearchCount(searchText);
 	}
-    
+
 }

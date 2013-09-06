@@ -61,7 +61,7 @@ public class TaxonLiteTransformer
             }
             
             TaxonLiteCDTO taxonCDTO = new TaxonLiteCDTO();
-            taxonCDTO.setScientificName(taxon.getDefaultName());
+            taxonCDTO.setDefaultName(taxon.getDefaultName());
             taxonCDTO.setCommonNameList((ArrayList<CommonNameLiteCDTO>) commonNameList);
             taxonCDTO.setImageList(imgList);
             taxonCDTO.setImageUrl(taxon.getImageUrl());
@@ -86,7 +86,7 @@ public class TaxonLiteTransformer
         }
         
         TaxonLiteCDTO taxonCDTO = new TaxonLiteCDTO();
-        taxonCDTO.setScientificName(taxon.getDefaultName());
+        taxonCDTO.setDefaultName(taxon.getDefaultName());
         taxonCDTO.setCommonNameList((ArrayList<CommonNameLiteCDTO>) commonNameList);
         taxonCDTO.setImageList(imgList);
         taxonCDTO.setImageUrl(taxon.getImageUrl());

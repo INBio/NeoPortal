@@ -7,15 +7,25 @@ package org.inbio.neoportal.service.manager.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.lucene.queryParser.ParseException;
+import org.inbio.neoportal.core.dao.ImageDAO;
+import org.inbio.neoportal.core.dao.OccurrenceDAO;
 import org.inbio.neoportal.core.dao.TaxonDAO;
 import org.inbio.neoportal.core.dao.TaxonDescriptionDAO;
+import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
 import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
+import org.inbio.neoportal.core.dto.transformers.OccurrenceDWCTransformer;
+import org.inbio.neoportal.core.dto.transformers.OccurrenceTransformer;
+import org.inbio.neoportal.core.entity.Taxon;
+import org.inbio.neoportal.service.dto.occurrences.OccurrenceLiteSDTO;
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO;
+import org.inbio.neoportal.service.dto.species.TaxonFeatureDTO;
 import org.inbio.neoportal.service.manager.SpeciesManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -30,6 +40,12 @@ public class SpeciesManagerImpl
     
     @Autowired
     private TaxonDAO taxonDAO;
+    
+    @Autowired
+    private ImageDAO imageDAO;
+    
+    @Autowired
+    private OccurrenceDAO occurrenceDAO;
     
     @Override
     public List<TaxonDescriptionFullSDTO> taxonDescriptionByProvider
@@ -102,6 +118,7 @@ public class SpeciesManagerImpl
         return result;
     }
 
+    @Override
     public List<TaxonDescriptionFullSDTO> taxonDescription(String scientificName) {
         List<TaxonDescriptionFullCDTO> taxonDescription = new ArrayList<TaxonDescriptionFullCDTO>();
         
@@ -172,16 +189,125 @@ public class SpeciesManagerImpl
     
     /**
      * 
-     * @param scientificName
+     * @param defaultName
      * @return 
      */
-    public List<ImagesCDTO> imagesByScientificName(String scientificName){
-        List<TaxonLiteCDTO> taxonCDTO = taxonDAO.findCDTOByScientificName(scientificName);
-        
-        if(taxonCDTO.size() > 0)
-            return taxonCDTO.get(0).getImageList();
-        else
-            return null;
+    public List<ImagesCDTO> getImagesByDefaultName(
+    		String defaultName,
+    		int offset,
+    		int quantity
+    		){
+    	Taxon taxon = taxonDAO.findByDefaultName(defaultName);
+    	
+    	if (taxon == null)
+    		return null;
+    	
+    	// get feature images
+    	String field = "taxon." + Taxon.TaxonomicalRange.getById(
+				taxon.getTaxonomicalRangeId().longValue())
+				.getTaxonomicalRangeName();
+    	String[] fieldsArray = {field};
+    	
+    	List<ImagesCDTO> images = imageDAO.search(fieldsArray, defaultName, offset, quantity);
+
+        return images;
     }
+    
+    
+    public Long countImagesByDefaultName(String defaultName){
+    	Taxon taxon = taxonDAO.findByDefaultName(defaultName);
+    	
+    	if (taxon == null)
+    		return Long.valueOf(0);
+    	
+    	// get feature images
+    	String field = "taxon." + Taxon.TaxonomicalRange.getById(
+				taxon.getTaxonomicalRangeId().longValue())
+				.getTaxonomicalRangeName();
+    	String[] fieldsArray = {field};
+    	
+    	return imageDAO.searchCount(fieldsArray, defaultName);
+    	
+    }
+
+    /**
+     * 
+     */
+    @Transactional
+    public TaxonFeatureDTO getTaxonFeatureByDefaultName(String defaultName) {
+    	TaxonFeatureDTO taxonFeature = new TaxonFeatureDTO();
+    	
+    	Taxon taxon = taxonDAO.findByDefaultName(defaultName);
+    	
+    	if (taxon == null)
+    		return null;
+    				
+    	taxonFeature.setDefaultName(taxon.getDefaultName());
+    	if(!taxon.getTaxonDescriptions().isEmpty()) {
+    		taxonFeature.setBriefDescription(
+    				taxon.getTaxonDescriptions().iterator().next().getBriefDescription());
+    	}
+    	taxonFeature.setTaxonomicalRangeName(
+    			Taxon.TaxonomicalRange.getById(
+    					taxon.getTaxonomicalRangeId().longValue())
+    					.getTaxonomicalRangeName());
+    	
+    	// get feature images
+    	String field = "taxon." + taxonFeature.getTaxonomicalRangeName();
+    	String[] fieldsArray = {field};
+    	
+    	List<ImagesCDTO> images = imageDAO.search(fieldsArray, defaultName, 0, 5);
+    	long imageCount = imageDAO.searchCount(fieldsArray, defaultName);
+    	
+    	long occurrenceCount = occurrenceDAO.searchCount(fieldsArray, defaultName);
+    	
+    	taxonFeature.setFeatureImages(images);
+    	taxonFeature.setImagesCount(imageCount);
+    	taxonFeature.setOccurrencesCount(occurrenceCount);
+    	
+    	return taxonFeature;
+    }
+    
+    
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OccurrenceDwcCDTO> getOccurrencesByDefaultName(
+			String defaultName, 
+			int offset, 
+			int quantity) {
+		
+		Taxon taxon = taxonDAO.findByDefaultName(defaultName);
+    	
+    	if (taxon == null)
+    		return null;
+    	
+    	// get feature images
+    	String field = "taxon." + Taxon.TaxonomicalRange.getById(
+				taxon.getTaxonomicalRangeId().longValue())
+				.getTaxonomicalRangeName();
+    	String[] fieldsArray = {field};
+    	
+    	return (List<OccurrenceDwcCDTO>)occurrenceDAO.search(
+    			fieldsArray, defaultName, new OccurrenceDWCTransformer(), offset, quantity);
+	}
+
+
+	@Override
+	public Long countOccurrencesByDefaultName(
+			String defaultName) {
+		
+		Taxon taxon = taxonDAO.findByDefaultName(defaultName);
+    	
+    	if (taxon == null)
+    		return null;
+    	
+    	// get feature images
+    	String field = "taxon." + Taxon.TaxonomicalRange.getById(
+				taxon.getTaxonomicalRangeId().longValue())
+				.getTaxonomicalRangeName();
+    	String[] fieldsArray = {field};
+    	
+    	return occurrenceDAO.searchCount(fieldsArray, defaultName);
+	}
     
 }

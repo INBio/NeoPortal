@@ -1,4 +1,4 @@
- /*
+/*
  *  NeoPortal - New implementation of the INBio Species and Occurrences portal.
  *  
  *  Copyright (C) 2010 INBio - Instituto Nacional de Biodiversidad, Costa Rica
@@ -16,47 +16,29 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.core.dao;
+package org.inbio.neoportal.web.test;
 
-import java.math.BigInteger;
-import java.util.List;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
-import org.inbio.neoportal.core.entity.Image;
+/**
+ *
+ * @author avargas
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {
+		"classpath:/META-INF/spring/root-context.xml",
+		"classpath:/META-INF/spring/applicationContext-core.xml",
+        "classpath:/META-INF/spring/applicationContext-service.xml",
+//        "classpath:/META-INF/spring/appServlet/servlet-context.xml"
+		})
+public abstract class NeoportalTestBase {
+    
 
-public interface ImageDAO extends
-						GenericDAO<Image, BigInteger> {
+	public NeoportalTestBase() {
+		
+	}
 	
-	public List<Image> UnprocessedImages();
 	
-	/**
-	 * 
-	 * @param flickrId
-	 * @return
-	 */
-	public Image findByFlickrId(BigInteger flickrId);
-
-	/**
-	 * 
-	 * @return
-	 */
-	public List<Image> findAll();
-	
-	public List<ImagesCDTO> search(String[] fields,
-			String searchText, int offset, int quantity);
-	
-	public Long searchCount(
-			final String[] fields,
-	        final String searchText
-	);
-	
-	/**
-	 * 
-	 * @param fields
-	 * @param searchText
-	 * @return
-	 */
-	public List<ImagesCDTO> search(
-			String[] fields,
-			String searchText);
 }

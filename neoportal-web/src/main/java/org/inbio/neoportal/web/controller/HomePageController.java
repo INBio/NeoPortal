@@ -26,11 +26,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.lucene.queryParser.ParseException;
 import org.inbio.neoportal.core.dto.groupnav.GroupNavCDTO;
-import org.inbio.neoportal.service.dto.Response;
 import org.inbio.neoportal.service.dto.species.SpeciesLiteSDTO;
-import org.inbio.neoportal.service.dto.species.TaxonDescriptionLiteSDTO;
+import org.inbio.neoportal.service.dto.species.TaxonFeatureDTO;
 import org.inbio.neoportal.service.manager.GroupNavManager;
 import org.inbio.neoportal.service.manager.SearchManager;
+import org.inbio.neoportal.service.manager.SpeciesManager;
+import org.inbio.neoportal.web.model.PaginationModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,93 +53,90 @@ public class HomePageController {
 	@Autowired
 	private SearchManager searchManager;
 	
+	@Autowired
+	private SpeciesManager speciesManager;
+	
 	public HomePageController() {
 		
 	}
 	
-//	@RequestMapping("/")
-//	protected ModelAndView homePage() {
-//		
-//		List<GroupNavCDTO> groupNav = groupNavManager.getFirstLevel("Nombres comunes");
-//		
-//		Collections.sort(groupNav);
-//		
-//		return new ModelAndView("home", "group_nav", groupNav);
-//	}
-	
 	@RequestMapping("/")
-	protected ModelAndView testHome(
-			@RequestParam(value="q", required=false) String search,
+	protected ModelAndView home(
+			HttpServletRequest request) {
+		
+		ModelAndView modelAndView = new ModelAndView("home");
+		modelAndView.addObject("state","home");
+		//groupNav style, grid for home 
+		modelAndView.addObject("style", "grid");
+		//get the necessary data
+		List<GroupNavCDTO> groupNav = groupNavManager.getFirstLevel("Nombres comunes");
+		Collections.sort(groupNav);
+		modelAndView.addObject("group_nav", groupNav);
+		
+		return modelAndView;
+	}
+	
+	@RequestMapping(value="/", params={"q"})
+	protected ModelAndView homeSearch(
+			@RequestParam(value="q") String search,
 			@RequestParam (value = "startIndex", defaultValue = "0", required=false) int startIndex,
 	        @RequestParam (value = "itemsPerPage", defaultValue = "10", required=false) int itemsPerPage,
 	        HttpServletRequest request
 			){
 		
-		Response response;
 		String requestUrl;
 		String nextUrl = "";
-		String backUrl = "";
+		String previousUrl = "";
 		String lastUrl = "";
 		int totalPages;
 		int totalSpecies = 0;
 		
 		//set the view
 		ModelAndView modelAndView = new ModelAndView("home");
-		/* Define the state of the page
-		* home = first view, comes with none search query
-		* search = comes with search query
-		*/
-		if(search == null	){
-			modelAndView.addObject("state","home");
-			//groupNav style, grid for home 
-			modelAndView.addObject("style", "grid");
-			//get the necessary data
-			List<GroupNavCDTO> groupNav = groupNavManager.getFirstLevel("Nombres comunes");
-			Collections.sort(groupNav);
-			modelAndView.addObject("group_nav", groupNav);
-		}
-		else{
-			modelAndView.addObject("state","search");
-			
-			//get search data
-			List<SpeciesLiteSDTO> list = null;
-			try {
-				list = searchManager.basicPaginatedSearch(search, startIndex, itemsPerPage);
-				totalSpecies = searchManager.basicSearchCount(search).intValue();
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			//prepare pagination
-			requestUrl = request.getRequestURL().toString();
-			requestUrl += "?q=" + search;
-			requestUrl += "&itemsPerPage=" + itemsPerPage;
-			
-			if(startIndex + itemsPerPage < totalSpecies)
-				nextUrl = requestUrl + "&startIndex=" + (startIndex + itemsPerPage);
-			
-			if(startIndex >= itemsPerPage)
-				backUrl = requestUrl + "&startIndex=" + (startIndex - itemsPerPage);
-			
-			totalPages = (int) (totalSpecies / itemsPerPage);
-			
-			lastUrl = requestUrl + "&startIndex=" + (totalPages * itemsPerPage);
-			
-			if(totalPages * itemsPerPage < totalSpecies)
-				totalPages++;
-
-			modelAndView.addObject("taxonList", list);
-			modelAndView.addObject("paginationFirstUrl", requestUrl);
-			modelAndView.addObject("paginationNextUrl", nextUrl);
-			modelAndView.addObject("paginationBackUrl", backUrl);
-			modelAndView.addObject("paginationLastUrl", lastUrl);
-			modelAndView.addObject("paginationCurrent", (startIndex / itemsPerPage) + 1);
-			modelAndView.addObject("paginationTotal", totalPages);
-
-			
+		modelAndView.addObject("state","search");
+		
+		//get search data
+		List<SpeciesLiteSDTO> list = null;
+		try {
+			list = searchManager.basicPaginatedSearch(search, startIndex, itemsPerPage);
+			totalSpecies = searchManager.basicSearchCount(search).intValue();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
+		//prepare pagination
+		requestUrl = request.getRequestURL().toString();
+		requestUrl += "?q=" + search;
+		requestUrl += "&itemsPerPage=" + itemsPerPage;
+		
+		if(startIndex + itemsPerPage < totalSpecies)
+			nextUrl = requestUrl + "&startIndex=" + (startIndex + itemsPerPage);
+		
+		if(startIndex >= itemsPerPage)
+			previousUrl = requestUrl + "&startIndex=" + (startIndex - itemsPerPage);
+		
+		totalPages = (int) (totalSpecies / itemsPerPage);
+		
+		lastUrl = requestUrl + "&startIndex=" + (totalPages * itemsPerPage);
+		
+		if(totalPages * itemsPerPage < totalSpecies)
+			totalPages++;
+		
+		PaginationModel pagination = new PaginationModel();
+		pagination.setCurrentPage(String.valueOf((startIndex / itemsPerPage) + 1));
+		pagination.setTotalPages(String.valueOf(totalPages));
+		pagination.setFirstUrl(requestUrl);
+		pagination.setNextUrl(nextUrl);
+		pagination.setPreviousUrl(previousUrl);
+		pagination.setLastUrl(lastUrl);
+
+		// get exact taxon match
+		TaxonFeatureDTO taxon = speciesManager.getTaxonFeatureByDefaultName(search); 
+		
+		modelAndView.addObject("taxonFeature", taxon);
+		modelAndView.addObject("taxonList", list);
+		modelAndView.addObject("pagination", pagination);
 		
 		return modelAndView;
 	}

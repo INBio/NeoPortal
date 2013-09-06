@@ -30,7 +30,7 @@ public class TaxonLiteCDTO
     extends BaseDTO 
         implements Comparable {
 
-    private String scientificName;
+    private String defaultName;
     private ArrayList<CommonNameLiteCDTO> commonNameList;
     private ArrayList<ImagesCDTO> imageList;
     private String imageUrl;
@@ -38,15 +38,15 @@ public class TaxonLiteCDTO
     public TaxonLiteCDTO() {
     }
 
-    public TaxonLiteCDTO(String scientificName) {
+    public TaxonLiteCDTO(String defaultName) {
 
-        this.scientificName = scientificName;
+        this.defaultName = defaultName;
     }
 
     public TaxonLiteCDTO
         (String scientificName, ArrayList<CommonNameLiteCDTO> commonNameList) {
         
-        this.scientificName = scientificName;
+        this.defaultName = scientificName;
         this.commonNameList = commonNameList;
     }
 
@@ -59,7 +59,7 @@ public class TaxonLiteCDTO
         int hash = 3;
         
         hash = 23 * hash + 
-            (this.scientificName != null ? this.scientificName.hashCode() : 0);
+            (this.defaultName != null ? this.defaultName.hashCode() : 0);
         
         return hash;
     }
@@ -80,9 +80,9 @@ public class TaxonLiteCDTO
         
         final TaxonLiteCDTO other = (TaxonLiteCDTO) obj;
         
-        if ((this.scientificName == null) ? 
-                (other.scientificName != null) :
-                !this.scientificName.equals(other.scientificName)) {
+        if ((this.defaultName == null) ? 
+                (other.defaultName != null) :
+                !this.defaultName.equals(other.defaultName)) {
             
             return false;
         }
@@ -97,17 +97,17 @@ public class TaxonLiteCDTO
     public int compareTo(Object o) {
 
         TaxonLiteCDTO ol = (TaxonLiteCDTO)o;
-        return this.scientificName.compareTo(ol.getScientificName());
+        return this.defaultName.compareTo(ol.getDefaultName());
     }
 
     /* Getters & Setters */
 
-    public String getScientificName() {
-        return scientificName;
+    public String getDefaultName() {
+        return defaultName;
     }
 
-    public void setScientificName(String scientificName) {
-        this.scientificName = scientificName;
+    public void setDefaultName(String defaultName) {
+        this.defaultName = defaultName;
     }
 
     public ArrayList<CommonNameLiteCDTO> getCommonNameList() {

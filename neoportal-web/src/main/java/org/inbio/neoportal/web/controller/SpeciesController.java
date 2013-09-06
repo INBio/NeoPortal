@@ -20,14 +20,20 @@ package org.inbio.neoportal.web.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
+import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO;
 import org.inbio.neoportal.service.manager.SpeciesManager;
+import org.inbio.neoportal.web.model.PaginationModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/species/*")
@@ -41,7 +47,10 @@ public class SpeciesController {
             method = RequestMethod.GET)
     public String getTaxonDescriptionByProvider (
             Model model,
-            @PathVariable(value = "scientificName") String scientificName) {
+            @PathVariable(value = "scientificName") String scientificName,
+	        HttpServletRequest request) {
+    	
+    	String taxonUrl = request.getContextPath() + "/species/" + scientificName;
         
         List<TaxonDescriptionFullSDTO> taxonDescription = null;
         
@@ -56,7 +65,122 @@ public class SpeciesController {
         	model.addAttribute("taxonDescription", taxonDescription.get(0));
         
         model.addAttribute("scientificName", scientificName);
+        model.addAttribute("context", "taxonDescription");
+        model.addAttribute("taxonUrl", taxonUrl);
         
+        return "species";
+    }
+    
+    @RequestMapping (
+            value = "/{defaultName}/images",
+            method = RequestMethod.GET)
+    public String getTaxonImages (
+            Model model,
+            @PathVariable (value = "defaultName") String defaultName,
+            @RequestParam (value = "startIndex", defaultValue = "0", required=false) int startIndex,
+	        @RequestParam (value = "itemsPerPage", defaultValue = "10", required=false) int itemsPerPage,
+	        HttpServletRequest request
+	        ) {
+    	
+    	String taxonUrl = request.getContextPath() + "/species/" + defaultName;
+        
+    	String requestUrl;
+		String nextUrl = "";
+		String previousUrl = "";
+		String lastUrl = "";
+		int totalPages;
+		int totalImages = 0;
+
+        List<ImagesCDTO> images = speciesManager.getImagesByDefaultName(defaultName, startIndex, itemsPerPage);
+        totalImages = speciesManager.countImagesByDefaultName(defaultName).intValue();
+		
+		//prepare pagination
+		requestUrl = request.getRequestURL().toString();
+		requestUrl += "?&itemsPerPage=" + itemsPerPage;
+		
+		if(startIndex + itemsPerPage < totalImages)
+			nextUrl = requestUrl + "&startIndex=" + (startIndex + itemsPerPage);
+		
+		if(startIndex >= itemsPerPage)
+			previousUrl = requestUrl + "&startIndex=" + (startIndex - itemsPerPage);
+		
+		totalPages = (int) (totalImages / itemsPerPage);
+		
+		lastUrl = requestUrl + "&startIndex=" + (totalPages * itemsPerPage);
+		
+		if(totalPages * itemsPerPage < totalImages)
+			totalPages++;
+		
+		PaginationModel pagination = new PaginationModel();
+		pagination.setCurrentPage(String.valueOf((startIndex / itemsPerPage) + 1));
+		pagination.setTotalPages(String.valueOf(totalPages));
+		pagination.setFirstUrl(requestUrl);
+		pagination.setNextUrl(nextUrl);
+		pagination.setPreviousUrl(previousUrl);
+		pagination.setLastUrl(lastUrl);
+
+        model.addAttribute("images", images);
+        model.addAttribute("scientificName", defaultName);
+        model.addAttribute("pagination", pagination);
+        model.addAttribute("context", "images");
+        model.addAttribute("taxonUrl", taxonUrl);
+        
+        return "species";
+    }
+    
+    @RequestMapping (
+            value = "/{defaultName}/occurrences",
+            method = RequestMethod.GET)
+    public String getTaxonOccurrences (
+            Model model,
+            @PathVariable (value = "defaultName") String defaultName,
+            @RequestParam (value = "startIndex", defaultValue = "0", required=false) int startIndex,
+	        @RequestParam (value = "itemsPerPage", defaultValue = "10", required=false) int itemsPerPage,
+	        HttpServletRequest request
+	        ) {
+        
+    	String taxonUrl = request.getContextPath() + "/species/" + defaultName;
+        
+    	String requestUrl;
+		String nextUrl = "";
+		String previousUrl = "";
+		String lastUrl = "";
+		int totalPages;
+		int totalOccurrences = 0;
+
+        List<OccurrenceDwcCDTO> occurrences = speciesManager.getOccurrencesByDefaultName(defaultName, startIndex, itemsPerPage);
+        totalOccurrences = speciesManager.countOccurrencesByDefaultName(defaultName).intValue();
+		
+		//prepare pagination
+		requestUrl = request.getRequestURL().toString();
+		requestUrl += "?&itemsPerPage=" + itemsPerPage;
+		
+		if(startIndex + itemsPerPage < totalOccurrences)
+			nextUrl = requestUrl + "&startIndex=" + (startIndex + itemsPerPage);
+		
+		if(startIndex >= itemsPerPage)
+			previousUrl = requestUrl + "&startIndex=" + (startIndex - itemsPerPage);
+		
+		totalPages = (int) (totalOccurrences / itemsPerPage);
+		
+		lastUrl = requestUrl + "&startIndex=" + (totalPages * itemsPerPage);
+		
+		if(totalPages * itemsPerPage < totalOccurrences)
+			totalPages++;
+		
+		PaginationModel pagination = new PaginationModel();
+		pagination.setCurrentPage(String.valueOf((startIndex / itemsPerPage) + 1));
+		pagination.setTotalPages(String.valueOf(totalPages));
+		pagination.setFirstUrl(requestUrl);
+		pagination.setNextUrl(nextUrl);
+		pagination.setPreviousUrl(previousUrl);
+		pagination.setLastUrl(lastUrl);
+
+        model.addAttribute("occurrences", occurrences);
+        model.addAttribute("scientificName", defaultName);
+        model.addAttribute("pagination", pagination);
+        model.addAttribute("context", "occurrences");
+        model.addAttribute("taxonUrl", taxonUrl);
         
         return "species";
     }

@@ -32,19 +32,29 @@ function initSearch(context){
         //var input = clearInput.replace(/ /g,"_");
         
         //put input on url
-        //window.location.origin comes with webkit browsers
-        if (!window.location.origin)
-        	window.location.origin = window.location.protocol+"//"+window.location.host;
         
-        var newUrl = window.location.origin + url + '?q=' + clearInput;
+        var newUrl = appUrl() + '?q=' + clearInput;
         window.location = newUrl;
     });
     
     // configure autocomplete
     $("#searchInput").autocomplete({
-    	source: "api/search/taxon",
+    	source: appUrl() + "api/search/taxon",
     	minLength: 2
     });
+}
+
+/** 
+ * Return the home app url 
+ * @returns {String}
+ */
+function appUrl() {
+    //window.location.origin comes with webkit browsers
+    if (!window.location.origin)
+    	window.location.origin = window.location.protocol+"//"+window.location.host;
+    
+    return window.location.origin + url ;
+
 }
 
 /*

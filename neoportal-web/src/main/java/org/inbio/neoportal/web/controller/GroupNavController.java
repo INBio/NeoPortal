@@ -28,6 +28,7 @@ import org.inbio.neoportal.core.dto.groupnav.GroupNavCDTO;
 import org.inbio.neoportal.service.dto.Response;
 import org.inbio.neoportal.service.dto.species.SpeciesLiteSDTO;
 import org.inbio.neoportal.service.manager.GroupNavManager;
+import org.inbio.neoportal.web.model.PaginationModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,7 +61,7 @@ public class GroupNavController {
 		Response response;
 		String requestUrl;
 		String nextUrl = "";
-		String backUrl = "";
+		String previousUrl = "";
 		String lastUrl = "";
 		int totalPages;
 		
@@ -82,7 +83,7 @@ public class GroupNavController {
 			nextUrl = requestUrl + "&startIndex=" + (startIndex + itemsPerPage);
 		
 		if(startIndex >= itemsPerPage)
-			backUrl = requestUrl + "&startIndex=" + (startIndex - itemsPerPage);
+			previousUrl = requestUrl + "&startIndex=" + (startIndex - itemsPerPage);
 		
 		totalPages = (int) (response.getTotal() / itemsPerPage);
 		
@@ -90,16 +91,19 @@ public class GroupNavController {
 		
 		if(totalPages * itemsPerPage < response.getTotal())
 			totalPages++;
+		
+		PaginationModel pagination = new PaginationModel();
+		pagination.setCurrentPage(String.valueOf((startIndex / itemsPerPage) + 1));
+		pagination.setTotalPages(String.valueOf(totalPages));
+		pagination.setFirstUrl(requestUrl);
+		pagination.setNextUrl(nextUrl);
+		pagination.setPreviousUrl(previousUrl);
+		pagination.setLastUrl(lastUrl);
 
 		modelAndView.addObject("groupNavList", groupNavList);
 		modelAndView.addObject("gni", id);
 		modelAndView.addObject("taxonList", response.getResult());
-		modelAndView.addObject("paginationFirstUrl", requestUrl);
-		modelAndView.addObject("paginationNextUrl", nextUrl);
-		modelAndView.addObject("paginationBackUrl", backUrl);
-		modelAndView.addObject("paginationLastUrl", lastUrl);
-		modelAndView.addObject("paginationCurrent", (startIndex / itemsPerPage) + 1);
-		modelAndView.addObject("paginationTotal", totalPages);
+		modelAndView.addObject("pagination", pagination);
 		
 		return modelAndView;
 	}

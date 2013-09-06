@@ -100,31 +100,6 @@ public class TaxonDAOImpl
                                 searchText);
     }
 
-//    @Override
-//    public List<TaxonDescriptionFullCDTO> searchBoost(
-//            final String searchText, 
-//            final int offset, 
-//            final int quantity) {
-//        
-//
-//        String[] taxon =
-//                new String[]{ "defaultName", "kingdom", "division", "class_",
-//                                 "order", "family", "genus", "species",
-//                                "taxonomicalRangeId" };
-//
-//        ArrayList<String> fieldList = new ArrayList<String>();
-//
-//        fieldList.addAll(Arrays.asList(taxon));
-//
-//        return super.search(Taxon.class,
-//                            new TaxonDescriptionFullTransformer(), 
-//                            fieldList.toArray(new String[fieldList.size()]), 
-//                            searchText, 
-//                            offset, 
-//                            quantity);
-//        
-//    }
-    
     @Override
     public List<Taxon> findAllByScientificName(
        final String scientificName) {
@@ -337,7 +312,7 @@ public class TaxonDAOImpl
 				.buildQueryBuilder().forEntity(Taxon.class).get();
 		Query query = qb
 				.keyword()
-				.onField("defaultName")
+				.onField("defaultName_keyword")	// use keyword field to get a exact match
 				.matching(defaultName)
 				.createQuery();
 		

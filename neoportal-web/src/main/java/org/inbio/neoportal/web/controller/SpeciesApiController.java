@@ -22,8 +22,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO;
-import org.inbio.neoportal.service.manager.impl.SpeciesManagerImpl;
+import org.inbio.neoportal.service.manager.SpeciesManager;
 import org.inbio.neoportal.web.dto.TaxonDescriptionFullWDTO;
 import org.inbio.neoportal.web.dto.wrapper.XMLTaxonDescriptionWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class SpeciesApiController {
     
     @Autowired
-    private SpeciesManagerImpl speciesManagerImpl;
+    private SpeciesManager speciesManager;
     
     @RequestMapping (
             value = "/{scientificName}/{provider}",
@@ -62,7 +63,7 @@ public class SpeciesApiController {
             scientificName = scientificName.replace('_', ' ');
             
             taxonDescription = 
-                    speciesManagerImpl.taxonDescriptionByProvider(scientificName, provider);
+                    speciesManager.taxonDescriptionByProvider(scientificName, provider);
             
             for(TaxonDescriptionFullSDTO tdsdto : taxonDescription) {
                 tdw.addElement(new TaxonDescriptionFullWDTO (
@@ -143,7 +144,7 @@ public class SpeciesApiController {
             scientificName = scientificName.replace('_', ' ');
             
             taxonDescription = 
-                    speciesManagerImpl.taxonDescriptionByProvider(scientificName, provider);
+                    speciesManager.taxonDescriptionByProvider(scientificName, provider);
             
             // TODO: fix non data scenary
             if(taxonDescription.isEmpty())
@@ -218,7 +219,7 @@ public class SpeciesApiController {
             scientificName = scientificName.replace('_', ' ');
             
             taxonDescription = 
-                    speciesManagerImpl.taxonDescription(scientificName);
+                    speciesManager.taxonDescription(scientificName);
             
             for(TaxonDescriptionFullSDTO tdsdto : taxonDescription) {
                 tdw.addElement(new TaxonDescriptionFullWDTO (
@@ -290,6 +291,8 @@ public class SpeciesApiController {
     public @ResponseBody Object getImages(
             @PathVariable(value = "scientificName") String scientificName){
         
-        return speciesManagerImpl.imagesByScientificName(scientificName);
+    	// FIXME: call the appropriate function
+//        return speciesManager.getImagesByDefaultName(scientificName);
+    	return null;
     }
 }

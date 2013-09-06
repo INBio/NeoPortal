@@ -20,7 +20,7 @@
                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>"><fmt:message key="menu_contact"/></a></li>
             </ul>
 	    </nav>
-	    <div id="header_inner">
+	    <div id="header_inner" class="clear">
 	    	<h1><fmt:message key="app_name"/></h1>
 	    	<%@include file="/WEB-INF/jspf/searchPanel.jspf" %>
     	</div>

@@ -280,6 +280,7 @@ public class Taxon
      private Set<TaxonHasAssociatedAttribute> taxonHasAssociatedAttributes 
          = new HashSet<TaxonHasAssociatedAttribute>(0);
      
+     @ContainedIn
      private Set<Image> images = new HashSet<Image>(0);
      
     // Constructors

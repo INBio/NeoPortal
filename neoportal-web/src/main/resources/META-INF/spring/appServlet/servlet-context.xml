@@ -9,7 +9,7 @@
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	<!-- Scans the classpath of this application for @Components to deploy as beans -->
-	<context:component-scan base-package="org.inbio.neoportal" />
+	<context:component-scan base-package="org.inbio.neoportal.web" />
 
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<mvc:annotation-driven />

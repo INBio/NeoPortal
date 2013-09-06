@@ -41,6 +41,7 @@ import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.inbio.neoportal.core.entity.CommonName;
 import org.inbio.neoportal.core.entity.GeoFeature;
+import org.inbio.neoportal.core.entity.Image;
 import org.inbio.neoportal.core.entity.Location;
 import org.inbio.neoportal.core.entity.OccurrenceDwc;
 import org.inbio.neoportal.core.entity.Taxon;
@@ -84,6 +85,7 @@ public class Indexer {
     	classList.put("GeoFeature", GeoFeature.class);
     	classList.put("Location", Location.class);
     	classList.put("Occurrences", OccurrenceDwc.class);
+    	classList.put("Image", Image.class);
     	
         System.out.println("Creating Lucene index\n");
         HibernateUtil.getSessionFactory();
@@ -108,27 +110,7 @@ public class Indexer {
     		fullTextSession.createIndexer((Class)classList.get(classToIndex)).startAndWait();
         }
 
-//        System.out.println("# - Taxon");
-////        fullTextSession.createIndexer(Taxon.class).startAndWait();
-//        
-//        System.out.println("# - CommonName");
-////        fullTextSession.createIndexer(CommonName.class).startAndWait();
-//        
-//        System.out.println("# - TaxonDescription");
-// //       fullTextSession.createIndexer(TaxonDescription.class).startAndWait();
-//        
-//        System.out.println("# - GeoFeatures");
-////        fullTextSession.createIndexer(GeoFeature.class).startAndWait();
-//        
-//        System.out.println("# - Locations");
-////        fullTextSession.createIndexer(Location.class).startAndWait();
-//        
-//        System.out.println("# - Occurrence");
-//        fullTextSession
-//        	.createIndexer(OccurrenceDwc.class)
-//        	.startAndWait();
-        
-        System.out.println("# - Fin de la indexación \n");
+        System.out.println("# - Fin de la indexación de " + classToIndex + "\n" );
     }
 
     /**

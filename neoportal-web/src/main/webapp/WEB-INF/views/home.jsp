@@ -45,6 +45,7 @@
         
         <c:if test="${state=='search'}">
         <div class="data_wrapper">
+        	<n:taxonFeature taxonFeature="${taxonFeature}" />
         	<!-- taxon list -->
 			<n:taxonList taxonList="${taxonList}"></n:taxonList>
         </div>

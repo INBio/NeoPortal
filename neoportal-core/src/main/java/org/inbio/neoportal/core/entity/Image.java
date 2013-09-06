@@ -22,18 +22,23 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 
+import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.IndexedEmbedded;
 import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
 
 /**
  *
  * @author avargas
  */
-
+@Indexed
 public class Image
         implements java.io.Serializable{
     
+	@DocumentId
     private BigInteger imageId;
     private BigInteger externalImageId;
+    @IndexedEmbedded
     private Taxon taxon;
     private OccurrenceDwc occurrence;
     private String author;
@@ -74,6 +79,27 @@ public class Image
 		
 		return url;
     }
+    
+    /**
+     * Create the appropriate url based on the external image source 
+     * @param imagesCDTO
+     * @return
+     */
+    public static String getBigUrl(ImagesCDTO imagesCDTO) {
+		String url = "";
+		if (imagesCDTO.getSource().equalsIgnoreCase("flickr")){
+			url += "http://farm" + imagesCDTO.getFarm();
+			url += ".staticflickr.com/" + imagesCDTO.getServer();
+			url += "/" + imagesCDTO.getExternalImageId() + "_" + imagesCDTO.getSecret();
+			url += "_b.jpg";
+		}
+		else
+			url = "http://multimedia.inbio.ac.cr/m3sINBio/getImage?size=big&id=" + imagesCDTO.getExternalImageId();
+		
+		return url;
+    }
+    
+    
     
     public Image() {
 

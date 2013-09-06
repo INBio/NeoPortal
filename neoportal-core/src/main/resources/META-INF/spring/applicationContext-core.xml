@@ -13,7 +13,7 @@
     <description>Example configuration to get you started.</description>
 
 	<context:annotation-config />
-    <context:component-scan base-package="org.inbio.neoportal" />
+    <context:component-scan base-package="org.inbio.neoportal.core" />
     
 	<bean id="propertyOverrideConfigurer" class="org.springframework.beans.factory.config.PropertyOverrideConfigurer"  lazy-init="false">
 		<property name="location" value="WEB-INF/classes/database.properties"/>

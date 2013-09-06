@@ -5,22 +5,17 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@taglib prefix="n" tagdir="/WEB-INF/tags" %>
 
-<!-- Attributes -->
-<%@ attribute name="paginationFirstUrl" description="The url for first link" %>
-<%@ attribute name="paginationNextUrl" description="The url for next link" %>
-<%@ attribute name="paginationBackUrl" description="The back url link"%>
-<%@ attribute name="paginationLastUrl" description="Url for the last page" %>
-	
+<c:if test="${pagination.totalPages > 1 }">
 	<div class="pagination">
 		<p><fmt:message key="pagination.info">
-			<fmt:param value="${paginationCurrent}" />
-			<fmt:param value="${paginationTotal}" />
+			<fmt:param value="${pagination.currentPage}" />
+			<fmt:param value="${pagination.totalPages}" />
 		</fmt:message></p>
 		<div>
-			<a href="${paginationFirstUrl}"><fmt:message key="pagination.first" /></a>
+			<a href="${pagination.firstUrl}"><fmt:message key="pagination.first" /></a>
 			<c:choose>
-				<c:when test="${paginationBackUrl != ''}">
-					<a href="${paginationBackUrl}"><fmt:message key="pagination.back" /></a>
+				<c:when test="${pagination.previousUrl != ''}">
+					<a href="${pagination.previousUrl}"><fmt:message key="pagination.back" /></a>
 				</c:when>
 				<c:otherwise>
 					<a href="#" class="disable"><fmt:message key="pagination.back" /></a>
@@ -28,13 +23,14 @@
 			</c:choose>
 			
 			<c:choose>
-				<c:when test="${paginationNextUrl != ''}">
-					<a href="${paginationNextUrl}"><fmt:message key="pagination.next" /></a>
+				<c:when test="${pagination.nextUrl != ''}">
+					<a href="${pagination.nextUrl}"><fmt:message key="pagination.next" /></a>
 				</c:when>
 				<c:otherwise>
 					<a href="#" class="disable"><fmt:message key="pagination.next" /></a>
 				</c:otherwise>
 			</c:choose>
-			<a href="${paginationLastUrl}"><fmt:message key="pagination.last" /></a>
+			<a href="${pagination.lastUrl}"><fmt:message key="pagination.last" /></a>
 		</div>
 	</div>
+</c:if>
