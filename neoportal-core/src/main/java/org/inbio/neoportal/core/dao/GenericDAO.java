@@ -54,6 +54,7 @@ public interface GenericDAO<E, ID extends Serializable> {
 	        final ResultTransformer resultTransformer,
 	        final String[] fields, 
 	        final String searchText,
+	        String sortField,
 	        final int offset, 
 	        final int quantity) ;
 

@@ -7,19 +7,19 @@ package org.inbio.neoportal.service.manager.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.lucene.queryParser.ParseException;
+import org.hibernate.transform.ResultTransformer;
 import org.inbio.neoportal.core.dao.ImageDAO;
 import org.inbio.neoportal.core.dao.OccurrenceDAO;
 import org.inbio.neoportal.core.dao.TaxonDAO;
 import org.inbio.neoportal.core.dao.TaxonDescriptionDAO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
 import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
-import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
+import org.inbio.neoportal.core.dto.taxon.TaxonCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
 import org.inbio.neoportal.core.dto.transformers.OccurrenceDWCTransformer;
-import org.inbio.neoportal.core.dto.transformers.OccurrenceTransformer;
+import org.inbio.neoportal.core.dto.transformers.TaxonTransformer;
+import org.inbio.neoportal.core.entity.Image;
 import org.inbio.neoportal.core.entity.Taxon;
-import org.inbio.neoportal.service.dto.occurrences.OccurrenceLiteSDTO;
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO;
 import org.inbio.neoportal.service.dto.species.TaxonFeatureDTO;
 import org.inbio.neoportal.service.manager.SpeciesManager;
@@ -208,7 +208,7 @@ public class SpeciesManagerImpl
 				.getTaxonomicalRangeName();
     	String[] fieldsArray = {field};
     	
-    	List<ImagesCDTO> images = imageDAO.search(fieldsArray, defaultName, offset, quantity);
+    	List<ImagesCDTO> images = imageDAO.search(fieldsArray, defaultName, "taxon.defaultName_keyword", offset, quantity);
 
         return images;
     }
@@ -256,7 +256,7 @@ public class SpeciesManagerImpl
     	String field = "taxon." + taxonFeature.getTaxonomicalRangeName();
     	String[] fieldsArray = {field};
     	
-    	List<ImagesCDTO> images = imageDAO.search(fieldsArray, defaultName, 0, 5);
+    	List<ImagesCDTO> images = imageDAO.search(fieldsArray, defaultName, "", 0, 4);
     	long imageCount = imageDAO.searchCount(fieldsArray, defaultName);
     	
     	long occurrenceCount = occurrenceDAO.searchCount(fieldsArray, defaultName);
@@ -308,6 +308,33 @@ public class SpeciesManagerImpl
     	String[] fieldsArray = {field};
     	
     	return occurrenceDAO.searchCount(fieldsArray, defaultName);
+	}
+
+	@Override
+	public TaxonCDTO getTaxonByDefaultName(String defaultName) {
+		// field used for exact match query
+		String[] fields = {"defaultName_keyword"};
+		
+		ResultTransformer resultTransformer = new TaxonTransformer();
+		
+		List<TaxonCDTO> list = taxonDAO.search(defaultName, fields, 0, 1, resultTransformer);
+		TaxonCDTO taxonCDTO;
+		
+		if (list.isEmpty())
+			return null;
+		else
+			taxonCDTO = list.get(0);
+		
+		// values to lowercase
+		taxonCDTO.setKingdom(taxonCDTO.getKingdom().toLowerCase());
+		taxonCDTO.setDivision(taxonCDTO.getDivision().toLowerCase());
+		taxonCDTO.setClass_(taxonCDTO.getClass_().toLowerCase());
+		taxonCDTO.setOrder(taxonCDTO.getOrder().toLowerCase());
+		taxonCDTO.setFamily(taxonCDTO.getFamily().toLowerCase());
+		taxonCDTO.setGenus(taxonCDTO.getGenus().toLowerCase());
+		taxonCDTO.setDefaultName(taxonCDTO.getDefaultName().toLowerCase());
+		
+		return taxonCDTO;
 	}
     
 }

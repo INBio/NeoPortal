@@ -6,17 +6,29 @@
 <%@taglib prefix="n" tagdir="/WEB-INF/tags" %>
 
 <!-- Attributes -->
-<%@ attribute name="taxonDescription" description="The taxon description of the element" required="true" type="org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO" %>
+<%@ attribute name="taxon" description="The taxon description of the element" required="true" type="org.inbio.neoportal.core.dto.taxon.TaxonCDTO" %>
 	
 	<div id="taxonomy">
 		<h3><fmt:message key="taxonDes.taxonomy"/></h3>
    		<ul>
-   			<li><fmt:message key="taxon.kingdom"/>: ${taxonDescription.kingdomTaxon}</li>
-   			<li><fmt:message key="taxon.phylum"/>: ${taxonDescription.phylumTaxon}</li>
-   			<li><fmt:message key="taxon.class"/>: ${taxonDescription.classTaxon}</li>
-   			<li><fmt:message key="taxon.order"/>: ${taxonDescription.orderTaxon}</li>
-   			<li><fmt:message key="taxon.family"/>: ${taxonDescription.familyTaxon}</li>
-   			<li><fmt:message key="taxon.genus"/>: ${taxonDescription.genusTaxon}</li>
+   			<c:if test="${not empty taxon.kingdom }">
+   			<li><fmt:message key="taxon.kingdom"/>: <span>${taxon.kingdom}</span></li>
+   			</c:if>
+   			<c:if test="${not empty taxon.division }">
+   			<li><fmt:message key="taxon.phylum"/>: <span>${taxon.division}</span></li>
+   			</c:if>
+   			<c:if test="${not empty taxon.class_ }">
+   			<li><fmt:message key="taxon.class"/>: <span>${taxon.class_}</span></li>
+   			</c:if>
+   			<c:if test="${not empty taxon.order }">
+   			<li><fmt:message key="taxon.order"/>: <span>${taxon.order}</span></li>
+   			</c:if>
+   			<c:if test="${not empty taxon.family }">
+   			<li><fmt:message key="taxon.family"/>: <span>${taxon.family}</span></li>
+   			</c:if>
+   			<c:if test="${not empty taxon.genus }">
+   			<li><fmt:message key="taxon.genus"/>: <span class="scientific-name">${taxon.genus}</span></li>
+   			</c:if>
    		</ul>
 	</div>
 	

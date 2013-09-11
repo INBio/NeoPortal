@@ -29,7 +29,7 @@
     <property name="accuracy" type="string" column="accuracy" />
     <property name="tags" type="string" column="tags" />
     
-    <many-to-one name="taxon" class="org.inbio.neoportal.core.entity.Taxon" fetch="select" column="taxon_id" />
+    <many-to-one name="taxon" class="org.inbio.neoportal.core.entity.Taxon" fetch="join" column="taxon_id" />
     <many-to-one name="occurrence" class="org.inbio.neoportal.core.entity.OccurrenceDwc" fetch="select" column="occurrence_id" />
   </class>
 </hibernate-mapping>

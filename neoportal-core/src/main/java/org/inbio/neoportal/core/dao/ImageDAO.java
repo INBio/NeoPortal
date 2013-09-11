@@ -43,7 +43,7 @@ public interface ImageDAO extends
 	public List<Image> findAll();
 	
 	public List<ImagesCDTO> search(String[] fields,
-			String searchText, int offset, int quantity);
+			String searchText, String sortField, int offset, int quantity);
 	
 	public Long searchCount(
 			final String[] fields,

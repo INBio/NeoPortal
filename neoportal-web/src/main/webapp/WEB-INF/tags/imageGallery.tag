@@ -8,10 +8,15 @@
 <!-- Attributes -->
 <%@ attribute name="images" description="Lits of images" required="true" type="java.util.List" %>
 	
-<div class="image-gallery">
+<div class="image-gallery taxon-content">
 <n:pagination></n:pagination>
 <c:forEach var="image" items="${images}">
-	<img alt="${image.title}" src="${image.mediumUrl}" />
+	<div class="image-item">
+		<img alt="${image.title}" src="${image.mediumUrl}" />
+		<c:if test="${not empty image.taxon }">
+		<p>${image.taxon.defaultName }</p>
+		</c:if>
+	</div>
 </c:forEach>
 </div>
 	

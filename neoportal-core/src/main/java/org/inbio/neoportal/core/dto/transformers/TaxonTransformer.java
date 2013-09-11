@@ -67,13 +67,16 @@ public class TaxonTransformer
     }
     
     public TaxonCDTO entityToDTO(Taxon taxon){
+        return entityToDTO(taxon, true);
+    }
+    
+    public TaxonCDTO entityToDTO(Taxon taxon, boolean loadImages) {
+    	if (taxon == null) {
+			return null;
+		}
+    	
     	commonNameList =  commonNameRT.transformList(
                 new ArrayList<CommonName>(taxon.getCommonNames()));
-            
-        ArrayList<ImagesCDTO> imgList = new ArrayList<ImagesCDTO>();
-        for(Image img: taxon.getImages()){
-            imgList.add((ImagesCDTO)imagesRT.transformTuple(new Object[]{img}, null));
-        }
         
         TaxonCDTO taxonCDTO = new TaxonCDTO();
         taxonCDTO.setTaxonId(taxon.getTaxonId().toString());
@@ -141,9 +144,16 @@ public class TaxonTransformer
         	taxonCDTO.setFormId(taxon.getFormId().toString());
         taxonCDTO.setDomain(taxon.getDomain());
     	taxonCDTO.setImageUrl(taxon.getImageUrl());
-    	taxonCDTO.setImageList(imgList);
+    	
+    	if(loadImages) {
+	        ArrayList<ImagesCDTO> imgList = new ArrayList<ImagesCDTO>();
+	        for(Image img: taxon.getImages()){
+	            imgList.add((ImagesCDTO)imagesRT.transformTuple(new Object[]{img}, null));
+	        }
+	        
+	        taxonCDTO.setImageList(imgList);
+    	}
         
         return taxonCDTO;
-
-    }
+	}
 }

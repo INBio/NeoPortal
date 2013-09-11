@@ -62,7 +62,7 @@
 				<li><a href="${taxonUrl}/occurrences">occurrences</a></li>
 			</ul></nav>
 			
-			<div class="content_left_column">
+			<div class="">
 				<c:choose>
 					<c:when test="${context == 'taxonDescription'}">
 						<n:taxonDescription></n:taxonDescription>	
@@ -77,31 +77,6 @@
 				
 			</div>
 			
-			<div class="sidebar_right">
-                <div id="occurrences" class="tab_wrapper data_wrapper">
-                    <ul id="view_control">
-                        <li><a rel="map" href="#"><fmt:message key="occurrences_map_label" /></a></li>
-                        <li><a rel="data" href="#"><fmt:message key="occurrences_data_label" /></a></li>
-                        <li><a rel="split" href="#"><fmt:message key="occurrences_split_label" /></a></li>
-                    </ul>
-                    <!-- Table Panel -->
-                    <div id="tablePanelContainer">
-                        <!--<h4><fmt:message key="occurrences_table"/></h4>-->
-
-                    </div>
-                    <!-- Map Panel -->
-                    <div id="mapPanel" class="extendMap">
-                        <div id="map"></div>
-<!--                        <div id="wrapper">
-                            <div id="location"></div>
-                            <div id="scale"></div>
-                        </div>-->
-                    </div>
-
-                    <!-- Extra Panel -->
-                    <div id="extraPanel"></div>
-                </div>
-            </div> <!-- end sidebar right -->
         </div>
 
 

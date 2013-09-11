@@ -8,12 +8,10 @@ import org.hibernate.Session;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
-import org.hibernate.transform.ResultTransformer;
 import org.inbio.neoportal.core.dao.ImageDAO;
 import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
 import org.inbio.neoportal.core.dto.transformers.ImagesTransformer;
 import org.inbio.neoportal.core.entity.Image;
-import org.inbio.neoportal.core.entity.Taxon;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -44,8 +42,8 @@ public class ImageDAOImpl
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ImagesCDTO> search(String[] fields,
-			String searchText, int offset, int quantity) {
-		return (List<ImagesCDTO>)super.search(new ImagesTransformer(), fields, searchText, offset, quantity);
+			String searchText, String sortField, int offset, int quantity) {
+		return (List<ImagesCDTO>)super.search(new ImagesTransformer(), fields, searchText, sortField, offset, quantity);
 	}
 	
 	public Long searchCount(
@@ -76,8 +74,7 @@ public class ImageDAOImpl
 				fullTextSession.createFullTextQuery(query, Image.class);
 		
 		hQuery.setResultTransformer(new ImagesTransformer());
-		
-		return hQuery.list();		
+		return hQuery.list();
 	}
 	
 }

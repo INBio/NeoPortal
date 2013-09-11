@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.ResultTransformer;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
 import org.inbio.neoportal.core.entity.Taxon;
@@ -111,5 +112,13 @@ public interface TaxonDAO
      * @return Taxon entity
      */
     public Taxon findByDefaultName(final String defaultName);
+    
+    public List search(
+    		String searchText,
+    		String[] fields,
+    		int offset,
+    		int quantity,
+    		ResultTransformer resultTransformer
+    		);
     
 }

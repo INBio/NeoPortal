@@ -8,7 +8,7 @@
 <!-- Attributes -->
 <%@ attribute name="occurrences" description="Lits of occurrences" required="true" type="java.util.List" %>
 	
-<div class="occurrences-table">
+<div class="occurrences-table taxon-content">
 <n:pagination></n:pagination>
 <table>
 	<thead>

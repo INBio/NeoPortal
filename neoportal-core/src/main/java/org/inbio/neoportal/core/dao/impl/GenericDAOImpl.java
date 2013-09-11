@@ -11,6 +11,8 @@ import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
 import org.apache.lucene.util.Version;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -115,7 +117,7 @@ public abstract class
 	 */
 	@Override
 	public List search(ResultTransformer resultTransformer, String[] fields,
-			String searchText, int offset, int quantity) {
+			String searchText, String sortField, int offset, int quantity) {
 
 		Session session = this.sessionFactory.getCurrentSession();
 	
@@ -142,9 +144,12 @@ public abstract class
         }
         
         // Wrap Lucene query in a org.hibernate.Query
-        org.hibernate.Query hsQuery =
-                (org.hibernate.Query) fullTextSession.createFullTextQuery(query, entityClass);
+        org.hibernate.search.FullTextQuery hsQuery =
+                fullTextSession.createFullTextQuery(query, entityClass);
 
+        Sort sort = new Sort(new SortField(sortField, SortField.STRING));
+        hsQuery.setSort(sort);
+        
         // Configure the result list
         hsQuery.setResultTransformer(resultTransformer);
         hsQuery.setFirstResult(offset);

@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.inbio.neoportal.common.dto.BaseDTO;
 import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
+import org.inbio.neoportal.core.entity.Image;
 
 /**
  * Model class to send feature info of a taxon

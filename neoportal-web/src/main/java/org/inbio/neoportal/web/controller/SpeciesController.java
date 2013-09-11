@@ -24,6 +24,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
 import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
+import org.inbio.neoportal.core.dto.taxon.TaxonCDTO;
+import org.inbio.neoportal.core.entity.Image;
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO;
 import org.inbio.neoportal.service.manager.SpeciesManager;
 import org.inbio.neoportal.web.model.PaginationModel;
@@ -52,6 +54,7 @@ public class SpeciesController {
     	
     	String taxonUrl = request.getContextPath() + "/species/" + scientificName;
         
+    	// get taxon description
         List<TaxonDescriptionFullSDTO> taxonDescription = null;
         
         scientificName = scientificName.replace('_', ' ');
@@ -59,14 +62,23 @@ public class SpeciesController {
         taxonDescription = 
                 speciesManager.taxonDescriptionByProvider(scientificName, "INB");
         
-        if(taxonDescription.isEmpty())
+        if(taxonDescription.isEmpty()) {
         	model.addAttribute("taxonDescription", null);
+        }
         else
         	model.addAttribute("taxonDescription", taxonDescription.get(0));
         
+        // get taxon hierarchy 
+        TaxonCDTO taxonCDTO = speciesManager.getTaxonByDefaultName(scientificName);
+
+        // get some images
+        List<ImagesCDTO> images = speciesManager.getImagesByDefaultName(scientificName, 0, 4);
+        
+        model.addAttribute("taxon", taxonCDTO);
         model.addAttribute("scientificName", scientificName);
         model.addAttribute("context", "taxonDescription");
         model.addAttribute("taxonUrl", taxonUrl);
+        model.addAttribute("images", images);
         
         return "species";
     }

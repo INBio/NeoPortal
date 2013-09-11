@@ -40,6 +40,7 @@ import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.hibernate.sql.Template;
+import org.hibernate.transform.ResultTransformer;
 import org.inbio.neoportal.core.dao.TaxonDAO;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
@@ -322,4 +323,14 @@ public class TaxonDAOImpl
 		
 		return (Taxon)hQuery.uniqueResult();
 	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public List search(String searchText, String[] fields,
+			int offset, int quantity, ResultTransformer resultTransformer) {
+		
+		return super.search(Taxon.class, resultTransformer, fields, searchText, offset, quantity);
+	}
+	
+	
 }

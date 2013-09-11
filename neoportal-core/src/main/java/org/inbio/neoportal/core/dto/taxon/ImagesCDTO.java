@@ -54,6 +54,11 @@ public class ImagesCDTO
     
     private String mediumUrl;
     private String bigUrl;
+    
+    /*
+     * Notice this is a TaxonCDTO not the entity 
+     */
+    private TaxonCDTO taxon;
 
     @Override
     public int compareTo(Object t) {
@@ -286,6 +291,14 @@ public class ImagesCDTO
 
 	public void setBigUrl(String bigUrl) {
 		this.bigUrl = bigUrl;
+	}
+
+	public TaxonCDTO getTaxon() {
+		return taxon;
+	}
+
+	public void setTaxon(TaxonCDTO taxonCDTO) {
+		this.taxon = taxonCDTO;
 	}
     
     

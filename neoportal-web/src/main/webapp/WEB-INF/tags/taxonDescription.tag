@@ -5,7 +5,8 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@taglib prefix="n" tagdir="/WEB-INF/tags" %>
 
-<div id="info-taxon">
+<div id="info-taxon" class="taxon-content">
+	<c:if test="${not empty taxonDescription }">
 	<nav>
 		<ul>
 		    <li><a href="#naturalHistory"><fmt:message key="taxonDes.naturalHistory"/></a></li>
@@ -17,8 +18,11 @@
 		    <li><a href="#externalSource"><fmt:message key="taxonDes.externalSource"/></a></li>
 		</ul>
 	</nav>
+	</c:if>
+	
 	<div id="shareThis"></div>
-	<div id="species_images"></div>
+<!-- 	<div id="species_images"></div> -->
+	<n:imageGallery images="${images }"></n:imageGallery>
 	
 	<div id="taxonDescription">
 		<div id="naturalHistory">
@@ -120,8 +124,11 @@
 	    	
 		</div>
 		
-		<n:taxonomy taxonDescription="${taxonDescription}"></n:taxonomy>
+		<c:if test="${not empty taxon }">
+		<n:taxonomy taxon="${taxon}"></n:taxonomy>
+		</c:if>
 		
+		<c:if test="${not empty taxonDescription}">
 		<div id="information">
 		    <h3><fmt:message key="taxonDes.information"/></h3>
 		    <c:if test="${not empty taxonDescription.language }">
@@ -155,6 +162,7 @@
 			</p>
 	    	</c:if>
 		</div>
+		</c:if>
 		
 		<div id="externalSource">
 		    <%-- TODO: get external sources from database --%>

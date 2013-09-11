@@ -39,6 +39,8 @@ public class ImagesTransformer
         
         Image img = (Image)tuple[0];
         
+        TaxonTransformer taxonTransformer = new TaxonTransformer();
+        
         try {
             imagesCDTO = new ImagesCDTO();
             
@@ -70,6 +72,8 @@ public class ImagesTransformer
             
             imagesCDTO.setMediumUrl(Image.getSmallUrl(imagesCDTO));
             imagesCDTO.setBigUrl(Image.getBigUrl(imagesCDTO));
+            
+            imagesCDTO.setTaxon(taxonTransformer.entityToDTO(img.getTaxon(), false));
             
         } catch (Exception e) {
             throw new RuntimeException(e);
