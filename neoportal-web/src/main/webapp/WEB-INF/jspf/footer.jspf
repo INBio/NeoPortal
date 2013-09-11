@@ -13,13 +13,14 @@
 	            <ul>
 	                <li><a href="http://www.inbio.ac.cr">INBio</a></li>
 	                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/"><fmt:message key="menu_home"/></a></li>
-	                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/advancedSearch/"><fmt:message key="menu_advancedSearch"/></a></li>
-	                <li><a href="<c:out value="${pageContext.request.contextPath}"/>"><fmt:message key="menu_about"/></a></li>
-	                <li><a href="<c:out value="${pageContext.request.contextPath}"/>"><fmt:message key="menu_contact"/></a></li>
-	                <li><a href="<c:out value="${pageContext.request.contextPath}"/>"><fmt:message key="menu_donations"/></a></li>
+<%-- 	                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/advancedSearch/"><fmt:message key="menu_advancedSearch"/></a></li> --%>
+					<li><a href="http://atta.inbio.ac.cr/scripts/pbcgi60.exe/TUTORIAL/uo_pbdemo/f_getlogon02?as_userid=&as_userpass="><fmt:message key="menu_advancedSearch"/></a></li>
+<%-- 	                <li><a href="<c:out value="${pageContext.request.contextPath}"/>"><fmt:message key="menu_about"/></a></li> --%>
+<%-- 	                <li><a href="<c:out value="${pageContext.request.contextPath}"/>"><fmt:message key="menu_contact"/></a></li> --%>
+	                <li><a href="https://www.inbio.ac.cr/donaciones/"><fmt:message key="menu_donations"/></a></li>
 	            </ul>
 		    </nav>
-		    <p><fmt:message key="contact_us"></fmt:message> <a href="<c:out value="${pageContext.request.contextPath}"/>"><fmt:message key="menu_contact"/></a></p>
+<%-- 		    <p><fmt:message key="contact_us"></fmt:message> <a href="<c:out value="${pageContext.request.contextPath}"/>"><fmt:message key="menu_contact"/></a></p> --%>
 		    <p class="light">
 		        <fmt:message key="footer_text"/>
 		        <a href="http://www.gnu.org/licenses/gpl.txt"><fmt:message key="license_text"/></a> - <fmt:message key="software_version"/>

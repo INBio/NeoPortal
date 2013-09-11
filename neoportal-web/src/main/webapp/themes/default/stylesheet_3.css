@@ -395,6 +395,9 @@ footer{
 footer p{
 	margin: 8px 0;
 }
+footer ul {
+	display: inline-block;
+}
 footer nav a{
 	color: #4D90FE;
 }

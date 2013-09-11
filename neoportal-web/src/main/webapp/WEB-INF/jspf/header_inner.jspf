@@ -15,9 +15,10 @@
 	    <nav>
             <ul>
                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>"><fmt:message key="menu_home"/></a></li>
-                <li><a href="<c:out value="${pageContext.request.contextPath}"/>/advancedSearch/"><fmt:message key="menu_advancedSearch"/></a></li>
-                <li><a href="<c:out value="${pageContext.request.contextPath}"/>"><fmt:message key="menu_about"/></a></li>
-                <li><a href="<c:out value="${pageContext.request.contextPath}"/>"><fmt:message key="menu_contact"/></a></li>
+<%--                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>/advancedSearch/"><fmt:message key="menu_advancedSearch"/></a></li> --%>
+				<li><a href="http://atta.inbio.ac.cr/scripts/pbcgi60.exe/TUTORIAL/uo_pbdemo/f_getlogon02?as_userid=&as_userpass="><fmt:message key="menu_advancedSearch"/></a></li>
+<%--                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>"><fmt:message key="menu_about"/></a></li> --%>
+<%--                 <li><a href="<c:out value="${pageContext.request.contextPath}"/>"><fmt:message key="menu_contact"/></a></li> --%>
             </ul>
 	    </nav>
 	    <div id="header_inner" class="clear">

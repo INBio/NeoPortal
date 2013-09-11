@@ -1,6 +1,5 @@
 package org.inbio.neoportal.web.test;
 
-import org.junit.Test;
 
 /*
  *  NeoPortal - New implementation of the INBio Species and Occurrences portal.
@@ -25,10 +24,9 @@ import org.junit.Test;
  * @author avargas
  *
  */
-public class HomeControllerTest 
+public class HomeController 
 				extends NeoportalTestBase {
 
-	@Test
 	public void home() {
 		
 	}
