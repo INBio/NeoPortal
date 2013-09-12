@@ -7,23 +7,25 @@
 
 <!-- Attributes -->
 <%@ attribute name="taxonList" description="The taxon list with the elements" required="true" type="java.util.List" %>
-	
-	<n:pagination></n:pagination>
-	<ul class="taxon_list">
-	<c:forEach var="taxon" items="${taxonList}">
-		<li>
-			<div class="image_wrap">
-			<c:if test="${taxon.imageURL != ''}">
-			<img alt="image of ${taxon.scientificName}" src="${taxon.imageURL}" />
-			</c:if>
-			</div>
-			<div class="taxon_inner">
-			<a href="<c:out value="${pageContext.request.contextPath}"/>/species/${taxon.scientificName}"><h3>${taxon.scientificName}</h3></a>
-			<c:if test="${not empty taxon.commonName}">
-			<p><fmt:message key="common_name"></fmt:message>: ${taxon.commonName}</p>
-			</c:if>
-			</div>
-		</li>
-	</c:forEach>
-	</ul>
+	<div class="content_column">
+		<h3><fmt:message key="species" /></h3>
+		<n:pagination></n:pagination>
+		<ul class="taxon_list">
+		<c:forEach var="taxon" items="${taxonList}">
+			<li>
+				<div class="image_wrap">
+				<c:if test="${taxon.imageURL != ''}">
+					<img alt="image of ${taxon.scientificName}" src="${taxon.imageURL}" />
+				</c:if>
+				</div>
+				<div class="taxon_inner">
+					<a href="<c:out value="${pageContext.request.contextPath}"/>/species/${taxon.scientificName}"><h3 class="scientific-name">${taxon.scientificName}</h3></a>
+				<c:if test="${not empty taxon.commonName}">
+				<p><fmt:message key="common_name"></fmt:message>: ${taxon.commonName}</p>
+				</c:if>
+				</div>
+			</li>
+		</c:forEach>
+		</ul>
+	</div>
 	

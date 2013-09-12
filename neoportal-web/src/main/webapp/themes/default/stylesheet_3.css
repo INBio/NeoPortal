@@ -432,6 +432,10 @@ div#searchPanel a#simple{
 	margin: 8px 0 6px 0;
 }
 /* ------------------ TAXON LIST ----------------*/
+div.content_column > h3 {
+	text-transform: capitalize;
+	margin-left: 30px;
+}
 ul.taxon_list div.taxon_inner{
 	float: left;
 	width: 542px;
