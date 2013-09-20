@@ -36,17 +36,18 @@ public interface ImageDAO extends
 	 */
 	public Image findByFlickrId(BigInteger flickrId);
 
+	public Image findByM3sId(BigInteger m3sId);
 	/**
 	 * 
 	 * @return
 	 */
 	public List<Image> findAll();
 	
-	public List<ImagesCDTO> search(String[] fields,
+	public List<ImagesCDTO> searchPhrase(String field,
 			String searchText, String sortField, int offset, int quantity);
 	
-	public Long searchCount(
-			final String[] fields,
+	public Long searchPhraseCount(
+			final String field,
 	        final String searchText
 	);
 	

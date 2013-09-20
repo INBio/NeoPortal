@@ -21,7 +21,9 @@ package org.inbio.neoportal.core.dao;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.apache.lucene.search.Query;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.search.query.dsl.QueryBuilder;
 import org.hibernate.transform.ResultTransformer;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
@@ -56,6 +58,12 @@ public interface TaxonDAO
         final int offset, 
         final int quantity) ;
 
+    
+    public List<TaxonLiteCDTO> search(
+            String luceneQuery,
+            String sortField,
+            int offset, 
+            int quantity) ;
     
     /**
      * Return the total amount of items of a query.

@@ -368,7 +368,7 @@ public class Importer {
                occurrence.setKingdom(importDwc.getKingdom());
                occurrence.setPhylum(importDwc.getPhylum());
                occurrence.setClass_(importDwc.getClass_());
-               occurrence.setTaxonOrder(importDwc.getOrder());
+               occurrence.setOrder(importDwc.getOrder());
                occurrence.setFamily(importDwc.getFamily());
                occurrence.setGenus(importDwc.getGenus());
                occurrence.setSubgenus(importDwc.getSubgenus());

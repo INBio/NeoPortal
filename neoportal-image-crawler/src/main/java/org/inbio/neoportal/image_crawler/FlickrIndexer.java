@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Scope("prototype")
 @Transactional
-public class ImageIndexer implements Runnable {
+public class FlickrIndexer implements Runnable {
 
 	@Autowired
 	private ImageDAO imageDAO;
@@ -33,18 +33,18 @@ public class ImageIndexer implements Runnable {
 	@Autowired
 	private TaxonDAO taxonDAO;
 	
-	private final static Logger LOGGER = Logger.getLogger(ImageIndexer.class);
+	private final static Logger LOGGER = Logger.getLogger(FlickrIndexer.class);
 	
 	private JSONObject jsonImage;
 	
-	public ImageIndexer() {
+	public FlickrIndexer() {
 		
 	}
 	
 	/**
 	 * 
 	 */
-	public ImageIndexer(JSONObject jsonImage) {
+	public FlickrIndexer(JSONObject jsonImage) {
 		this.jsonImage = jsonImage;
 	}
 	

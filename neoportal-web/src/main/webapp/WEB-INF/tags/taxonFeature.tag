@@ -7,7 +7,7 @@
 
 <!-- Attributes -->
 <%@ attribute name="taxonFeature" description="The taxon to feature with images" required="true" type="org.inbio.neoportal.service.dto.species.TaxonFeatureDTO" %>
-	
+	<c:if test="${not empty taxonFeature }">
 	<div id="feature">
 		<a href="<c:out value="${pageContext.request.contextPath}"/>/species/${taxonFeature.defaultName}">
 		<c:choose>
@@ -29,4 +29,4 @@
 		</div>
 		</c:forEach>
 	</div>
-	
+	</c:if>

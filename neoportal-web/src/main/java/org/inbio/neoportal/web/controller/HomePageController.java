@@ -98,8 +98,8 @@ public class HomePageController {
 		//get search data
 		List<SpeciesLiteSDTO> list = null;
 		try {
-			list = searchManager.basicPaginatedSearch(search, startIndex, itemsPerPage);
-			totalSpecies = searchManager.basicSearchCount(search).intValue();
+			list = searchManager.taxonPaginatedSearch(search, startIndex, itemsPerPage);
+			totalSpecies = searchManager.taxonSearchCount(search).intValue();
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -16,10 +16,13 @@ import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
 import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
 import org.inbio.neoportal.core.dto.taxon.TaxonCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
+import org.inbio.neoportal.core.dto.transformers.ImagesTransformer;
 import org.inbio.neoportal.core.dto.transformers.OccurrenceDWCTransformer;
 import org.inbio.neoportal.core.dto.transformers.TaxonTransformer;
 import org.inbio.neoportal.core.entity.Image;
+import org.inbio.neoportal.core.entity.OccurrenceDwc;
 import org.inbio.neoportal.core.entity.Taxon;
+import org.inbio.neoportal.core.entity.Taxon.TaxonomicalRange;
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO;
 import org.inbio.neoportal.service.dto.species.TaxonFeatureDTO;
 import org.inbio.neoportal.service.manager.SpeciesManager;
@@ -206,9 +209,12 @@ public class SpeciesManagerImpl
     	String field = "taxon." + Taxon.TaxonomicalRange.getById(
 				taxon.getTaxonomicalRangeId().longValue())
 				.getTaxonomicalRangeName();
-    	String[] fieldsArray = {field};
     	
-    	List<ImagesCDTO> images = imageDAO.search(fieldsArray, defaultName, "taxon.defaultName_keyword", offset, quantity);
+    	if(field.equals("taxon.species")) {
+    		field = "taxon.defaultName_keyword";
+    	}
+    	
+    	List<ImagesCDTO> images = imageDAO.searchPhrase(field, defaultName, "taxon.defaultName_keyword", offset, quantity);
 
         return images;
     }
@@ -224,9 +230,12 @@ public class SpeciesManagerImpl
     	String field = "taxon." + Taxon.TaxonomicalRange.getById(
 				taxon.getTaxonomicalRangeId().longValue())
 				.getTaxonomicalRangeName();
-    	String[] fieldsArray = {field};
     	
-    	return imageDAO.searchCount(fieldsArray, defaultName);
+    	if(field.equals("taxon.species")) {
+    		field = "taxon.defaultName_keyword";
+    	}
+    	
+    	return imageDAO.searchPhraseCount(field, defaultName);
     	
     }
 
@@ -236,6 +245,10 @@ public class SpeciesManagerImpl
     @Transactional
     public TaxonFeatureDTO getTaxonFeatureByDefaultName(String defaultName) {
     	TaxonFeatureDTO taxonFeature = new TaxonFeatureDTO();
+    	String field;
+    	List<ImagesCDTO> images;
+    	long imageCount;
+    	long occurrenceCount;
     	
     	Taxon taxon = taxonDAO.findByDefaultName(defaultName);
     	
@@ -253,13 +266,21 @@ public class SpeciesManagerImpl
     					.getTaxonomicalRangeName());
     	
     	// get feature images
-    	String field = "taxon." + taxonFeature.getTaxonomicalRangeName();
-    	String[] fieldsArray = {field};
+    	field = "taxon." + taxonFeature.getTaxonomicalRangeName();
     	
-    	List<ImagesCDTO> images = imageDAO.search(fieldsArray, defaultName, "", 0, 4);
-    	long imageCount = imageDAO.searchCount(fieldsArray, defaultName);
+    	if(field.equals("taxon.species")) {
+    		List<Image> imageList = new ArrayList<Image>(taxon.getImages());
+    		ImagesTransformer imagesTransformer = new ImagesTransformer();
+    		
+    		images = imagesTransformer.transformList(imageList);
+    		imageCount = imageList.size();
+    	}
+    	else {
+    		images = imageDAO.searchPhrase(field, defaultName, "", 0, 4);
+    		imageCount = imageDAO.searchPhraseCount(field, defaultName);
+    	}
     	
-    	long occurrenceCount = occurrenceDAO.searchCount(fieldsArray, defaultName);
+    	occurrenceCount = this.countOccurrencesByDefaultName(defaultName);
     	
     	taxonFeature.setFeatureImages(images);
     	taxonFeature.setImagesCount(imageCount);
@@ -281,16 +302,16 @@ public class SpeciesManagerImpl
     	if (taxon == null)
     		return null;
     	
-    	// get feature images
-    	String field = "taxon." + Taxon.TaxonomicalRange.getById(
-				taxon.getTaxonomicalRangeId().longValue())
-				.getTaxonomicalRangeName();
-    	String[] fieldsArray = {field};
+    	// prepare lucene query
+    	String luceneQuery = getLuceneQueryOccurrences(taxon);
     	
-    	return (List<OccurrenceDwcCDTO>)occurrenceDAO.search(
-    			fieldsArray, defaultName, new OccurrenceDWCTransformer(), offset, quantity);
+    	return occurrenceDAO.searchLucene(
+    			luceneQuery,
+    			"taxon.defaultName_keyword",
+    			new OccurrenceDWCTransformer(), 
+    			offset, quantity);
+    	
 	}
-
 
 	@Override
 	public Long countOccurrencesByDefaultName(
@@ -301,13 +322,9 @@ public class SpeciesManagerImpl
     	if (taxon == null)
     		return null;
     	
-    	// get feature images
-    	String field = "taxon." + Taxon.TaxonomicalRange.getById(
-				taxon.getTaxonomicalRangeId().longValue())
-				.getTaxonomicalRangeName();
-    	String[] fieldsArray = {field};
+    	String luceneQuery = getLuceneQueryOccurrences(taxon);
     	
-    	return occurrenceDAO.searchCount(fieldsArray, defaultName);
+    	return occurrenceDAO.searchLuceneCount(luceneQuery);
 	}
 
 	@Override
@@ -336,5 +353,40 @@ public class SpeciesManagerImpl
 		
 		return taxonCDTO;
 	}
-    
+
+	/**
+	 * Return a lucene query to get occurrences related to species or lower level elements of a giving taxon 
+	 * @param taxon
+	 * @return
+	 */
+	private String getLuceneQueryOccurrences(Taxon taxon) {
+		String luceneQuery;
+		if(taxon.getTaxonomicalRangeId().longValue() < Taxon.TaxonomicalRange.SPECIES.getId()) {
+			luceneQuery = Taxon.TaxonomicalRange.getById(
+						taxon.getTaxonomicalRangeId().longValue()).getTaxonomicalRangeName() + ":" + taxon.getDefaultName();
+		}
+		else {
+			luceneQuery = "scientificName:\"" + taxon.getDefaultName() + "\"";
+		}
+		
+		return luceneQuery;
+	}
+	
+	/**
+	 * Return a lucene query to get occurrences related to species or lower level elements of a giving taxon 
+	 * @param taxon
+	 * @return
+	 */
+	private String getLuceneQueryImages(Taxon taxon) {
+		String luceneQuery;
+		if(taxon.getTaxonomicalRangeId().longValue() < Taxon.TaxonomicalRange.SPECIES.getId()) {
+			luceneQuery = "taxon." + Taxon.TaxonomicalRange.getById(
+						taxon.getTaxonomicalRangeId().longValue()).toString() + ":" + taxon.getDefaultName();
+		}
+		else {
+			luceneQuery = "taxon.defaultName_keyword:\"" + taxon.getDefaultName() + "\"";
+		}
+		
+		return luceneQuery;
+	}
 }

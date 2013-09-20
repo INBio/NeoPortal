@@ -456,7 +456,7 @@
         <property name="class_" type="string">
             <column name="class" />
         </property>
-        <property name="taxonOrder" type="string">
+        <property name="order" type="string">
             <column name="taxon_order" />
         </property>
         <property name="family" type="string">

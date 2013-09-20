@@ -51,7 +51,7 @@ public class GroupPoolsInterface {
 
 	
 	public boolean hasNext(){
-		if(this.pages > 0 && this.pages < this.page)
+		if(this.pages > 0 && this.pages <= this.page)
 			return false;
 		else
 			return true;

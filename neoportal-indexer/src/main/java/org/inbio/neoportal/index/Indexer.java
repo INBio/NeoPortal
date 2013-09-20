@@ -132,6 +132,9 @@ public class Indexer {
     						.hasArgs(1)
     						.withDescription("Import and index taxonomy")
     						.create("t") );
+    	options.addOption(OptionBuilder.hasArg(false)
+    						.withDescription("Import and index occurrences")
+    						.create("o"));
     	
     	try {
 	    	CommandLineParser parser = new org.apache.commons.cli.GnuParser();
@@ -147,6 +150,9 @@ public class Indexer {
 	    		String csvFile = cmd.getOptionValue("t");
 	    		importer.importTaxonomy(csvFile);
 //	    		System.out.println("option t");
+	    	}
+	    	else if(cmd.hasOption("o")) {
+	    		importer.importOccurrences();
 	    	}
 	    	else {
 	    		// automatically generate the help statement

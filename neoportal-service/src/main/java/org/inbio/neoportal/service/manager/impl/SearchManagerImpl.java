@@ -129,7 +129,7 @@ public class SearchManagerImpl implements SearchManager{
         taxonPaginatedSearch(String searchTerms, int offset, int quantity)
             throws ParseException{
 
-        List<TaxonLiteCDTO> taxonList = null;
+    	List<TaxonLiteCDTO> taxonList = null;
         SpeciesLiteSDTO sp = null;
                 
         //Set to store all the different scientific names
@@ -137,12 +137,12 @@ public class SearchManagerImpl implements SearchManager{
         
         //Result List of SpeciesLiteDTO Objects
         List<SpeciesLiteSDTO> result = new ArrayList<SpeciesLiteSDTO>();
-
-        searchTerms = formatTaxonSearch(searchTerms);
-        
-        // Search the results of the query
-        taxonList = taxonDAO.search(searchTerms, offset, quantity);
-        
+    	
+        String luceneQuery = getLuceneQueryForTaxonSearch(searchTerms);
+               
+        // Search the taxon list sort by defaultName
+        taxonList = taxonDAO.search(luceneQuery, "defaultName_keyword", offset, quantity);
+    	
         for (TaxonLiteCDTO tldto: taxonList ){
              
             sp = new SpeciesLiteSDTO();
@@ -180,8 +180,8 @@ public class SearchManagerImpl implements SearchManager{
     @Override
     public Long taxonSearchCount(String searchTerms)
             throws ParseException{
-    	searchTerms = formatTaxonSearch(searchTerms);
-        return taxonDAO.searchCount(searchTerms);
+    	String luceneQuery = getLuceneQueryForTaxonSearch(searchTerms);
+        return taxonDAO.searchCount(luceneQuery);
     }
     
     /**
@@ -350,35 +350,44 @@ public class SearchManagerImpl implements SearchManager{
 		return taxonDAO.searchInCount(idList);
 	}
 
+	
+	public String getLuceneQueryForTaxonSearch(String searchTerms) {
+		String[] fields;
+        String luceneQuery = "";
+        
+    	// check if user is looking for specific taxon
+    	Taxon taxon = taxonDAO.findByDefaultName(searchTerms);
+    	if(taxon != null){
+    	    String searchField = Taxon.TaxonomicalRange.getById(
+    	    		taxon.getTaxonomicalRangeId().longValue()).getTaxonomicalRangeName();
+    	    if(searchField.equals("species")) { 
+    	    	searchField = "defaultName_keyword";
+    	    	searchTerms = "\"" + searchTerms + "\"";
+    	    }
+    	    luceneQuery = searchField + ":" + searchTerms;
+    	}
+    	else {
+    		// TODO: add && and || combinations to lucene special chars
+    		// if there are not lucene special chars assume basic user
+    		if(!searchTerms.matches(".*[+\\-|!\\(\\)\\{\\}\\[\\]^\"~*?:].*")){
+    			if(!searchTerms.matches(".*[ ].*")){
+        			searchTerms = searchTerms + "*";	
+    			}
+    		}
+    		
+    		fields =
+                    new String[]{ "defaultName", "kingdom", "division", "class_",
+                                     "order", "family", "genus", "species",
+                                     "commonNames.name"};
+    		
+    		for (String field : fields) {
+				luceneQuery += field + ":" + searchTerms + " "; 
+			}
+    	}
 
-	@Override
-	public List<SpeciesLiteSDTO> basicPaginatedSearch(String searchText,
-			int offset, int quantity) throws ParseException {
-		// analyze and prepare basic search
-		searchText = "(" + searchText + ")" + 
-				" AND (taxonomicalRangeId:" + Taxon.TaxonomicalRange.SPECIES.getId() +
-				" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.SUBSPECIES.getId() +
-				" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.VARIETY.getId() +
-				" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.FORM.getId() +
-				" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.DOMAIN.getId() +
-				")";
-		
-		return this.taxonPaginatedSearch(searchText, offset, quantity);
+    	luceneQuery = formatTaxonSearch(luceneQuery);
+    	
+    	return luceneQuery;
 	}
-
-
-	@Override
-	public Long basicSearchCount(String searchText) throws ParseException {
-		// analyze and prepare basis search
-		searchText = "(" + searchText + ")" + 
-				" AND (taxonomicalRangeId:" + Taxon.TaxonomicalRange.SPECIES.getId() +
-				" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.SUBSPECIES.getId() +
-				" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.VARIETY.getId() +
-				" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.FORM.getId() +
-				" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.DOMAIN.getId() +
-				")";
-		
-		return this.taxonSearchCount(searchText);
-	}
-
+	
 }

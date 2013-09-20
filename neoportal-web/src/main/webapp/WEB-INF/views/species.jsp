@@ -57,9 +57,9 @@
 			<h2>${scientificName}</h2>
 			
 			<nav><ul>
-				<li><a href="${taxonUrl}">Info</a></li>
-				<li><a href="${taxonUrl}/images">images</a></li>
-				<li><a href="${taxonUrl}/occurrences">occurrences</a></li>
+				<li><a href="${taxonUrl}"><fmt:message key="tab_taxonDescription" /></a></li>
+				<li><a href="${taxonUrl}/images"><fmt:message key="tab_images" /></a></li>
+				<li><a href="${taxonUrl}/occurrences"><fmt:message key="tab_occurrences" /></a></li>
 			</ul></nav>
 			
 			<div class="">

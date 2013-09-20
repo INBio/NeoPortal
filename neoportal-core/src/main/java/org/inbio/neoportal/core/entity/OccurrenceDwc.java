@@ -222,7 +222,7 @@ public class OccurrenceDwc implements Serializable {
     @Field
     private String class_;
     @Field
-    private String taxonOrder;
+    private String order;
     @Field
     private String family;
     @Field
@@ -405,7 +405,7 @@ public class OccurrenceDwc implements Serializable {
 		this.kingdom = kingdom;
 		this.phylum = phylum;
 		this.class_ = class_;
-		this.taxonOrder = taxonOrder;
+		this.order = taxonOrder;
 		this.family = family;
 		this.genus = genus;
 		this.subgenus = subgenus;
@@ -2319,8 +2319,8 @@ public class OccurrenceDwc implements Serializable {
 	/**
 	 * @return the taxonOrder
 	 */
-	public String getTaxonOrder() {
-		return taxonOrder;
+	public String getOrder() {
+		return order;
 	}
 
 
@@ -2328,8 +2328,8 @@ public class OccurrenceDwc implements Serializable {
 	/**
 	 * @param taxonOrder the taxonOrder to set
 	 */
-	public void setTaxonOrder(String taxonOrder) {
-		this.taxonOrder = taxonOrder;
+	public void setOrder(String taxonOrder) {
+		this.order = taxonOrder;
 	}
 
 

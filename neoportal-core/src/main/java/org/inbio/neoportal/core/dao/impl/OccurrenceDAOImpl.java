@@ -23,8 +23,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
@@ -33,10 +39,11 @@ import org.inbio.neoportal.core.dao.OccurrenceDAO;
 import org.inbio.neoportal.core.dto.transformers.OccurrenceDWCTransformer;
 import org.inbio.neoportal.core.dto.transformers.OccurrenceTransformer;
 import org.inbio.neoportal.core.entity.OccurrenceDwc;
-import org.inbio.neoportal.core.entity.Taxon;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
+
+import org.inbio.neoportal.core.NeoportalCoreConstants;
 
 /**
  *
@@ -185,7 +192,7 @@ public class OccurrenceDAOImpl
 	}
 	
 	@Override
-	public long searchCount (String[] fields, String searchText) {
+	public long searchPhraseCount (String field, String searchText) {
 		Session session = getSession();
 		FullTextSession fullTextSession = Search.getFullTextSession(session);
 		
@@ -193,9 +200,9 @@ public class OccurrenceDAOImpl
 		QueryBuilder qb = fullTextSession.getSearchFactory()
 				.buildQueryBuilder().forEntity(OccurrenceDwc.class).get();
 		org.apache.lucene.search.Query query = qb
-				.keyword()
-				.onFields(fields)
-				.matching(searchText)
+				.phrase()
+				.onField(field)
+				.sentence(searchText)
 				.createQuery();
 		
 		// wrap Lucene query in a org.hibernate.Query
@@ -205,17 +212,89 @@ public class OccurrenceDAOImpl
 		return hQuery.getResultSize();
 	}
 	
-	 public List search(
-	    		String[] fields,
+	 public List searchPhrase(
+	    		String field,
 	    		String searchText,
 	    		ResultTransformer resultTransformer,
 	    		int offset,
 	    		int quantity) {
-		 return super.search(
-				 OccurrenceDwc.class, 
-				 resultTransformer, 
-				 fields, 
-				 searchText, offset, quantity);
-				 
+		 
+		 Session session = getSession();
+		 FullTextSession fullTextSession = Search.getFullTextSession(session);
+		 
+		 QueryBuilder qb = fullTextSession.getSearchFactory()
+				 .buildQueryBuilder().forEntity(OccurrenceDwc.class).get();
+		 org.apache.lucene.search.Query query = qb
+				 .phrase()
+				 .onField(field)
+				 .sentence(searchText)
+				 .createQuery();
+		 
+		 FullTextQuery fQuery =
+				 fullTextSession.createFullTextQuery(query, OccurrenceDwc.class);
+		 
+		 fQuery.setResultTransformer(resultTransformer);
+		 fQuery.setFirstResult(offset);
+		 fQuery.setMaxResults(quantity);
+		 
+		 return fQuery.list();
 	 }
+
+	@Override
+	public List searchLucene(String luceneQuery, String sortField,
+			ResultTransformer resultTransformer, int offset, int quantity) {
+		Session session = getSession();
+		FullTextSession fullTextSession = Search.getFullTextSession(session);
+
+		org.apache.lucene.search.Query query = null;
+		
+		QueryParser parser = new QueryParser(
+				NeoportalCoreConstants.LuceneVersion,
+				"",
+				new StandardAnalyzer(NeoportalCoreConstants.LuceneVersion));
+		
+		try {
+			query = parser.parse(luceneQuery);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		FullTextQuery fQuery = fullTextSession.createFullTextQuery(query, OccurrenceDwc.class);
+		
+		Sort sort = new Sort(new SortField(sortField, SortField.STRING));
+		fQuery.setSort(sort);
+		
+		fQuery.setResultTransformer(resultTransformer);
+		fQuery.setFirstResult(offset);
+		fQuery.setMaxResults(quantity);
+		
+		return fQuery.list();
+	}
+
+	@Override
+	public long searchLuceneCount(String luceneQuery) {
+		Session session = getSession();
+		FullTextSession fullTextSession = Search.getFullTextSession(session);
+
+		org.apache.lucene.search.Query query = null;
+		
+		QueryParser parser = new QueryParser(
+				NeoportalCoreConstants.LuceneVersion,
+				"",
+				new StandardAnalyzer(NeoportalCoreConstants.LuceneVersion));
+		
+		try {
+			query = parser.parse(luceneQuery);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		FullTextQuery fQuery = fullTextSession.createFullTextQuery(query, OccurrenceDwc.class);
+
+		return fQuery.getResultSize();
+	}
+	 
+	 
 }

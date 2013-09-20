@@ -65,7 +65,7 @@ public interface GenericDAO<E, ID extends Serializable> {
 	     * @param entityClass
 	     * @return 
 	     */
-	    public Long searchCount(
+	    public Long searchPhraseCount(
 	        final String[] fields,
 	        final String searchText);
 

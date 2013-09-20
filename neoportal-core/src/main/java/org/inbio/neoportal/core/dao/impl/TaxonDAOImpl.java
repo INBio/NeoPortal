@@ -33,9 +33,12 @@ import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
 import org.apache.lucene.util.Version;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
@@ -80,6 +83,42 @@ public class TaxonDAOImpl
                             searchText, 
                             offset, 
                             quantity);
+       
+    }
+    
+    @Override
+    public List<TaxonLiteCDTO> search
+        (String luceneQuery,
+         String sortField, 
+         int offset, 
+         int quantity) {
+        
+        Session session = getSession();
+		FullTextSession fullTextSession = Search.getFullTextSession(session);
+		
+		// wrap Lucene query in a org.hibernate.Query
+		QueryParser parser = new QueryParser(
+				Version.LUCENE_33, "", 
+				fullTextSession.getSearchFactory().getAnalyzer(Taxon.class));
+		
+		Query query = null;
+		try {
+			query = parser.parse(luceneQuery);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		org.hibernate.search.FullTextQuery hQuery = 
+				fullTextSession.createFullTextQuery(query, Taxon.class);
+		
+		hQuery.setSort(new Sort(new SortField(sortField, SortField.STRING)));
+		
+		hQuery.setResultTransformer(new TaxonLiteTransformer());
+		hQuery.setFirstResult(offset);
+		hQuery.setMaxResults(quantity);
+		
+        return hQuery.list();
        
     }
 

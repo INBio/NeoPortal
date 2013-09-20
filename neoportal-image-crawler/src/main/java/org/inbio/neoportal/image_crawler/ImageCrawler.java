@@ -37,7 +37,6 @@ import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
  * @author avargas
  *
  */
-@Component
 public class ImageCrawler 
 {
 	
@@ -55,7 +54,11 @@ public class ImageCrawler
         Options options = new Options();
         options.addOption(OptionBuilder
         					.withDescription("Collect new images from flickr")
-        					.create("crawler"));
+        					.create("flickr"));
+        options.addOption(OptionBuilder
+        					.withArgName("csv")
+        					.withDescription("Import images from csv file")
+        					.create("m3s"));
         
         try {
 			CommandLineParser parser = new GnuParser();
@@ -64,9 +67,13 @@ public class ImageCrawler
 			ApplicationContext context = 
 	                new ClassPathXmlApplicationContext("applicationContext.xml");
 			
-			if(cmd.hasOption("crawler")) {
-				ImageCrawler imageCrawler = context.getBean(ImageCrawler.class);
-				imageCrawler.index(THREADS, context);
+			if(cmd.hasOption("flickr")) {
+				Indexer indexer = context.getBean(Indexer.class);
+				indexer.indexFlickr(THREADS);
+			}
+			else if(cmd.hasOption("m3s")) {
+				Indexer indexer = context.getBean(Indexer.class);
+				indexer.indexM3s(THREADS, cmd.getOptionValue("csv"));
 			}
 			else {
 				// automatically generate the help statement
@@ -83,53 +90,4 @@ public class ImageCrawler
 			e.printStackTrace();
 		}
     }
-    
-    /*
-     * Get images from flickr and start threads for 
-     * associate taxon and occurrence and then index 
-     */
-    private void index(int threads, ApplicationContext context) {
-		ExecutorService executor = Executors.newFixedThreadPool(threads);
-		
-		Properties properties = new Properties();
-		String flickrApiKey = null;
-		String groupId = null;
-		
-		try {
-			properties.load(getClass().getResourceAsStream("/config.properties"));
-			flickrApiKey = properties.getProperty("flickr_api_key");
-			groupId = properties.getProperty("group_id");
-			
-			// get image list from flickr
-			Flickr flickr = new Flickr(flickrApiKey);
-			GroupPoolsInterface groupPoolsInterface = flickr.getGroupPoolsInterface();
-			JSONArray photos;
-			
-			while( groupPoolsInterface.hasNext()){
-				photos = groupPoolsInterface.nextPhotosPage(groupId);
-				// loop the list and start threads
-				for (int i = 0; i < photos.length(); i++) {
-					ImageIndexer imageIndexer = (ImageIndexer)context.getBean("imageIndexer", photos.getJSONObject(i));
-					//imageIndexer = new ImageIndexer(photos.getJSONObject(i));
-					System.out.println("schedule: " + photos.getJSONObject(i).getString("title"));
-					executor.execute(imageIndexer);
-				}
-			}
-			// This will make the executor accept no new threaImages
-		    // and finish all existing threads in the queue
-		    executor.shutdown();
-		    // Wait until all threads are finish
-	    	executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-    	} catch (InterruptedException e) {
-    	  
-    	} catch (IOException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    System.out.println("Finished all threads");
-	}
-    
-    
 }

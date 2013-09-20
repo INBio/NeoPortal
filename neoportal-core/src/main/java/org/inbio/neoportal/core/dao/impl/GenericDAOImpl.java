@@ -25,8 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-@Repository
-@Transactional
 public abstract class 
 	GenericDAOImpl<E, ID extends Serializable>
 		implements GenericDAO<E, ID> {
@@ -163,7 +161,7 @@ public abstract class
 	 * @see org.inbio.neoportal.core.dao.GenericDAO#searchCount(org.hibernate.transform.ResultTransformer, java.lang.String[], java.lang.String)
 	 */
 	@Override
-	public Long searchCount(
+	public Long searchPhraseCount(
 			String[] fields,
 			String searchText) {
 		

@@ -94,19 +94,43 @@ public interface OccurrenceDAO
      * @param searchText
      * @return
      */
-    public long searchCount(String[] fields, String searchText);
+    public long searchPhraseCount(String field, String searchText);
     
     /**
      * 
-     * @param fields
+     * @param field
      * @param searchText
      * @param resultTransformer
      * @return
      */
-    public List search(
-    		String[] fields,
+    public List searchPhrase(
+    		String field,
     		String searchText,
     		ResultTransformer resultTransformer,
     		int offset,
     		int quantity);
+    
+    /**
+     * Search by parsing the <code>luceneQuery</code>
+     * @param luceneQuery
+     * @param sortField
+     * @param resultTransformer
+     * @param offset
+     * @param quantity
+     * @return
+     */
+    public List searchLucene(
+    		String luceneQuery,
+    		String sortField,
+    		ResultTransformer resultTransformer,
+    		int offset,
+    		int quantity);
+    
+    /**
+     * Count the total occurrences for <code>searchLucene</code> method
+     * @param luceneQuery
+     * @return
+     */
+    public long searchLuceneCount(
+    		String luceneQuery);
 }

@@ -4,7 +4,10 @@ import java.math.BigInteger;
 import java.util.List;
 
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
 import org.hibernate.Session;
+import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
@@ -38,19 +41,63 @@ public class ImageDAOImpl
 				.setBigInteger("flickrId", flickrId)
 				.uniqueResult();
 	}
+	
+	@Override
+	public Image findByM3sId(BigInteger m3sId) {
+		
+		return (Image)getSessionFactory().getCurrentSession()
+				.createQuery("from Image where source='m3s' and externalImageId = :m3sId")
+				.setBigInteger("m3sId", m3sId)
+				.uniqueResult();
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ImagesCDTO> search(String[] fields,
+	public List<ImagesCDTO> searchPhrase(String field,
 			String searchText, String sortField, int offset, int quantity) {
-		return (List<ImagesCDTO>)super.search(new ImagesTransformer(), fields, searchText, sortField, offset, quantity);
+		
+		Session session = getSessionFactory().getCurrentSession();
+		FullTextSession fullTextSession = Search.getFullTextSession(session);
+		
+		QueryBuilder qb = fullTextSession.getSearchFactory()
+				.buildQueryBuilder().forEntity(Image.class).get();
+		Query query = qb
+				.phrase()
+				.onField(field)
+				.sentence(searchText)
+				.createQuery();
+		
+		FullTextQuery fQuery = 
+				fullTextSession.createFullTextQuery(query, Image.class);
+		
+		fQuery.setSort(new Sort(new SortField(sortField, SortField.STRING)));
+		
+		fQuery.setResultTransformer(new ImagesTransformer());
+		fQuery.setFirstResult(offset);
+		fQuery.setMaxResults(quantity);
+		
+		return fQuery.list();
 	}
 	
-	public Long searchCount(
-	        final String[] fields,
+	public Long searchPhraseCount(
+	        final String field,
 	        final String searchText
 	        ) {
-		return super.searchCount(fields, searchText);
+		Session session = getSessionFactory().getCurrentSession();
+		FullTextSession fullTextSession = Search.getFullTextSession(session);
+		
+		QueryBuilder qb = fullTextSession.getSearchFactory()
+				.buildQueryBuilder().forEntity(Image.class).get();
+		Query query = qb
+				.phrase()
+				.onField(field)
+				.sentence(searchText)
+				.createQuery();
+		
+		FullTextQuery fQuery = 
+				fullTextSession.createFullTextQuery(query, Image.class);
+		
+		return (long) fQuery.getResultSize();
 	}
 	
 	public List<ImagesCDTO> search(

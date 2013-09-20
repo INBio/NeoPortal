@@ -445,7 +445,7 @@
             <column name="[class]" />
         </property>
         <property name="order" type="string">
-            <column name="[[order]]" />
+            <column name="[order]" />
         </property>
         <property name="family" type="string">
             <column name="[family]" />

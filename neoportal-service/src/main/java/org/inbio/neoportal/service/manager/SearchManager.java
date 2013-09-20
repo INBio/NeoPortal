@@ -79,28 +79,6 @@ public interface SearchManager {
      */
     public Long taxonSearchCount(String searchText)
             throws ParseException;
-   
-    /**
-     * 
-     * @param searchText
-     * @param offset
-     * @param quantity
-     * @return
-     * @throws ParseException
-     */
-    public List<SpeciesLiteSDTO> basicPaginatedSearch
-        (String searchText, int offset, int quantity)
-            throws ParseException;
-
-    /**
-     * 
-     * @param searchText
-     * @return
-     * @throws ParseException
-     */
-    public Long basicSearchCount(String searchText)
-            throws ParseException;
-
 
     /**
      * Get taxon list with id's in <code>idList</code>
