@@ -81,7 +81,7 @@
 					<c:if test="${not empty scientificName })">
 					<div class="controls">
 						<form method="post" action="${pageContext.request.contextPath}/api/species/${scientificName}/occurrences/export">
-							<button name="export" type="submit" >Download</button>
+							<button name="export" type="submit">Download</button>
 						</form>
 					</div>
 					</c:if>
