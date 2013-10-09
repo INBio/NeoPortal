@@ -26,6 +26,7 @@ import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import org.apache.log4j.Logger;
 
 import org.inbio.neoportal.image_crawler.flickr.Flickr;
 import org.inbio.neoportal.image_crawler.flickr.GroupPoolsInterface;
@@ -46,6 +47,8 @@ public class Indexer {
 
 	@Autowired
 	ApplicationContext applicationContext;
+	
+	private final static Logger LOGGER = Logger.getLogger(Indexer.class);
 	
 	public Indexer() {
 		
@@ -104,6 +107,7 @@ public class Indexer {
      */
     public void indexM3s (int threads, String csvFile) {
     	ExecutorService executor = Executors.newFixedThreadPool(threads);
+		int counter = 0;
 		
     	try {
 			CSVReader csvReader = new CSVReader(new FileReader(csvFile));
@@ -119,14 +123,20 @@ public class Indexer {
 			
 			while ((csvLine = csvReader.readNext()) != null) {
 				M3sIndexer m3sIndexer = (M3sIndexer) applicationContext.getBean("m3sIndexer", headersMap, csvLine);
-				System.out.println("schedule: " + csvLine[0]);
 				executor.execute(m3sIndexer);
+				counter++;
 			}
+			csvReader.close();
+
+			LOGGER.info("Schedule " + counter + " images to insert");
+			
 			// This will make the executor accept no new threaImages
 		    // and finish all existing threads in the queue
 		    executor.shutdown();
 		    // Wait until all threads are finish
 	    	executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+	    	
+	    	LOGGER.info("End indexing " + counter + " images");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

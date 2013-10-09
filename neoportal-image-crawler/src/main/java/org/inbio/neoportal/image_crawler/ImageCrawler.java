@@ -1,35 +1,12 @@
 package org.inbio.neoportal.image_crawler;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
-import org.apache.commons.io.IOUtils;
-import org.inbio.neoportal.image_crawler.flickr.Flickr;
-import org.inbio.neoportal.image_crawler.flickr.GroupPoolsInterface;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.databind.Module;
-import com.fasterxml.jackson.datatype.jsonorg.JsonOrgModule;
 
 
 /**
@@ -57,11 +34,12 @@ public class ImageCrawler
         					.create("flickr"));
         options.addOption(OptionBuilder
         					.withArgName("csv")
+        					.hasArg()
         					.withDescription("Import images from csv file")
         					.create("m3s"));
         
         try {
-			CommandLineParser parser = new GnuParser();
+			CommandLineParser parser = new org.apache.commons.cli.PosixParser();
 			CommandLine cmd = parser.parse(options, args);
 			
 			ApplicationContext context = 
@@ -73,7 +51,7 @@ public class ImageCrawler
 			}
 			else if(cmd.hasOption("m3s")) {
 				Indexer indexer = context.getBean(Indexer.class);
-				indexer.indexM3s(THREADS, cmd.getOptionValue("csv"));
+				indexer.indexM3s(THREADS, cmd.getOptionValue("m3s"));
 			}
 			else {
 				// automatically generate the help statement

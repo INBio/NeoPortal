@@ -18,21 +18,35 @@
  */
 package org.inbio.neoportal.web.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.hibernate.ejb.AvailableSettings;
+import org.inbio.neoportal.core.dto.advancedsearch.SearchColumnCDTO;
+import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
+import org.inbio.neoportal.service.dto.advancedSearch.FilterSDTO;
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO;
+import org.inbio.neoportal.service.entity.AdvancedSearchData;
+import org.inbio.neoportal.service.manager.AdvancedSearchManager;
 import org.inbio.neoportal.service.manager.SpeciesManager;
 import org.inbio.neoportal.web.dto.TaxonDescriptionFullWDTO;
 import org.inbio.neoportal.web.dto.wrapper.XMLTaxonDescriptionWrapper;
+import org.inbio.neoportal.web.view.CSVview;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Métodos para accesar a la información de especies 
@@ -45,6 +59,9 @@ public class SpeciesApiController {
     
     @Autowired
     private SpeciesManager speciesManager;
+    
+    @Autowired
+    private AdvancedSearchManager advancedSearchManager;
     
     @RequestMapping (
             value = "/{scientificName}/{provider}",
@@ -295,4 +312,36 @@ public class SpeciesApiController {
 //        return speciesManager.getImagesByDefaultName(scientificName);
     	return null;
     }
+    
+    @RequestMapping (
+            value = "/{defaultName}/occurrences/export",
+            method = RequestMethod.POST
+            )
+        public ModelAndView advancedSearchOccurrencesCSV (
+        		@PathVariable(value = "defaultName") String defaultName
+           ){
+
+    		ModelAndView mav = new ModelAndView(new CSVview());
+    		List<OccurrenceDwcCDTO> occurrenceCDTO;
+    		int totalOccurrences;
+    		List<String> columns;
+    		
+    		// get all occurrences for the giving defaultName
+    		totalOccurrences = speciesManager.countOccurrencesByDefaultName(defaultName).intValue();
+    		occurrenceCDTO = speciesManager.getOccurrencesByDefaultName(defaultName, 0, totalOccurrences);
+
+    		// get all columns
+    		List<SearchColumnCDTO> columnList = advancedSearchManager.getAllColumns();
+    		
+    		//get columns selected by the user
+    		columns = new ArrayList<String>();
+    		for (SearchColumnCDTO searchColumnCDTO : columnList) {
+				columns.add(searchColumnCDTO.getColumnKey());
+			}
+    		
+            mav.addObject("data", occurrenceCDTO);
+            mav.addObject("columns", columns);
+    		
+    		return mav;
+        }
 }

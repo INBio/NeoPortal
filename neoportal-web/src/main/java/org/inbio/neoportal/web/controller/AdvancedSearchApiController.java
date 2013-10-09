@@ -233,7 +233,7 @@ public class AdvancedSearchApiController{
            ){
             
 
-    		ModelAndView mav = new ModelAndView(new CSVview());;
+    		ModelAndView mav = new ModelAndView(new CSVview());
     		List<OccurrenceDwcCDTO> occurrenceCDTO;
     		List<String> columns;
     		ObjectMapper mapper = new ObjectMapper();

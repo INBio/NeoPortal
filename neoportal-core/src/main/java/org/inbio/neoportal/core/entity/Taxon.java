@@ -56,7 +56,7 @@ public class Taxon
 	public static enum TaxonomicalRange{
 		ROOT(new Long(0), ""),
 	    KINGDOM(new Long(1), "kingdom"),
-	    FHYLUM(new Long(2), "division"),
+	    PHYLUM(new Long(2), "phylum"),
 	    SUBFHYLUM(new Long(3), "subphylumSubdivisionTaxonId"),
 	    CLASS(new Long(4),"class_"),
 	    SUBCLASS(new Long(5),"subclassTaxonId"),
@@ -126,7 +126,7 @@ public class Taxon
         map.put("taxonomical_range_id", "taxonomicalRangeId");
         map.put("default_name", "defaultName");
         map.put("kingdom", "kingdom");
-        map.put("division", "division");
+        map.put("phylum", "phylum");
         map.put("class", "class_");
         map.put("order_", "order");
         map.put("family", "family");
@@ -134,7 +134,7 @@ public class Taxon
         map.put("species", "species");
         map.put("dominium_id", "dominiumId");
         map.put("kingdom_id", "kingdomId");
-        map.put("division_id", "divisionId");
+        map.put("phylum_id", "phylumId");
         map.put("subdivision_id", "subdivisionId");
         map.put("class_id", "classId");
         map.put("subclass_id", "subclassId");
@@ -176,9 +176,9 @@ public class Taxon
 	/**
 	 * 
 	 */
-	public static final String TaxonFields = "kingdom|division|class_|order|family|genus|species|defaultName";
+	public static final String TaxonFields = "kingdom|phylum|class_|order|family|genus|species|defaultName";
 	
-	public static final String TaxonFieldsForAutocomplete = "kingdom|division|class_|order|family|genus|species|defaultName_keyword";
+	public static final String TaxonFieldsForAutocomplete = "kingdom|phylum|class_|order|family|genus|species|defaultName_keyword";
 	
     // Fields    
 
@@ -203,7 +203,7 @@ public class Taxon
      private String kingdom;
 
      @Field(store=Store.YES)
-     private String division;
+     private String phylum;
 
      @Field(store=Store.YES)
      private String class_;
@@ -237,7 +237,7 @@ public class Taxon
      
      private BigDecimal dominiumId;
      private BigDecimal kingdomId;
-     private BigDecimal divisionId;
+     private BigDecimal phylumId;
      private BigDecimal subdivisionId;
      private BigDecimal classId;
      private BigDecimal subclassId;
@@ -294,17 +294,16 @@ public class Taxon
         this.taxonId = taxonId;
     }
     
-   
-    public Taxon(BigDecimal taxonId, Taxon taxonBySinonymTaxonId,
+	public Taxon(BigDecimal taxonId, Taxon taxonBySinonymTaxonId,
 			Taxon taxonByAncestorTaxonId, BigDecimal taxonomicalRangeId,
-			String defaultName, String kingdom, String division, String class_,
+			String defaultName, String kingdom, String phylum, String class_,
 			String order, String family, String genus, String species,
 			String subDivision, String subClass, String subOrder,
 			String superFamily, String subFamily, String tribe,
-			String subTribe, String subGenus, String section, String subSection, String race,
-			String subSpecies, String variety, String form,
-			BigDecimal dominiumId, BigDecimal kingdomId, BigDecimal divisionId,
-			BigDecimal subdivisionId, BigDecimal classId,
+			String subTribe, String subGenus, String section,
+			String subSection, String race, String subSpecies, String variety,
+			String form, BigDecimal dominiumId, BigDecimal kingdomId,
+			BigDecimal phylumId, BigDecimal subdivisionId, BigDecimal classId,
 			BigDecimal subclassId, BigDecimal orderId, BigDecimal subOrderId,
 			BigDecimal superFamilyId, BigDecimal familyId,
 			BigDecimal subFamilyId, BigDecimal tribeId, BigDecimal subTribeId,
@@ -324,7 +323,7 @@ public class Taxon
 		this.taxonomicalRangeId = taxonomicalRangeId;
 		this.defaultName = defaultName;
 		this.kingdom = kingdom;
-		this.division = division;
+		this.phylum = phylum;
 		this.class_ = class_;
 		this.order = order;
 		this.family = family;
@@ -346,7 +345,7 @@ public class Taxon
 		this.form = form;
 		this.dominiumId = dominiumId;
 		this.kingdomId = kingdomId;
-		this.divisionId = divisionId;
+		this.phylumId = phylumId;
 		this.subdivisionId = subdivisionId;
 		this.classId = classId;
 		this.subclassId = subclassId;
@@ -421,12 +420,12 @@ public class Taxon
     public void setKingdom(String kingdom) {
         this.kingdom = kingdom;
     }
-    public String getDivision() {
-        return this.division;
+    public String getPhylum() {
+        return this.phylum;
     }
     
-    public void setDivision(String division) {
-        this.division = division;
+    public void setPhylum(String division) {
+        this.phylum = division;
     }
     public String getClass_() {
         return this.class_;
@@ -619,12 +618,13 @@ public class Taxon
     public void setKingdomId(BigDecimal kingdomId) {
         this.kingdomId = kingdomId;
     }
-    public BigDecimal getDivisionId() {
-        return this.divisionId;
+    
+    public BigDecimal getPhylumId() {
+        return this.phylumId;
     }
     
-    public void setDivisionId(BigDecimal divisionId) {
-        this.divisionId = divisionId;
+    public void setPhylumId(BigDecimal divisionId) {
+        this.phylumId = divisionId;
     }
     public BigDecimal getSubdivisionId() {
         return this.subdivisionId;

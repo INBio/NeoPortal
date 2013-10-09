@@ -23,7 +23,7 @@
 					</c:choose>
 				</a>
 				<!-- recursive call to make children for this branch -->
-				<c:if test="${groupNav.groupNavChilds != null}">
+				<c:if test="${not empty groupNav.groupNavChilds}">
 					<n:groupNavTree groupNavList="${groupNav.groupNavChilds}" gni="${gni}"></n:groupNavTree>
 				</c:if>
 			</li>

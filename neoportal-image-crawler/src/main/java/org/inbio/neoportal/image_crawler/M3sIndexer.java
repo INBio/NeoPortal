@@ -52,6 +52,10 @@ public class M3sIndexer implements Runnable {
 	
 	private final static Logger LOGGER = Logger.getLogger(M3sIndexer.class);
 	
+	public M3sIndexer () {
+		
+	}
+	
 	public M3sIndexer (HashMap<String, Integer> csvHeaders, String[] csvLine) {
 		this.csvHeaders = csvHeaders;
 		this.csvLine = csvLine;
@@ -60,12 +64,12 @@ public class M3sIndexer implements Runnable {
 	/* (non-Javadoc)
 	 * @see java.lang.Runnable#run()
 	 */
-	@Override
 	public void run() {
 
 		boolean update = false;
 		String imageId = csvLine[csvHeaders.get("imageId")];
-		Image image = imageDAO.findByM3sId(new BigInteger(imageId));
+		String taxonId = csvLine[csvHeaders.get("taxonId")];
+		Image image = imageDAO.findM3sImage(new BigInteger(imageId), new BigDecimal(taxonId));
 		if (image == null)
 			image = new Image();
 		else
@@ -73,16 +77,15 @@ public class M3sIndexer implements Runnable {
 		
 		image.setSource("m3s");
 		image.setExternalImageId(new BigInteger(imageId));
+		image.setAuthor(csvLine[csvHeaders.get("author")]);
 		
-		String taxonId = csvLine[csvHeaders.get("taxonId")];
 		Taxon taxon = taxonDAO.findById(Taxon.class, new BigDecimal(taxonId));
 		image.setTaxon(taxon);
-		
-		image.setAuthor(csvLine[csvHeaders.get("author")]);
 		
 		// TODO: make the map to creative commons
 		// map rights 
 		String rights = csvLine[csvHeaders.get("rights")];
+		image.setRights(rights);
 		
 		if (update) {
 			imageDAO.update(image);
@@ -91,7 +94,7 @@ public class M3sIndexer implements Runnable {
 			imageDAO.create(image);
 		}
 		
-		LOGGER.info("Inserting image with id " + imageId);
+//		LOGGER.info("Inserting image with id " + imageId);
 	}
 
 }

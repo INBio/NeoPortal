@@ -18,6 +18,7 @@
  */
 package org.inbio.neoportal.core.dao;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public interface ImageDAO extends
 	 */
 	public Image findByFlickrId(BigInteger flickrId);
 
-	public Image findByM3sId(BigInteger m3sId);
+	public Image findM3sImage(BigInteger m3sId, BigDecimal taxonId);
 	/**
 	 * 
 	 * @return

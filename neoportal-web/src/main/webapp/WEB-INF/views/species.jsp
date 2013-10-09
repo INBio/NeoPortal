@@ -48,13 +48,20 @@
                 	
         <!-- 	FIXME: change home.js for a basic search script -->
         <script type="text/javascript" src="<c:url value="/resources/species/home.js" />"></script>
+        
+        <script type="text/javascript" src="<c:url value="/resources/species/species.js" />"></script>
                 	
 	</jsp:attribute>
 	<jsp:body>
         
         <div class="data_wrapper species_page">
         	
-			<h2>${scientificName}</h2>
+        	<c:if test="${taxon.taxonomicalRangeId < 13}">
+			<h2>${taxon.defaultName}</h2>
+			</c:if>
+			<c:if test="${taxon.taxonomicalRangeId >= 13}">
+			<h2 class="scientific-name">${taxon.defaultName}</h2>
+			</c:if>
 			
 			<nav><ul>
 				<li><a href="${taxonUrl}"><fmt:message key="tab_taxonDescription" /></a></li>
@@ -71,6 +78,13 @@
 					    <n:imageGallery images="${images}"></n:imageGallery>
 					</c:when>
 					<c:when test="${context == 'occurrences'}">
+					<c:if test="${not empty scientificName })">
+					<div class="controls">
+						<form method="post" action="${pageContext.request.contextPath}/api/species/${scientificName}/occurrences/export">
+							<button name="export" type="submit" >Download</button>
+						</form>
+					</div>
+					</c:if>
 					    <n:occurrenceTable occurrences="${occurrences}"></n:occurrenceTable>
 					</c:when>
 				</c:choose>

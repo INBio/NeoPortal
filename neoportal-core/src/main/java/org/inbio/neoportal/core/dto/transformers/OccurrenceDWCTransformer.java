@@ -203,7 +203,7 @@ public class OccurrenceDWCTransformer
             newCDTO.setKingdom(oc.getKingdom());
             newCDTO.setPhylum(oc.getPhylum());
             newCDTO.setClass_(oc.getClass_());
-            newCDTO.setTaxonOrder(oc.getOrder());
+            newCDTO.setOrder(oc.getOrder());
             newCDTO.setFamily(oc.getFamily());
             newCDTO.setGenus(oc.getGenus());
             newCDTO.setSubgenus(oc.getSubgenus());

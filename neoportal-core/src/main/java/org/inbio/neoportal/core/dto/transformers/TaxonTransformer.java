@@ -87,7 +87,7 @@ public class TaxonTransformer
 
         taxonCDTO.setKingdom(taxon.getKingdom());
 
-        taxonCDTO.setDivision(taxon.getDivision());
+        taxonCDTO.setPhylum(taxon.getPhylum());
 
         taxonCDTO.setClass_(taxon.getClass_());
 
@@ -102,8 +102,8 @@ public class TaxonTransformer
         	taxonCDTO.setDominiumId(taxon.getDominiumId().toString());
         if(taxon.getKingdomId() != null)
         	taxonCDTO.setKingdomId(taxon.getKingdomId().toString());
-        if(taxon.getDivisionId() != null)
-        	taxonCDTO.setDivisionId(taxon.getDivisionId().toString());
+        if(taxon.getPhylumId() != null)
+        	taxonCDTO.setPhylumId(taxon.getPhylumId().toString());
         if(taxon.getSubdivisionId() != null)
         	taxonCDTO.setSubdivisionId(taxon.getSubdivisionId().toString());
         if(taxon.getClassId() != null)

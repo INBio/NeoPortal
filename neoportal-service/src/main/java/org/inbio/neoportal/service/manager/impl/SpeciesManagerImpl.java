@@ -7,22 +7,17 @@ package org.inbio.neoportal.service.manager.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.transform.ResultTransformer;
 import org.inbio.neoportal.core.dao.ImageDAO;
 import org.inbio.neoportal.core.dao.OccurrenceDAO;
 import org.inbio.neoportal.core.dao.TaxonDAO;
 import org.inbio.neoportal.core.dao.TaxonDescriptionDAO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
 import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
-import org.inbio.neoportal.core.dto.taxon.TaxonCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
 import org.inbio.neoportal.core.dto.transformers.ImagesTransformer;
 import org.inbio.neoportal.core.dto.transformers.OccurrenceDWCTransformer;
-import org.inbio.neoportal.core.dto.transformers.TaxonTransformer;
 import org.inbio.neoportal.core.entity.Image;
-import org.inbio.neoportal.core.entity.OccurrenceDwc;
 import org.inbio.neoportal.core.entity.Taxon;
-import org.inbio.neoportal.core.entity.Taxon.TaxonomicalRange;
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO;
 import org.inbio.neoportal.service.dto.species.TaxonFeatureDTO;
 import org.inbio.neoportal.service.manager.SpeciesManager;
@@ -195,17 +190,20 @@ public class SpeciesManagerImpl
      * @param defaultName
      * @return 
      */
+    @Transactional
     public List<ImagesCDTO> getImagesByDefaultName(
     		String defaultName,
     		int offset,
     		int quantity
     		){
-    	Taxon taxon = taxonDAO.findByDefaultName(defaultName);
+    	List<Taxon> taxonList = taxonDAO.findByDefaultName(defaultName); 
+    	Taxon taxon;
     	
-    	if (taxon == null)
+    	if (taxonList.size() == 0)
     		return null;
     	
-    	// get feature images
+    	taxon = taxonList.get(0);
+    	
     	String field = "taxon." + Taxon.TaxonomicalRange.getById(
 				taxon.getTaxonomicalRangeId().longValue())
 				.getTaxonomicalRangeName();
@@ -221,12 +219,14 @@ public class SpeciesManagerImpl
     
     
     public Long countImagesByDefaultName(String defaultName){
-    	Taxon taxon = taxonDAO.findByDefaultName(defaultName);
+    	List<Taxon> taxonList = taxonDAO.findByDefaultName(defaultName);
+    	Taxon taxon;
     	
-    	if (taxon == null)
+    	if (taxonList.size() == 0)
     		return Long.valueOf(0);
     	
-    	// get feature images
+    	taxon = taxonList.get(0);
+    	
     	String field = "taxon." + Taxon.TaxonomicalRange.getById(
 				taxon.getTaxonomicalRangeId().longValue())
 				.getTaxonomicalRangeName();
@@ -250,10 +250,12 @@ public class SpeciesManagerImpl
     	long imageCount;
     	long occurrenceCount;
     	
-    	Taxon taxon = taxonDAO.findByDefaultName(defaultName);
+    	List<Taxon> taxonList = taxonDAO.findByDefaultName(defaultName);
     	
-    	if (taxon == null)
+    	if (taxonList.size() == 0)
     		return null;
+    	
+    	Taxon taxon = taxonList.get(0);
     				
     	taxonFeature.setDefaultName(taxon.getDefaultName());
     	if(!taxon.getTaxonDescriptions().isEmpty()) {
@@ -276,7 +278,7 @@ public class SpeciesManagerImpl
     		imageCount = imageList.size();
     	}
     	else {
-    		images = imageDAO.searchPhrase(field, defaultName, "", 0, 4);
+    		images = imageDAO.searchPhrase(field, defaultName, "taxon.defaultName_keyword", 0, 4);
     		imageCount = imageDAO.searchPhraseCount(field, defaultName);
     	}
     	
@@ -297,10 +299,13 @@ public class SpeciesManagerImpl
 			int offset, 
 			int quantity) {
 		
-		Taxon taxon = taxonDAO.findByDefaultName(defaultName);
+		List<Taxon> taxonList = taxonDAO.findByDefaultName(defaultName);
+		Taxon taxon;
     	
-    	if (taxon == null)
+    	if (taxonList.size() == 0)
     		return null;
+    	
+    	taxon = taxonList.get(0);
     	
     	// prepare lucene query
     	String luceneQuery = getLuceneQueryOccurrences(taxon);
@@ -317,10 +322,13 @@ public class SpeciesManagerImpl
 	public Long countOccurrencesByDefaultName(
 			String defaultName) {
 		
-		Taxon taxon = taxonDAO.findByDefaultName(defaultName);
+		List<Taxon> taxonList = taxonDAO.findByDefaultName(defaultName);
+		Taxon taxon;
     	
-    	if (taxon == null)
+    	if (taxonList.size() == 0)
     		return null;
+    	
+    	taxon = taxonList.get(0);
     	
     	String luceneQuery = getLuceneQueryOccurrences(taxon);
     	
@@ -328,30 +336,37 @@ public class SpeciesManagerImpl
 	}
 
 	@Override
-	public TaxonCDTO getTaxonByDefaultName(String defaultName) {
+	public Taxon getTaxonByDefaultName(String defaultName) {
 		// field used for exact match query
 		String[] fields = {"defaultName_keyword"};
 		
-		ResultTransformer resultTransformer = new TaxonTransformer();
+		List<Taxon> taxonList = taxonDAO.findByDefaultName(defaultName);
+		Taxon taxon;
+    	
+    	if (taxonList.size() == 0)
+    		return null;
+    	
+    	taxon = taxonList.get(0);
+    	
 		
-		List<TaxonCDTO> list = taxonDAO.search(defaultName, fields, 0, 1, resultTransformer);
-		TaxonCDTO taxonCDTO;
+//		List<TaxonCDTO> list = taxonDAO.search(defaultName, fields, 0, 1, resultTransformer);
+//		TaxonCDTO taxonCDTO;
+//		
+//		if (list.isEmpty())
+//			return null;
+//		else
+//			taxonCDTO = list.get(0);
+//		
+//		// values to lowercase
+		taxon.setKingdom(taxon.getKingdom().toLowerCase());
+		taxon.setPhylum(taxon.getPhylum().toLowerCase());
+		taxon.setClass_(taxon.getClass_().toLowerCase());
+		taxon.setOrder(taxon.getOrder().toLowerCase());
+		taxon.setFamily(taxon.getFamily().toLowerCase());
+		taxon.setGenus(taxon.getGenus().toLowerCase());
+//		taxon.setDefaultName(taxon.getDefaultName().toLowerCase());
 		
-		if (list.isEmpty())
-			return null;
-		else
-			taxonCDTO = list.get(0);
-		
-		// values to lowercase
-		taxonCDTO.setKingdom(taxonCDTO.getKingdom().toLowerCase());
-		taxonCDTO.setDivision(taxonCDTO.getDivision().toLowerCase());
-		taxonCDTO.setClass_(taxonCDTO.getClass_().toLowerCase());
-		taxonCDTO.setOrder(taxonCDTO.getOrder().toLowerCase());
-		taxonCDTO.setFamily(taxonCDTO.getFamily().toLowerCase());
-		taxonCDTO.setGenus(taxonCDTO.getGenus().toLowerCase());
-		taxonCDTO.setDefaultName(taxonCDTO.getDefaultName().toLowerCase());
-		
-		return taxonCDTO;
+		return taxon;
 	}
 
 	/**
@@ -372,21 +387,4 @@ public class SpeciesManagerImpl
 		return luceneQuery;
 	}
 	
-	/**
-	 * Return a lucene query to get occurrences related to species or lower level elements of a giving taxon 
-	 * @param taxon
-	 * @return
-	 */
-	private String getLuceneQueryImages(Taxon taxon) {
-		String luceneQuery;
-		if(taxon.getTaxonomicalRangeId().longValue() < Taxon.TaxonomicalRange.SPECIES.getId()) {
-			luceneQuery = "taxon." + Taxon.TaxonomicalRange.getById(
-						taxon.getTaxonomicalRangeId().longValue()).toString() + ":" + taxon.getDefaultName();
-		}
-		else {
-			luceneQuery = "taxon.defaultName_keyword:\"" + taxon.getDefaultName() + "\"";
-		}
-		
-		return luceneQuery;
-	}
 }

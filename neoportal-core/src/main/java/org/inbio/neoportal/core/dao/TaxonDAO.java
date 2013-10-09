@@ -117,9 +117,9 @@ public interface TaxonDAO
     /**
      * Find the taxon with the <code>defaultName</code>
      * @param defaultName
-     * @return Taxon entity
+     * @return List of Taxon entities. The same defaultName can be repeated in different kingdoms
      */
-    public Taxon findByDefaultName(final String defaultName);
+    public List<Taxon> findByDefaultName(final String defaultName);
     
     public List search(
     		String searchText,

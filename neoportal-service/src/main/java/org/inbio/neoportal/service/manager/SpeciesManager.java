@@ -23,7 +23,7 @@ import java.util.List;
 import org.apache.lucene.queryParser.ParseException;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
 import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
-import org.inbio.neoportal.core.dto.taxon.TaxonCDTO;
+import org.inbio.neoportal.core.entity.Taxon;
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO;
 import org.inbio.neoportal.service.dto.species.TaxonFeatureDTO;
 
@@ -70,6 +70,6 @@ public interface SpeciesManager {
      * @param defaultName
      * @return
      */
-    public TaxonCDTO getTaxonByDefaultName(String defaultName);
+    public Taxon getTaxonByDefaultName(String defaultName);
     
 }

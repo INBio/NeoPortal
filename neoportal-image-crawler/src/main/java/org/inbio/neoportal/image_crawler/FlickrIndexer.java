@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.inbio.neoportal.core.dao.ImageDAO;
@@ -48,7 +49,6 @@ public class FlickrIndexer implements Runnable {
 		this.jsonImage = jsonImage;
 	}
 	
-	@Override
 	public void run() {
 		String title;
 		try {
@@ -87,7 +87,7 @@ public class FlickrIndexer implements Runnable {
 			String catalogNumber = title.replaceAll("[^0-9]", "").replaceAll("^0+", "");
 			
 			OccurrenceDwc occurrenceDwc = null;
-			Taxon taxon;
+			Taxon taxon = null;
 			
 			// is a bar code
 			if (catalogNumber.length() > 0) {
@@ -102,11 +102,13 @@ public class FlickrIndexer implements Runnable {
 			}
 			else { 
 				// try to find a taxon name...
-				taxon = taxonDAO.findByDefaultName(title);
-				if (taxon == null) {
+				List<Taxon> taxonList = taxonDAO.findByDefaultName(title);
+				if (taxonList.size() == 0) {
 					image.setProcessed(false); // identified image that are not related with other entity
 					LOGGER.warn("Image " + title + " not releated with any entity");
 				}
+				else
+					taxon = taxonList.get(0);
 			}
 			
 			image.setOccurrence(occurrenceDwc);

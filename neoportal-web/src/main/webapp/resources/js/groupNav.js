@@ -14,6 +14,7 @@ var speciesUrl = "/api/groupNav/species";
 $("document").ready(function(){
 	//prepare submenus
 	$("li.gn-node:not(.current) > ul").hide();
+	$("li.gn-node.current").parent().show();
 	//add click function
 	$("li.gn-node > a").click(function(){
 		//hide current and remove class

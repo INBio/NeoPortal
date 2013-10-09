@@ -356,8 +356,9 @@ public class SearchManagerImpl implements SearchManager{
         String luceneQuery = "";
         
     	// check if user is looking for specific taxon
-    	Taxon taxon = taxonDAO.findByDefaultName(searchTerms);
-    	if(taxon != null){
+    	List<Taxon> taxonList = taxonDAO.findByDefaultName(searchTerms);
+    	if(taxonList.size() > 0){
+    		Taxon taxon = taxonList.get(0);
     	    String searchField = Taxon.TaxonomicalRange.getById(
     	    		taxon.getTaxonomicalRangeId().longValue()).getTaxonomicalRangeName();
     	    if(searchField.equals("species")) { 

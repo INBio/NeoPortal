@@ -40,7 +40,7 @@ public class TaxonCDTO extends BaseDTO
 
     private String kingdom;
 
-    private String division;
+    private String phylum;
 
     private String class_;
 
@@ -53,7 +53,7 @@ public class TaxonCDTO extends BaseDTO
     private String species;
     private String dominiumId;
     private String kingdomId;
-    private String divisionId;
+    private String phylumId;
     private String subdivisionId;
     private String classId;
     private String subclassId;
@@ -109,7 +109,7 @@ public class TaxonCDTO extends BaseDTO
 		this.taxonomicalRangeId = taxonomicalRangeId;
 		this.defaultName = defaultName;
 		this.kingdom = kingdom;
-		this.division = division;
+		this.phylum = division;
 		this.class_ = class_;
 		this.order = order;
 		this.family = family;
@@ -117,7 +117,7 @@ public class TaxonCDTO extends BaseDTO
 		this.species = species;
 		this.dominiumId = dominiumId;
 		this.kingdomId = kingdomId;
-		this.divisionId = divisionId;
+		this.phylumId = divisionId;
 		this.subdivisionId = subdivisionId;
 		this.classId = classId;
 		this.subclassId = subclassId;
@@ -202,13 +202,13 @@ public class TaxonCDTO extends BaseDTO
 	}
 
 
-	public String getDivision() {
-		return division;
+	public String getPhylum() {
+		return phylum;
 	}
 
 
-	public void setDivision(String division) {
-		this.division = division;
+	public void setPhylum(String division) {
+		this.phylum = division;
 	}
 
 
@@ -282,13 +282,13 @@ public class TaxonCDTO extends BaseDTO
 	}
 
 
-	public String getDivisionId() {
-		return divisionId;
+	public String getPhylumId() {
+		return phylumId;
 	}
 
 
-	public void setDivisionId(String divisionId) {
-		this.divisionId = divisionId;
+	public void setPhylumId(String divisionId) {
+		this.phylumId = divisionId;
 	}
 
 

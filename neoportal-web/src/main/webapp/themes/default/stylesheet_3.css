@@ -522,6 +522,7 @@ ul.taxon_list li{
 #groupNav.aside li.current > a{
 	font-size: 17px;
 	margin-bottom: 8px;
+	font-weight: bold;
 }
 #groupNav.aside li ul{
 	margin-left: 8px;
@@ -536,7 +537,7 @@ div.search{
 div.controls{
     margin: 0px 0px 12px 30px;
 }
-div.controls a{
+div.controls a, div.controls button{
     font-size: 14px;
     border: 1px solid #BBB;
     padding: 2px 10px;
@@ -626,7 +627,7 @@ div.species_page nav li{
 	font-size: 0.8em;
 }
 div.species_page h2{
-	text-transform: capitalize;
+/* 	text-transform: capitalize; */
 }
 div.species_page h3{
 	color: #004c6d;

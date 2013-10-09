@@ -39,6 +39,7 @@ import org.hibernate.FlushMode;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.inbio.neoportal.core.dao.GenericBaseDAO;
 import org.inbio.neoportal.core.dao.LocationDAO;
 import org.inbio.neoportal.core.dao.OccurrenceNewDAO;
@@ -61,6 +62,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.orm.hibernate3.HibernateTransactionManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import au.com.bytecode.opencsv.CSVReader;
@@ -79,6 +81,9 @@ public class Importer {
     
     @Autowired
     private HibernateTransactionManager transactionManager;
+    
+    @Autowired
+    private SessionFactory sessionFactory;
     
     @Autowired
     @Qualifier("genericBaseDAOImpl")
@@ -116,8 +121,10 @@ public class Importer {
     //    importTaxonDescription(taxonDescriptionFile);
     }
 
+    @Transactional
     public void importOccurrences(){
-        
+    	org.apache.log4j.Logger.getLogger(Importer.class.getName()).log
+        (org.apache.log4j.Level.DEBUG, "Starting importOccurrences process");
         
         //get current date for dateLastModified field
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -126,17 +133,15 @@ public class Importer {
         
         DateFormat sourceDateFormat = new SimpleDateFormat("dd-MMM-yy", Locale.ENGLISH);
         
-        DataProvider dp = (DataProvider)
-                       genericBaseDAO.findAll(DataProvider.class).get(0);
-        
         int firstResult = 0;
         int setCounter = 0; //every 100 (the jdbc batch size) call flush 
         
         //start new transaction
-        DefaultTransactionDefinition transaction = new DefaultTransactionDefinition();
-        TransactionStatus status = transactionManager.getTransaction(transaction);
-        
-        Session session = transactionManager.getSessionFactory().getCurrentSession();
+//        DefaultTransactionDefinition transaction = new DefaultTransactionDefinition();
+//        TransactionStatus status = transactionManager.getTransaction(transaction);
+//        
+//        Session session = transactionManager.getSessionFactory().getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
 
 //        List<ImportDwc> occurrencesDwcList =
 //                importDwcDAO.scrollAll(ImportDwc.class,
@@ -146,25 +151,31 @@ public class Importer {
         
         // config session for bash job
         session.setFlushMode(FlushMode.MANUAL);
-        session.setCacheMode(CacheMode.IGNORE);
+        
+        session.beginTransaction();
+
+        DataProvider dp = (DataProvider)
+                genericBaseDAO.findAll(DataProvider.class).get(0);
+        
+        org.apache.log4j.Logger.getLogger(Importer.class.getName()).log
+        (org.apache.log4j.Level.DEBUG, "importOccurrences Begin Transaction");
         
         ScrollableResults scroll = session.createCriteria(ImportDwc.class)
         		.setFetchSize(30)
+        		.setCacheMode(CacheMode.IGNORE)
         		.scroll(ScrollMode.FORWARD_ONLY);
         
         boolean update;
         
         int batch = 0;
-        
-//        scroll.beforeFirst();
+        int rowsCounter = 0;
         
         while(scroll.next()){
         	batch++;
+        	rowsCounter++;
         	    
             ImportDwc importDwc = (ImportDwc) scroll.get(0);
             
-//            for (ImportDwc importDwc : occurrencesDwcList) {
-//
                 try{
                 
                 /*
@@ -187,14 +198,25 @@ public class Importer {
                 */
                 OccurrenceDwc occurrence = new OccurrenceDwc();
                 
-               Taxon taxon;
+               Taxon taxon = null;
                //check if taxonId is empty (unidentify specimens)
                if(importDwc.getTaxonId().isEmpty()){
                    taxon = null;
-               }else{
-                //find taxon entity
-                taxon = taxonNewDAO.findById(new BigDecimal(importDwc.getTaxonId().replace("\"", "")));
-            	//   taxon = taxonDAO.findById(Taxon.class, new BigDecimal(importDwc.getTaxonId().replace("\"", "")));
+               }
+               else{
+            	   // find taxon entity
+            	   // taxon = taxonNewDAO.findById(new BigDecimal(importDwc.getTaxonId().replace("\"", "")));
+            	   List<Taxon> taxonList = taxonDAO.findByDefaultName(importDwc.getScientificName());
+            	   if (taxonList.size() == 1)
+            		   taxon = taxonList.get(0);
+            	   else if(taxonList.size() > 1) {
+            		   for (Taxon taxon2 : taxonList) {
+            			   if (taxon2.getKingdom().equals(importDwc.getKingdom())) {
+            				   taxon = taxon2;
+            				   break;
+            			   }
+            		   }
+            	   }
                }
 
                 // TODO: fix, use specimenId instead
@@ -258,6 +280,8 @@ public class Importer {
                    location.setGeoreferenceRemarks(importDwc.getGeoreferenceRemarks());
                    
                    locationDAO.create(location);
+                   // increment batch because location should be inserted
+                   batch++;
                }
                occurrence.setLocation(location);
                
@@ -386,7 +410,6 @@ public class Importer {
 //               if(!update)
         	   occurrenceDAO.create(occurrence);
         	   
-        	   
 //               else
 //            	   occurrenceDAO.update(occurrence);
             	   
@@ -407,18 +430,27 @@ public class Importer {
 //            } // end for, 1000 importDwc rows
             
                 
-            if(batch % BATCH_SIZE == 0){
-            
+            session.evict(importDwc);
+                
+            if(batch == BATCH_SIZE){
+            	batch = 0;
 	            session.flush();
 	            session.clear();
+//	            System.exit(1);
             }
 	    
-            if(batch % maxResults == 0){
+            if(rowsCounter % maxResults == 0){
             	Logger.getLogger(Importer.class.getName()).log
-                (Level.INFO, "Adding {0} to {1} occurrences", new Object[]{batch, batch + maxResults});
-            
+                (Level.INFO, 
+                		"Occurrences added " + rowsCounter);
             }
             
+            // ******* for debug only ***********
+            if(rowsCounter == 10000) {
+            	session.getTransaction().rollback();
+            	scroll.close();
+            	System.exit(1);
+            }
             
 //            firstResult += maxResults;
                 
@@ -428,9 +460,12 @@ public class Importer {
 //                        firstResult);
         } // end while, no more importDwc rows
         
-        transactionManager.commit(status);
+        scroll.close();
+        
+//        transactionManager.commit(status);
+        session.flush();
+        session.getTransaction().commit();
         session.close();
-                
     }
     
     /**
@@ -642,7 +677,7 @@ public class Importer {
                 taxonDescription.setDistribution(taxonDes[14] + taxonDes[15]);
                 //taxonDescription.setAbstract_(null);
                 taxonDescription.setKingdomTaxon(taxon.getKingdom());
-                taxonDescription.setPhylumTaxon(taxon.getDivision());
+                taxonDescription.setPhylumTaxon(taxon.getPhylum());
                 taxonDescription.setClassTaxon(taxon.getClass_());
                 taxonDescription.setOrderTaxon(taxon.getOrder());
                 taxonDescription.setFamilyTaxon(taxon.getFamily());

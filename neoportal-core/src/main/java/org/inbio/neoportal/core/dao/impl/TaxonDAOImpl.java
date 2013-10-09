@@ -69,7 +69,7 @@ public class TaxonDAOImpl
         (final String searchText, final int offset, final int quantity) {
         
        String[] taxon =
-                new String[]{ "defaultName", "kingdom", "division", "class_",
+                new String[]{ "defaultName", "kingdom", "phylum", "class_",
                                  "order", "family", "genus", "species",
                                 "taxonomicalRangeId", "commonNames.name"};
 
@@ -126,7 +126,7 @@ public class TaxonDAOImpl
     public Long searchCount(final String searchText) {
         
         String[] taxon =
-                new String[]{ "defaultName", "kingdom", "division", "class_",
+                new String[]{ "defaultName", "kingdom", "phylum", "class_",
                                  "order", "family", "genus", "species",
                                 "taxonomicalRangeId", "commonNames"};
 
@@ -343,7 +343,7 @@ public class TaxonDAOImpl
 	}
 	
 	@Override
-	public Taxon findByDefaultName(final String defaultName) {
+	public List<Taxon> findByDefaultName(final String defaultName) {
 		Session session = getSession();
 		FullTextSession fullTextSession = Search.getFullTextSession(session);
 		
@@ -360,7 +360,7 @@ public class TaxonDAOImpl
 		org.hibernate.Query hQuery = 
 				fullTextSession.createFullTextQuery(query, Taxon.class);
 		
-		return (Taxon)hQuery.uniqueResult();
+		return hQuery.list();
 	}
 
 	@SuppressWarnings("rawtypes")

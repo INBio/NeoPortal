@@ -22,11 +22,7 @@
 		</a>
 		<p>${taxonFeature.occurrencesCount}&nbsp;<fmt:message key="taxonFeature.occurrencesCount" />, ${taxonFeature.imagesCount}&nbsp;<fmt:message key="taxonFeature.imagesCount" /></p>
 		
-		<c:forEach var="image" items="${taxonFeature.featureImages}">
-		<div class="image-item">
-			<img alt="${image.title}" src="${image.mediumUrl}" />
-			<p>${image.taxon.defaultName }</p>
-		</div>
-		</c:forEach>
+		<n:imageGallery images="${taxonFeature.featureImages}" showPagination="false"></n:imageGallery>
+		
 	</div>
 	</c:if>

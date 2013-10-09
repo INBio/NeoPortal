@@ -24,8 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
 import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
-import org.inbio.neoportal.core.dto.taxon.TaxonCDTO;
-import org.inbio.neoportal.core.entity.Image;
+import org.inbio.neoportal.core.entity.Taxon;
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO;
 import org.inbio.neoportal.service.manager.SpeciesManager;
 import org.inbio.neoportal.web.model.PaginationModel;
@@ -45,22 +44,22 @@ public class SpeciesController {
     private SpeciesManager speciesManager;
     
     @RequestMapping (
-            value = "/{scientificName}",
+            value = "/{defaultName}",
             method = RequestMethod.GET)
     public String getTaxonDescriptionByProvider (
             Model model,
-            @PathVariable(value = "scientificName") String scientificName,
+            @PathVariable(value = "defaultName") String defaultName,
 	        HttpServletRequest request) {
     	
-    	String taxonUrl = request.getContextPath() + "/species/" + scientificName;
+    	String taxonUrl = request.getContextPath() + "/species/" + defaultName;
         
     	// get taxon description
         List<TaxonDescriptionFullSDTO> taxonDescription = null;
         
-        scientificName = scientificName.replace('_', ' ');
+        defaultName = defaultName.replace('_', ' ');
         
         taxonDescription = 
-                speciesManager.taxonDescriptionByProvider(scientificName, "INB");
+                speciesManager.taxonDescriptionByProvider(defaultName, "INB");
         
         if(taxonDescription.isEmpty()) {
         	model.addAttribute("taxonDescription", null);
@@ -69,13 +68,12 @@ public class SpeciesController {
         	model.addAttribute("taxonDescription", taxonDescription.get(0));
         
         // get taxon hierarchy 
-        TaxonCDTO taxonCDTO = speciesManager.getTaxonByDefaultName(scientificName);
+        Taxon taxon = speciesManager.getTaxonByDefaultName(defaultName);
 
         // get some images
-        List<ImagesCDTO> images = speciesManager.getImagesByDefaultName(scientificName, 0, 4);
+        List<ImagesCDTO> images = speciesManager.getImagesByDefaultName(defaultName, 0, 4);
         
-        model.addAttribute("taxon", taxonCDTO);
-        model.addAttribute("scientificName", scientificName);
+        model.addAttribute("taxon", taxon);
         model.addAttribute("context", "taxonDescription");
         model.addAttribute("taxonUrl", taxonUrl);
         model.addAttribute("images", images);
@@ -108,7 +106,7 @@ public class SpeciesController {
 		
 		//prepare pagination
 		requestUrl = request.getRequestURL().toString();
-		requestUrl += "?&itemsPerPage=" + itemsPerPage;
+		requestUrl += "?itemsPerPage=" + itemsPerPage;
 		
 		if(startIndex + itemsPerPage < totalImages)
 			nextUrl = requestUrl + "&startIndex=" + (startIndex + itemsPerPage);
@@ -130,9 +128,12 @@ public class SpeciesController {
 		pagination.setNextUrl(nextUrl);
 		pagination.setPreviousUrl(previousUrl);
 		pagination.setLastUrl(lastUrl);
+		
+        // get taxon hierarchy 
+        Taxon taxon = speciesManager.getTaxonByDefaultName(defaultName);
 
         model.addAttribute("images", images);
-        model.addAttribute("scientificName", defaultName);
+        model.addAttribute("taxon", taxon);
         model.addAttribute("pagination", pagination);
         model.addAttribute("context", "images");
         model.addAttribute("taxonUrl", taxonUrl);
@@ -147,7 +148,7 @@ public class SpeciesController {
             Model model,
             @PathVariable (value = "defaultName") String defaultName,
             @RequestParam (value = "startIndex", defaultValue = "0", required=false) int startIndex,
-	        @RequestParam (value = "itemsPerPage", defaultValue = "10", required=false) int itemsPerPage,
+	        @RequestParam (value = "itemsPerPage", defaultValue = "20", required=false) int itemsPerPage,
 	        HttpServletRequest request
 	        ) {
         
@@ -165,7 +166,7 @@ public class SpeciesController {
 		
 		//prepare pagination
 		requestUrl = request.getRequestURL().toString();
-		requestUrl += "?&itemsPerPage=" + itemsPerPage;
+		requestUrl += "?itemsPerPage=" + itemsPerPage;
 		
 		if(startIndex + itemsPerPage < totalOccurrences)
 			nextUrl = requestUrl + "&startIndex=" + (startIndex + itemsPerPage);
@@ -187,12 +188,17 @@ public class SpeciesController {
 		pagination.setNextUrl(nextUrl);
 		pagination.setPreviousUrl(previousUrl);
 		pagination.setLastUrl(lastUrl);
+		
+        // get taxon hierarchy 
+        Taxon taxon = speciesManager.getTaxonByDefaultName(defaultName);
 
         model.addAttribute("occurrences", occurrences);
-        model.addAttribute("scientificName", defaultName);
+        model.addAttribute("taxon", taxon);
         model.addAttribute("pagination", pagination);
         model.addAttribute("context", "occurrences");
         model.addAttribute("taxonUrl", taxonUrl);
+        if(totalOccurrences < 3000)
+        	model.addAttribute("scientificName", defaultName);
         
         return "species";
     }

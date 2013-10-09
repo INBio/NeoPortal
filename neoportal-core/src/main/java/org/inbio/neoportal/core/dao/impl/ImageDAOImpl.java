@@ -1,5 +1,6 @@
 package org.inbio.neoportal.core.dao.impl;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -16,8 +17,10 @@ import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
 import org.inbio.neoportal.core.dto.transformers.ImagesTransformer;
 import org.inbio.neoportal.core.entity.Image;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
+@Transactional
 public class ImageDAOImpl 
 				extends GenericDAOImpl<Image, BigInteger> 
 				implements ImageDAO {
@@ -43,11 +46,14 @@ public class ImageDAOImpl
 	}
 	
 	@Override
-	public Image findByM3sId(BigInteger m3sId) {
+	public Image findM3sImage(BigInteger m3sId, BigDecimal taxonId) {
 		
 		return (Image)getSessionFactory().getCurrentSession()
-				.createQuery("from Image where source='m3s' and externalImageId = :m3sId")
+				.createQuery("from Image where source='m3s' " +
+						"and externalImageId = :m3sId " +
+						"and taxon.taxonId = :taxonId")
 				.setBigInteger("m3sId", m3sId)
+				.setBigDecimal("taxonId", taxonId)
 				.uniqueResult();
 	}
 
