@@ -13,7 +13,7 @@
 	
 	<!-- Appender for stats -->
 	<appender name="stats" class="org.apache.log4j.RollingFileAppender">
-		<param name="file" value="neoportal-web-stats.log"/>
+		<param name="file" value="${catalina.base}/logs/neoportal-web-stats.log"/>
 		<param name="MaxFileSize" value="10MB"/>
 	    <!-- Keep one backup file -->
 	    <param name="MaxBackupIndex" value="4"/>
@@ -38,7 +38,7 @@
 		<level value="all" />
 	</logger>
 	
-	<logger name="org.inbio.neoportal.web.common.RequestTimeInterceptor">
+	<logger name="org.inbio.neoportal.web.common.RequestTimeInterceptor" additivity="false">
 		<level value="info" />
 		<appender-ref ref="stats" />
 	</logger>

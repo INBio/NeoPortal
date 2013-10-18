@@ -52,6 +52,8 @@ public class M3sIndexer implements Runnable {
 	
 	private final static Logger LOGGER = Logger.getLogger(M3sIndexer.class);
 	
+	private HashMap<String, String> creativeCommons;
+	
 	public M3sIndexer () {
 		
 	}
@@ -59,6 +61,10 @@ public class M3sIndexer implements Runnable {
 	public M3sIndexer (HashMap<String, Integer> csvHeaders, String[] csvLine) {
 		this.csvHeaders = csvHeaders;
 		this.csvLine = csvLine;
+		
+		creativeCommons = new HashMap<String, String>();
+		creativeCommons.put("Uso institucional", "by-nc-sa");
+		creativeCommons.put("Solo para uso de UBI", "");
 	}
 	
 	/* (non-Javadoc)
@@ -82,10 +88,10 @@ public class M3sIndexer implements Runnable {
 		Taxon taxon = taxonDAO.findById(Taxon.class, new BigDecimal(taxonId));
 		image.setTaxon(taxon);
 		
-		// TODO: make the map to creative commons
-		// map rights 
+		// map rights with creative commons
 		String rights = csvLine[csvHeaders.get("rights")];
-		image.setRights(rights);
+		String ccRights = this.creativeCommons.get(rights);
+		image.setRights(ccRights);
 		
 		if (update) {
 			imageDAO.update(image);
