@@ -1,9 +1,7 @@
 package org.inbio.neoportal.service.manager.impl;
 
 import java.math.BigDecimal;
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.lucene.queryParser.ParseException;
@@ -14,16 +12,17 @@ import org.inbio.neoportal.core.dto.taxon.TaxonCDTO;
 import org.inbio.neoportal.core.entity.GroupNav;
 import org.inbio.neoportal.core.entity.Taxon;
 import org.inbio.neoportal.service.dto.Response;
-import org.inbio.neoportal.service.dto.species.SpeciesLiteSDTO;
 import org.inbio.neoportal.service.manager.GroupNavManager;
 import org.inbio.neoportal.service.manager.SearchManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.HibernateTransactionManager;
+import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 @Service
+@Transactional
 public class GroupNavManagerImpl 
 	implements GroupNavManager {
 

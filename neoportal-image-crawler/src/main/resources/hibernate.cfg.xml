@@ -6,12 +6,6 @@
   <session-factory>
     <!-- Hibernate specific configuration -->
     <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-    <!-- Database connection -->
-    <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-    <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/neoportal</property>
-    <property name="hibernate.connection.username">postgres</property>
-   <property name="hibernate.connection.password">postgres</property>
-   <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
 
 	<property name="hibernate.c3p0.min_size">5</property>
 	<property name="hibernate.c3p0.max_size">30</property>
@@ -19,21 +13,16 @@
 	<property name="hibernate.c3p0.max_statements">50</property>
 	<property name="hibernate.c3p0.idle_test_period">3000</property>
    
-<!--     <property name="hibernate.connection.password">Pg.n3o</property> -->
-	<property name="hibernate.current_session_context_class">org.springframework.orm.hibernate3.SpringSessionContext</property>
-	
 	<property name="hibernate.order_inserts">true</property>
 	<property name="hibernate.order_updates">true</property>
 	<property name="hibernate.jdbc.batch_size">30</property>
     <!-- Hibernate search configuration -->
-    <property name="hibernate.search.default.directory_provider">org.hibernate.search.store.FSDirectoryProvider</property>
+    <property name="hibernate.search.default.directory_provider">filesystem</property>
    <property name="hibernate.search.default.indexBase">/home/arturo/LuceneIndex/</property>
 <!--     <property name="hibernate.search.default.indexBase">/var/LuceneIndex/</property> -->
     <property name="hibernate.search.default.locking_strategy">native</property>
     <property name="hibernate.search.default.exclusive_index_use">false</property>
 
-    <!--  Disable auto indexing  -->
-<!--     <property name="hibernate.search.indexing_strategy">manual</property> -->
     <!-- Mappings -->
     <mapping resource="META-INF/hibernate/TaxonHasAssociatedAttribute.hbm.xml"/>
     <mapping resource="META-INF/hibernate/ReferenceElement.hbm.xml"/>

@@ -33,7 +33,6 @@ import org.inbio.neoportal.core.dto.occurrence.OccurrenceGeospatialLiteCDTO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceLiteCDTO;
 import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
-import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionLiteCDTO;
 import org.inbio.neoportal.core.entity.Image;
 import org.inbio.neoportal.core.entity.Taxon;
@@ -43,6 +42,7 @@ import org.inbio.neoportal.service.dto.species.TaxonDescriptionLiteSDTO;
 import org.inbio.neoportal.service.manager.SearchManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -50,6 +50,7 @@ import org.springframework.stereotype.Service;
  * @author asanabria
  */
 @Service
+@Transactional
 public class SearchManagerImpl implements SearchManager{
 
     @Autowired

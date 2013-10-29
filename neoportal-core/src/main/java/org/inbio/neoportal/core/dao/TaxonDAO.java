@@ -34,7 +34,7 @@ import org.inbio.neoportal.core.entity.Taxon;
  * @author asanabria
  */
 public interface TaxonDAO 
-    extends GenericBaseDAO<Taxon, BigDecimal> {
+    extends GenericDAO<Taxon, BigDecimal> {
     
     
     /**

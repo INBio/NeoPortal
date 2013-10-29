@@ -85,7 +85,7 @@ public class M3sIndexer implements Runnable {
 		image.setExternalImageId(new BigInteger(imageId));
 		image.setAuthor(csvLine[csvHeaders.get("author")]);
 		
-		Taxon taxon = taxonDAO.findById(Taxon.class, new BigDecimal(taxonId));
+		Taxon taxon = taxonDAO.findById(new BigDecimal(taxonId));
 		image.setTaxon(taxon);
 		
 		// map rights with creative commons

@@ -18,22 +18,15 @@
  */
 package org.inbio.neoportal.web.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.hibernate.ejb.AvailableSettings;
 import org.inbio.neoportal.core.dto.advancedsearch.SearchColumnCDTO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
-import org.inbio.neoportal.service.dto.advancedSearch.FilterSDTO;
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO;
-import org.inbio.neoportal.service.entity.AdvancedSearchData;
 import org.inbio.neoportal.service.manager.AdvancedSearchManager;
 import org.inbio.neoportal.service.manager.SpeciesManager;
 import org.inbio.neoportal.web.dto.TaxonDescriptionFullWDTO;
@@ -44,7 +37,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 

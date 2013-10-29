@@ -14,7 +14,7 @@ import org.inbio.neoportal.core.entity.SearchFilter;
  * @author avargas
  */
 public interface SearchFilterDAO
-        extends GenericBaseDAO<SearchFilter, BigDecimal> {
+        extends GenericDAO<SearchFilter, BigDecimal> {
     
     public List<SearchFilterCDTO> getAllFilters();
     

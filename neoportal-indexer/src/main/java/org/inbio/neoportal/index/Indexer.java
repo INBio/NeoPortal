@@ -182,6 +182,7 @@ public class Indexer {
    * @param searchText
    * @throws ParseException
    */
+  @Deprecated
   public void searchByAll(String searchText) throws ParseException {
 
 
@@ -215,6 +216,7 @@ public class Indexer {
    * @param searchText
    * @throws ParseException
    */
+  @Deprecated
   private void executeSearch(String[] fields, String searchText) throws ParseException {
 
     HibernateUtil.getSessionFactory();
@@ -287,13 +289,9 @@ public class Indexer {
     ApplicationContext appContext = new ClassPathXmlApplicationContext("applicationContext.xml");
 
     Indexer i = appContext.getBean(Indexer.class);
-    // String[] localArgs = new String[2];
-    // localArgs[0] = "all";
-    // localArgs[1] = "country:Costa_Rica";
-
-    // Indexer index = new Indexer();
-    // index.processArguments(localArgs);
     i.processArguments(args);
+    
+    
 
   }
 }

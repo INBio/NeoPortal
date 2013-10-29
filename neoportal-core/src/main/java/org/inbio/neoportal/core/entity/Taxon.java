@@ -191,7 +191,7 @@ public class Taxon
      private BigDecimal taxonomicalRangeId;
 
      @Fields({
-    	 @Field(index=Index.TOKENIZED),
+    	 @Field,
     	 @Field(
     			 name     = "defaultName_keyword",
     			 analyzer = @Analyzer(impl=KeywordLowerCaseAnalyzer.class),

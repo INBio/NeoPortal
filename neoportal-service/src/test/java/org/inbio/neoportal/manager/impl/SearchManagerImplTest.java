@@ -56,7 +56,7 @@ public class SearchManagerImplTest extends NeoportalTestBase {
     public void setUp() {
         Taxon taxon = new Taxon();
         
-        if(taxonDAOImpl.findAll(Taxon.class).isEmpty()){
+        if(taxonDAOImpl.findAll().isEmpty()){
 
             taxon.setTaxonId(new BigDecimal(1));
             taxon.setDefaultName("Inga vera");

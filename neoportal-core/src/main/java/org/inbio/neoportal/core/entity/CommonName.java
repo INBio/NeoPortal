@@ -43,12 +43,12 @@ public class CommonName
     @ContainedIn
      private Taxon taxon;
 
-     @Field(index= Index.TOKENIZED)
+     @Field
      private String name;
      private String language;
      private String temporality;
 
-     @Field(index= Index.TOKENIZED)
+     @Field
      private String locality;
      private String sex;
      private String lifeStage;

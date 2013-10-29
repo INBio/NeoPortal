@@ -30,7 +30,7 @@ import org.inbio.neoportal.core.entity.GroupNav;
  *
  */
 public interface GroupNavDAO 
-		extends GenericBaseDAO<GroupNav, BigDecimal> {
+		extends GenericDAO<GroupNav, BigDecimal> {
 
 	public enum TreePart{LEVEL, CHILD_SIBLING};
 	
@@ -39,4 +39,10 @@ public interface GroupNavDAO
 	public List<GroupNavCDTO> getFirstLevel(String groupNavName);
 	
 	public List<GroupNavCDTO> getTreePart(String groupNavName, String treePart );
+
+  /**
+   * @param entityClass
+   * @return
+   */
+  List<GroupNav> findAll(Class<GroupNav> entityClass);
 }

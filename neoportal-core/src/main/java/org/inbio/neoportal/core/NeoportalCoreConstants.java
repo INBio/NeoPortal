@@ -27,5 +27,5 @@ import org.apache.lucene.util.Version;
  */
 public class NeoportalCoreConstants {
 
-	public static final Version LuceneVersion = Version.LUCENE_33;
+	public static final Version LuceneVersion = Version.LUCENE_36;
 }

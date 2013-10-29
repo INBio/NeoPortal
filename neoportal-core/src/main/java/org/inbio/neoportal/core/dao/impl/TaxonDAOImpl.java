@@ -26,8 +26,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanClause;
@@ -37,21 +37,14 @@ import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.apache.lucene.util.Version;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
-import org.hibernate.sql.Template;
 import org.hibernate.transform.ResultTransformer;
 import org.inbio.neoportal.core.dao.TaxonDAO;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
-import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
-import org.inbio.neoportal.core.dto.transformers.TaxonDescriptionFullTransformer;
-import org.inbio.neoportal.core.entity.Taxon;
 import org.inbio.neoportal.core.dto.transformers.TaxonLiteTransformer;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.inbio.neoportal.core.entity.Taxon;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -60,7 +53,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class TaxonDAOImpl 
-    extends GenericBaseDAOImpl<Taxon, BigDecimal> 
+    extends GenericDAOImpl<Taxon, BigDecimal> 
         implements TaxonDAO{
     
     
@@ -77,10 +70,10 @@ public class TaxonDAOImpl
 
         fieldList.addAll(Arrays.asList(taxon));
 
-        return super.search(Taxon.class,
-                            new TaxonLiteTransformer(), 
+        return super.search(new TaxonLiteTransformer(), 
                             fieldList.toArray(new String[fieldList.size()]), 
-                            searchText, 
+                            searchText,
+                            "",
                             offset, 
                             quantity);
        
@@ -93,7 +86,7 @@ public class TaxonDAOImpl
          int offset, 
          int quantity) {
         
-        Session session = getSession();
+        Session session = getSessionFactory().getCurrentSession();
 		FullTextSession fullTextSession = Search.getFullTextSession(session);
 		
 		// wrap Lucene query in a org.hibernate.Query
@@ -134,8 +127,7 @@ public class TaxonDAOImpl
 
         fieldList.addAll(Arrays.asList(taxon));
         
-        return super.searchCount(Taxon.class, 
-                                new TaxonLiteTransformer(), 
+        return super.searchPhraseCount( 
                                 fieldList.toArray(new String[fieldList.size()]), 
                                 searchText);
     }
@@ -143,115 +135,89 @@ public class TaxonDAOImpl
     @Override
     public List<Taxon> findAllByScientificName(
        final String scientificName) {
+      
+      Session session = getSessionFactory().getCurrentSession();
+      Query query = null;
+      FullTextSession fullTextSession = 
+          Search.getFullTextSession(session);
+      
+      String searchText = "defaultName:\"" + scientificName + "\"";
+      
+      // create native Lucene query
+      QueryParser parser = 
+              new QueryParser(Version.LUCENE_33, 
+                  searchText, new StandardAnalyzer(Version.LUCENE_33));
+
+      //FIXME Manejo de errores
+      try {
+          
+          query = parser.parse(searchText);
+          
+      } catch (ParseException ex) {
+          
+          Logger.getLogger(Taxon.class.getName())
+              .log(Level.SEVERE, null, ex);
+          
+          return null;
+      }
+      
+      // Wrap Lucene query in a org.hibernate.Query
+      org.hibernate.Query hsQuery =
+              (org.hibernate.Query) fullTextSession.createFullTextQuery(query, Taxon.class);
         
-        HibernateTemplate template = getHibernateTemplate();
-
-        return (List) template.execute(new HibernateCallback() {
-                
-            @Override
-            public Object doInHibernate(Session session) {
-
-                Query query = null;
-                FullTextSession fullTextSession = 
-                    Search.getFullTextSession(session);
-                
-                String searchText = "defaultName:\"" + scientificName + "\"";
-                
-                // create native Lucene query
-                QueryParser parser = 
-                        new QueryParser(Version.LUCENE_33, 
-                            searchText, new StandardAnalyzer(Version.LUCENE_33));
-
-                //FIXME Manejo de errores
-                try {
-                    
-                    query = parser.parse(searchText);
-                    
-                } catch (ParseException ex) {
-                    
-                    Logger.getLogger(Taxon.class.getName())
-                        .log(Level.SEVERE, null, ex);
-                    
-                    return null;
-                }
-                
-                // Wrap Lucene query in a org.hibernate.Query
-                org.hibernate.Query hsQuery =
-                        (org.hibernate.Query) fullTextSession.createFullTextQuery(query, Taxon.class);
-                
-                
-                return hsQuery.list();
-            }
-        });
-        
+      return hsQuery.list();        
     }
     
     @Override
     public List<TaxonLiteCDTO> findCDTOByScientificName(
        final String scientificName) {
         
-        HibernateTemplate template = getHibernateTemplate();
+      Session session = getSessionFactory().getCurrentSession();
+      Query query = null;
+      FullTextSession fullTextSession = 
+          Search.getFullTextSession(session);
+      
+      String searchText = "defaultName:\"" + scientificName + "\"";
+      
+      // create native Lucene query
+      QueryParser parser = 
+              new QueryParser(Version.LUCENE_33, 
+                  searchText, new StandardAnalyzer(Version.LUCENE_33));
 
-        return (List) template.execute(new HibernateCallback() {
-                
-            @Override
-            public Object doInHibernate(Session session) {
-
-                Query query = null;
-                FullTextSession fullTextSession = 
-                    Search.getFullTextSession(session);
-                
-                String searchText = "defaultName:\"" + scientificName + "\"";
-                
-                // create native Lucene query
-                QueryParser parser = 
-                        new QueryParser(Version.LUCENE_33, 
-                            searchText, new StandardAnalyzer(Version.LUCENE_33));
-
-                //FIXME Manejo de errores
-                try {
-                    
-                    query = parser.parse(searchText);
-                    
-                } catch (ParseException ex) {
-                    
-                    Logger.getLogger(Taxon.class.getName())
-                        .log(Level.SEVERE, null, ex);
-                    
-                    return null;
-                }
-                
-                // Wrap Lucene query in a org.hibernate.Query
-                org.hibernate.Query hsQuery =
-                        (org.hibernate.Query) fullTextSession.createFullTextQuery(query, Taxon.class);
-                
-                hsQuery.setResultTransformer(new TaxonLiteTransformer());
-                
-                return hsQuery.list();
-            }
-        });
+      //FIXME Manejo de errores
+      try {
+          
+          query = parser.parse(searchText);
+          
+      } catch (ParseException ex) {
+          
+          Logger.getLogger(Taxon.class.getName())
+              .log(Level.SEVERE, null, ex);
+          
+          return null;
+      }
+      
+      // Wrap Lucene query in a org.hibernate.Query
+      org.hibernate.Query hsQuery =
+              (org.hibernate.Query) fullTextSession.createFullTextQuery(query, Taxon.class);
+      
+      hsQuery.setResultTransformer(new TaxonLiteTransformer());
+      
+      return hsQuery.list();
         
     }
 
 	@Override
 	public Long searchInCount(final List idList) {
-		
-		HibernateTemplate template = getHibernateTemplate();
 
-        return (Long) template.execute(new HibernateCallback() {
-                
-            @Override
-            public Object doInHibernate(Session session) {
-
-            	org.hibernate.Query query = session.createQuery(
-            			"select count(*) from Taxon" +
-            			" where id IN (:idList)");
-            	
-            	query.setParameterList("idList", idList);
-            	
-            	return (Long)query.uniqueResult();
-            }
-        });
+	  Session session = getSessionFactory().getCurrentSession();
+	  org.hibernate.Query query = session.createQuery(
+	    "select count(*) from Taxon" +
+	    " where id IN (:idList)");
+	
+	  query.setParameterList("idList", idList);
+	
+	  return (Long)query.uniqueResult();
 	}
 
 	@Override
@@ -259,92 +225,73 @@ public class TaxonDAOImpl
 			final List idList, 
 			final int offset, 
 			final int quantity) {
-		HibernateTemplate template = getHibernateTemplate();
+	  
+	  Session session = getSessionFactory().getCurrentSession();
+	  
+	  org.hibernate.Query query = session.createQuery(
+  		"from Taxon" +
+  		" where id IN (:idList)");
 
-        return (List<TaxonLiteCDTO>) template.execute(new HibernateCallback() {
-                
-            @Override
-            public Object doInHibernate(Session session) {
-
-            	org.hibernate.Query query = session.createQuery(
-            			"from Taxon" +
-            			" where id IN (:idList)");
-            	
-            	query.setParameterList("idList", idList);
-            	query.setFirstResult(offset);
-            	query.setMaxResults(quantity);
-            	query.setResultTransformer(new TaxonLiteTransformer());
-            	
-            	return query.list();
-            }
-        });
+	  query.setParameterList("idList", idList);
+	  query.setFirstResult(offset);
+	  query.setMaxResults(quantity);
+	  query.setResultTransformer(new TaxonLiteTransformer());
+  	
+	  return query.list();
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> taxonSuggestions(final String searchTerm){
 		
-		HibernateTemplate template = getHibernateTemplate();
-		
-		return (List<String>) template.execute(new HibernateCallback<Object>() {
-			
-			@Override
-			public Object doInHibernate(Session session){
-                FullTextSession fullTextSession = Search.getFullTextSession(session);
-                BooleanQuery booleanQuery = new BooleanQuery();
-                QueryBuilder queryBuilder = fullTextSession.getSearchFactory()
-                		.buildQueryBuilder().forEntity(Taxon.class).get();
-                
-                String [] taxonFields = Taxon.TaxonFieldsForAutocomplete.split("\\|");
-                String searchTermLowerCase = searchTerm.toLowerCase();
-                
-                // create wildcard queries for every field
-                for (String taxonField : taxonFields) {
-					Query query = queryBuilder
-										.keyword()
-										.wildcard()
-										.onField(taxonField)
-										.matching(searchTermLowerCase + "*")
-										.createQuery();
-					
-					booleanQuery.add(query, BooleanClause.Occur.SHOULD);
-				}
-                
-                // Wrap Lucene query in a org.hibernate.Query
-                org.hibernate.search.FullTextQuery hsQuery =
-                        fullTextSession.createFullTextQuery(booleanQuery, Taxon.class);
-                
-                // return only the field values
-                hsQuery
-                	.setProjection(taxonFields)
-                	.setMaxResults(10);
-                
-                List<Object[]> results = hsQuery.list();
-                
-                List<String> suggestions = new ArrayList<String>();
-                Set<String> suggest = new HashSet<String>();
-                
-                for (Object[] result : results) {
-					for (int i = 0; i < taxonFields.length; i++) {
-						if(result[i] == null)
-							continue;
-						String fieldValue = result[i].toString();
-						fieldValue = fieldValue.toLowerCase();
-						if(fieldValue.contains(searchTermLowerCase)){
-							suggest.add(fieldValue);
-						}
-					}
-				}
-                
-                suggestions.addAll(suggest);
-                return suggestions;
-			}
-		});
+      Session session = getSessionFactory().getCurrentSession();
+      FullTextSession fullTextSession = Search.getFullTextSession(session);
+      BooleanQuery booleanQuery = new BooleanQuery();
+      QueryBuilder queryBuilder =
+          fullTextSession.getSearchFactory().buildQueryBuilder().forEntity(Taxon.class).get();
+  
+      String[] taxonFields = Taxon.TaxonFieldsForAutocomplete.split("\\|");
+      String searchTermLowerCase = searchTerm.toLowerCase();
+  
+      // create wildcard queries for every field
+      for (String taxonField : taxonFields) {
+        Query query =
+            queryBuilder.keyword().wildcard().onField(taxonField).matching(searchTermLowerCase + "*")
+                .createQuery();
+  
+        booleanQuery.add(query, BooleanClause.Occur.SHOULD);
+      }
+  
+      // Wrap Lucene query in a org.hibernate.Query
+      org.hibernate.search.FullTextQuery hsQuery =
+          fullTextSession.createFullTextQuery(booleanQuery, Taxon.class);
+        
+      // return only the field values
+      hsQuery.setProjection(taxonFields).setMaxResults(10);
+  
+      List<Object[]> results = hsQuery.list();
+  
+      List<String> suggestions = new ArrayList<String>();
+      Set<String> suggest = new HashSet<String>();
+  
+      for (Object[] result : results) {
+        for (int i = 0; i < taxonFields.length; i++) {
+          if (result[i] == null) continue;
+          String fieldValue = result[i].toString();
+          fieldValue = fieldValue.toLowerCase();
+          if (fieldValue.contains(searchTermLowerCase)) {
+            suggest.add(fieldValue);
+          }
+        }
+      }
+  
+      suggestions.addAll(suggest);
+      return suggestions;
 	}
 	
 	@Override
 	public List<Taxon> findByDefaultName(final String defaultName) {
-		Session session = getSession();
+		Session session = getSessionFactory().getCurrentSession();
 		FullTextSession fullTextSession = Search.getFullTextSession(session);
 		
 		// create Lucene query using the query DSL
@@ -368,7 +315,7 @@ public class TaxonDAOImpl
 	public List search(String searchText, String[] fields,
 			int offset, int quantity, ResultTransformer resultTransformer) {
 		
-		return super.search(Taxon.class, resultTransformer, fields, searchText, offset, quantity);
+		return super.search(resultTransformer, fields, searchText, "", offset, quantity);
 	}
 	
 	

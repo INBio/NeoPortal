@@ -38,7 +38,6 @@ public class Occurrence  implements java.io.Serializable {
     @DocumentId
      private BigDecimal occurrenceId;
      
-    @IndexedEmbedded
     private Location location;
     
     @IndexedEmbedded

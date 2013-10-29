@@ -30,7 +30,7 @@ import org.inbio.neoportal.core.entity.TaxonDescription;
  * @author avargas
  */
 public interface TaxonDescriptionDAO 
-    extends GenericBaseDAO<TaxonDescription, BigDecimal> {
+    extends GenericDAO<TaxonDescription, BigDecimal> {
     
         /**
      * Return the total amount of items of a query.

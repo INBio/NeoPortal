@@ -25,8 +25,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -34,17 +36,17 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:tests-context.xml"})
-
-@TransactionConfiguration(
-    transactionManager = "transactionManagerTest"
-    ,defaultRollback = false)
-public class NeoportalTestBase {
+@TransactionConfiguration(transactionManager="transactionManagerTest",
+defaultRollback=true)
+@Transactional
+public class NeoportalTestBase
+            extends AbstractTransactionalJUnit4SpringContextTests{
     
     @Autowired
     private ApplicationContext context;
     
     @Autowired
-    private SessionFactory sessionFactory;
+    protected SessionFactory sessionFactory;
     
     /**
      * initialize the index according to a single class.
@@ -54,7 +56,7 @@ public class NeoportalTestBase {
     public void index(Class clazz) {
                
         FullTextSession fullTextSession = 
-            Search.getFullTextSession(sessionFactory.openSession());
+            Search.getFullTextSession(this.sessionFactory.getCurrentSession());
         try{
             fullTextSession.createIndexer(clazz).startAndWait();
         }catch(InterruptedException ex){

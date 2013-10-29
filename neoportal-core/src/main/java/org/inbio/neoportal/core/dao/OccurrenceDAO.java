@@ -30,7 +30,7 @@ import org.inbio.neoportal.core.entity.OccurrenceDwc;
  * @author asanabria
  */
 public interface OccurrenceDAO 
-    extends GenericBaseDAO<OccurrenceDwc, BigDecimal>{
+    extends GenericDAO<OccurrenceDwc, BigDecimal>{
     
            /**
     * Return a generic search.

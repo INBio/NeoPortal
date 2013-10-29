@@ -35,15 +35,12 @@ import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.hibernate.transform.ResultTransformer;
+import org.inbio.neoportal.core.NeoportalCoreConstants;
 import org.inbio.neoportal.core.dao.OccurrenceDAO;
 import org.inbio.neoportal.core.dto.transformers.OccurrenceDWCTransformer;
 import org.inbio.neoportal.core.dto.transformers.OccurrenceTransformer;
 import org.inbio.neoportal.core.entity.OccurrenceDwc;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
-
-import org.inbio.neoportal.core.NeoportalCoreConstants;
 
 /**
  *
@@ -51,7 +48,7 @@ import org.inbio.neoportal.core.NeoportalCoreConstants;
  */
 @Repository
 public class OccurrenceDAOImpl 
-    extends GenericBaseDAOImpl<OccurrenceDwc, BigDecimal>
+    extends GenericDAOImpl<OccurrenceDwc, BigDecimal>
         implements OccurrenceDAO{ 
     
        /**
@@ -78,10 +75,11 @@ public class OccurrenceDAOImpl
         ArrayList<String> fieldList = new ArrayList<String>();
         fieldList.addAll(Arrays.asList(occurrence));
         
-        return super.search(OccurrenceDwc.class,
+        return super.search(
                             new OccurrenceTransformer(),
                             fieldList.toArray(new String[fieldList.size()]),
                             searchText,
+                            "",
                             offset,
                             quantity);
     }
@@ -105,8 +103,7 @@ public class OccurrenceDAOImpl
         ArrayList<String> fieldList = new ArrayList<String>();
         fieldList.addAll(Arrays.asList(occurrence));
         
-        return super.searchCount(OccurrenceDwc.class, 
-                                 new OccurrenceTransformer(),
+        return super.searchPhraseCount(
                                  fieldList.toArray(new String[fieldList.size()]),
                                  searchText);
     }
@@ -126,7 +123,7 @@ public class OccurrenceDAOImpl
         final int offset, 
         final int quantity){
         
-        return super.search(OccurrenceDwc.class,
+        return super.search(
                             new OccurrenceDWCTransformer(),
                             searchText,
                             offset,
@@ -136,17 +133,12 @@ public class OccurrenceDAOImpl
     @Override
     public OccurrenceDwc findByLocationId(
             final String locationId){
-        HibernateTemplate template = getHibernateTemplate();
-		return (OccurrenceDwc) template.execute(new HibernateCallback() {
-            @Override
-			public Object doInHibernate(Session session) {
-                Query query = session.createQuery(
-						"from OccurrenceDwc as oc"
-						+ " where oc.locationId = :locationId");
-				query.setParameter("locationId", locationId);
-				return query.list().get(0);
-			}
-		});
+      Session session = getSessionFactory().getCurrentSession();
+      Query query = session.createQuery(
+        "from OccurrenceDwc as oc"
+            + " where oc.locationId = :locationId");
+      query.setParameter("locationId", locationId);
+      return (OccurrenceDwc)query.list().get(0);
     }
 
 	/* (non-Javadoc)
@@ -154,17 +146,11 @@ public class OccurrenceDAOImpl
 	 */
 	@Override
 	public List<String> getSexValues() {
-		HibernateTemplate template = getHibernateTemplate();
-		return (List<String>) template.execute(new HibernateCallback() {
-            @Override
-			public Object doInHibernate(Session session) {
-                Query query = session.createQuery(
-						"select distinct oc.sex from OccurrenceDwc as oc");
-                query.setCacheable(true);
-				return query.list();
-			}
-		});
-		
+	  Session session = getSessionFactory().getCurrentSession();
+	  Query query = session.createQuery(
+	    "select distinct oc.sex from OccurrenceDwc as oc");
+	  query.setCacheable(true);
+	  return query.list();
 	}
 	
 	/**
@@ -172,7 +158,7 @@ public class OccurrenceDAOImpl
 	 */
 	@Override
 	public OccurrenceDwc findByCatalogNumber(final String catalogNumber){
-		Session session = getSession();
+		Session session = getSessionFactory().getCurrentSession();
 		FullTextSession fullTextSession = Search.getFullTextSession(session);
 		
 		// create Lucene query using the query DSL
@@ -193,7 +179,7 @@ public class OccurrenceDAOImpl
 	
 	@Override
 	public long searchPhraseCount (String field, String searchText) {
-		Session session = getSession();
+		Session session = getSessionFactory().getCurrentSession();
 		FullTextSession fullTextSession = Search.getFullTextSession(session);
 		
 		// create Lucene query using the query DSL
@@ -219,7 +205,7 @@ public class OccurrenceDAOImpl
 	    		int offset,
 	    		int quantity) {
 		 
-		 Session session = getSession();
+		 Session session = getSessionFactory().getCurrentSession();
 		 FullTextSession fullTextSession = Search.getFullTextSession(session);
 		 
 		 QueryBuilder qb = fullTextSession.getSearchFactory()
@@ -243,7 +229,7 @@ public class OccurrenceDAOImpl
 	@Override
 	public List searchLucene(String luceneQuery, String sortField,
 			ResultTransformer resultTransformer, int offset, int quantity) {
-		Session session = getSession();
+		Session session = getSessionFactory().getCurrentSession();
 		FullTextSession fullTextSession = Search.getFullTextSession(session);
 
 		org.apache.lucene.search.Query query = null;
@@ -274,7 +260,7 @@ public class OccurrenceDAOImpl
 
 	@Override
 	public long searchLuceneCount(String luceneQuery) {
-		Session session = getSession();
+		Session session = getSessionFactory().getCurrentSession();
 		FullTextSession fullTextSession = Search.getFullTextSession(session);
 
 		org.apache.lucene.search.Query query = null;

@@ -50,19 +50,21 @@ public class GroupNavDAOTest
 			groupNavDAO.create(groupNavParent);
 			
 			//first level items
-			
+			groupNav = new GroupNav();
 			groupNav.setGroupNavId(new BigDecimal(1));
 			groupNav.setTaxon(null);
 			groupNav.setGroupNavParent(groupNavParent);
 			
 			groupNavDAO.create(groupNav);
 			
+			groupNav = new GroupNav();
 			groupNav.setGroupNavId(new BigDecimal(2));
 			groupNav.setTaxon(null);
 			groupNav.setGroupNavParent(groupNavParent);
 			
 			groupNavDAO.create(groupNav);
 			
+			groupNav = new GroupNav();
 			groupNav.setGroupNavId(new BigDecimal(3));
 			groupNav.setTaxon(null);
 			groupNav.setGroupNavParent(groupNavParent);
@@ -70,17 +72,19 @@ public class GroupNavDAOTest
 			groupNavDAO.create(groupNav);
 						
 			//second level items
+            groupNav = new GroupNav();
 			groupNav.setGroupNavId(new BigDecimal(4));
 			groupNav.setTaxon(null);
 			groupNav.setGroupNavParent(
-					groupNavDAO.findById(GroupNav.class, new BigDecimal(1)));
+					groupNavDAO.findById(new BigDecimal(1)));
 			
 			groupNavDAO.create(groupNav);
-			
+
+            groupNav = new GroupNav();
 			groupNav.setGroupNavId(new BigDecimal(5));
 			groupNav.setTaxon(null);
 			groupNav.setGroupNavParent(
-					groupNavDAO.findById(GroupNav.class, new BigDecimal(1)));
+					groupNavDAO.findById(new BigDecimal(1)));
 			
 			groupNavDAO.create(groupNav);
 			

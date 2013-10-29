@@ -64,6 +64,10 @@
 		<level value="info" />
 	</logger>
 	
+	<logger name="org.hibernate.cfg">
+		<level value="info" />
+	</logger>
+	
 	<logger name="org.hibernate.search">
 		<level value="info" />
 		<appender-ref ref="console" />
@@ -75,7 +79,7 @@
 	</logger>
 	<!-- Root Logger -->
 	<root>
-		<priority value="info" />
+		<priority value="debug" />
 		<appender-ref ref="console" />
 	</root>
 	

@@ -9,8 +9,8 @@
 	<version>1.0-SNAPSHOT</version>
 	<properties>
 		<java-version>1.6</java-version>
-		<org.springframework-version>3.0.5.RELEASE</org.springframework-version>
-		<org.springframework.roo-version>1.2.0.RELEASE</org.springframework.roo-version>
+		<spring.framework.version>3.2.4.RELEASE</spring.framework.version>
+		<org.springframework.roo-version>1.2.4.RELEASE</org.springframework.roo-version>
 		<org.aspectj-version>1.6.8</org.aspectj-version>
 		<org.slf4j-version>1.6.1</org.slf4j-version>
 		 <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
@@ -22,7 +22,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>3.0.5.RELEASE</version>
+			<version>${spring.framework.version}</version>
 			<exclusions>
 				<!-- Exclude Commons Logging in favor of SLF4j -->
 				<exclusion>
@@ -35,7 +35,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>3.0.5.RELEASE</version>
+			<version>${spring.framework.version}</version>
 		 <type>jar</type>
 		</dependency>
 		<!-- Roo dependencies -->
@@ -131,28 +131,6 @@
 			<groupId>org.inbio.neoportal</groupId>
 			<artifactId>neoportal-service</artifactId>
 			<version>1.0-SNAPSHOT</version>
-		 <exclusions>
-		  <exclusion>
-		   <artifactId>cglib</artifactId>
-		   <groupId>cglib</groupId>
-		  </exclusion>
-		  <exclusion>
-		   <artifactId>lucene-analyzers</artifactId>
-		   <groupId>org.apache.lucene</groupId>
-		  </exclusion>
-		  <exclusion>
-		   <artifactId>lucene-core</artifactId>
-		   <groupId>org.apache.lucene</groupId>
-		  </exclusion>
-		  <exclusion>
-		   <artifactId>lucene-queries</artifactId>
-		   <groupId>org.apache.lucene</groupId>
-		  </exclusion>
-		  <exclusion>
-		   <artifactId>lucene-snowball</artifactId>
-		   <groupId>org.apache.lucene</groupId>
-		  </exclusion>
-		 </exclusions>
 		</dependency>
 	 <dependency>
 	  <groupId>com.sun.xml</groupId>
@@ -165,21 +143,9 @@
 	  <version>2.6</version>
 	 </dependency>
 	 <dependency>
-	  <groupId>org.apache.lucene</groupId>
-	  <artifactId>lucene-core</artifactId>
-	  <version>3.3.0</version>
-	  <type>jar</type>
-	 </dependency>
-	 <dependency>
-	  <groupId>org.hibernate</groupId>
-	  <artifactId>hibernate-core</artifactId>
-	  <version>3.6.0.Final</version>
-	  <type>jar</type>
-	 </dependency>
-	 <dependency>
 		<groupId>org.springframework.roo</groupId>
 		<artifactId>org.springframework.roo.annotations</artifactId>
-		<version>1.2.0.RELEASE</version>
+		<version>${org.springframework.roo-version}</version>
 	 </dependency>
 	 <dependency>
 	 	<groupId>org.inbio.neoportal</groupId>
@@ -208,7 +174,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
-			<version>3.0.5.RELEASE</version>
+			<version>${spring.framework.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

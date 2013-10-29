@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author avargas
  */
 @Service
+@Transactional
 public class SpeciesManagerImpl
         implements SpeciesManager {
 

@@ -18,18 +18,24 @@
  */
 package org.inbio.neoportal.dao.impl;
 
-import org.inbio.neoportal.core.test.NeoportalTestBase;
+import static org.junit.Assert.assertEquals;
+
 import java.math.BigDecimal;
 import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.search.FullTextSession;
+import org.hibernate.search.Search;
 import org.inbio.neoportal.core.dao.TaxonDAO;
 import org.inbio.neoportal.core.entity.Taxon;
+import org.inbio.neoportal.core.test.NeoportalTestBase;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -54,30 +60,34 @@ public class TaxonDAOImplTest extends NeoportalTestBase{
     
         Taxon taxon = new Taxon();
                
-        if(taxonDAOImpl.findAll(Taxon.class).isEmpty()){
+        if(taxonDAOImpl.findAll().isEmpty()){
 
             taxon.setTaxonId(new BigDecimal(1));
             taxon.setDefaultName("Inga vera");
             taxonDAOImpl.create(taxon);
             
+            taxon = new Taxon();
             taxon.setTaxonId(new BigDecimal(2));
             taxon.setDefaultName("Inga vera subsp. spuria");
             taxonDAOImpl.create(taxon);
 
+            taxon = new Taxon();
             taxon.setTaxonId(new BigDecimal(3));
             taxon.setDefaultName("Inga vera subsp. vera");
             taxonDAOImpl.create(taxon);
 
+            taxon = new Taxon();
             taxon.setTaxonId(new BigDecimal(4));
             taxon.setDefaultName("Inga vera");
             taxonDAOImpl.create(taxon);
 
+            taxon = new Taxon();
             taxon.setTaxonId(new BigDecimal(5));
             taxon.setDefaultName("Inga vera");
             taxonDAOImpl.create(taxon);
         }  
 
-        this.index(Taxon.class);
+//        this.index(Taxon.class);
     }
 
     @After
@@ -89,6 +99,10 @@ public class TaxonDAOImplTest extends NeoportalTestBase{
     @Test
     public void testSearch() {
         System.out.println("search");
+
+        FullTextSession fullTextSession = Search.getFullTextSession(this.sessionFactory.getCurrentSession());
+        fullTextSession.flushToIndexes();
+
         String searchText = "Inga";
         int offset = 0;
         int quantity = 20;

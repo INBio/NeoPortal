@@ -26,7 +26,7 @@ public class GeoFeature  implements java.io.Serializable {
      @Field
      private String name;
      @ContainedIn
-     private Set locations = new HashSet(0);
+     private Set<Location> locations = new HashSet(0);
 
     public GeoFeature() {
     }

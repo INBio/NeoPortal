@@ -15,6 +15,6 @@
     <context:component-scan base-package="org.inbio.neoportal.web" />
     
 	<!-- data source  -->
-	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/neoportal" />
+	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/neoportal" expected-type="javax.sql.DataSource" />
 	
 </beans>

@@ -10,35 +10,49 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	<context:annotation-config />
     <context:component-scan base-package="org.inbio.neoportal" />
     
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
-        <property name="driverClassName" value="org.postgresql.Driver"/>
-        <property name="initialSize" value="1"/>
-        <property name="maxActive" value="25"/>
-        <property name="maxIdle" value="10"/>
-        <property name="maxWait" value="10000"/>
-        <property name="poolPreparedStatements" value="true"/>
-        <property name="url" value="jdbc:postgresql://localhost:5432/neoportal"/>
-		<property name="username" value="postgres"/>
-<!--     	<property name="password" value="Pg.n3o"/> -->
-    	<property name="password" value="postgres"/>
+     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>file:/home/arturo/Proyectos/atta2-portal/database.properties</value>
+		</property>
+		<property name="searchSystemEnvironment" value="true" />
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+	</bean>
+    
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+		<property name="user" value="${jdbc.username}"/>
+    	<property name="password" value="${jdbc.password}"/>
+    	
+    	<property name="acquireIncrement"                       value="5"/>
+        <property name="acquireRetryAttempts"                   value="30"/>
+        <property name="acquireRetryDelay"                      value="1000"/>
+        <property name="autoCommitOnClose"                      value="false"/>
+        <property name="debugUnreturnedConnectionStackTraces"   value="true"/>
+        <property name="idleConnectionTestPeriod"               value="100"/>
+        <property name="initialPoolSize"                        value="5"/>
+        <property name="maxConnectionAge"                       value="1000"/>
+        <property name="maxIdleTime"                            value="200"/>
+        <property name="maxIdleTimeExcessConnections"           value="3600"/>
+        <property name="maxPoolSize"                            value="30"/>
+        <property name="minPoolSize"                            value="5"/>
+        <property name="preferredTestQuery"                     value="select 1"/>
+        <property name="testConnectionOnCheckin"                value="false"/>
+        <property name="unreturnedConnectionTimeout"            value="1000"/>
+        <property name="maxStatements"                          value="50"/>
+        <property name="maxStatementsPerConnection"             value="10"/>
     </bean>
     
     <!-- spring / hibernate configuration	-->
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
         <property name="packagesToScan" value="org.inbio.neoportal" />
-        <property name="schemaUpdate" value="true" />
         <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
-        <property name="exposeTransactionAwareSessionFactory"><value>false</value></property>
     </bean>
 
-    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
         <property name="dataSource" ref="dataSource" />
         <property name="sessionFactory" ref="sessionFactory" />
-    </bean>
-    
-    <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
-        <property name="transactionManager" ref="transactionManager"/>
     </bean>
     
     <!-- proxy-target-class include to support transaction within class without interface -->

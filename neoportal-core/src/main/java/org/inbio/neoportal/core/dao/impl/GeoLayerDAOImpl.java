@@ -20,16 +20,13 @@
 
 import java.math.BigDecimal;
 import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.transform.ResultTransformer;
-import org.hibernate.transform.Transformers;
 import org.inbio.neoportal.core.dao.GeoLayerDAO;
 import org.inbio.neoportal.core.dto.advancedsearch.GeoLayerCDTO;
 import org.inbio.neoportal.core.dto.transformers.GeoLayerTransformer;
 import org.inbio.neoportal.core.entity.GeoLayer;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -38,24 +35,19 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class GeoLayerDAOImpl
-    extends GenericBaseDAOImpl<GeoLayer, BigDecimal>
+    extends GenericDAOImpl<GeoLayer, BigDecimal>
     implements GeoLayerDAO{
 
     @Override
     public List<GeoLayerCDTO> getGeoLayerByName(final String name) {
-        HibernateTemplate template = getHibernateTemplate();
-		return (List<GeoLayerCDTO>) template.execute(new HibernateCallback() {
-            @Override
-			public Object doInHibernate(Session session) {
-                Query query = session.createQuery(
-						"from GeoLayer as gl"
-						+ " where gl.name = :name");
-				query.setParameter("name", name);
-                //query.setResultTransformer(new GeoLayerTransformer());
-                query.setResultTransformer(new GeoLayerTransformer());
-				return query.list();
-			}
-		});
+      Session session = getSessionFactory().getCurrentSession();
+      Query query = session.createQuery(
+        "from GeoLayer as gl"
+            + " where gl.name = :name");
+      query.setParameter("name", name);
+      //query.setResultTransformer(new GeoLayerTransformer());
+      query.setResultTransformer(new GeoLayerTransformer());
+      return query.list();
     }
 
     @Override
@@ -73,34 +65,4 @@ public class GeoLayerDAOImpl
         super.update(entity);
     }
 
-    @Override
-    public GeoLayer findById(Class<GeoLayer> entityClass, BigDecimal entityId) {
-        return super.findById(entityClass, entityId);
-    }
-
-    @Override
-    public List<GeoLayer> findAll(Class<GeoLayer> entityClass) {
-        return super.findAll(entityClass);
-    }
-
-    @Override
-    public List search(Class<GeoLayer> entityClass, ResultTransformer resultTransformer, String[] fields, String searchText, int offset, int quantity) {
-        return super.search(entityClass, resultTransformer, fields, searchText, offset, quantity);
-    }
-
-    @Override
-    public Long searchCount(Class<GeoLayer> entityClass, ResultTransformer resultTransformer, String[] fields, String searchText) {
-        return super.searchCount(entityClass, resultTransformer, fields, searchText);
-    }
-
-    @Override
-    public List search(Class<GeoLayer> entityClass, ResultTransformer resultTransformer, String searchText, int offset, int quantity) {
-        return super.search(entityClass, resultTransformer, searchText, offset, quantity);
-    }
-
-    @Override
-    public Long searchCount(Class<GeoLayer> entityClass, ResultTransformer resultTransformer, String searchText) {
-        return super.searchCount(entityClass, resultTransformer, searchText);
-    }
-    
 }

@@ -28,7 +28,7 @@ import org.inbio.neoportal.core.entity.SearchColumnDefault;
  * @author avargas
  */
 public interface ColumnDefaultDAO
-        extends GenericBaseDAO<SearchColumnDefault, BigDecimal> {
+        extends GenericDAO<SearchColumnDefault, BigDecimal> {
     
     public List<ColumnDefaultCDTO> getAllColumns();
     

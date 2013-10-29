@@ -12,7 +12,7 @@
 
     <properties>
         <maven.test.failure.ignore>true</maven.test.failure.ignore>
-        <spring.framework.version>3.0.5.RELEASE</spring.framework.version>
+        <spring.framework.version>3.2.4.RELEASE</spring.framework.version>
     </properties>
     <profiles>
         <profile>
@@ -41,21 +41,6 @@
             <type>test-jar</type>
         </dependency>
         
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context-support</artifactId>
-            <version>${spring.framework.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
-            <version>${spring.framework.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>${spring.framework.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>junit</groupId>
@@ -78,64 +63,16 @@
         </dependency>
 
 
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-search</artifactId>
-            <version>3.3.0.Final</version>
-        </dependency>
 
 
         <!-- Hibernate core -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>3.6.0.Final</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>3.6.0.Final</version>
-            <type>jar</type>
-        </dependency>
 
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
             <version>1.2.2</version>
         </dependency>
-        <!-- PostgreSQL -->
-        <dependency>
-            <groupId>postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>8.3-603.jdbc4</version>
-			<!--version>8.4-701.jdbc4</version-->
-        </dependency>
         <!-- loggin -->
-        <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-queries</artifactId>
-            <version>3.3.0</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
-            <artifactId>lucene-analyzers</artifactId>
-            <groupId>org.apache.lucene</groupId>
-            <type>jar</type>
-            <version>3.3.0</version>
-        </dependency>
-        <dependency>
-            <artifactId>lucene-core</artifactId>
-            <groupId>org.apache.lucene</groupId>
-            <type>jar</type>
-            <version>3.3.0</version>
-        </dependency>
-        <dependency>
-            <artifactId>lucene-snowball</artifactId>
-            <groupId>org.apache.lucene</groupId>
-            <type>jar</type>
-            <version>2.9.3</version>
-        </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>

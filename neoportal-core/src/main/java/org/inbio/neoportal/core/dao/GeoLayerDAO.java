@@ -28,7 +28,7 @@ import org.inbio.neoportal.core.entity.GeoLayer;
  * @author avargas
  */
 public interface GeoLayerDAO
-    extends GenericBaseDAO<GeoLayer, BigDecimal> {
+    extends GenericDAO<GeoLayer, BigDecimal> {
    
     /**
      * 

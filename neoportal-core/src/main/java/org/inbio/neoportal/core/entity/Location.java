@@ -5,9 +5,9 @@ package org.inbio.neoportal.core.entity;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
+
 import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.DocumentId;
-import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.IndexedEmbedded;
 
@@ -65,10 +65,10 @@ public class Location  implements java.io.Serializable {
     private String georeferenceRemarks;
     
      @ContainedIn
-     private Set occurrences = new HashSet(0);
+     private Set<OccurrenceDwc> occurrences = new HashSet(0);
      //feature point to location so depth should be 1
      @IndexedEmbedded(depth=1) 
-     private Set features = new HashSet(0);
+     private Set<GeoFeature> features = new HashSet(0);
 
     public Location() {
     }

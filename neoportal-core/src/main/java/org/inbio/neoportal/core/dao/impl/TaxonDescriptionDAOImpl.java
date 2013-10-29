@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
@@ -37,12 +38,9 @@ import org.hibernate.search.Search;
 import org.inbio.neoportal.core.dao.TaxonDescriptionDAO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionLiteCDTO;
-import org.inbio.neoportal.core.dto.transformers.TaxonDescriptionTransformer;
 import org.inbio.neoportal.core.dto.transformers.TaxonDescriptionFullTransformer;
-import org.inbio.neoportal.core.dto.transformers.TaxonLiteTransformer;
+import org.inbio.neoportal.core.dto.transformers.TaxonDescriptionTransformer;
 import org.inbio.neoportal.core.entity.TaxonDescription;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -52,7 +50,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class TaxonDescriptionDAOImpl 
-    extends GenericBaseDAOImpl<TaxonDescription, BigDecimal>
+    extends GenericDAOImpl<TaxonDescription, BigDecimal>
         implements TaxonDescriptionDAO{    
         @Override
     public List<TaxonDescriptionLiteCDTO> search
@@ -66,10 +64,11 @@ public class TaxonDescriptionDAOImpl
 
         fieldList.addAll(Arrays.asList(taxon));
 
-        return super.search(TaxonDescription.class,
+        return super.search(
                             new TaxonDescriptionTransformer(), 
                             fieldList.toArray(new String[fieldList.size()]), 
-                            searchText, 
+                            searchText,
+                            "",
                             offset, 
                             quantity);
        
@@ -86,8 +85,7 @@ public class TaxonDescriptionDAOImpl
 
         fieldList.addAll(Arrays.asList(taxon));
         
-        return super.searchCount(TaxonDescription.class, 
-                                new TaxonLiteTransformer(), 
+        return super.searchPhraseCount( 
                                 fieldList.toArray(new String[fieldList.size()]), 
                                 searchText);
     }
@@ -96,40 +94,32 @@ public class TaxonDescriptionDAOImpl
     public List<TaxonDescriptionFullCDTO> findAllByScientificName(
        final String scientificName,
        final String provider) {
-        HibernateTemplate template = getHibernateTemplate();
-		return (List<TaxonDescriptionFullCDTO>) template.execute(new HibernateCallback() {
-			public Object doInHibernate(Session session) {       
-                Query query = session.createQuery(
-						"from TaxonDescription as td"
-						+ " where lower(td.scientificName) = lower(:scientificName)"
-                        + " and lower(td.institutionCode) = lower(:provider)");
-				query.setParameter("scientificName", scientificName);
-                query.setParameter("provider", provider);
-                query.setResultTransformer(new TaxonDescriptionFullTransformer());
-                
-                //query.setCacheable(true);
-				return query.list();
-			}
-		});
+        Session session = getSessionFactory().getCurrentSession();
+        Query query = session.createQuery(
+          "from TaxonDescription as td"
+              + " where lower(td.scientificName) = lower(:scientificName)"
+              + " and lower(td.institutionCode) = lower(:provider)");
+        query.setParameter("scientificName", scientificName);
+        query.setParameter("provider", provider);
+        query.setResultTransformer(new TaxonDescriptionFullTransformer());
+
+        //query.setCacheable(true);
+        return query.list();
         
     }
     
     @Override
     public List<TaxonDescriptionFullCDTO> findAllByScientificName(
        final String scientificName) {
-        HibernateTemplate template = getHibernateTemplate();
-		return (List<TaxonDescriptionFullCDTO>) template.execute(new HibernateCallback() {
-			public Object doInHibernate(Session session) {       
-                Query query = session.createQuery(
-						"from TaxonDescription as td"
-						+ " where lower(td.scientificName) = lower(:scientificName)");
-				query.setParameter("scientificName", scientificName);
-                query.setResultTransformer(new TaxonDescriptionFullTransformer());
-                
-                //query.setCacheable(true);
-				return query.list();
-			}
-		});
+        Session session = getSessionFactory().getCurrentSession();       
+        Query query = session.createQuery(
+          "from TaxonDescription as td"
+              + " where lower(td.scientificName) = lower(:scientificName)");
+        query.setParameter("scientificName", scientificName);
+        query.setResultTransformer(new TaxonDescriptionFullTransformer());
+
+        //query.setCacheable(true);
+        return query.list();
     }
 
     @Override
@@ -138,58 +128,50 @@ public class TaxonDescriptionDAOImpl
             final int offset, 
             final int quantity) {
         
+      Session session = getSessionFactory().getCurrentSession();
 
-        HibernateTemplate template = getHibernateTemplate();
+      String[] taxon =
+          new String[]{ "scientificName", "kingdom", "division", "class_",
+                        "order", "family", "genus", "species"};
 
-        return (List) template.execute(new HibernateCallback() {
-                
-            @Override
-            public Object doInHibernate(Session session) {
+      org.apache.lucene.search.Query query = null;
+      FullTextSession fullTextSession = 
+          Search.getFullTextSession(session);
 
-                String[] taxon =
-                new String[]{ "scientificName", "kingdom", "division", "class_",
-                                 "order", "family", "genus", "species"};
+      // create native Lucene query
+      MultiFieldQueryParser parser = 
+          new MultiFieldQueryParser(Version.LUCENE_33, 
+            taxon, new StandardAnalyzer(Version.LUCENE_33));
 
-                org.apache.lucene.search.Query query = null;
-                FullTextSession fullTextSession = 
-                    Search.getFullTextSession(session);
-                
-                // create native Lucene query
-                MultiFieldQueryParser parser = 
-                        new MultiFieldQueryParser(Version.LUCENE_33, 
-                            taxon, new StandardAnalyzer(Version.LUCENE_33));
+      //FIXME Manejo de errores
+      try {
 
-                //FIXME Manejo de errores
-                try {
-                    
-                    query = parser.parse(searchText);
-                    
-                } catch (ParseException ex) {
-                    
-                    Logger.getLogger(TaxonDescription.class.getName())
-                        .log(Level.SEVERE, null, ex);
-                    
-                    return null;
-                }
-                
-                // Wrap Lucene query in a org.hibernate.Query
-                org.hibernate.search.FullTextQuery hsQuery =
-                        fullTextSession.createFullTextQuery(query, TaxonDescription.class);
+        query = parser.parse(searchText);
 
-                // Configure the result list
-//                hsQuery.setResultTransformer(new TaxonDescriptionFullTransformer());
-                hsQuery.setFirstResult(offset);
-                hsQuery.setMaxResults(quantity);
-                
-                hsQuery.setProjection(
-                    FullTextQuery.SCORE, ProjectionConstants.THIS, "defaultName", "kingdom", "division", "class_",
-                                 "order", "family", "genus", "species");
-                
-                List results = ((Query)hsQuery).list();
-                Object[] firstResult = (Object[]) results.get(0);
-                
-                return results;
-            }
-        });
+      } catch (ParseException ex) {
+
+        Logger.getLogger(TaxonDescription.class.getName())
+        .log(Level.SEVERE, null, ex);
+
+        return null;
+      }
+
+      // Wrap Lucene query in a org.hibernate.Query
+      org.hibernate.search.FullTextQuery hsQuery =
+          fullTextSession.createFullTextQuery(query, TaxonDescription.class);
+
+      // Configure the result list
+      //                hsQuery.setResultTransformer(new TaxonDescriptionFullTransformer());
+      hsQuery.setFirstResult(offset);
+      hsQuery.setMaxResults(quantity);
+
+      hsQuery.setProjection(
+        FullTextQuery.SCORE, ProjectionConstants.THIS, "defaultName", "kingdom", "division", "class_",
+        "order", "family", "genus", "species");
+
+      List results = ((Query)hsQuery).list();
+      Object[] firstResult = (Object[]) results.get(0);
+
+      return results;
     }
 }

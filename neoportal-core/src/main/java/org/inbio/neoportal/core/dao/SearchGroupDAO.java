@@ -14,7 +14,7 @@ import org.inbio.neoportal.core.entity.SearchGroup;
  * @author avargas
  */
 public interface SearchGroupDAO
-        extends GenericBaseDAO<SearchGroup, BigDecimal> {
+        extends GenericDAO<SearchGroup, BigDecimal> {
     
     public List<SearchGroupCDTO> getAllSearchGroups();
     
