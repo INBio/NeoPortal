@@ -46,6 +46,7 @@ import org.springframework.stereotype.Repository;
  * @author jgutierrez
  * @author asanabria 
  */
+@Deprecated
 @Repository
 public class GenericBaseDAOImpl<E ,I> 
     extends HibernateDaoSupport 

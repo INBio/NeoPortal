@@ -25,6 +25,7 @@ import org.hibernate.transform.ResultTransformer;
  * @author jgutierrez
  *
  */
+@Deprecated
 public interface GenericBaseDAO<E ,I> {
 
  /**
