@@ -54,8 +54,8 @@ public class OccurrenceTransformer
            
            // FIXME: OccurrenceGeoSpatial is deprecated
            OccurrenceGeospatialLiteCDTO ogCDTO = new OccurrenceGeospatialLiteCDTO();
-           ogCDTO.setLatitude(location.getDecimalLatitude());
-           ogCDTO.setLongitude(location.getDecimalLongitude());
+           ogCDTO.setLatitude(location.getDecimalLatitude().toString());
+           ogCDTO.setLongitude(location.getDecimalLongitude().toString());
            
            ogl = new ArrayList<OccurrenceGeospatialLiteCDTO>();
            ogl.add(ogCDTO);

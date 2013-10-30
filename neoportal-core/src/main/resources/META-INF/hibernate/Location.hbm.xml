@@ -91,10 +91,10 @@
         <property name="verbatimSRS" type="string">
             <column name="verbatim_srs" />
         </property>
-        <property name="decimalLatitude" type="string">
+        <property name="decimalLatitude" type="double">
             <column name="decimal_latitude" />
         </property>
-        <property name="decimalLongitude" type="string">
+        <property name="decimalLongitude" type="double">
             <column name="decimal_longitude" />
         </property>
         <property name="geodeticDatum" type="string">

@@ -140,8 +140,8 @@ public class OccurrenceDWCTransformer
             newCDTO.setVerbatimLongitude(location.getVerbatimLongitude());
             newCDTO.setVerbatimCoordinateSystem(location.getVerbatimCoordinateSystem());
             newCDTO.setVerbatimSRS(location.getVerbatimSRS());
-            newCDTO.setDecimalLatitude(location.getDecimalLatitude());
-            newCDTO.setDecimalLongitude(location.getDecimalLongitude());
+            newCDTO.setDecimalLatitude(location.getDecimalLatitude().toString());
+            newCDTO.setDecimalLongitude(location.getDecimalLongitude().toString());
             newCDTO.setGeodeticDatum(location.getGeodeticDatum());
             newCDTO.setCoordinateUncertaintyInMeters(location.getCoordinateUncertaintyInMeters());
             newCDTO.setCoordinatePrecision(location.getCoordinatePrecision());
@@ -272,8 +272,8 @@ public class OccurrenceDWCTransformer
         locationCDTO.setVerbatimLongitude(location.getVerbatimLongitude());
         locationCDTO.setVerbatimCoordinateSystem(location.getVerbatimCoordinateSystem());
         locationCDTO.setVerbatimSRS(location.getVerbatimSRS());
-        locationCDTO.setDecimalLatitude(location.getDecimalLatitude());
-        locationCDTO.setDecimalLongitude(location.getDecimalLongitude());
+        locationCDTO.setDecimalLatitude(location.getDecimalLatitude().toString());
+        locationCDTO.setDecimalLongitude(location.getDecimalLongitude().toString());
         locationCDTO.setGeodeticDatum(location.getGeodeticDatum());
         locationCDTO.setCoordinateUncertaintyInMeters(location.getCoordinateUncertaintyInMeters());
         locationCDTO.setCoordinatePrecision(location.getCoordinatePrecision());

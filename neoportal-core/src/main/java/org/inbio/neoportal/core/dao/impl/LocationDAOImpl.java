@@ -19,7 +19,14 @@
 package org.inbio.neoportal.core.dao.impl;
 
 import java.math.BigDecimal;
+import java.util.List;
 
+import org.apache.lucene.search.Query;
+import org.hibernate.Session;
+import org.hibernate.search.FullTextSession;
+import org.hibernate.search.Search;
+import org.hibernate.search.query.dsl.QueryBuilder;
+import org.hibernate.search.query.dsl.Unit;
 import org.inbio.neoportal.core.dao.LocationDAO;
 import org.inbio.neoportal.core.entity.Location;
 import org.springframework.stereotype.Repository;
@@ -32,5 +39,28 @@ import org.springframework.stereotype.Repository;
 public class LocationDAOImpl 
 	extends GenericDAOImpl<Location, BigDecimal> 
 	implements LocationDAO {
+
+  @Override
+  public List<Location> searchLocationsByDistance(double radius, double latitude, double longitude) {
+    Session session = getSessionFactory().getCurrentSession();
+    
+    FullTextSession fullTextSession = Search.getFullTextSession(session);
+    QueryBuilder builder = fullTextSession
+        .getSearchFactory()
+        .buildQueryBuilder()
+        .forEntity(Location.class)
+        .get();
+    
+    Query luceneQuery = builder.spatial()
+        .onDefaultCoordinates()
+        .within(radius, Unit.KM)
+        .ofLatitude(latitude)
+        .andLongitude(longitude)
+        .createQuery();
+    
+    org.hibernate.Query hQuery = fullTextSession.createFullTextQuery(luceneQuery, Location.class);
+    
+    return hQuery.list();
+  }
 
 }
