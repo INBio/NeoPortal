@@ -4,14 +4,8 @@
   <session-factory>
     <!-- Hibernate specific configuration -->
     <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-    <!-- Database connection -->
-    <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-    <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/neoportal</property>
-    <property name="hibernate.connection.username">postgres</property>
-<!--     <property name="hibernate.connection.password">inbio</property> -->
     <!-- Hibernate search configuration -->
     <property name="hibernate.search.default.directory_provider">filesystem</property>
-<!--     <property name="hibernate.search.default.indexBase">/home/arturo/LuceneIndex/</property> -->
 	<property name="hibernate.search.default.indexBase">/var/LuceneIndex/</property>
     <property name="hibernate.search.default.locking_strategy">simple</property>
     <!-- Mappings -->

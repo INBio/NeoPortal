@@ -27,7 +27,7 @@
         <script type="text/javascript" >
             var scientificName = "${scientificName}";
             var provider = "";
-            var contextPath = "${pageContext.request.contextPath}";
+            var contextPath = '${pageContext.request.contextPath}';
             
             //labels
             var scientificNameT = '<fmt:message key="scientific_name"/>';
@@ -43,8 +43,6 @@
         </script>
         
         <script type="text/javascript" src="<c:url value="/resources/occurrences/map-stuff.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/occurrences/dataTable-stuff.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/species/taxon-description-behavior.js" />"></script>
                 	
         <!-- 	FIXME: change home.js for a basic search script -->
         <script type="text/javascript" src="<c:url value="/resources/species/home.js" />"></script>
@@ -67,27 +65,41 @@
 				<li><a href="${taxonUrl}"><fmt:message key="tab_taxonDescription" /></a></li>
 				<li><a href="${taxonUrl}/images"><fmt:message key="tab_images" /></a></li>
 				<li><a href="${taxonUrl}/occurrences"><fmt:message key="tab_occurrences" /></a></li>
+				<li><a href="${taxonUrl}/map"><fmt:message key="tab_map" /></a></li>
 			</ul></nav>
 			
-			<div class="">
+			<div>
+			<c:choose>
+				<c:when test="${context == 'taxonDescription'}">
+					<n:taxonDescription></n:taxonDescription>	
+				</c:when>
+				<c:when test="${context == 'images'}">
+				    <n:imageGallery images="${images}"></n:imageGallery>
+				</c:when>
+				<c:when test="${context == 'occurrences'}">
+				<c:if test="${not empty scientificName })">
+				<div class="controls">
+					<form method="post" action="${pageContext.request.contextPath}/api/species/${scientificName}/occurrences/export">
+						<button name="export" type="submit">Download</button>
+					</form>
+				</div>
+				</c:if>
+				    <n:occurrenceTable occurrences="${occurrences}"></n:occurrenceTable>
+				</c:when>
+				<c:when test="${context == 'map'}">
 				<c:choose>
-					<c:when test="${context == 'taxonDescription'}">
-						<n:taxonDescription></n:taxonDescription>	
+					<c:when test="${taxon.taxonomicalRangeId >= 13}">
+					<div id="map"></div>
+					<script type="text/javascript">
+						var scientificName = '${scientificName}';
+					</script>
 					</c:when>
-					<c:when test="${context == 'images'}">
-					    <n:imageGallery images="${images}"></n:imageGallery>
-					</c:when>
-					<c:when test="${context == 'occurrences'}">
-					<c:if test="${not empty scientificName })">
-					<div class="controls">
-						<form method="post" action="${pageContext.request.contextPath}/api/species/${scientificName}/occurrences/export">
-							<button name="export" type="submit">Download</button>
-						</form>
-					</div>
-					</c:if>
-					    <n:occurrenceTable occurrences="${occurrences}"></n:occurrenceTable>
-					</c:when>
+					<c:otherwise>
+					<p><fmt:message key="noMapFeature" /></p>
+					</c:otherwise>
 				</c:choose>
+				</c:when>
+			</c:choose>
 				
 			</div>
 			

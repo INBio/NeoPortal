@@ -47,24 +47,26 @@ function initMap2(divId){
                 /*radius: function(feature){
                     return Math.min(feature.attributes.count, 16) + 8;
                 },*/
-                fillColor: function(feature) {
-
-                    var r = Math.round( 255 * feature.cluster.length / clusterMaxLenght);
-                    var g = Math.round(Math.sin(Math.PI * feature.cluster.length / clusterMaxLenght) * 255);
-                    var b = Math.round( 255 * (clusterMaxLenght - feature.cluster.length) / clusterMaxLenght);
-
-                    return "rgb(" + r + "," + g + "," + b + ")";
-                },
-                label: function(feature){ 
-                    return feature.cluster.length;
-                }
+                fillColor: "#0000ff",
+//                	function(feature) {
+//
+//                    var r = Math.round( 255 * feature.cluster.length / clusterMaxLenght);
+//                    var g = Math.round(Math.sin(Math.PI * feature.cluster.length / clusterMaxLenght) * 255);
+//                    var b = Math.round( 255 * (clusterMaxLenght - feature.cluster.length) / clusterMaxLenght);
+//
+//                    return "rgb(" + r + "," + g + "," + b + ")";
+//                },
+                label: ""
+//                	function(feature){ 
+//                    return feature.cluster.length;
+//                }
             }
         }
     );
     
     //Specimens layer
     vectorLayer = new OpenLayers.Layer.Vector('Specimens',{
-        strategies: [ strategy ],
+//        strategies: [ strategy ],
         styleMap: new OpenLayers.StyleMap({
             "default": style,
             "select": style
@@ -99,7 +101,7 @@ function createAttrib(occurrenceId, scientificName,latitude,longitude,catalog,in
         Longitude: longitude,
         Catalog: catalog,
         Institution: institution
-    }
+    };
     return attrib;
 }
 
@@ -257,7 +259,7 @@ function showSpecimenPoints(xmlDoc)  {
         
         vectorLayer.addFeatures(points);
         
-        clusterMaxLenght = getMaxCluster();
+//        clusterMaxLenght = getMaxCluster();
         
         vectorLayer.setVisibility(true);
 

@@ -382,11 +382,14 @@ nav li:FIRST-CHILD {
 
 /* ----------- HEADER --------------------------- */
 div#header_inner{
-	height: 188px;
+	/* FIXME: add header image */
+/* 	height: 188px; */
+	margin-bottom: 15px;
 }
 /* ------------ FOOTER ---------------------------*/
-footer{
+footer.data_wrapper{
 	clear: both;
+	margin-top: 10px;
 	text-align: center;
 	font-size: 0.8em;
 	padding: 15px 0;
@@ -617,6 +620,9 @@ div.paginate_group{
 }
 
 /* ----------------------- SPECIES PAGE ----------------------------*/
+div.species_page {
+	min-height: 150px;
+}
 .taxon-content {
 	margin-top: 15px;
 }
@@ -657,4 +663,10 @@ div.image-item {
 }
 div.image-item p{
 	font-size: 1.3rem;
+}
+/* ------- species map ------------- */
+div#map {
+	margin: 0;
+    width: 100%;
+    height: 420px;
 }

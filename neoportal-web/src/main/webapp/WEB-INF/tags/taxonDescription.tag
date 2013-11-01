@@ -164,14 +164,14 @@
 		</div>
 		</c:if>
 		
-		<div id="externalSource">
-		    <%-- TODO: get external sources from database --%>
-		    <h3><fmt:message key="taxonDes.externalSource"/></h3>
-		    <p><a href="http://www.biodiversitylibrary.org/name/${scientificName}">BHL</a></p>
-		    <p><a href="http://ara.inbio.ac.cr/SSTN-IABIN/search/${scientificName}">IABIN</a></p>
-		    <p><a href="http://cro.ots.ac.cr/rdmcnfs/datasets/exsrch.phtml?words=${scientificName}&ds=binabitrop">OET Binabitrop</a></p>
-		    <p><a href="http://species.wikimedia.org/wiki/${scientificName}">Wikispecies</a></p>
-		    <p><a href="http://www.boldsystems.org/views/taxbrowser.php?taxon=${scientificName}">Barcode of life data systems</a></p>
-		</div>
+<!-- 		<div id="externalSource"> -->
+<%-- 		    TODO: get external sources from database --%>
+<%-- 		    <h3><fmt:message key="taxonDes.externalSource"/></h3> --%>
+<%-- 		    <p><a href="http://www.biodiversitylibrary.org/name/${scientificName}">BHL</a></p> --%>
+<%-- 		    <p><a href="http://ara.inbio.ac.cr/SSTN-IABIN/search/${scientificName}">IABIN</a></p> --%>
+<%-- 		    <p><a href="http://cro.ots.ac.cr/rdmcnfs/datasets/exsrch.phtml?words=${scientificName}&ds=binabitrop">OET Binabitrop</a></p> --%>
+<%-- 		    <p><a href="http://species.wikimedia.org/wiki/${scientificName}">Wikispecies</a></p> --%>
+<%-- 		    <p><a href="http://www.boldsystems.org/views/taxbrowser.php?taxon=${scientificName}">Barcode of life data systems</a></p> --%>
+<!-- 		</div> -->
 	</div> <!-- close #taxonDescription -->
 </div>
