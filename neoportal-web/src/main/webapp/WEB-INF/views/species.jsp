@@ -77,7 +77,7 @@
 				    <n:imageGallery images="${images}"></n:imageGallery>
 				</c:when>
 				<c:when test="${context == 'occurrences'}">
-				<c:if test="${not empty scientificName })">
+				<c:if test="${not empty scientificName }">
 				<div class="controls">
 					<form method="post" action="${pageContext.request.contextPath}/api/species/${scientificName}/occurrences/export">
 						<button name="export" type="submit">Download</button>
