@@ -18,6 +18,10 @@
  */
 package org.inbio.neoportal.web.common;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -34,26 +38,15 @@ import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 
 	private static final Logger logger = Logger.getLogger(RequestTimeInterceptor.class);
-	private StopWatch watch = new StopWatch();
 	 
 	//before the actual handler will be executed
 	public boolean preHandle(HttpServletRequest request, 
 		HttpServletResponse response, Object handler)
 	    throws Exception {
- 
+	
 		if(!(handler instanceof ResourceHttpRequestHandler)){
-		//logger.info("Start Request");
-			StringBuilder taskName = new StringBuilder(
-					request.getRequestURI());
-			if(request.getQueryString() == null)
-				taskName.append(" [Proccess request]");
-			else
-				taskName.append(
-						"?").append(
-								request.getQueryString()).append(
-								" [Proccess request]");
-			
-			watch.start(taskName.toString());
+		  long startTime = System.currentTimeMillis();
+		  request.setAttribute("startTime", startTime);
 		}
 
 		return true;
@@ -66,8 +59,8 @@ public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 		throws Exception {
  
 		if(!(handler instanceof ResourceHttpRequestHandler)){
-			watch.stop();
-			watch.start(request.getRequestURI() + " [Rendering view]");
+			long renderTime = System.currentTimeMillis();
+			request.setAttribute("renderTime", renderTime);
 		}
 		
 	}
@@ -75,10 +68,38 @@ public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 	public void afterCompletion(
 			HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex){
 		if(!(handler instanceof ResourceHttpRequestHandler)){
-			watch.stop();
-			logger.info(watch.prettyPrint());
-			//restart watch after every print
-			this.watch = new StopWatch();
+			long stopTime = System.currentTimeMillis();
+			long startTime = Long.parseLong(request.getAttribute("startTime").toString());
+			long renderTime = Long.parseLong(request.getAttribute("renderTime").toString());
+			
+			long totalTime = stopTime - startTime;
+			long processTime = renderTime - startTime;
+			long viewTime = stopTime - renderTime;
+			
+			DateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy HH:mm:ss");
+		    //get current date time with Date()
+		    Date date = new Date();
+		       
+			StringBuilder sb = new StringBuilder();
+			sb.append(request.getRemoteHost());
+			sb.append(" [");
+			sb.append(dateFormat.format(date));
+			sb.append("] ");
+			sb.append(request.getRequestURI());
+			if(request.getQueryString() != null)
+			  sb.append("?" + request.getQueryString());
+			sb.append(" ");
+			sb.append("[process: ");
+			sb.append(processTime);
+			sb.append("] ");
+			sb.append("[render: ");
+            sb.append(viewTime);
+            sb.append("] ");
+            sb.append("[total: ");
+            sb.append(totalTime);
+            sb.append("] ");
+            
+			logger.info(sb);
 		}
 	}
 	
