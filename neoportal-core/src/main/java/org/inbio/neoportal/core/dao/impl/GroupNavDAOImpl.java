@@ -3,6 +3,7 @@ package org.inbio.neoportal.core.dao.impl;
 import java.math.BigDecimal;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.inbio.neoportal.core.dao.GroupNavDAO;
@@ -57,6 +58,20 @@ public class GroupNavDAOImpl
 	public List<GroupNavCDTO> getTreePart(String groupNavName, String treePart) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	@Override
+	public GroupNav getChilds(BigDecimal id) {
+	  Session session = getSessionFactory().getCurrentSession();
+
+      Query query = session.createQuery(
+        "select gn from GroupNav gn " +
+          "left join fetch gn.groupNavChilds left join fetch gn.groupNavParent" +
+          " where gn.groupNavId = :groupNavId");
+      query.setParameter("groupNavId", id);
+      query.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+
+      return (GroupNav)query.uniqueResult();
 	}
 
 }

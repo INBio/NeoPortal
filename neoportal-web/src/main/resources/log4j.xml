@@ -68,6 +68,10 @@
 		<level value="info" />
 	</logger>
 	
+	<logger name="org.hibernate.sql">
+		<level value="info" />
+	</logger>
+	
 	<logger name="org.hibernate.search">
 		<level value="info" />
 		<appender-ref ref="console" />

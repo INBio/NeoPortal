@@ -39,6 +39,13 @@ public interface GroupNavDAO
 	public List<GroupNavCDTO> getFirstLevel(String groupNavName);
 	
 	public List<GroupNavCDTO> getTreePart(String groupNavName, String treePart );
+	
+	/**
+	 * Return parent entity with all childs prefetch in one select
+	 * @param id
+	 * @return
+	 */
+	public GroupNav getChilds(BigDecimal id);
 
   /**
    * @param entityClass

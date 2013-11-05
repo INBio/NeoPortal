@@ -78,10 +78,10 @@ public class GroupNavManagerImpl
 
 		Response response = new Response();
 		
-		GroupNavCDTO gn = groupNavDAO.getById(new BigDecimal(id));
+		GroupNav gn = groupNavDAO.getChilds(new BigDecimal(id));
 
 		//get taxon list
-		List<TaxonCDTO> taxonList = getTaxonList(gn);
+		List<Taxon> taxonList = getTaxonList(gn);
 		
 		//create query for lucene based on taxon
 		String query = taxonListToQuery(taxonList);
@@ -112,28 +112,28 @@ public class GroupNavManagerImpl
 		return response;
 	}
 
-	public List<TaxonCDTO> getTaxonList(GroupNavCDTO gn) {
-		if(gn.getTaxonCDTO() != null){
-			ArrayList<TaxonCDTO> finalList =new ArrayList<TaxonCDTO>();
-			finalList.add(gn.getTaxonCDTO());
+	public List<Taxon> getTaxonList(GroupNav gn) {
+		if(gn.getTaxon() != null){
+			ArrayList<Taxon> finalList =new ArrayList<Taxon>();
+			finalList.add(gn.getTaxon());
 			return finalList;
 		}
 		
-		ArrayList<TaxonCDTO> list =new ArrayList<TaxonCDTO>();
+		ArrayList<Taxon> list =new ArrayList<Taxon>();
 		
-		for (GroupNavCDTO gnCDTO : gn.getGroupNavChilds()) {
-			list.addAll(getTaxonList(gnCDTO));
+		for (GroupNav gnChild : gn.getGroupNavChilds()) {
+			list.addAll(getTaxonList(gnChild));
 		}
 		
 		return list;
 	}
 
 	
-	public String taxonListToQuery(List<TaxonCDTO> taxonList){
+	public String taxonListToQuery(List<Taxon> taxonList){
 		String query = "";
 		
-		for(TaxonCDTO taxon: taxonList){
-			Taxon.TaxonomicalRange taxonRange = Taxon.TaxonomicalRange.getById(Long.parseLong(taxon.getTaxonomicalRangeId()));
+		for(Taxon taxon: taxonList){
+			Taxon.TaxonomicalRange taxonRange = Taxon.TaxonomicalRange.getById(Long.parseLong(taxon.getTaxonomicalRangeId().toString()));
 			//FIXME: get taxon range to look for other than family
 			query += " " + taxonRange.getTaxonomicalRangeName() + ":\"" + taxon.getDefaultName() + "\" OR"; 
 		}
