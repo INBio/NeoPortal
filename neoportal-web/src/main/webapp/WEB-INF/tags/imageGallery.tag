@@ -13,14 +13,21 @@
 <c:if test="${showPagination != false }">
 <n:pagination></n:pagination>
 </c:if>
+<div class="item-list">
 <c:forEach var="image" items="${images}">
-	<div class="image-item">
-		<img alt="${image.title}" src="${image.mediumUrl}" />
-		<c:if test="${not empty image.taxon }">
-		<p>${image.taxon.defaultName }</p>
-		<p>${image.author }</p>
-		</c:if>
+	<div class="item">
+		<div class="image-item">
+			<a href="${image.bigUrl}">
+				<img alt="${image.title}" src="${image.mediumUrl}" />
+			</a>
+			<c:if test="${not empty image.taxon }">
+			<div class="image-meta">
+				<p>${image.taxon.defaultName }</p>
+				<p>${image.author }</p>
+			</div>
+			</c:if>
+		</div>
 	</div>
 </c:forEach>
 </div>
-	
+</div>

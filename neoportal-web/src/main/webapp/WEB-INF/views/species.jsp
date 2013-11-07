@@ -74,7 +74,9 @@
 					<n:taxonDescription></n:taxonDescription>	
 				</c:when>
 				<c:when test="${context == 'images'}">
+				<div class="grid-layout">
 				    <n:imageGallery images="${images}"></n:imageGallery>
+			    </div>
 				</c:when>
 				<c:when test="${context == 'occurrences'}">
 				<c:if test="${not empty scientificName }">

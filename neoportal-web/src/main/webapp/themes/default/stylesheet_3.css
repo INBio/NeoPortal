@@ -655,15 +655,30 @@ div.species_page nav li{
 }
 
 /* ------- species images --------- */
-div.image-item {
-	display: inline-block;
+div.item {
 	margin: 5px;
+	display: inline-block;
+}
+div.image-item {
 	border: 1px solid #aaa;
 	padding: 5px;
+}
+div.image-item img{
+	width: 100%;
 }
 div.image-item p{
 	font-size: 1.3rem;
 }
+div.grid-layout {
+	overflow: hidden;
+}
+div.grid-layout div.item{
+/* 	float: left; */
+}
+div.grid-layout div.image-item {
+	width: 218px;
+}
+
 /* ------- species map ------------- */
 div#map {
 	margin: 0;
