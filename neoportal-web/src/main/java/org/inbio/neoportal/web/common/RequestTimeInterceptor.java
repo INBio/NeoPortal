@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.springframework.util.StopWatch;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
@@ -68,38 +67,47 @@ public class RequestTimeInterceptor extends HandlerInterceptorAdapter {
 	public void afterCompletion(
 			HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex){
 		if(!(handler instanceof ResourceHttpRequestHandler)){
-			long stopTime = System.currentTimeMillis();
-			long startTime = Long.parseLong(request.getAttribute("startTime").toString());
-			long renderTime = Long.parseLong(request.getAttribute("renderTime").toString());
-			
-			long totalTime = stopTime - startTime;
-			long processTime = renderTime - startTime;
-			long viewTime = stopTime - renderTime;
-			
-			DateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy HH:mm:ss");
-		    //get current date time with Date()
-		    Date date = new Date();
-		       
-			StringBuilder sb = new StringBuilder();
-			sb.append(request.getRemoteHost());
-			sb.append(" [");
-			sb.append(dateFormat.format(date));
-			sb.append("] ");
-			sb.append(request.getRequestURI());
-			if(request.getQueryString() != null)
-			  sb.append("?" + request.getQueryString());
-			sb.append(" ");
-			sb.append("[process: ");
-			sb.append(processTime);
-			sb.append("] ");
-			sb.append("[render: ");
+		  long renderTime, processTime, viewTime;
+		  
+		  long stopTime = System.currentTimeMillis();
+          long startTime = Long.parseLong(request.getAttribute("startTime").toString());
+          long totalTime = stopTime - startTime;
+    
+          DateFormat dateFormat = new SimpleDateFormat("dd/MMM/yyyy HH:mm:ss");
+          // get current date time with Date()
+          Date date = new Date();
+          
+          StringBuilder sb = new StringBuilder();
+          sb.append(request.getRemoteHost());
+          sb.append(" [");
+          sb.append(dateFormat.format(date));
+          sb.append("] ");
+          sb.append(request.getRequestURI());
+          if (request.getQueryString() != null) sb.append("?" + request.getQueryString());
+          sb.append(" ");
+
+          Object renderTimeAttribute = request.getAttribute("renderTime");
+          
+          if (renderTimeAttribute != null) {
+            renderTime = Long.parseLong(request.getAttribute("renderTime").toString());
+    
+            processTime = renderTime - startTime;
+            viewTime = stopTime - renderTime;
+            
+            sb.append("[process: ");
+            sb.append(processTime);
+            sb.append("] ");
+            sb.append("[render: ");
             sb.append(viewTime);
             sb.append("] ");
-            sb.append("[total: ");
-            sb.append(totalTime);
-            sb.append("] ");
-            
-			logger.info(sb);
+    
+          }
+          
+          sb.append("[total: ");
+          sb.append(totalTime);
+          sb.append("] ");
+  
+          logger.info(sb);
 		}
 	}
 	
