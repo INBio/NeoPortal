@@ -11,7 +11,7 @@ var baseAPIUrl = "/neoportal-web/api/";
 
 //pagination info
 var startIndex = 0; //offset for paginated search
-var itemsPerPage = 10; //
+var itemsPerPage = 20; // number of items per every call
 var totalItems = 0; //total number of regs based on filters
 
 $(document).ready(function(){
@@ -25,6 +25,8 @@ $(document).ready(function(){
         var searchData = generatedQueryData();
         
         $("div.results").remove();
+        
+        startIndex = 0;
         //get total count of regs
         $.ajax({
             type: 'post',
@@ -40,7 +42,7 @@ $(document).ready(function(){
                     return;
                 
                 //call main data 
-                searchOccurrences(0, 10);
+                searchOccurrences(0, itemsPerPage);
             },
             dataType: 'json',
             contentType: 'application/json; charset=utf-8'
@@ -398,7 +400,7 @@ function showTable(searchContainer, data){
     
     //update pagination
     var showingMsg = startIndex + 1;
-    showingMsg += "-" + (startIndex + itemsPerPage > totalItems? totalItems : startIndex + itemsPerPage);
+    showingMsg += " - " + (startIndex + itemsPerPage > totalItems? totalItems : startIndex + itemsPerPage);
     showingMsg += " de " + (totalItems);
     $("span.showingControl").html(showingMsg);
     

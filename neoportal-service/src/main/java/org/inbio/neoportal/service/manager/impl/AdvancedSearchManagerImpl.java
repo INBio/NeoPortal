@@ -43,12 +43,14 @@ import org.inbio.neoportal.service.entity.AdvancedSearchData;
 import org.inbio.neoportal.service.manager.AdvancedSearchManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
  * @author avargas
  */
 @Service
+@Transactional
 public class AdvancedSearchManagerImpl
             implements AdvancedSearchManager{
     

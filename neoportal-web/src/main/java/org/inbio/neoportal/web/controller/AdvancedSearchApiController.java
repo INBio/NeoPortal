@@ -189,7 +189,7 @@ public class AdvancedSearchApiController{
     public Object advancedSearchOccurrences (
         @RequestBody FilterSDTO filterSDTO,
         @RequestParam (value = "startIndex", defaultValue="0", required=false) int startIndex,
-        @RequestParam (value = "results", defaultValue="10", required=false) int results
+        @RequestParam (value = "results", defaultValue="20", required=false) int results
        ){
 
         List<OccurrenceDwcCDTO> occurrenceDwcCDTO =
@@ -212,9 +212,7 @@ public class AdvancedSearchApiController{
         )
     @ResponseBody
     public Object advancedSearchCountOccurrences (
-        @RequestBody FilterSDTO filterSDTO,
-        @RequestParam (value = "startIndex", defaultValue="0", required=false) int startIndex,
-        @RequestParam (value = "results", defaultValue="10", required=false) int results
+        @RequestBody FilterSDTO filterSDTO
        ){
         
         LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>();

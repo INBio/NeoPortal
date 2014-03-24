@@ -618,6 +618,10 @@ div.results span.showingControl{
 div.paginate_group{
     text-align: center;
 }
+div.paginate_group span {
+	margin: 0 5px;
+	cursor: pointer;
+}
 
 /* ----------------------- SPECIES PAGE ----------------------------*/
 div.species_page {
