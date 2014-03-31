@@ -336,6 +336,9 @@ a{
 }
 
 /*---------------- Base Layout -------------------*/
+#header{
+	background: url(images/banner-header.jpg);
+}
 header, #header nav{
 	float: left;
 }
