@@ -336,9 +336,6 @@ a{
 }
 
 /*---------------- Base Layout -------------------*/
-#header{
-	background: url(images/banner-header.jpg);
-}
 header, #header nav{
 	float: left;
 }
@@ -377,16 +374,32 @@ nav ul{
 nav li{
 	float: left;
 	padding: 0 10px;
-	border-left: 2px solid #555;
+	border-left: 2px solid #fff;
+}
+#header nav li a{
+	color: #ffffff;
 }
 nav li:FIRST-CHILD {
 	border: none;
 }
 
 /* ----------- HEADER --------------------------- */
+header{
+	margin-left: 10px;
+	margin-top: 10px;
+}
+#header{
+	height: 170px;
+	background: url(images/banner-header.jpg);
+	margin-bottom: 10px;
+}
+#header_inner h1{
+	color: #ffffff;
+	margin: 15px 0px 5px 0px;
+	line-height: 1em;
+}
 div#header_inner{
-	/* FIXME: add header image */
-/* 	height: 188px; */
+	margin-left: 10px;
 	margin-bottom: 15px;
 }
 /* ------------ FOOTER ---------------------------*/
