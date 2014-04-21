@@ -423,7 +423,9 @@ footer nav a{
 footer nav li{
 	border-left: 2px solid #4D90FE;
 }
-	
+footer div.logos img{
+	height: 60px;
+}
 /* ---- basic search panel ----- */
 div#searchPanel input#searchInput{
 	width: 300px;
