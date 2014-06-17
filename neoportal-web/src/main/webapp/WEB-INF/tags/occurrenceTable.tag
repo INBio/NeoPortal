@@ -21,6 +21,9 @@
 			<th><fmt:message key="longitude"/></th>
 			<th><fmt:message key="scientific_name"/></th>
 			<th><fmt:message key="catalog_number"/></th>
+			<th><fmt:message key="basis_of_record" /></th>
+			<th><fmt:message key="recorded_by" /></th>
+			<th><fmt:message key="identified_by" /></th>
 		</tr>
 	</thead>
 
@@ -34,6 +37,9 @@
 		<td>${occurrence.decimalLongitude}</td>
 		<td class="scientific-name">${occurrence.scientificName}</td>
 		<td>${occurrence.catalogNumber}</td>
+		<td>${occurrence.basisOfRecord}</td>
+		<td>${occurrence.recordedBy}</td>
+		<td>${occurrence.identifiedBy}</td>
 	</tr>
 </c:forEach>
 </table>

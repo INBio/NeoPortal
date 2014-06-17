@@ -701,6 +701,26 @@ div.grid-layout div.image-item {
 	width: 218px;
 }
 
+/* ------- species occurrences --------- */
+div.occurrences-table {
+	overflow: auto;
+}
+div.occurrences-table table{
+	font-size: 1.3rem;
+}
+div.occurrences-table td, th{
+	white-space: nowrap;	
+}
+div.occurrences-table td, th{
+	padding: 0px 4px;
+}
+div.occurrences-table td{
+	border-left: 1px solid #ccc;
+}
+div.occurrences-table tr td:FIRST-CHILD{
+	border-left: none;
+	text-align: center;
+}
 /* ------- species map ------------- */
 div#map {
 	margin: 0;
