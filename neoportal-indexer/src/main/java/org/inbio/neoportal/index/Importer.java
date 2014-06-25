@@ -263,8 +263,8 @@ public class Importer {
                    location.setVerbatimLongitude(importDwc.getVerbatimLongitude());
                    location.setVerbatimCoordinateSystem(importDwc.getVerbatimCoordinateSystem());
                    location.setVerbatimSRS(importDwc.getVerbatimSRS());
-                   location.setDecimalLatitude(importDwc.getDecimalLatitude());
-                   location.setDecimalLongitude(importDwc.getDecimalLongitude());
+                   location.setDecimalLatitude(Double.valueOf(importDwc.getDecimalLatitude()));
+                   location.setDecimalLongitude(Double.valueOf(importDwc.getDecimalLongitude()));
                    location.setGeodeticDatum(importDwc.getGeodeticDatum());
                    location.setCoordinateUncertaintyInMeters(importDwc.getCoordinateUncertaintyInMeters());
                    location.setCoordinatePrecision(importDwc.getCoordinatePrecision());

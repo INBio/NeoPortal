@@ -35,6 +35,7 @@ import org.apache.lucene.util.Version;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.ExistsSubqueryExpression;
 import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
@@ -291,7 +292,7 @@ public class Indexer {
     Indexer i = appContext.getBean(Indexer.class);
     i.processArguments(args);
     
-    
+    System.exit(0);
 
   }
 }
