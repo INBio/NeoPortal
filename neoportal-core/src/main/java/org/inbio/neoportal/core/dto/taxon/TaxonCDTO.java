@@ -75,6 +75,7 @@ public class TaxonCDTO extends BaseDTO
     private String formId;
     private String domain;
     private String imageUrl;
+    private String commonNames;
     
     private ArrayList<ImagesCDTO> imageList;
 
@@ -456,60 +457,56 @@ public class TaxonCDTO extends BaseDTO
 		return subSpeciesId;
 	}
 
-
 	public void setSubSpeciesId(String subSpeciesId) {
 		this.subSpeciesId = subSpeciesId;
 	}
-
 
 	public String getVarietyId() {
 		return varietyId;
 	}
 
-
 	public void setVarietyId(String varietyId) {
 		this.varietyId = varietyId;
 	}
-
 
 	public String getFormId() {
 		return formId;
 	}
 
-
 	public void setFormId(String formId) {
 		this.formId = formId;
 	}
-
 
 	public String getDomain() {
 		return domain;
 	}
 
-
 	public void setDomain(String domain) {
 		this.domain = domain;
 	}
-
 
 	public String getImageUrl() {
 		return imageUrl;
 	}
 
-
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
 	}
-
 
 	public ArrayList<ImagesCDTO> getImageList() {
 		return imageList;
 	}
 
-
 	public void setImageList(ArrayList<ImagesCDTO> imageList) {
 		this.imageList = imageList;
 	}
 
-	
+  public String getCommonNames() {
+    return commonNames;
+  }
+
+  public void setCommonNames(String commonNames) {
+    this.commonNames = commonNames;
+  }
+
 }

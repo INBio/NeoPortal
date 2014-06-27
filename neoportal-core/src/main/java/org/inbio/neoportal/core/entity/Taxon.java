@@ -176,9 +176,9 @@ public class Taxon
 	/**
 	 * 
 	 */
-	public static final String TaxonFields = "kingdom|phylum|class_|order|family|genus|species|defaultName";
+	public static final String TaxonFields = "kingdom|phylum|class_|order|family|genus|species|defaultName|commonNames";
 	
-	public static final String TaxonFieldsForAutocomplete = "kingdom|phylum|class_|order|family|genus|species|defaultName_keyword";
+	public static final String TaxonFieldsForAutocomplete = "kingdom|phylum|class_|order|family|genus|species|defaultName_keyword|commonNames";
 	
     // Fields    
 
@@ -262,12 +262,12 @@ public class Taxon
      private Set taxonsForAncestorTaxonId = new HashSet(0);
      private Set taxonsForSinonymTaxonId = new HashSet(0);
 
-     // main relationships
-     @OneToMany(mappedBy="taxon")
-     @IndexedEmbedded
-     private Set<CommonName> commonNames = new HashSet<CommonName>();
+     @Field(store=Store.YES)
+     private String commonNames;
      
-     @ContainedIn
+     // main relationships
+     
+     @OneToMany(mappedBy="taxon")
      private Set<TaxonDescription> taxonDescriptions = new HashSet<TaxonDescription>(0);
 
      @ContainedIn
@@ -311,7 +311,7 @@ public class Taxon
 			BigDecimal subSectionId, BigDecimal raceId, BigDecimal speciesId,
 			BigDecimal subSpeciesId, BigDecimal varietyId, BigDecimal formId,
 			String domain, String imageUrl, Set taxonsForAncestorTaxonId,
-			Set taxonsForSinonymTaxonId, Set<CommonName> commonNames,
+			Set taxonsForSinonymTaxonId, String commonNames,
 			Set<TaxonDescription> taxonDescriptions,
 			Set<OccurrenceDwc> occurrences,
 			Set<TaxonHasReferenceElement> taxonHasReferenceElements,
@@ -817,11 +817,11 @@ public class Taxon
         this.occurrences = occurrences;
     }
 
-    public Set<CommonName> getCommonNames() {
+    public String getCommonNames() {
         return commonNames;
     }
 
-    public void setCommonNames(Set<CommonName> commonNames) {
+    public void setCommonNames(String commonNames) {
         this.commonNames = commonNames;
     }
 

@@ -242,8 +242,7 @@ public abstract class
 	 * @see org.inbio.neoportal.core.dao.GenericDAO#searchCount(org.hibernate.transform.ResultTransformer, java.lang.String)
 	 */
 	@Override
-	public Long searchCount(ResultTransformer resultTransformer,
-			String searchText) {
+	public Long searchCount(String searchText) {
 		
 		Session session = this.sessionFactory.getCurrentSession();
 

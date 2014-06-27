@@ -36,12 +36,6 @@ import org.inbio.neoportal.core.entity.Taxon;
 public class TaxonLiteTransformer 
     implements ResultTransformer {
 
-    CommonNameTransformer commonNameRT =
-        new CommonNameTransformer();
-    
-    List commonNameList =
-        new ArrayList<CommonNameLiteCDTO>();
-    
     ImagesTransformer imagesRT = 
             new ImagesTransformer();
     
@@ -52,9 +46,6 @@ public class TaxonLiteTransformer
 
         for(Taxon taxon: taxonList){
             
-            commonNameList =  commonNameRT.transformList(
-                new ArrayList<CommonName>(taxon.getCommonNames()));
-            
             ArrayList<ImagesCDTO> imgList = new ArrayList<ImagesCDTO>();
             for(Image img: taxon.getImages()){
                 imgList.add((ImagesCDTO)imagesRT.transformTuple(new Object[]{img}, null));
@@ -62,7 +53,7 @@ public class TaxonLiteTransformer
             
             TaxonLiteCDTO taxonCDTO = new TaxonLiteCDTO();
             taxonCDTO.setDefaultName(taxon.getDefaultName());
-            taxonCDTO.setCommonNameList((ArrayList<CommonNameLiteCDTO>) commonNameList);
+            taxonCDTO.setCommonNames(taxon.getCommonNames());
             taxonCDTO.setImageList(imgList);
             taxonCDTO.setImageUrl(taxon.getImageUrl());
             
@@ -76,9 +67,6 @@ public class TaxonLiteTransformer
     public Object transformTuple(Object[] os, String[] strings) {
     	
     	Taxon taxon = (Taxon)os[0];
-    	
-    	commonNameList =  commonNameRT.transformList(
-            new ArrayList<CommonName>(taxon.getCommonNames()));
         
         ArrayList<ImagesCDTO> imgList = new ArrayList<ImagesCDTO>();
         for(Image img: taxon.getImages()){
@@ -87,7 +75,7 @@ public class TaxonLiteTransformer
         
         TaxonLiteCDTO taxonCDTO = new TaxonLiteCDTO();
         taxonCDTO.setDefaultName(taxon.getDefaultName());
-        taxonCDTO.setCommonNameList((ArrayList<CommonNameLiteCDTO>) commonNameList);
+        taxonCDTO.setCommonNames(taxon.getCommonNames());
         taxonCDTO.setImageList(imgList);
         taxonCDTO.setImageUrl(taxon.getImageUrl());
         

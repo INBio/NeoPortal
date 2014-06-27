@@ -119,17 +119,16 @@ public class TaxonDAOImpl
     public Long searchCount(final String searchText) {
         
         String[] taxon =
-                new String[]{ "defaultName", "kingdom", "phylum", "class_",
-                                 "order", "family", "genus", "species",
-                                "taxonomicalRangeId", "commonNames"};
+                Taxon.TaxonFields.split("\\|");
 
         ArrayList<String> fieldList = new ArrayList<String>();
 
         fieldList.addAll(Arrays.asList(taxon));
         
-        return super.searchPhraseCount( 
-                                fieldList.toArray(new String[fieldList.size()]), 
-                                searchText);
+        return super.searchCount(searchText);
+//        return super.searchPhraseCount( 
+//                                fieldList.toArray(new String[fieldList.size()]), 
+//                                searchText);
     }
 
     @Override

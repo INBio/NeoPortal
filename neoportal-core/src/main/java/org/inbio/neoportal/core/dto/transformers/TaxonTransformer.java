@@ -37,12 +37,6 @@ import org.inbio.neoportal.core.entity.Taxon;
 public class TaxonTransformer 
     implements ResultTransformer {
 
-    CommonNameTransformer commonNameRT =
-        new CommonNameTransformer();
-    
-    List commonNameList =
-        new ArrayList<CommonNameLiteCDTO>();
-    
     ImagesTransformer imagesRT = 
             new ImagesTransformer();
     
@@ -75,9 +69,6 @@ public class TaxonTransformer
 			return null;
 		}
     	
-    	commonNameList =  commonNameRT.transformList(
-                new ArrayList<CommonName>(taxon.getCommonNames()));
-        
         TaxonCDTO taxonCDTO = new TaxonCDTO();
         taxonCDTO.setTaxonId(taxon.getTaxonId().toString());
 
@@ -144,6 +135,7 @@ public class TaxonTransformer
         	taxonCDTO.setFormId(taxon.getFormId().toString());
         taxonCDTO.setDomain(taxon.getDomain());
     	taxonCDTO.setImageUrl(taxon.getImageUrl());
+    	taxonCDTO.setCommonNames(taxon.getCommonNames());
     	
     	if(loadImages) {
 	        ArrayList<ImagesCDTO> imgList = new ArrayList<ImagesCDTO>();

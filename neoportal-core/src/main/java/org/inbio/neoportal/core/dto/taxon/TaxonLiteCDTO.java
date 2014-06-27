@@ -20,7 +20,6 @@ package org.inbio.neoportal.core.dto.taxon;
 
 import java.util.ArrayList;
 import org.inbio.neoportal.common.dto.*;
-import org.inbio.neoportal.core.dto.commonname.CommonNameLiteCDTO;
 
 /**
  * A subset of the data hold by the taxon entity
@@ -31,7 +30,7 @@ public class TaxonLiteCDTO
         implements Comparable {
 
     private String defaultName;
-    private ArrayList<CommonNameLiteCDTO> commonNameList;
+    private String commonNames;
     private ArrayList<ImagesCDTO> imageList;
     private String imageUrl;
 
@@ -44,10 +43,10 @@ public class TaxonLiteCDTO
     }
 
     public TaxonLiteCDTO
-        (String scientificName, ArrayList<CommonNameLiteCDTO> commonNameList) {
+        (String scientificName, String commonNames) {
         
         this.defaultName = scientificName;
-        this.commonNameList = commonNameList;
+        this.commonNames = commonNames;
     }
 
     /**
@@ -110,12 +109,12 @@ public class TaxonLiteCDTO
         this.defaultName = defaultName;
     }
 
-    public ArrayList<CommonNameLiteCDTO> getCommonNameList() {
-        return commonNameList;
+    public String getCommonNames() {
+        return commonNames;
     }
 
-    public void setCommonNameList(ArrayList<CommonNameLiteCDTO> commonNameList) {
-        this.commonNameList = commonNameList;
+    public void setCommonNames(String commonNameList) {
+        this.commonNames = commonNameList;
     }
 
     public ArrayList<ImagesCDTO> getImageList() {

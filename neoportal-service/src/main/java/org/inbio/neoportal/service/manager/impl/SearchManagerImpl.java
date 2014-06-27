@@ -148,7 +148,7 @@ public class SearchManagerImpl implements SearchManager{
              
             sp = new SpeciesLiteSDTO();
              
-             sp.setCommonName(this.joinCommonNames(tldto.getCommonNameList()));
+             sp.setCommonName(tldto.getCommonNames());
              sp.setScientificName(tldto.getDefaultName());
              
              if(tldto.getImageUrl() != null){
@@ -324,7 +324,7 @@ public class SearchManagerImpl implements SearchManager{
              
             sp = new SpeciesLiteSDTO();
              
-             sp.setCommonName(this.joinCommonNames(tldto.getCommonNameList()));
+             sp.setCommonName(tldto.getCommonNames());
              sp.setScientificName(tldto.getDefaultName());
              
              if(tldto.getImageUrl() != null){
@@ -378,9 +378,7 @@ public class SearchManagerImpl implements SearchManager{
     		}
     		
     		fields =
-                    new String[]{ "defaultName", "kingdom", "division", "class_",
-                                     "order", "family", "genus", "species",
-                                     "commonNames.name"};
+                    Taxon.TaxonFields.split("\\|");
     		
     		for (String field : fields) {
 				luceneQuery += field + ":" + searchTerms + " "; 

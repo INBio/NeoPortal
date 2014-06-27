@@ -156,6 +156,9 @@
         <property name="section" type="string">
         	<column name="section" />
         </property>
+        <property name="commonNames" type="string">
+            <column name="common_names" />
+        </property>
         
         <set name="taxonsForAncestorTaxonId" inverse="true">
             <key>

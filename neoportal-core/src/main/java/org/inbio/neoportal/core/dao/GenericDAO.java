@@ -88,12 +88,10 @@ public interface GenericDAO<E, ID extends Serializable> {
 	    /**
 	     * Return search count for not MultiField search.
 	     * Use with search that use QueryParser class.
-	     * @param entityClass
-	     * @param resultTransformer
 	     * @param searchText
+	     * @param entityClass
 	     * @return 
 	     */
 	    public Long searchCount(
-	        final ResultTransformer resultTransformer,
 	        final String searchText);
 }
