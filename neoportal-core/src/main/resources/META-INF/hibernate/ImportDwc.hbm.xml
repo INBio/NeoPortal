@@ -352,7 +352,7 @@
             <column name="[lithostratigraphicTerms]" />
         </property>
         <property name="group" type="string">
-            <column name="[[group]]" />
+            <column name="[group]" />
         </property>
         <property name="formation" type="string">
             <column name="[formation]" />

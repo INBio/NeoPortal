@@ -33,6 +33,7 @@
     <mapping resource="META-INF/hibernate/SearchFilterValue.hbm.xml"/>
     <mapping resource="META-INF/hibernate/OccurrenceDwc.hbm.xml"/>
     <mapping resource="META-INF/hibernate/GroupNav.hbm.xml"/>
+    <mapping resource="META-INF/hibernate/TaxonPlic.hbm.xml"/>
     
     <!-- Hibernate search event listeners -->
 <!--        <event type="post-update">

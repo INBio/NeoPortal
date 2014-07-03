@@ -11,6 +11,7 @@ import org.inbio.neoportal.core.dao.ImageDAO;
 import org.inbio.neoportal.core.dao.OccurrenceDAO;
 import org.inbio.neoportal.core.dao.TaxonDAO;
 import org.inbio.neoportal.core.dao.TaxonDescriptionDAO;
+import org.inbio.neoportal.core.dao.TaxonPlicDAO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
 import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
@@ -18,6 +19,7 @@ import org.inbio.neoportal.core.dto.transformers.ImagesTransformer;
 import org.inbio.neoportal.core.dto.transformers.OccurrenceDWCTransformer;
 import org.inbio.neoportal.core.entity.Image;
 import org.inbio.neoportal.core.entity.Taxon;
+import org.inbio.neoportal.core.entity.TaxonPlic;
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO;
 import org.inbio.neoportal.service.dto.species.TaxonFeatureDTO;
 import org.inbio.neoportal.service.manager.SpeciesManager;
@@ -45,6 +47,9 @@ public class SpeciesManagerImpl
     
     @Autowired
     private OccurrenceDAO occurrenceDAO;
+    
+    @Autowired
+    private TaxonPlicDAO taxonPlicDAO;
     
     @Override
     public List<TaxonDescriptionFullSDTO> taxonDescriptionByProvider
@@ -387,5 +392,28 @@ public class SpeciesManagerImpl
 		
 		return luceneQuery;
 	}
+
+  /* (non-Javadoc)
+   * @see org.inbio.neoportal.service.manager.SpeciesManager#getTaxonPLicByDefaultName(java.lang.String)
+   */
+  @Override
+  public TaxonPlic getTaxonPLicByDefaultName(String defaultName) {
+ // field used for exact match query
+    String[] fields = {"defaultName_keyword"};
+    
+    List<Taxon> taxonList = taxonDAO.findByDefaultName(defaultName);
+    Taxon taxon;
+    
+    if (taxonList.size() == 0)
+        return null;
+    
+    taxon = taxonList.get(0);
+    
+    List<TaxonPlic> taxonPlicList = taxonPlicDAO.getByTaxonId(taxon.getTaxonId());
+    if (taxonPlicList.size() == 0)
+      return null;
+    else
+      return taxonPlicList.get(0);
+  }
 	
 }

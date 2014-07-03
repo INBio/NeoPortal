@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
 import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
 import org.inbio.neoportal.core.entity.Taxon;
+import org.inbio.neoportal.core.entity.TaxonPlic;
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO;
 import org.inbio.neoportal.service.manager.SpeciesManager;
 import org.inbio.neoportal.web.model.PaginationModel;
@@ -46,7 +47,7 @@ public class SpeciesController {
     @RequestMapping (
             value = "/{defaultName}",
             method = RequestMethod.GET)
-    public String getTaxonDescriptionByProvider (
+    public String getTaxonDescription (
             Model model,
             @PathVariable(value = "defaultName") String defaultName,
 	        HttpServletRequest request) {
@@ -54,18 +55,14 @@ public class SpeciesController {
     	String taxonUrl = request.getContextPath() + "/species/" + defaultName;
         
     	// get taxon description
-        List<TaxonDescriptionFullSDTO> taxonDescription = null;
+        TaxonPlic taxonDescription = null;
         
         defaultName = defaultName.replace('_', ' ');
         
         taxonDescription = 
-                speciesManager.taxonDescriptionByProvider(defaultName, "INB");
+                speciesManager.getTaxonPLicByDefaultName(defaultName);
         
-        if(taxonDescription.isEmpty()) {
-        	model.addAttribute("taxonDescription", null);
-        }
-        else
-        	model.addAttribute("taxonDescription", taxonDescription.get(0));
+        model.addAttribute("taxonDescription", taxonDescription);
         
         // get taxon hierarchy 
         Taxon taxon = speciesManager.getTaxonByDefaultName(defaultName);

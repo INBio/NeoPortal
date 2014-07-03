@@ -26,100 +26,91 @@
 	
 	<div id="taxonDescription">
 		<div id="naturalHistory">
-			<c:if test="${not empty taxonDescription.habit || 
-				not empty taxonDescription.reproduction ||
-				not empty taxonDescription.feeding ||
-				not empty taxonDescription.behavior ||
-				not empty taxonDescription.annualCycle ||
-				not empty taxonDescription.lifeCycle 
+			<c:if test="${ 
+				not empty taxonDescription.reproductionUnstructure ||
+				not empty taxonDescription.feedingUnstructure ||
+				not empty taxonDescription.behaviorUnstructure ||
+				not empty taxonDescription.annualCyclesUnstructure ||
+				not empty taxonDescription.lifeCycleUnstructure 
 			}">
 	    	<h3><fmt:message key="taxonDes.naturalHistory"/></h3>
 	    	</c:if>
-	    	<c:if test="${not empty taxonDescription.habit }">
-	    		<h4><fmt:message key="taxonDes.habit"/></h4>
-	    		<div>${taxonDescription.habit}</div>
-	    	</c:if>
-	    	<c:if test="${not empty taxonDescription.reproduction }">
+	    	<c:if test="${not empty taxonDescription.reproductionUnstructure }">
 	    		<h4><fmt:message key="taxonDes.reproduction"/></h4>
-	    		<div>${taxonDescription.reproduction}</div>
+	    		<div>${taxonDescription.reproductionUnstructure}</div>
 	    	</c:if>
-	    	<c:if test="${not empty taxonDescription.feeding }">
+	    	<c:if test="${not empty taxonDescription.feedingUnstructure }">
 	    		<h4><fmt:message key="taxonDes.feeding"/></h4>
-	    		<div>${taxonDescription.feeding}</div>
+	    		<div>${taxonDescription.feedingUnstructure}</div>
 	    	</c:if>
-	    	<c:if test="${not empty taxonDescription.behavior }">
+	    	<c:if test="${not empty taxonDescription.behaviorUnstructure }">
 	    		<h4><fmt:message key="taxonDes.behavior"/></h4>
-	    		<div>${taxonDescription.behavior}</div>
+	    		<div>${taxonDescription.behaviorUnstructure}</div>
 	    	</c:if>
-	    	<c:if test="${not empty taxonDescription.annualCycle }">
+	    	<c:if test="${not empty taxonDescription.annualCyclesUnstructure }">
 	    		<h4><fmt:message key="taxonDes.annualCycle"/></h4>
-	    		<div>${taxonDescription.annualCycle}</div>
+	    		<div>${taxonDescription.annualCyclesUnstructure}</div>
 	    	</c:if>
-	    	<c:if test="${not empty taxonDescription.lifeCycle }">
+	    	<c:if test="${not empty taxonDescription.lifeCycleUnstructure }">
 	    		<h4><fmt:message key="taxonDes.lifeCycle"/></h4>
-	    		<div>${taxonDescription.lifeCycle}</div>
+	    		<div>${taxonDescription.lifeCycleUnstructure}</div>
 	    	</c:if>
 	    	
 		</div>
 		
 		<div id="habitatDistribution">
-			<c:if test="${not empty taxonDescription.habitat ||
-				not empty taxonDescription.distribution }">
+			<c:if test="${not empty taxonDescription.habitatUnstructure ||
+				not empty taxonDescription.crDistribution }">
 		    <h3><fmt:message key="taxonDes.habitatDistribution"/></h3>
 		    </c:if>
-		    <c:if test="${not empty taxonDescription.habitat }">
+		    <c:if test="${not empty taxonDescription.habitatUnstructure }">
 	    		<h4><fmt:message key="taxonDes.habitat"/></h4>
-	    		<div>${taxonDescription.habitat}</div>
+	    		<div>${taxonDescription.habitatUnstructure}</div>
 	    	</c:if>
-	    	<c:if test="${not empty taxonDescription.distribution }">
+	    	<c:if test="${not empty taxonDescription.crDistribution }">
 	    		<h4><fmt:message key="taxonDes.distribution"/></h4>
-	    		<div>${taxonDescription.distribution}</div>
+	    		<div>${taxonDescription.crDistribution}</div>
 	    	</c:if>
 	    	
 		</div>
 		
 		<div id="usesManagement">
-			<c:if test="${not empty taxonDescription.theUses ||
-				not empty taxonDescription.theManagement}">
+			<c:if test="${not empty taxonDescription.usesUnstructure }">
 		    <h3><fmt:message key="taxonDes.usesManagement"/></h3>
 		    </c:if>
-		    <c:if test="${not empty taxonDescription.theUses }">
+		    <c:if test="${not empty taxonDescription.usesUnstructure }">
 	    		<h4><fmt:message key="taxonDes.uses"/></h4>
-	    		<div>${taxonDescription.theUses}</div>
-	    	</c:if>
-	    	<c:if test="${not empty taxonDescription.theManagement }">
-	    		<h4><fmt:message key="taxonDes.management"/></h4>
-	    		<div>${taxonDescription.theManagement}</div>
+	    		<div>${taxonDescription.usesUnstructure}</div>
 	    	</c:if>
 	    	
 		</div>
 		
 		<div id="demographyConservation">
-		    <c:if test="${not empty taxonDescription.threatStatus ||
-		    	not empty taxonDescription.territory ||
-		    	not empty taxonDescription.populationBiology }">
+		    <c:if test="${not empty taxonDescription.threatUnstructure ||
+		    	not empty taxonDescription.territoryUnstructure ||
+		    	not empty taxonDescription.populationBiologyUnstructure }">
 		    <h3><fmt:message key="taxonDes.demographyConservation"/></h3>
 		    </c:if>
-		    <c:if test="${not empty taxonDescription.threatStatus }">
+		    <c:if test="${not empty taxonDescription.threatUnstructure }">
 	    		<h4><fmt:message key="taxonDes.threatStatus"/></h4>
-	    		<div>${taxonDescription.threatStatus}</div>
+	    		<div>${taxonDescription.threatUnstructure}</div>
 	    	</c:if>
-	    	<c:if test="${not empty taxonDescription.territory }">
+	    	<c:if test="${not empty taxonDescription.territoryUnstructure }">
 	    		<h4><fmt:message key="taxonDes.territory"/></h4>
-	    		<div>${taxonDescription.territory}</div>
+	    		<div>${taxonDescription.territoryUnstructure}</div>
 	    	</c:if>
-	    	<c:if test="${not empty taxonDescription.populationBiology }">
+	    	<c:if test="${not empty taxonDescription.populationBiologyUnstructure }">
 	    		<h4><fmt:message key="taxonDes.populationBiology"/></h4>
-	    		<div>${taxonDescription.populationBiology}</div>
+	    		<div>${taxonDescription.populationBiologyUnstructure}</div>
 	    	</c:if>
 	    	
 		</div>
 		
 		<div id="description">
-		    <c:if test="${not empty taxonDescription.scientificDescription }">
+		    <c:if test="${not empty taxonDescription.fullDescriptionUnstructured }">
 		    	<h3><fmt:message key="taxonDes.description"/></h3>
 	    		<h4><fmt:message key="taxonDes.scientificDescription"/></h4>
-	    		<div>${taxonDescription.scientificDescription}</div>
+	    		<div>${taxonDescription.fullDescriptionUnstructured}</div>
 	    	</c:if>
 	    	
 		</div>
@@ -136,14 +127,14 @@
 	    		<strong><fmt:message key="taxonDes.language"/></strong>: ${taxonDescription.language}
 	   		</p>
 	    	</c:if>
-	    	<c:if test="${not empty taxonDescription.creators }">
+	    	<c:if test="${not empty taxonDescription.individualName }">
 	   		<p>
-	   			<strong><fmt:message key="taxonDes.author"/></strong>: ${taxonDescription.creators}
+	   			<strong><fmt:message key="taxonDes.author"/></strong>: ${taxonDescription.individualName}
 	 		</p>
 	    	</c:if>
-	    	<c:if test="${not empty taxonDescription.contributors }">
+	    	<c:if test="${not empty taxonDescription.colaborator1 }">
 	    	<p>
-	   			<strong><fmt:message key="taxonDes.contributors"/></strong>: ${taxonDescription.contributors}
+	   			<strong><fmt:message key="taxonDes.contributors"/></strong>: ${taxonDescription.colaborator1}
 			</p>
 	    	</c:if>
 	    	<c:if test="${not empty taxonDescription.taxonRecordId }">
@@ -151,14 +142,14 @@
 	   			<strong><fmt:message key="taxonDes.taxonRecordId"/></strong>: ${taxonDescription.taxonRecordId}
 	   		</p>
 	    	</c:if>
-	    	<c:if test="${not empty taxonDescription.dateLastModified }">
+	    	<c:if test="${not empty taxonDescription.modificationdate }">
 	    	<p>
-	   			<strong><fmt:message key="taxonDes.dateLastModified"/></strong>: ${taxonDescription.dateLastModified}
+	   			<strong><fmt:message key="taxonDes.dateLastModified"/></strong>: ${taxonDescription.modificationdate}
 			</p>
 	    	</c:if>
-	    	<c:if test="${not empty taxonDescription.dateCreated }">
+	    	<c:if test="${not empty taxonDescription.creationdate }">
 	    	<p>
-	   			<strong><fmt:message key="taxonDes.dateCreated"/></strong>: ${taxonDescription.dateCreated}
+	   			<strong><fmt:message key="taxonDes.dateCreated"/></strong>: ${taxonDescription.creationdate}
 			</p>
 	    	</c:if>
 		</div>
