@@ -57,6 +57,30 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     
     <!-- proxy-target-class include to support transaction within class without interface -->
     <tx:annotation-driven proxy-target-class="true"/>
+    
+    <!-- M3S database conf -->
+    <bean id="dataSourceM3s" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${m3s.jdbc.driverClassName}"/>
+        <property name="url" value="${m3s.jdbc.url}"/>
+        <property name="username" value="${m3s.jdbc.username}"/>
+        <property name="password" value="${m3s.jdbc.password}"/>
+    </bean>
+    
+    <bean id="sessionFactoryM3s" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSourceM3s" />
+    </bean>
+    
+    <bean id="transactionManagerM3s" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="dataSource" ref="dataSourceM3s" />
+        <property name="sessionFactory" ref="sessionFactoryM3s" />
+    </bean>
+    
+<!--     <bean id="M3sDAO" -->
+<!--     		class="org.inbio.neoportal.image_crawler.DAO.DefaultM3sDAO"> -->
+<!--     		<property name="sessionFactory"> -->
+<!--     			<ref bean="sessionFactoryM3s" /> -->
+<!--    			</property> -->
+<!--     		</bean> -->
     <!-- end spring / hibernate conf   -->
     
     <bean id="log4jInitializer" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">  

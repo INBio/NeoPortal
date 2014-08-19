@@ -22,7 +22,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.inbio.neoportal.core.dao.ImageDAO;
@@ -41,29 +40,31 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Scope("prototype")
 @Transactional
-public class M3sIndexer implements Runnable {
+public class M3sCSVIndexer implements Runnable {
 
+	private HashMap<String, Integer> csvHeaders;
+	private String[] csvLine;
+	
 	@Autowired
 	ImageDAO imageDAO;
 	
 	@Autowired
 	TaxonDAO taxonDAO;
 	
-	private final static Logger LOGGER = Logger.getLogger(M3sIndexer.class);
+	private final static Logger LOGGER = Logger.getLogger(M3sCSVIndexer.class);
 	
 	private HashMap<String, String> creativeCommons;
-	private ArrayList<Map<String, Object>> images;
 	
-	public M3sIndexer () {
+	public M3sCSVIndexer () {
 		
 	}
 	
-	public M3sIndexer (ArrayList<Map<String, Object>> images) {
-		this.images = images;
-	  
+	public M3sCSVIndexer (HashMap<String, Integer> csvHeaders, String[] csvLine) {
+		this.csvHeaders = csvHeaders;
+		this.csvLine = csvLine;
+		
 		creativeCommons = new HashMap<String, String>();
 		creativeCommons.put("Uso institucional", "by-nc-sa");
-		creativeCommons.put("No asignada", "by-nc-sa");
 		creativeCommons.put("Solo para UBI", "");
 	}
 	
@@ -72,11 +73,9 @@ public class M3sIndexer implements Runnable {
 	 */
 	public void run() {
 
-	  for (Map<String, Object> imageMap : this.images) {
-      
-	    boolean update = false;
-		String imageId = imageMap.get("media_id").toString();
-		String taxonId = imageMap.get("taxon_id").toString();
+		boolean update = false;
+		String imageId = csvLine[csvHeaders.get("imageId")];
+		String taxonId = csvLine[csvHeaders.get("taxonId")];
 		Image image = imageDAO.findM3sImage(new BigInteger(imageId), new BigDecimal(taxonId));
 		if (image == null)
 			image = new Image();
@@ -85,23 +84,14 @@ public class M3sIndexer implements Runnable {
 		
 		image.setSource("m3s");
 		image.setExternalImageId(new BigInteger(imageId));
-		if (imageMap.get("author") != null)
-		  image.setAuthor(imageMap.get("author").toString());
+		image.setAuthor(csvLine[csvHeaders.get("author")]);
 		
 		Taxon taxon = taxonDAO.findById(new BigDecimal(taxonId));
 		image.setTaxon(taxon);
-		if (taxon == null)
-		  LOGGER.warn("Image with id " + imageId + " not found taxon " + taxonId);
 		
 		// map rights with creative commons
-		String rights = "";
-		if (imageMap.get("rights") != null)
-		  rights = imageMap.get("rights").toString();
-		String ccRights;
-		if (!this.creativeCommons.containsKey(rights))
-		  ccRights = "by-nc-sa";
-		else 
-		  ccRights = this.creativeCommons.get(rights);
+		String rights = csvLine[csvHeaders.get("rights")];
+		String ccRights = this.creativeCommons.get(rights);
 		image.setRights(ccRights);
 		
 		if (update) {
@@ -109,11 +99,9 @@ public class M3sIndexer implements Runnable {
 		}
 		else {
 			imageDAO.create(image);
-//			LOGGER.info("Inserting new image with id " + imageId);
 		}
 		
 //		LOGGER.info("Inserting image with id " + imageId);
-	  }
 	}
 
 }

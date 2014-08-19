@@ -10,7 +10,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
 /**
- * Crawle and index images from m3s and flickr groups
+ * Crawl and index images from m3s and flickr groups
  * @author avargas
  *
  */
@@ -37,6 +37,9 @@ public class ImageCrawler
         					.hasArg()
         					.withDescription("Import images from csv file")
         					.create("m3s"));
+        options.addOption(OptionBuilder
+                            .withDescription("Index images directly from m3s")
+                            .create("iM3s"));
         
         try {
 			CommandLineParser parser = new org.apache.commons.cli.PosixParser();
@@ -51,7 +54,11 @@ public class ImageCrawler
 			}
 			else if(cmd.hasOption("m3s")) {
 				Indexer indexer = context.getBean(Indexer.class);
-				indexer.indexM3s(THREADS, cmd.getOptionValue("m3s"));
+				indexer.indexM3sCSV(THREADS, cmd.getOptionValue("m3s"));
+			}
+			else if(cmd.hasOption("iM3s")) {
+			    Indexer indexer = context.getBean(Indexer.class);
+			    indexer.indexM3s(THREADS);
 			}
 			else {
 				// automatically generate the help statement

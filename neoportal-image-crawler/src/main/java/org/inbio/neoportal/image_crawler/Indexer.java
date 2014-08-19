@@ -21,18 +21,22 @@ package org.inbio.neoportal.image_crawler;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import org.apache.log4j.Logger;
 
+import org.apache.log4j.Logger;
+import org.inbio.neoportal.image_crawler.DAO.M3sDAO;
 import org.inbio.neoportal.image_crawler.flickr.Flickr;
 import org.inbio.neoportal.image_crawler.flickr.GroupPoolsInterface;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -45,8 +49,16 @@ import au.com.bytecode.opencsv.CSVReader;
 @Component
 public class Indexer {
 
-	@Autowired
+	/**
+   * 
+   */
+  private static final int ROWS_PER_QUERY = 30;
+
+  @Autowired
 	ApplicationContext applicationContext;
+	
+	@Autowired
+	M3sDAO m3sDAO;
 	
 	private final static Logger LOGGER = Logger.getLogger(Indexer.class);
 	
@@ -105,7 +117,7 @@ public class Indexer {
      * 
      * @param threads
      */
-    public void indexM3s (int threads, String csvFile) {
+    public void indexM3sCSV (int threads, String csvFile) {
     	ExecutorService executor = Executors.newFixedThreadPool(threads);
 		int counter = 0;
 		
@@ -122,7 +134,7 @@ public class Indexer {
 			}
 			
 			while ((csvLine = csvReader.readNext()) != null) {
-				M3sIndexer m3sIndexer = (M3sIndexer) applicationContext.getBean("m3sIndexer", headersMap, csvLine);
+				M3sCSVIndexer m3sIndexer = (M3sCSVIndexer) applicationContext.getBean("m3sCSVIndexer", headersMap, csvLine);
 				executor.execute(m3sIndexer);
 				counter++;
 			}
@@ -147,7 +159,39 @@ public class Indexer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    	
-    	
+    }
+    
+    public void indexM3s(int threads) {
+        ExecutorService executor = Executors.newFixedThreadPool(threads);
+
+        int quantity = ROWS_PER_QUERY;
+        int offset = 0;
+        int counter = 0;
+        
+        try {
+          ArrayList<Map<String, Object>> images = (ArrayList) m3sDAO.getImages(0, quantity);
+          
+          while(!images.isEmpty()) {
+            M3sIndexer m3sIndexer = (M3sIndexer) applicationContext.getBean("m3sIndexer", images);
+            executor.execute(m3sIndexer);
+            offset += ROWS_PER_QUERY;
+            counter += images.size();
+            images = (ArrayList) m3sDAO.getImages(offset, quantity);
+          }
+          
+          LOGGER.info("Schedule " + counter + " images to insert");
+          
+          // This will make the executor accept no new threaImages
+          // and finish all existing threads in the queue
+          executor.shutdown();
+          // Wait until all threads are finish
+          executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+          
+          LOGGER.info("End indexing " + counter + " images");
+        } catch (InterruptedException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+        
     }
 }

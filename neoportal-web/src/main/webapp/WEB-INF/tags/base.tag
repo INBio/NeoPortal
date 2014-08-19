@@ -14,7 +14,7 @@
 
         <!-- neoportal js and css -->
         <link rel="stylesheet" type="text/css" href="<c:out value="${pageContext.request.contextPath}"/><spring:theme code="styleSheet_3"/>" />
-        <link rel="stylesheet" type="text/css" href="<c:out value="${pageContext.request.contextPath}"/><spring:theme code='jquery-ui'/>"/>
+        <link rel="stylesheet" type="text/css" href="<c:out value="${pageContext.request.contextPath}"/><spring:theme code='jquery-ui'/>" />
         
         <!-- jquery -->
         <script type="text/javascript" src="<c:url value="/resources/js/jquery-1.6.1.min.js" />"></script>
