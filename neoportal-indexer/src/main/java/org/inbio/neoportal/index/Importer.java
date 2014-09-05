@@ -18,6 +18,7 @@
  */
 package org.inbio.neoportal.index;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -40,12 +41,16 @@ import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.search.FullTextSession;
+import org.hibernate.search.Search;
+import org.inbio.neoportal.core.dao.DataProviderDAO;
 import org.inbio.neoportal.core.dao.GenericBaseDAO;
+import org.inbio.neoportal.core.dao.ImportDwcDAO;
 import org.inbio.neoportal.core.dao.LocationDAO;
 import org.inbio.neoportal.core.dao.OccurrenceNewDAO;
 import org.inbio.neoportal.core.dao.TaxonDAO;
 import org.inbio.neoportal.core.dao.TaxonNewDAO;
-import org.inbio.neoportal.core.dao.impl.GenericBaseDAOImpl;
 import org.inbio.neoportal.core.entity.DataProvider;
 import org.inbio.neoportal.core.entity.GeoFeature;
 import org.inbio.neoportal.core.entity.GeoFeatureId;
@@ -72,7 +77,6 @@ import au.com.bytecode.opencsv.CSVReader;
  * @author avargas
  */
 @Service
-//@Transactional
 public class Importer {
 
     private static final int BATCH_SIZE = 30;
@@ -86,12 +90,14 @@ public class Importer {
     private SessionFactory sessionFactory;
     
     @Autowired
-    @Qualifier("genericBaseDAOImpl")
-    private GenericBaseDAOImpl<ImportDwc, BigDecimal> importDwcDAO;
+    private ImportDwcDAO importDwcDAO;
     
     @Autowired
     @Qualifier("genericBaseDAOImpl")
     private GenericBaseDAO genericBaseDAO;
+    
+    @Autowired
+    private DataProviderDAO dataProviderDAO;
         
     @Autowired
     private OccurrenceNewDAO occurrenceDAO;
@@ -114,17 +120,39 @@ public class Importer {
             String geoFeatureFile, 
             String locationFeatureFile,
             String taxonDescriptionFile){
-        importOccurrences();
+        indexOccurrences();
     //    importGeoLayers(geoLayerFile);
     //    importGeoFeatures(geoFeatureFile);
     //    importLocationFeatures(locationFeatureFile);
     //    importTaxonDescription(taxonDescriptionFile);
     }
 
+    /**
+     * Import DarwinCore from csv file to importDwc table
+     * and then update and create occurrences from importDwc to OccurrencesDwc table
+     * @param csvFile
+     */
+    public void importIndexOccurrences(String csvFile){
+      this.importDwcOccurrences(csvFile);
+      this.indexOccurrences();
+    }
+    
+    /**
+     * 
+     */
     @Transactional
-    public void importOccurrences(){
-    	org.apache.log4j.Logger.getLogger(Importer.class.getName()).log
-        (org.apache.log4j.Level.DEBUG, "Starting importOccurrences process");
+    public void indexOccurrences(){
+      
+      org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(Importer.class.getName());
+      
+      Session session = sessionFactory.getCurrentSession();
+//      FullTextSession fullTextSession = Search.getFullTextSession(session);
+
+      // config session for bash job
+      session.setFlushMode(FlushMode.MANUAL);
+//      fullTextSession.setFlushMode(FlushMode.MANUAL);
+
+    	logger.log(org.apache.log4j.Level.DEBUG, "Starting importOccurrences process");
         
         //get current date for dateLastModified field
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -136,33 +164,14 @@ public class Importer {
         int firstResult = 0;
         int setCounter = 0; //every 100 (the jdbc batch size) call flush 
         
-        //start new transaction
-//        DefaultTransactionDefinition transaction = new DefaultTransactionDefinition();
-//        TransactionStatus status = transactionManager.getTransaction(transaction);
-//        
-//        Session session = transactionManager.getSessionFactory().getCurrentSession();
-        Session session = sessionFactory.getCurrentSession();
-
-//        List<ImportDwc> occurrencesDwcList =
-//                importDwcDAO.scrollAll(ImportDwc.class,
-//                        maxResults,
-//                		//1,
-//                        firstResult);
+        DataProvider dp = dataProviderDAO.findAll().get(0);
         
-        // config session for bash job
-        session.setFlushMode(FlushMode.MANUAL);
-        
-        session.beginTransaction();
-
-        DataProvider dp = (DataProvider)
-                genericBaseDAO.findAll(DataProvider.class).get(0);
-        
-        org.apache.log4j.Logger.getLogger(Importer.class.getName()).log
-        (org.apache.log4j.Level.DEBUG, "importOccurrences Begin Transaction");
+        logger.log(org.apache.log4j.Level.DEBUG, "importOccurrences Begin Transaction");
         
         ScrollableResults scroll = session.createCriteria(ImportDwc.class)
-        		.setFetchSize(30)
+        		.setFetchSize(BATCH_SIZE)
         		.setCacheMode(CacheMode.IGNORE)
+        		.setReadOnly(true)
         		.scroll(ScrollMode.FORWARD_ONLY);
         
         boolean update;
@@ -175,28 +184,29 @@ public class Importer {
         	rowsCounter++;
         	    
             ImportDwc importDwc = (ImportDwc) scroll.get(0);
+            logger.trace("ImportDwc after scroll.get");
             
                 try{
                 
-                /*
                 //avoid repeated occurrenceId
                 OccurrenceDwc occurrence = occurrenceDAO.findByCatalogNumber(
                         importDwc.getCatalogNumber().replace("\"", ""));
+                logger.trace("OccurrenceDwc after findByCatalogNumber " + importDwc.getCatalogNumber().replace("\"", ""));
                 
                 if(occurrence != null){
-                    Logger.getLogger(Importer.class.getName()).log
-                        (Level.INFO, "OccurrenceId {0} already exist!", 
-                                new BigDecimal(importDwc.getCatalogNumber().replace("\"", "")));
+//                    Logger.getLogger(Importer.class.getName()).log
+//                        (Level.INFO, "OccurrenceId {0} already exist!", 
+//                                new BigDecimal(importDwc.getCatalogNumber().replace("\"", "")));
             
-                    //update = true;
-                    continue;
+                    update = true;
+//                    continue;
                 }
                 else {
                 	update = false;
                     occurrence = new OccurrenceDwc();
                 }
-                */
-                OccurrenceDwc occurrence = new OccurrenceDwc();
+                
+//                OccurrenceDwc occurrence = new OccurrenceDwc();
                 
                Taxon taxon = null;
                //check if taxonId is empty (unidentify specimens)
@@ -204,9 +214,17 @@ public class Importer {
                    taxon = null;
                }
                else{
+                 // check if is the same taxon already associated with the occurrence
+                 if(update && occurrence.getTaxonId().equals(importDwc.getTaxonId().replace("\"", ""))){
+                   taxon = occurrence.getTaxon();
+                   logger.trace("Occurrence update with same taxon");
+                 }
+                 else{
+                 
             	   // find taxon entity
             	   // taxon = taxonNewDAO.findById(new BigDecimal(importDwc.getTaxonId().replace("\"", "")));
             	   List<Taxon> taxonList = taxonDAO.findByDefaultName(importDwc.getScientificName());
+            	   logger.trace("Taxon after findByDefaultName");
             	   if (taxonList.size() == 1)
             		   taxon = taxonList.get(0);
             	   else if(taxonList.size() > 1) {
@@ -217,6 +235,7 @@ public class Importer {
             			   }
             		   }
             	   }
+                 }
                }
 
                 // TODO: fix, use specimenId instead
@@ -226,7 +245,8 @@ public class Importer {
                occurrence.setTaxon(taxon);
                
              //find or create location
-               Location location = locationDAO.findById(new BigDecimal(importDwc.getLocationId())); 
+               Location location = locationDAO.findById(new BigDecimal(importDwc.getLocationId()));
+               logger.trace("Location after findById");
 //            		   (Location)
 //                       genericBaseDAO.findById(
 //                           Location.class, 
@@ -407,17 +427,17 @@ public class Importer {
                occurrence.setNomenclaturalStatus(importDwc.getNomenclaturalStatus());
                occurrence.setTaxonRemarks(importDwc.getTaxonRemarks());
 
-//               if(!update)
-        	   occurrenceDAO.create(occurrence);
-        	   
-//               else
-//            	   occurrenceDAO.update(occurrence);
+               if(!update)
+                 occurrenceDAO.create(occurrence);
+               else
+            	   occurrenceDAO.update(occurrence);
             	   
                 }catch(NumberFormatException ex){
                     Logger.getLogger(Importer.class.getName()).log
                         (Level.SEVERE, 
-                            "NumberFormatException occurrenceId {0} {1}", 
-                            new Object[]{importDwc.getId(),ex.getStackTrace()});
+                            "NumberFormatException occurrenceId {0}", 
+                            new Object[]{ importDwc.getId() });
+                    ex.printStackTrace();
                     
                     System.exit(-1);
                 } catch (ParseException e) {
@@ -429,28 +449,29 @@ public class Importer {
 				}
 //            } // end for, 1000 importDwc rows
             
-                
             session.evict(importDwc);
                 
             if(batch == BATCH_SIZE){
             	batch = 0;
 	            session.flush();
+//	            fullTextSession.flushToIndexes();
 	            session.clear();
 //	            System.exit(1);
             }
 	    
             if(rowsCounter % maxResults == 0){
+//              fullTextSession.flushToIndexes();
             	Logger.getLogger(Importer.class.getName()).log
                 (Level.INFO, 
                 		"Occurrences added " + rowsCounter);
             }
             
             // ******* for debug only ***********
-            if(rowsCounter == 10000) {
-            	session.getTransaction().rollback();
-            	scroll.close();
-            	System.exit(1);
-            }
+//            if(rowsCounter == 1) {
+//            	session.getTransaction().rollback();
+//            	scroll.close();
+//            	System.exit(1);
+//            }
             
 //            firstResult += maxResults;
                 
@@ -461,11 +482,38 @@ public class Importer {
         } // end while, no more importDwc rows
         
         scroll.close();
-        
 //        transactionManager.commit(status);
         session.flush();
-        session.getTransaction().commit();
-        session.close();
+        session.clear();
+        
+        Logger.getLogger(Importer.class.getName()).log
+        (Level.INFO, 
+                "Total occurrences processed " + rowsCounter);
+//        session.getTransaction().commit();
+//        session.close();
+    }
+    
+    /**
+     * 
+     * @param csvFile
+     */
+    @Transactional
+    public void importDwcOccurrences(String csvFile) {
+      org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(Importer.class.getName());
+      // clear and load new records to import_dwc table
+      BufferedReader bReader;
+      try {
+        bReader = new BufferedReader(new FileReader(csvFile));
+        logger.debug("Deleting importDwc");
+        importDwcDAO.deleteAll();
+        logger.debug("Start copy to importDwc");
+        long copyRows = importDwcDAO.copy(bReader);
+        logger.info(String.valueOf(copyRows) + " total rows copy to importDwc");
+        
+      } catch (FileNotFoundException e1) {
+        // TODO Auto-generated catch block
+        e1.printStackTrace();
+      }
     }
     
     /**
@@ -834,17 +882,10 @@ public class Importer {
 			
 			transactionManager.commit(status);
 			
-	        // reindex
-	        Indexer indexer = new Indexer();
-	        indexer.createIndex("Taxon");
-			
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (TypeMismatchException e) {

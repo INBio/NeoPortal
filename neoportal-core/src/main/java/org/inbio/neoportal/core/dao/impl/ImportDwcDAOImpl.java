@@ -18,18 +18,90 @@
  */
 package org.inbio.neoportal.core.dao.impl;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.jdbc.Work;
 import org.inbio.neoportal.core.dao.ImportDwcDAO;
 import org.inbio.neoportal.core.entity.ImportDwc;
+import org.postgresql.PGConnection;
+import org.postgresql.copy.CopyManager;
+import org.springframework.stereotype.Repository;
+
+import com.mchange.v2.c3p0.impl.NewProxyConnection;
 
 /**
  *
  * @author avargas
  */
+@Repository
 public class ImportDwcDAOImpl
         extends GenericDAOImpl<ImportDwc, BigDecimal>
         implements ImportDwcDAO{
+
+  /* (non-Javadoc)
+   * @see org.inbio.neoportal.core.dao.ImportDwcDAO#deleteAll()
+   */
+  @Override
+  public void deleteAll() {
+    Session session = getSessionFactory().getCurrentSession();
+    Query query = session.createQuery("delete from ImportDwc");
+    query.executeUpdate();
+  }
+
+  /* (non-Javadoc)
+   * @see org.inbio.neoportal.core.dao.ImportDwcDAO#copy(java.lang.String)
+   */
+  @Override
+  public long copy(final Reader fileReader) {
+    final long[] copyRows = {0};
+    Session session = getSessionFactory().getCurrentSession();
+    session.doWork(new Work() {
+      
+      @Override
+      public void execute(Connection connection) throws SQLException {
+        try {
+          Method m = PGConnection.class.getMethod("getCopyAPI", new Class[0]);
+          Object[] arg = new Object[0];
+          CopyManager copyManager = (CopyManager) ((NewProxyConnection)connection)
+              .rawConnectionOperation(m, NewProxyConnection.RAW_CONNECTION, arg);
+          
+          String sql = "COPY import_dwc (\"type\",\"modified\",\"language\",\"rights\",\"rightsHolder\",\"accessRights\",\"bibliographicCitation\",\"references\",\"institutionID\",\"collectionID\",\"datasetID\",\"institutionCode\",\"collectionCode\",\"datasetName\",\"ownerInstitutionCode\",\"basisOfRecord\",\"informationWithheld\",\"dataGeneralizations\",\"dynamicProperties\",\"occurrenceID\",\"catalogNumber\",\"occurrenceRemarks\",\"recordNumber\",\"recordedBy\",\"individualID\",\"individualCount\",\"sex\",\"lifeStage\",\"reproductiveCondition\",\"behavior\",\"establishmentMeans\",\"occurrenceStatus\",\"preparations\",\"disposition\",\"otherCatalogNumbers\",\"previousIdentifications\",\"associatedMedia\",\"associatedReferences\",\"associatedOccurrences\",\"associatedSequences\",\"associatedTaxa\",\"eventID\",\"samplingProtocol\",\"samplingEffort\",\"eventDate\",\"eventTime\",\"startDayOfYear\",\"endDayOfYear\",\"year\",\"month\",\"day\",\"verbatimEventDate\",\"habitat\",\"fieldNumber\",\"fieldNotes\",\"eventRemarks\",\"locationID\",\"higherGeographyID\",\"higherGeography\",\"continent\",\"waterBody\",\"islandGroup\",\"island\",\"country\",\"countryCode\",\"stateProvince\",\"county\",\"municipality\",\"locality\",\"verbatimLocality\",\"verbatimElevation\",\"minimumElevationInMeters\",\"maximumElevationInMeters\",\"verbatimDepth\",\"minimumDepthInMeters\",\"maximumDepthInMeters\",\"minimumDistanceAboveSurfaceInMeters\",\"maximumDistanceAboveSurfaceInMeters\",\"locationAccordingTo\",\"locationRemarks\",\"verbatimCoordinates\",\"verbatimLatitude\",\"verbatimLongitude\",\"verbatimCoordinateSystem\",\"verbatimSRS\",\"decimalLongitude\",\"decimalLatitude\",\"geodeticDatum\",\"coordinateUncertaintyInMeters\",\"coordinatePrecision\",\"pointRadiusSpatialFit\",\"footprintWKT\",\"footprintSRS\",\"footprintSpatialFit\",\"georeferencedBy\",\"georeferencedDate\",\"georeferenceProtocol\",\"georeferenceSources\",\"georeferenceVerificationStatus\",\"georeferenceRemarks\",\"identificationID\",\"identifiedBy\", \"dateIdentified\",\"identificationReferences\",\"identificationVerificationStatus\",\"identificationRemarks\",\"identificationQualifier\",\"typeStatus\",\"taxonID\",\"scientificNameID\",\"acceptedNameUsageID\",\"parentNameUsageID\",\"originalNameUsageID\",\"nameAccordingToID\",\"namePublishedInID\",\"taxonConceptID\",\"scientificName\",\"acceptedNameUsage\",\"parentNameUsage\",\"originalNameUsage\",\"nameAccordingTo\",\"namePublishedIn\",\"namePublishedInYear\",\"higherClassification\",\"kingdom\",\"phylum\",\"class\",\"order\",\"family\",\"genus\",\"subgenus\",\"specificEpithet\",\"infraspecificEpithet\",\"taxonRank\",\"verbatimTaxonRank\",\"scientificNameAuthorship\",\"vernacularName\",\"nomenclaturalCode\",\"taxonomicStatus\",\"nomenclaturalStatus\",\"taxonRemarks\",\"taxonCategoryID\",\"oldTaxonID\") " +
+          		"FROM STDIN " +
+          		"(FORMAT CSV, HEADER, ESCAPE '\\')";
+          
+          copyRows[0] = copyManager.copyIn(sql, fileReader);
+        } catch (IOException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        } catch (SecurityException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        } catch (IllegalAccessException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        } catch (InvocationTargetException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
+    });
+    
+    return copyRows[0];
+  }
 
     
     

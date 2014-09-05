@@ -74,7 +74,7 @@ public class Location  implements java.io.Serializable {
      @ContainedIn
      private Set<OccurrenceDwc> occurrences = new HashSet(0);
      //feature point to location so depth should be 1
-     @IndexedEmbedded(depth=1) 
+//     @IndexedEmbedded(depth=1) 
      private Set<GeoFeature> features = new HashSet(0);
 
     public Location() {

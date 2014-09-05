@@ -35,7 +35,6 @@ import org.apache.lucene.util.Version;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.ExistsSubqueryExpression;
 import org.hibernate.search.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
@@ -61,7 +60,7 @@ import org.springframework.stereotype.Component;
 public class Indexer {
 
   @Autowired
-  private Importer importer;
+  Importer importer;
 
   @Autowired
   private SessionFactory sessionFactory;
@@ -91,7 +90,6 @@ public class Indexer {
     classList.put("Image", Image.class);
 
     System.out.println("Creating Lucene index\n");
-    // HibernateUtil.getSessionFactory();
     Session session = sessionFactory.openSession();
 
     FullTextSession fullTextSession = Search.getFullTextSession(session);
@@ -133,7 +131,7 @@ public class Indexer {
             .create("index"));
     options.addOption(OptionBuilder.withArgName("csvFile").hasArgs(1)
         .withDescription("Import and index taxonomy").create("t"));
-    options.addOption(OptionBuilder.hasArg(false).withDescription("Import and index occurrences")
+    options.addOption(OptionBuilder.withArgName("csvFile").hasArgs(1).withDescription("Import and index occurrences")
         .create("o"));
 
     try {
@@ -148,9 +146,13 @@ public class Indexer {
       } else if (cmd.hasOption("t")) {
         String csvFile = cmd.getOptionValue("t");
         importer.importTaxonomy(csvFile);
+        createIndex("Taxon");
         // System.out.println("option t");
       } else if (cmd.hasOption("o")) {
-        importer.importOccurrences();
+        String csvFile = cmd.getOptionValue("o");
+//        importer.importIndexOccurrences(csvFile);
+        importer.importDwcOccurrences(csvFile);
+        importer.indexOccurrences();
       } else {
         // automatically generate the help statement
         HelpFormatter formatter = new HelpFormatter();

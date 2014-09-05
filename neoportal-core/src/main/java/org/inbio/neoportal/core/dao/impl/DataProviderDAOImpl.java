@@ -16,29 +16,21 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.core.dao;
+package org.inbio.neoportal.core.dao.impl;
 
-import java.io.Reader;
 import java.math.BigDecimal;
 
-import org.inbio.neoportal.core.entity.ImportDwc;
+import org.inbio.neoportal.core.dao.DataProviderDAO;
+import org.inbio.neoportal.core.entity.DataProvider;
+import org.springframework.stereotype.Repository;
 
 /**
- *
  * @author avargas
+ *
  */
+@Repository
+public class DataProviderDAOImpl
+              extends GenericDAOImpl<DataProvider, BigDecimal>
+              implements DataProviderDAO {
 
-public interface ImportDwcDAO
-        extends GenericDAO<ImportDwc, BigDecimal> {
-    
-  /**
-   * Delete all the records in the import_dwc table
-   */
-  public void deleteAll();
-  
-  /**
-   * 
-   * @param pathToCsv
-   */
-  public long copy(Reader reader);
 }

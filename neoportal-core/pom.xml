@@ -70,6 +70,11 @@
         <!-- Hibernate core -->
 
         <!-- PostgreSQL -->
+        <dependency>
+    		<groupId>org.postgresql</groupId>
+    		<artifactId>postgresql</artifactId>
+    		<version>9.2-1004-jdbc41</version>
+		</dependency>
 
         <!-- loggin -->
 		<!-- loggin -->
@@ -101,6 +106,11 @@
 	 	<version>1.3.173</version>
 	 	<scope>test</scope>
 	 </dependency>
+	 <dependency>
+      	<groupId>org.hibernate</groupId>
+      	<artifactId>hibernate-c3p0</artifactId>
+      	<version>4.2.5.Final</version>
+    </dependency>
 	</dependencies>
 	<pluginRepositories>
 

@@ -18,27 +18,15 @@
  */
 package org.inbio.neoportal.core.dao;
 
-import java.io.Reader;
 import java.math.BigDecimal;
 
-import org.inbio.neoportal.core.entity.ImportDwc;
+import org.inbio.neoportal.core.entity.DataProvider;
 
 /**
- *
  * @author avargas
+ *
  */
+public interface DataProviderDAO 
+            extends GenericDAO<DataProvider, BigDecimal> {
 
-public interface ImportDwcDAO
-        extends GenericDAO<ImportDwc, BigDecimal> {
-    
-  /**
-   * Delete all the records in the import_dwc table
-   */
-  public void deleteAll();
-  
-  /**
-   * 
-   * @param pathToCsv
-   */
-  public long copy(Reader reader);
 }

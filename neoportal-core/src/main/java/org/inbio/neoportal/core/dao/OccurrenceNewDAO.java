@@ -29,4 +29,5 @@ import org.inbio.neoportal.core.entity.OccurrenceDwc;
 public interface OccurrenceNewDAO 
 	extends GenericDAO<OccurrenceDwc, BigDecimal> {
 
+  public OccurrenceDwc findByCatalogNumber(final String catalogNumber);
 }

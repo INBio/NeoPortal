@@ -20,6 +20,10 @@ package org.inbio.neoportal.core.dao.impl;
 
 import java.math.BigDecimal;
 
+import org.hibernate.Session;
+import org.hibernate.search.FullTextSession;
+import org.hibernate.search.Search;
+import org.hibernate.search.query.dsl.QueryBuilder;
 import org.inbio.neoportal.core.dao.OccurrenceNewDAO;
 import org.inbio.neoportal.core.entity.OccurrenceDwc;
 import org.springframework.stereotype.Repository;
@@ -33,4 +37,24 @@ public class OccurrenceNewDAOImpl
 	extends GenericDAOImpl<OccurrenceDwc, BigDecimal> implements
 		OccurrenceNewDAO {
 
+  @Override
+  public OccurrenceDwc findByCatalogNumber(final String catalogNumber){
+      Session session = getSessionFactory().getCurrentSession();
+      FullTextSession fullTextSession = Search.getFullTextSession(session);
+      
+      // create Lucene query using the query DSL
+      QueryBuilder qb = fullTextSession.getSearchFactory()
+              .buildQueryBuilder().forEntity(OccurrenceDwc.class).get();
+      org.apache.lucene.search.Query query = qb
+              .keyword()
+              .onField("catalogNumber")
+              .matching(catalogNumber)
+              .createQuery();
+      
+      // wrap Lucene query in a org.hibernate.Query
+      org.hibernate.Query hQuery = 
+              fullTextSession.createFullTextQuery(query, OccurrenceDwc.class);
+      
+      return (OccurrenceDwc)hQuery.uniqueResult();
+  }
 }
