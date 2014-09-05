@@ -4,6 +4,7 @@
   <session-factory>
     <!-- Hibernate specific configuration -->
     <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+    <property name="hibernate.hbm2ddl.auto" value="update" />
     <!-- Hibernate search configuration -->
     <property name="hibernate.search.default.directory_provider">filesystem</property>
 	<property name="hibernate.search.default.indexBase">/var/LuceneIndex/</property>
