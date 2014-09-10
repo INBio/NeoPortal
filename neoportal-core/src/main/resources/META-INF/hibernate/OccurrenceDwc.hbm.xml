@@ -6,7 +6,7 @@
 <hibernate-mapping>
     <class name="org.inbio.neoportal.core.entity.OccurrenceDwc" table="occurrence_dwc" schema="public">
         <id name="Id" type="big_decimal">
-            <column name="id" precision="131089" scale="0" />
+            <column name="id" precision="10" scale="0" />
 <!--             <generator class="native"> -->
 <!--             <generator class="sequence"> -->
 			<generator class="seqhilo">
@@ -15,13 +15,13 @@
             </generator>
         </id>
         <many-to-one name="location" class="org.inbio.neoportal.core.entity.Location" fetch="select">
-            <column name="location_id" precision="131089" scale="0" />
+            <column name="location_id" precision="10" scale="0" />
         </many-to-one>
         <many-to-one name="dataProvider" class="org.inbio.neoportal.core.entity.DataProvider" fetch="select">
-            <column name="data_provider_id" precision="131089" scale="0" not-null="true" />
+            <column name="data_provider_id" precision="10" scale="0" not-null="true" />
         </many-to-one>
         <many-to-one name="taxon" class="org.inbio.neoportal.core.entity.Taxon" fetch="join">
-            <column name="taxon_id" precision="131089" scale="0" />
+            <column name="taxon_id" precision="10" scale="0" />
         </many-to-one>
         <property name="type" type="string">
             <column name="type" />

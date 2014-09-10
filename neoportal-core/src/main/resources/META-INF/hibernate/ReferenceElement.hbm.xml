@@ -4,7 +4,7 @@
 <hibernate-mapping>
   <class name="org.inbio.neoportal.core.entity.ReferenceElement" schema="public" table="REFERENCE_ELEMENT">
     <id name="referenceElementId" type="big_decimal">
-      <column name="REFERENCE_ELEMENT_ID" precision="131089" scale="0"/>
+      <column name="REFERENCE_ELEMENT_ID" precision="10" scale="0"/>
       <generator class="assigned"/>
     </id>
     <property name="name" type="string">
@@ -24,25 +24,25 @@
     </property>
     <set inverse="true" name="occurrenceHasReferenceElements">
       <key>
-        <column name="REFERENCE_ELEMENT_ID" not-null="true" precision="131089" scale="0"/>
+        <column name="REFERENCE_ELEMENT_ID" not-null="true" precision="10" scale="0"/>
       </key>
       <one-to-many class="org.inbio.neoportal.core.entity.OccurrenceHasReferenceElement"/>
     </set>
     <set inverse="true" name="occurrenceHasReferenceElements_1">
       <key>
-        <column name="REFERENCE_ELEMENT_ID" not-null="true" precision="131089" scale="0"/>
+        <column name="REFERENCE_ELEMENT_ID" not-null="true" precision="10" scale="0"/>
       </key>
       <one-to-many class="org.inbio.neoportal.core.entity.OccurrenceHasReferenceElement"/>
     </set>
     <set inverse="true" name="taxonDescriptionHasReferenceElements">
       <key>
-        <column name="REFERENCE_ELEMENT_ID" not-null="true" precision="131089" scale="0"/>
+        <column name="REFERENCE_ELEMENT_ID" not-null="true" precision="10" scale="0"/>
       </key>
       <one-to-many class="org.inbio.neoportal.core.entity.TaxonDescriptionHasReferenceElement"/>
     </set>
     <set inverse="true" name="taxonHasReferenceElements">
       <key>
-        <column name="REFERENCE_ELEMENT_ID" not-null="true" precision="131089" scale="0"/>
+        <column name="REFERENCE_ELEMENT_ID" not-null="true" precision="10" scale="0"/>
       </key>
       <one-to-many class="org.inbio.neoportal.core.entity.TaxonHasReferenceElement"/>
     </set>

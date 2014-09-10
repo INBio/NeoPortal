@@ -7,11 +7,11 @@
     <class name="org.inbio.neoportal.core.entity.SearchColumnDefault" table="search_column_default" schema="public">
         <comment>Contain column defaults for Advanced Search functionality</comment>
         <id name="columnDefaultId" type="big_decimal">
-            <column name="column_default_id" precision="131089" scale="0" />
+            <column name="column_default_id" precision="10" scale="0" />
             <generator class="assigned" />
         </id>
         <many-to-one name="searchGroup" class="org.inbio.neoportal.core.entity.SearchGroup" fetch="select">
-            <column name="search_group_id" precision="131089" scale="0" not-null="true" />
+            <column name="search_group_id" precision="10" scale="0" not-null="true" />
         </many-to-one>
         <property name="columnDefaultKey" type="string">
             <column name="column_default_key" />

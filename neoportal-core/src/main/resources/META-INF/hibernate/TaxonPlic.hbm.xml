@@ -5,11 +5,11 @@
 <hibernate-mapping>
     <class name="org.inbio.neoportal.core.entity.TaxonPlic" table="taxon_plic" schema="public">
         <id name="taxonRecordId" type="big_decimal">
-            <column name="taxon_record_id" precision="131089" scale="0" />
+            <column name="taxon_record_id" precision="10" scale="0" />
             <generator class="assigned" />
         </id>
         <property name="version" type="big_decimal">
-            <column name="version" precision="131089" scale="0" />
+            <column name="version" precision="10" scale="0" />
         </property>
         <property name="scientificName" type="string">
             <column name="scientific_name" length="4000" />

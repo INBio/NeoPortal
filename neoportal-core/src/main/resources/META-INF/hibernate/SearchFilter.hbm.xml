@@ -6,11 +6,11 @@
 <hibernate-mapping>
     <class name="org.inbio.neoportal.core.entity.SearchFilter" table="search_filter" schema="public">
         <id name="filterId" type="big_decimal">
-            <column name="filter_id" precision="131089" scale="0" />
+            <column name="filter_id" precision="10" scale="0" />
             <generator class="assigned" />
         </id>
         <many-to-one name="searchGroup" class="org.inbio.neoportal.core.entity.SearchGroup" fetch="select">
-            <column name="search_group_id" precision="131089" scale="0" />
+            <column name="search_group_id" precision="10" scale="0" />
         </many-to-one>
         <property name="filterKey" type="string">
             <column name="filter_key" length="500" />
@@ -20,7 +20,7 @@
         </property>
         <set name="searchFilterValues" inverse="true">
             <key>
-                <column name="search_filter_id" not-null="true" precision="131089" scale="0" />
+                <column name="search_filter_id" not-null="true" precision="10" scale="0" />
             </key>
             <one-to-many class="org.inbio.neoportal.core.entity.SearchFilterValue" />
         </set>

@@ -6,11 +6,11 @@
 <hibernate-mapping>
   <class name="org.inbio.neoportal.core.entity.CommonName" schema="public" table="COMMON_NAME">
     <id name="commonNameId" type="big_decimal">
-      <column name="COMMON_NAME_ID" precision="131089" scale="0"/>
+      <column name="COMMON_NAME_ID" precision="10" scale="0"/>
       <generator class="assigned"/>
     </id>
     <many-to-one class="org.inbio.neoportal.core.entity.Taxon" fetch="select" name="taxon">
-      <column name="TAXON_ID" precision="131089" scale="0"/>
+      <column name="TAXON_ID" precision="10" scale="0"/>
     </many-to-one>
     <property name="name" type="string">
       <column name="NAME"/>

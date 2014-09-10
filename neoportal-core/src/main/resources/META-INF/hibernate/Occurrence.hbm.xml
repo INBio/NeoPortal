@@ -5,17 +5,17 @@
 <hibernate-mapping>
     <class name="org.inbio.neoportal.core.entity.Occurrence" table="occurrence" schema="public">
         <id name="occurrenceId" type="big_decimal">
-            <column name="occurrence_id" precision="131089" scale="0" />
+            <column name="occurrence_id" precision="10" scale="0" />
             <generator class="assigned" />
         </id>
         <many-to-one name="location" class="org.inbio.neoportal.core.entity.Location" fetch="select">
-            <column name="location_id" precision="131089" scale="0" />
+            <column name="location_id" precision="10" scale="0" />
         </many-to-one>
         <many-to-one name="dataProvider" class="org.inbio.neoportal.core.entity.DataProvider" fetch="select">
-            <column name="data_provider_id" precision="131089" scale="0" not-null="true" />
+            <column name="data_provider_id" precision="10" scale="0" not-null="true" />
         </many-to-one>
         <many-to-one name="taxon" class="org.inbio.neoportal.core.entity.Taxon" fetch="select">
-            <column name="taxon_id" precision="131089" scale="0" />
+            <column name="taxon_id" precision="10" scale="0" />
         </many-to-one>
         <property name="globalUniqueIdentifier" type="string">
             <column name="global_unique_identifier" />
@@ -96,7 +96,7 @@
             <column name="latest_date_collected" />
         </property>
         <property name="dayOfYear" type="big_decimal">
-            <column name="day_of_year" precision="131089" scale="0" />
+            <column name="day_of_year" precision="10" scale="0" />
         </property>
         <property name="higherGeography" type="string">
             <column name="higher_geography" />

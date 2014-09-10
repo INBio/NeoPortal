@@ -6,7 +6,7 @@
 <hibernate-mapping>
     <class name="org.inbio.neoportal.core.entity.DataProvider" table="data_provider" schema="public">
         <id name="dataProviderId" type="big_decimal">
-            <column name="data_provider_id" precision="131089" scale="0" />
+            <column name="data_provider_id" precision="10" scale="0" />
             <generator class="assigned" />
         </id>
         <property name="name" type="string">
@@ -23,7 +23,7 @@
         </property>
         <set name="occurrences" inverse="true">
             <key>
-                <column name="data_provider_id" precision="131089" scale="0" not-null="true" />
+                <column name="data_provider_id" precision="10" scale="0" not-null="true" />
             </key>
             <one-to-many class="org.inbio.neoportal.core.entity.Occurrence" />
         </set>

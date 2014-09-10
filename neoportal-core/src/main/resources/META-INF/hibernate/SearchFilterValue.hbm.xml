@@ -9,7 +9,7 @@
             <column name="value" />
         </property>
         <many-to-one name="searchFilter" class="org.inbio.neoportal.core.entity.SearchFilter" fetch="select">
-            <column name="search_filter_id" precision="131089" scale="0" />
+            <column name="search_filter_id" precision="10" scale="0" />
         </many-to-one>
     </class>
 </hibernate-mapping>

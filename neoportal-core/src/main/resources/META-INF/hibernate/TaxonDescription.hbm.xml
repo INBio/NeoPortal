@@ -4,14 +4,14 @@
 <hibernate-mapping>
   <class name="org.inbio.neoportal.core.entity.TaxonDescription" schema="public" table="TAXON_DESCRIPTION">
     <id name="taxonDescriptionId" type="big_decimal">
-      <column name="TAXON_DESCRIPTION_ID" precision="131089" scale="0"/>
+      <column name="TAXON_DESCRIPTION_ID" precision="10" scale="0"/>
       <generator class="assigned"/>
     </id>
     <many-to-one class="org.inbio.neoportal.core.entity.DataProvider" fetch="select" name="dataProvider">
-      <column name="PROVIDER_ID" not-null="true" precision="131089" scale="0"/>
+      <column name="PROVIDER_ID" not-null="true" precision="10" scale="0"/>
     </many-to-one>
     <many-to-one class="org.inbio.neoportal.core.entity.Taxon" fetch="select" name="taxon">
-      <column name="TAXON_ID" not-null="true" precision="131089" scale="0"/>
+      <column name="TAXON_ID" not-null="true" precision="10" scale="0"/>
     </many-to-one>
     <property name="globalUniqueIdentifier" type="string">
       <column name="GLOBAL_UNIQUE_IDENTIFIER"/>
@@ -174,7 +174,7 @@
     </property>
     <set inverse="true" name="taxonDescriptionHasReferenceElements">
       <key>
-        <column name="TAXON_DESCRIPTION_ID" not-null="true" precision="131089" scale="0"/>
+        <column name="TAXON_DESCRIPTION_ID" not-null="true" precision="10" scale="0"/>
       </key>
       <one-to-many class="org.inbio.neoportal.core.entity.TaxonDescriptionHasReferenceElement"/>
     </set>

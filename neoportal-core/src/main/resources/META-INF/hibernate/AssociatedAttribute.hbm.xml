@@ -4,7 +4,7 @@
 <hibernate-mapping>
   <class name="org.inbio.neoportal.core.entity.AssociatedAttribute" schema="public" table="ASSOCIATED_ATTRIBUTE">
     <id name="associatedAttributeId" type="big_decimal">
-      <column name="ASSOCIATED_ATTRIBUTE_ID" precision="131089" scale="0"/>
+      <column name="ASSOCIATED_ATTRIBUTE_ID" precision="10" scale="0"/>
       <generator class="assigned"/>
     </id>
     <property name="name" type="string">
@@ -15,7 +15,7 @@
     </property>
     <set inverse="true" name="taxonHasAssociatedAttributes">
       <key>
-        <column name="ASSOCIATED_ATTRIBUTE_ID" not-null="true" precision="131089" scale="0"/>
+        <column name="ASSOCIATED_ATTRIBUTE_ID" not-null="true" precision="10" scale="0"/>
       </key>
       <one-to-many class="org.inbio.neoportal.core.entity.TaxonHasAssociatedAttribute"/>
     </set>

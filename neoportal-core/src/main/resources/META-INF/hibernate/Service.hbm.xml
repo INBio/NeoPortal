@@ -4,7 +4,7 @@
 <hibernate-mapping>
   <class name="org.inbio.neoportal.core.entity.Service" schema="public" table="SERVICE">
     <id name="serviceId" type="big_decimal">
-      <column name="SERVICE_ID" precision="131089" scale="0"/>
+      <column name="SERVICE_ID" precision="10" scale="0"/>
       <generator class="assigned"/>
     </id>
     <property name="name" type="string">

@@ -4,11 +4,11 @@
 <hibernate-mapping>
   <class name="org.inbio.neoportal.core.entity.OccurrenceCuratorialExtension" schema="public" table="OCCURRENCE_CURATORIAL_EXTENSION">
     <id name="occurrenceCuratorialExtensionId" type="big_decimal">
-      <column name="OCCURRENCE_CURATORIAL_EXTENSION_ID" precision="131089" scale="0"/>
+      <column name="OCCURRENCE_CURATORIAL_EXTENSION_ID" precision="10" scale="0"/>
       <generator class="assigned"/>
     </id>
     <many-to-one class="org.inbio.neoportal.core.entity.Occurrence" fetch="select" name="occurrence">
-      <column name="OCCURRENCE_ID" not-null="true" precision="131089" scale="0"/>
+      <column name="OCCURRENCE_ID" not-null="true" precision="10" scale="0"/>
     </many-to-one>
     <property name="catalogNumberNumeric" type="string">
       <column name="CATALOG_NUMBER_NUMERIC"/>

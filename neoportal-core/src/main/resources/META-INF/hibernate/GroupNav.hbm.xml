@@ -5,7 +5,7 @@
   <class name="org.inbio.neoportal.core.entity.GroupNav" schema="public" table="group_nav">
     <comment>Tabla para soporte de navegacion por grupos de nombres comunes</comment>
     <id name="groupNavId" type="big_decimal">
-      <column name="group_nav_id" precision="131089" scale="0"/>
+      <column name="group_nav_id" precision="10" scale="0"/>
       <generator class="assigned"/>
     </id>
     <property name="name" type="string">
@@ -15,7 +15,7 @@
     	<column name="name_eng"></column>
     </property>
     <many-to-one class="org.inbio.neoportal.core.entity.GroupNav" fetch="select" name="groupNavParent">
-      <column name="group_nav_parent" precision="131089" scale="0"/>
+      <column name="group_nav_parent" precision="10" scale="0"/>
     </many-to-one>
     <many-to-one name="taxon" class="org.inbio.neoportal.core.entity.Taxon" column="taxon_id" unique="true" />
     <property name="imageUrl" type="string">
@@ -23,7 +23,7 @@
     </property>
     <set inverse="true" name="groupNavChilds" fetch="select">
       <key>
-        <column name="group_nav_parent" precision="131089" scale="0"/>
+        <column name="group_nav_parent" precision="10" scale="0"/>
       </key>
       <one-to-many class="org.inbio.neoportal.core.entity.GroupNav"/>
     </set>

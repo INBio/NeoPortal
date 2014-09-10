@@ -7,7 +7,7 @@
     <class name="org.inbio.neoportal.core.entity.SearchGroup" table="search_group" schema="public">
         <comment>Groups for advance Search: taxonomy, geography, identification...</comment>
         <id name="searchGroupId" type="big_decimal">
-            <column name="search_group_id" precision="131089" scale="0" />
+            <column name="search_group_id" precision="10" scale="0" />
             <generator class="assigned" />
         </id>
         <property name="key" type="string">
@@ -15,19 +15,19 @@
         </property>
         <set name="searchFilters" inverse="true">
             <key>
-                <column name="search_group_id" precision="131089" scale="0" />
+                <column name="search_group_id" precision="10" scale="0" />
             </key>
             <one-to-many class="org.inbio.neoportal.core.entity.SearchFilter" />
         </set>
         <set name="searchColumnDefaults" inverse="true">
             <key>
-                <column name="search_group_id" precision="131089" scale="0" not-null="true" />
+                <column name="search_group_id" precision="10" scale="0" not-null="true" />
             </key>
             <one-to-many class="org.inbio.neoportal.core.entity.SearchColumnDefault" />
         </set>
         <set name="searchColumns" inverse="true">
             <key>
-                <column name="search_group_id" precision="131089" scale="0" not-null="true" />
+                <column name="search_group_id" precision="10" scale="0" not-null="true" />
             </key>
             <one-to-many class="org.inbio.neoportal.core.entity.SearchColumn" />
         </set>

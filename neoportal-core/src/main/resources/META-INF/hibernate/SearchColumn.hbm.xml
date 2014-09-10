@@ -7,11 +7,11 @@
     <class name="org.inbio.neoportal.core.entity.SearchColumn" table="search_column" schema="public">
         <comment>Contain column list for Advanced Search functionality</comment>
         <id name="columnId" type="big_decimal">
-            <column name="column_id" precision="131089" scale="0" />
+            <column name="column_id" precision="10" scale="0" />
             <generator class="assigned" />
         </id>
         <many-to-one name="searchGroup" class="org.inbio.neoportal.core.entity.SearchGroup" fetch="select">
-            <column name="search_group_id" precision="131089" scale="0" not-null="true" />
+            <column name="search_group_id" precision="10" scale="0" not-null="true" />
         </many-to-one>
         <property name="columnKey" type="string">
             <column name="column_key" length="100" />

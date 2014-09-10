@@ -14,7 +14,7 @@
         </property>
         <set name="geoFeatures" inverse="true">
             <key>
-                <column name="geo_layer_id" not-null="true" precision="131089" scale="0" />
+                <column name="geo_layer_id" not-null="true" precision="10" scale="0" />
             </key>
             <one-to-many class="org.inbio.neoportal.core.entity.GeoFeature" />
         </set>

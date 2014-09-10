@@ -6,17 +6,17 @@
 <hibernate-mapping>
     <class name="org.inbio.neoportal.core.entity.Taxon" table="taxon" schema="public">
         <id name="taxonId" type="big_decimal">
-            <column name="taxon_id" precision="131089" scale="0" />
+            <column name="taxon_id" precision="10" scale="0" />
             <generator class="assigned" />
         </id>
         <many-to-one name="taxonBySinonymTaxonId" class="org.inbio.neoportal.core.entity.Taxon" fetch="select">
-            <column name="sinonym_taxon_id" precision="131089" scale="0" />
+            <column name="sinonym_taxon_id" precision="10" scale="0" />
         </many-to-one>
         <many-to-one name="taxonByAncestorTaxonId" class="org.inbio.neoportal.core.entity.Taxon" fetch="select">
-            <column name="ancestor_taxon_id" precision="131089" scale="0" />
+            <column name="ancestor_taxon_id" precision="10" scale="0" />
         </many-to-one>
         <property name="taxonomicalRangeId" type="big_decimal">
-            <column name="taxonomical_range_id" precision="131089" scale="0" />
+            <column name="taxonomical_range_id" precision="10" scale="0" />
         </property>
         <property name="defaultName" type="string">
             <column name="default_name" />
@@ -43,70 +43,70 @@
             <column name="species" />
         </property>
         <property name="dominiumId" type="big_decimal">
-            <column name="dominium_id" precision="131089" scale="0" />
+            <column name="dominium_id" precision="10" scale="0" />
         </property>
         <property name="kingdomId" type="big_decimal">
-            <column name="kingdom_id" precision="131089" scale="0" />
+            <column name="kingdom_id" precision="10" scale="0" />
         </property>
         <property name="phylumId" type="big_decimal">
-            <column name="phylum_id" precision="131089" scale="0" />
+            <column name="phylum_id" precision="10" scale="0" />
         </property>
         <property name="subdivisionId" type="big_decimal">
-            <column name="subdivision_id" precision="131089" scale="0" />
+            <column name="subdivision_id" precision="10" scale="0" />
         </property>
         <property name="classId" type="big_decimal">
-            <column name="class_id" precision="131089" scale="0" />
+            <column name="class_id" precision="10" scale="0" />
         </property>
         <property name="subclassId" type="big_decimal">
-            <column name="subclass_id" precision="131089" scale="0" />
+            <column name="subclass_id" precision="10" scale="0" />
         </property>
         <property name="orderId" type="big_decimal">
-            <column name="order_id" precision="131089" scale="0" />
+            <column name="order_id" precision="10" scale="0" />
         </property>
         <property name="subOrderId" type="big_decimal">
-            <column name="sub_order_id" precision="131089" scale="0" />
+            <column name="sub_order_id" precision="10" scale="0" />
         </property>
         <property name="superFamilyId" type="big_decimal">
-            <column name="super_family_id" precision="131089" scale="0" />
+            <column name="super_family_id" precision="10" scale="0" />
         </property>
         <property name="familyId" type="big_decimal">
-            <column name="family_id" precision="131089" scale="0" />
+            <column name="family_id" precision="10" scale="0" />
         </property>
         <property name="subFamilyId" type="big_decimal">
-            <column name="sub_family_id" precision="131089" scale="0" />
+            <column name="sub_family_id" precision="10" scale="0" />
         </property>
         <property name="tribeId" type="big_decimal">
-            <column name="tribe_id" precision="131089" scale="0" />
+            <column name="tribe_id" precision="10" scale="0" />
         </property>
         <property name="subTribeId" type="big_decimal">
-            <column name="sub_tribe_id" precision="131089" scale="0" />
+            <column name="sub_tribe_id" precision="10" scale="0" />
         </property>
         <property name="genusId" type="big_decimal">
-            <column name="genus_id" precision="131089" scale="0" />
+            <column name="genus_id" precision="10" scale="0" />
         </property>
         <property name="subGenusId" type="big_decimal">
-            <column name="sub_genus_id" precision="131089" scale="0" />
+            <column name="sub_genus_id" precision="10" scale="0" />
         </property>
         <property name="sectionId" type="big_decimal">
-            <column name="section_id" precision="131089" scale="0" />
+            <column name="section_id" precision="10" scale="0" />
         </property>
         <property name="subSectionId" type="big_decimal">
-            <column name="sub_section_id" precision="131089" scale="0" />
+            <column name="sub_section_id" precision="10" scale="0" />
         </property>
         <property name="raceId" type="big_decimal">
-            <column name="race_id" precision="131089" scale="0" />
+            <column name="race_id" precision="10" scale="0" />
         </property>
         <property name="speciesId" type="big_decimal">
-            <column name="species_id" precision="131089" scale="0" />
+            <column name="species_id" precision="10" scale="0" />
         </property>
         <property name="subSpeciesId" type="big_decimal">
-            <column name="sub_species_id" precision="131089" scale="0" />
+            <column name="sub_species_id" precision="10" scale="0" />
         </property>
         <property name="varietyId" type="big_decimal">
-            <column name="variety_id" precision="131089" scale="0" />
+            <column name="variety_id" precision="10" scale="0" />
         </property>
         <property name="formId" type="big_decimal">
-            <column name="form_id" precision="131089" scale="0" />
+            <column name="form_id" precision="10" scale="0" />
         </property>
         <property name="domain" type="string">
             <column name="domain" />
@@ -162,19 +162,19 @@
         
         <set name="taxonsForAncestorTaxonId" inverse="true">
             <key>
-                <column name="ancestor_taxon_id" precision="131089" scale="0" />
+                <column name="ancestor_taxon_id" precision="10" scale="0" />
             </key>
             <one-to-many class="org.inbio.neoportal.core.entity.Taxon" />
         </set>
         <set name="taxonsForSinonymTaxonId" inverse="true">
             <key>
-                <column name="sinonym_taxon_id" precision="131089" scale="0" />
+                <column name="sinonym_taxon_id" precision="10" scale="0" />
             </key>
             <one-to-many class="org.inbio.neoportal.core.entity.Taxon" />
         </set>
         <set name="occurrences" inverse="true">
             <key>
-                <column name="taxon_id" precision="131089" scale="0" />
+                <column name="taxon_id" precision="10" scale="0" />
             </key>
             <one-to-many class="org.inbio.neoportal.core.entity.OccurrenceDwc" />
         </set>

@@ -6,11 +6,11 @@
 <hibernate-mapping>
     <class name="org.inbio.neoportal.core.entity.OccurrenceGeospatialExtension" table="occurrence_geospatial_extension" schema="public">
         <id name="occurrenceGeospatialExtensionId" type="big_decimal">
-            <column name="occurrence_geospatial_extension_id" precision="131089" scale="0" />
+            <column name="occurrence_geospatial_extension_id" precision="10" scale="0" />
             <generator class="sequence" />
         </id>
         <many-to-one name="occurrence" class="org.inbio.neoportal.core.entity.Occurrence" fetch="select">
-            <column name="occurrence_id" precision="131089" scale="0" not-null="true" unique="true" />
+            <column name="occurrence_id" precision="10" scale="0" not-null="true" unique="true" />
         </many-to-one>
         <property name="decimalLatitude" type="string">
             <column name="decimal_latitude" />

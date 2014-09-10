@@ -5,17 +5,17 @@
   <class name="org.inbio.neoportal.core.entity.TaxonHasReferenceElement" schema="public" table="TAXON_HAS_REFERENCE_ELEMENT">
     <composite-id class="org.inbio.neoportal.core.entity.TaxonHasReferenceElementId" name="id">
       <key-property name="taxonId" type="big_decimal">
-        <column name="TAXON_ID" precision="131089" scale="0"/>
+        <column name="TAXON_ID" precision="10" scale="0"/>
       </key-property>
       <key-property name="referenceElementId" type="big_decimal">
-        <column name="REFERENCE_ELEMENT_ID" precision="131089" scale="0"/>
+        <column name="REFERENCE_ELEMENT_ID" precision="10" scale="0"/>
       </key-property>
     </composite-id>
     <many-to-one class="org.inbio.neoportal.core.entity.ReferenceElement" fetch="select" insert="false" name="referenceElement" update="false">
-      <column name="REFERENCE_ELEMENT_ID" not-null="true" precision="131089" scale="0"/>
+      <column name="REFERENCE_ELEMENT_ID" not-null="true" precision="10" scale="0"/>
     </many-to-one>
     <many-to-one class="org.inbio.neoportal.core.entity.Taxon" fetch="select" insert="false" name="taxon" update="false">
-      <column name="TAXON_ID" not-null="true" precision="131089" scale="0"/>
+      <column name="TAXON_ID" not-null="true" precision="10" scale="0"/>
     </many-to-one>
     <property name="value" type="string">
       <column name="VALUE"/>

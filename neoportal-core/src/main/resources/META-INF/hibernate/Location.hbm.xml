@@ -4,7 +4,7 @@
 <hibernate-mapping>
     <class name="org.inbio.neoportal.core.entity.Location" table="location" schema="public">
         <id name="locationId" type="big_decimal">
-            <column name="location_id" precision="131089" scale="0" />
+            <column name="location_id" precision="10" scale="0" />
             <generator class="assigned" />
         </id>
         <property name="higherGeographyId" type="string">
@@ -138,7 +138,7 @@
         </property>
         <set name="occurrences" inverse="true" fetch="select">
             <key>
-                <column name="location_id" precision="131089" scale="0" />
+                <column name="location_id" precision="10" scale="0" />
             </key>
             <one-to-many class="org.inbio.neoportal.core.entity.OccurrenceDwc" />
         </set>
