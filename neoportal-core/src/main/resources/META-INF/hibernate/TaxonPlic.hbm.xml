@@ -84,7 +84,7 @@
             <column name="threat_unstructure" length="4000" />
         </property>
         <property name="references" type="string">
-            <column name="references" />
+            <column name="[references]" />
         </property>
         <property name="urlfigure1" type="string">
             <column name="urlfigure1" length="4000" />
@@ -135,7 +135,7 @@
             <column name="genus" length="500" />
         </property>
         <property name="order" type="string">
-            <column name="order" length="500" />
+            <column name="[order]" length="500" />
         </property>
         <property name="publishedin" type="string">
             <column name="publishedin" length="4000" />
