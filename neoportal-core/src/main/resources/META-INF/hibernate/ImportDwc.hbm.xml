@@ -9,481 +9,481 @@
             <column name="[id]" />
             <generator class="assigned" />
         </id>
-        <property name="type" type="string">
+        <property name="type" type="text">
             <column name="[type]" />
         </property>
-        <property name="modified" type="string">
+        <property name="modified" type="text">
             <column name="[modified]" />
         </property>
-        <property name="language" type="string">
+        <property name="language" type="text">
             <column name="[language]" />
         </property>
-        <property name="rights" type="string">
+        <property name="rights" type="text">
             <column name="[rights]" />
         </property>
-        <property name="rightsHolder" type="string">
+        <property name="rightsHolder" type="text">
             <column name="[rightsHolder]" />
         </property>
-        <property name="accessRights" type="string">
+        <property name="accessRights" type="text">
             <column name="[accessRights]" />
         </property>
-        <property name="bibliographicCitation" type="string">
+        <property name="bibliographicCitation" type="text">
             <column name="[bibliographicCitation]" />
         </property>
-        <property name="references" type="string">
+        <property name="references" type="text">
             <column name="[references]" />
         </property>
-        <property name="institutionId" type="string">
+        <property name="institutionId" type="text">
             <column name="[institutionID]" />
         </property>
-        <property name="collectionId" type="string">
+        <property name="collectionId" type="text">
             <column name="[collectionID]" />
         </property>
-        <property name="datasetId" type="string">
+        <property name="datasetId" type="text">
             <column name="[datasetID]" />
         </property>
-        <property name="institutionCode" type="string">
+        <property name="institutionCode" type="text">
             <column name="[institutionCode]" />
         </property>
-        <property name="collectionCode" type="string">
+        <property name="collectionCode" type="text">
             <column name="[collectionCode]" />
         </property>
-        <property name="datasetName" type="string">
+        <property name="datasetName" type="text">
             <column name="[datasetName]" />
         </property>
-        <property name="ownerInstitutionCode" type="string">
+        <property name="ownerInstitutionCode" type="text">
             <column name="[ownerInstitutionCode]" />
         </property>
-        <property name="basisOfRecord" type="string">
+        <property name="basisOfRecord" type="text">
             <column name="[basisOfRecord]" />
         </property>
-        <property name="informationWithheld" type="string">
+        <property name="informationWithheld" type="text">
             <column name="[informationWithheld]" />
         </property>
-        <property name="dataGeneralizations" type="string">
+        <property name="dataGeneralizations" type="text">
             <column name="[dataGeneralizations]" />
         </property>
-        <property name="dynamicProperties" type="string">
+        <property name="dynamicProperties" type="text">
             <column name="[dynamicProperties]" />
         </property>
-        <property name="occurrenceId" type="string">
+        <property name="occurrenceId" type="text">
             <column name="[occurrenceID]" />
         </property>
-        <property name="catalogNumber" type="string">
+        <property name="catalogNumber" type="text">
             <column name="[catalogNumber]" />
         </property>
-        <property name="occurrenceRemarks" type="string">
+        <property name="occurrenceRemarks" type="text">
             <column name="[occurrenceRemarks]" />
         </property>
-        <property name="recordNumber" type="string">
+        <property name="recordNumber" type="text">
             <column name="[recordNumber]" />
         </property>
-        <property name="recordedBy" type="string">
+        <property name="recordedBy" type="text">
             <column name="[recordedBy]" />
         </property>
-        <property name="individualId" type="string">
+        <property name="individualId" type="text">
             <column name="[individualID]" />
         </property>
-        <property name="individualCount" type="string">
+        <property name="individualCount" type="text">
             <column name="[individualCount]" />
         </property>
-        <property name="sex" type="string">
+        <property name="sex" type="text">
             <column name="[sex]" />
         </property>
-        <property name="lifeStage" type="string">
+        <property name="lifeStage" type="text">
             <column name="[lifeStage]" />
         </property>
-        <property name="reproductiveCondition" type="string">
+        <property name="reproductiveCondition" type="text">
             <column name="[reproductiveCondition]" />
         </property>
-        <property name="behavior" type="string">
+        <property name="behavior" type="text">
             <column name="[behavior]" />
         </property>
-        <property name="establishmentMeans" type="string">
+        <property name="establishmentMeans" type="text">
             <column name="[establishmentMeans]" />
         </property>
-        <property name="occurrenceStatus" type="string">
+        <property name="occurrenceStatus" type="text">
             <column name="[occurrenceStatus]" />
         </property>
-        <property name="preparations" type="string">
+        <property name="preparations" type="text">
             <column name="[preparations]" />
         </property>
-        <property name="disposition" type="string">
+        <property name="disposition" type="text">
             <column name="[disposition]" />
         </property>
-        <property name="otherCatalogNumbers" type="string">
+        <property name="otherCatalogNumbers" type="text">
             <column name="[otherCatalogNumbers]" />
         </property>
-        <property name="previousIdentifications" type="string">
+        <property name="previousIdentifications" type="text">
             <column name="[previousIdentifications]" />
         </property>
-        <property name="associatedMedia" type="string">
+        <property name="associatedMedia" type="text">
             <column name="[associatedMedia]" />
         </property>
-        <property name="associatedReferences" type="string">
+        <property name="associatedReferences" type="text">
             <column name="[associatedReferences]" />
         </property>
-        <property name="associatedOccurrences" type="string">
+        <property name="associatedOccurrences" type="text">
             <column name="[associatedOccurrences]" />
         </property>
-        <property name="associatedSequences" type="string">
+        <property name="associatedSequences" type="text">
             <column name="[associatedSequences]" />
         </property>
-        <property name="associatedTaxa" type="string">
+        <property name="associatedTaxa" type="text">
             <column name="[associatedTaxa]" />
         </property>
-        <property name="eventId" type="string">
+        <property name="eventId" type="text">
             <column name="[eventID]" />
         </property>
-        <property name="samplingProtocol" type="string">
+        <property name="samplingProtocol" type="text">
             <column name="[samplingProtocol]" />
         </property>
-        <property name="samplingEffort" type="string">
+        <property name="samplingEffort" type="text">
             <column name="[samplingEffort]" />
         </property>
-        <property name="eventDate" type="string">
+        <property name="eventDate" type="text">
             <column name="[eventDate]" />
         </property>
-        <property name="eventTime" type="string">
+        <property name="eventTime" type="text">
             <column name="[eventTime]" />
         </property>
-        <property name="startDayOfYear" type="string">
+        <property name="startDayOfYear" type="text">
             <column name="[startDayOfYear]" />
         </property>
-        <property name="endDayOfYear" type="string">
+        <property name="endDayOfYear" type="text">
             <column name="[endDayOfYear]" />
         </property>
-        <property name="year" type="string">
+        <property name="year" type="text">
             <column name="[year]" />
         </property>
-        <property name="month" type="string">
+        <property name="month" type="text">
             <column name="[month]" />
         </property>
-        <property name="day" type="string">
+        <property name="day" type="text">
             <column name="[day]" />
         </property>
-        <property name="verbatimEventDate" type="string">
+        <property name="verbatimEventDate" type="text">
             <column name="[verbatimEventDate]" />
         </property>
-        <property name="habitat" type="string">
+        <property name="habitat" type="text">
             <column name="[habitat]" />
         </property>
-        <property name="fieldNumber" type="string">
+        <property name="fieldNumber" type="text">
             <column name="[fieldNumber]" />
         </property>
-        <property name="fieldNotes" type="string">
+        <property name="fieldNotes" type="text">
             <column name="[fieldNotes]" />
         </property>
-        <property name="eventRemarks" type="string">
+        <property name="eventRemarks" type="text">
             <column name="[eventRemarks]" />
         </property>
-        <property name="locationId" type="string">
+        <property name="locationId" type="text">
             <column name="[locationID]" />
         </property>
-        <property name="higherGeographyId" type="string">
+        <property name="higherGeographyId" type="text">
             <column name="[higherGeographyID]" />
         </property>
-        <property name="higherGeography" type="string">
+        <property name="higherGeography" type="text">
             <column name="[higherGeography]" />
         </property>
-        <property name="continent" type="string">
+        <property name="continent" type="text">
             <column name="[continent]" />
         </property>
-        <property name="waterBody" type="string">
+        <property name="waterBody" type="text">
             <column name="[waterBody]" />
         </property>
-        <property name="islandGroup" type="string">
+        <property name="islandGroup" type="text">
             <column name="[islandGroup]" />
         </property>
-        <property name="island" type="string">
+        <property name="island" type="text">
             <column name="[island]" />
         </property>
-        <property name="country" type="string">
+        <property name="country" type="text">
             <column name="[country]" />
         </property>
-        <property name="countryCode" type="string">
+        <property name="countryCode" type="text">
             <column name="[countryCode]" />
         </property>
-        <property name="stateProvince" type="string">
+        <property name="stateProvince" type="text">
             <column name="[stateProvince]" />
         </property>
-        <property name="county" type="string">
+        <property name="county" type="text">
             <column name="[county]" />
         </property>
-        <property name="municipality" type="string">
+        <property name="municipality" type="text">
             <column name="[municipality]" />
         </property>
-        <property name="locality" type="string">
+        <property name="locality" type="text">
             <column name="[locality]" />
         </property>
-        <property name="verbatimLocality" type="string">
+        <property name="verbatimLocality" type="text">
             <column name="[verbatimLocality]" />
         </property>
-        <property name="verbatimElevation" type="string">
+        <property name="verbatimElevation" type="text">
             <column name="[verbatimElevation]" />
         </property>
-        <property name="minimumElevationInMeters" type="string">
+        <property name="minimumElevationInMeters" type="text">
             <column name="[minimumElevationInMeters]" />
         </property>
-        <property name="maximumElevationInMeters" type="string">
+        <property name="maximumElevationInMeters" type="text">
             <column name="[maximumElevationInMeters]" />
         </property>
-        <property name="verbatimDepth" type="string">
+        <property name="verbatimDepth" type="text">
             <column name="[verbatimDepth]" />
         </property>
-        <property name="minimumDepthInMeters" type="string">
+        <property name="minimumDepthInMeters" type="text">
             <column name="[minimumDepthInMeters]" />
         </property>
-        <property name="maximumDepthInMeters" type="string">
+        <property name="maximumDepthInMeters" type="text">
             <column name="[maximumDepthInMeters]" />
         </property>
-        <property name="minimumDistanceAboveSurfaceInMeters" type="string">
+        <property name="minimumDistanceAboveSurfaceInMeters" type="text">
             <column name="[minimumDistanceAboveSurfaceInMeters]" />
         </property>
-        <property name="maximumDistanceAboveSurfaceInMeters" type="string">
+        <property name="maximumDistanceAboveSurfaceInMeters" type="text">
             <column name="[maximumDistanceAboveSurfaceInMeters]" />
         </property>
-        <property name="locationAccordingTo" type="string">
+        <property name="locationAccordingTo" type="text">
             <column name="[locationAccordingTo]" />
         </property>
-        <property name="locationRemarks" type="string">
+        <property name="locationRemarks" type="text">
             <column name="[locationRemarks]" />
         </property>
-        <property name="verbatimCoordinates" type="string">
+        <property name="verbatimCoordinates" type="text">
             <column name="[verbatimCoordinates]" />
         </property>
-        <property name="verbatimLatitude" type="string">
+        <property name="verbatimLatitude" type="text">
             <column name="[verbatimLatitude]" />
         </property>
-        <property name="verbatimLongitude" type="string">
+        <property name="verbatimLongitude" type="text">
             <column name="[verbatimLongitude]" />
         </property>
-        <property name="verbatimCoordinateSystem" type="string">
+        <property name="verbatimCoordinateSystem" type="text">
             <column name="[verbatimCoordinateSystem]" />
         </property>
-        <property name="verbatimSRS" type="string">
+        <property name="verbatimSRS" type="text">
             <column name="[verbatimSRS]" />
         </property>
-        <property name="decimalLatitude" type="string">
+        <property name="decimalLatitude" type="text">
             <column name="[decimalLatitude]" />
         </property>
-        <property name="decimalLongitude" type="string">
+        <property name="decimalLongitude" type="text">
             <column name="[decimalLongitude]" />
         </property>
-        <property name="geodeticDatum" type="string">
+        <property name="geodeticDatum" type="text">
             <column name="[geodeticDatum]" />
         </property>
-        <property name="coordinateUncertaintyInMeters" type="string">
+        <property name="coordinateUncertaintyInMeters" type="text">
             <column name="[coordinateUncertaintyInMeters]" />
         </property>
-        <property name="coordinatePrecision" type="string">
+        <property name="coordinatePrecision" type="text">
             <column name="[coordinatePrecision]" />
         </property>
-        <property name="pointRadiusSpatialFit" type="string">
+        <property name="pointRadiusSpatialFit" type="text">
             <column name="[pointRadiusSpatialFit]" />
         </property>
-        <property name="footprintWKT" type="string">
+        <property name="footprintWKT" type="text">
             <column name="[footprintWKT]" />
         </property>
-        <property name="footprintSRS" type="string">
+        <property name="footprintSRS" type="text">
             <column name="[footprintSRS]" />
         </property>
-        <property name="footprintSpatialFit" type="string">
+        <property name="footprintSpatialFit" type="text">
             <column name="[footprintSpatialFit]" />
         </property>
-        <property name="georeferencedBy" type="string">
+        <property name="georeferencedBy" type="text">
             <column name="[georeferencedBy]" />
         </property>
-        <property name="georeferencedDate" type="string">
+        <property name="georeferencedDate" type="text">
             <column name="[georeferencedDate]" />
         </property>
-        <property name="georeferenceProtocol" type="string">
+        <property name="georeferenceProtocol" type="text">
             <column name="[georeferenceProtocol]" />
         </property>
-        <property name="georeferenceSources" type="string">
+        <property name="georeferenceSources" type="text">
             <column name="[georeferenceSources]" />
         </property>
-        <property name="georeferenceVerificationStatus" type="string">
+        <property name="georeferenceVerificationStatus" type="text">
             <column name="[georeferenceVerificationStatus]" />
         </property>
-        <property name="georeferenceRemarks" type="string">
+        <property name="georeferenceRemarks" type="text">
             <column name="[georeferenceRemarks]" />
         </property>
-        <property name="geologicalContextId" type="string">
+        <property name="geologicalContextId" type="text">
             <column name="[geologicalContextID]" />
         </property>
-        <property name="earliestEonOrLowestEonothem" type="string">
+        <property name="earliestEonOrLowestEonothem" type="text">
             <column name="[earliestEonOrLowestEonothem]" />
         </property>
-        <property name="latestEonOrHighestEonothem" type="string">
+        <property name="latestEonOrHighestEonothem" type="text">
             <column name="[latestEonOrHighestEonothem]" />
         </property>
-        <property name="earliestEraOrLowestErathem" type="string">
+        <property name="earliestEraOrLowestErathem" type="text">
             <column name="[earliestEraOrLowestErathem]" />
         </property>
-        <property name="latestEraOrHighestErathem" type="string">
+        <property name="latestEraOrHighestErathem" type="text">
             <column name="[latestEraOrHighestErathem]" />
         </property>
-        <property name="earliestPeriodOrLowestSystem" type="string">
+        <property name="earliestPeriodOrLowestSystem" type="text">
             <column name="[earliestPeriodOrLowestSystem]" />
         </property>
-        <property name="latestPeriodOrHighestSystem" type="string">
+        <property name="latestPeriodOrHighestSystem" type="text">
             <column name="[latestPeriodOrHighestSystem]" />
         </property>
-        <property name="earliestEpochOrLowestSeries" type="string">
+        <property name="earliestEpochOrLowestSeries" type="text">
             <column name="[earliestEpochOrLowestSeries]" />
         </property>
-        <property name="latestEpochOrHighestSeries" type="string">
+        <property name="latestEpochOrHighestSeries" type="text">
             <column name="[latestEpochOrHighestSeries]" />
         </property>
-        <property name="earliestAgeOrLowestStage" type="string">
+        <property name="earliestAgeOrLowestStage" type="text">
             <column name="[earliestAgeOrLowestStage]" />
         </property>
-        <property name="latestAgeOrHighestStage" type="string">
+        <property name="latestAgeOrHighestStage" type="text">
             <column name="[latestAgeOrHighestStage]" />
         </property>
-        <property name="lowestBiostratigraphicZone" type="string">
+        <property name="lowestBiostratigraphicZone" type="text">
             <column name="[lowestBiostratigraphicZone]" />
         </property>
-        <property name="highestBiostratigraphicZone" type="string">
+        <property name="highestBiostratigraphicZone" type="text">
             <column name="[highestBiostratigraphicZone]" />
         </property>
-        <property name="lithostratigraphicTerms" type="string">
+        <property name="lithostratigraphicTerms" type="text">
             <column name="[lithostratigraphicTerms]" />
         </property>
-        <property name="group" type="string">
+        <property name="group" type="text">
             <column name="[group]" />
         </property>
-        <property name="formation" type="string">
+        <property name="formation" type="text">
             <column name="[formation]" />
         </property>
-        <property name="member" type="string">
+        <property name="member" type="text">
             <column name="[member]" />
         </property>
-        <property name="bed" type="string">
+        <property name="bed" type="text">
             <column name="[bed]" />
         </property>
-        <property name="identificationId" type="string">
+        <property name="identificationId" type="text">
             <column name="[identificationID]" />
         </property>
-        <property name="identifiedBy" type="string">
+        <property name="identifiedBy" type="text">
             <column name="[identifiedBy]" />
         </property>
-        <property name="dateIdentified" type="string">
+        <property name="dateIdentified" type="text">
             <column name="[dateIdentified]" />
         </property>
-        <property name="identificationReferences" type="string">
+        <property name="identificationReferences" type="text">
             <column name="[identificationReferences]" />
         </property>
-        <property name="identificationVerificationStatus" type="string">
+        <property name="identificationVerificationStatus" type="text">
         	<column name="[identificationVerificationStatus]"></column>
         </property>
-        <property name="identificationRemarks" type="string">
+        <property name="identificationRemarks" type="text">
             <column name="[identificationRemarks]" />
         </property>
-        <property name="identificationQualifier" type="string">
+        <property name="identificationQualifier" type="text">
             <column name="[identificationQualifier]" />
         </property>
-        <property name="typeStatus" type="string">
+        <property name="typeStatus" type="text">
             <column name="[typeStatus]" />
         </property>
-        <property name="taxonId" type="string">
+        <property name="taxonId" type="text">
             <column name="[taxonID]" />
         </property>
-        <property name="scientificNameId" type="string">
+        <property name="scientificNameId" type="text">
             <column name="[scientificNameID]" />
         </property>
-        <property name="acceptedNameUsageId" type="string">
+        <property name="acceptedNameUsageId" type="text">
             <column name="[acceptedNameUsageID]" />
         </property>
-        <property name="parentNameUsageId" type="string">
+        <property name="parentNameUsageId" type="text">
             <column name="[parentNameUsageID]" />
         </property>
-        <property name="originalNameUsageId" type="string">
+        <property name="originalNameUsageId" type="text">
             <column name="[originalNameUsageID]" />
         </property>
-        <property name="nameAccordingToId" type="string">
+        <property name="nameAccordingToId" type="text">
             <column name="[nameAccordingToID]" />
         </property>
-        <property name="namePublishedInId" type="string">
+        <property name="namePublishedInId" type="text">
             <column name="[namePublishedInID]" />
         </property>
-        <property name="taxonConceptId" type="string">
+        <property name="taxonConceptId" type="text">
             <column name="[taxonConceptID]" />
         </property>
-        <property name="scientificName" type="string">
+        <property name="scientificName" type="text">
             <column name="[scientificName]" />
         </property>
-        <property name="acceptedNameUsage" type="string">
+        <property name="acceptedNameUsage" type="text">
             <column name="[acceptedNameUsage]" />
         </property>
-        <property name="parentNameUsage" type="string">
+        <property name="parentNameUsage" type="text">
             <column name="[parentNameUsage]" />
         </property>
-        <property name="originalNameUsage" type="string">
+        <property name="originalNameUsage" type="text">
             <column name="[originalNameUsage]" />
         </property>
-        <property name="nameAccordingTo" type="string">
+        <property name="nameAccordingTo" type="text">
             <column name="[nameAccordingTo]" />
         </property>
-        <property name="namePublishedIn" type="string">
+        <property name="namePublishedIn" type="text">
             <column name="[namePublishedIn]" />
         </property>
-        <property name="namePublishedInYear" type="string">
+        <property name="namePublishedInYear" type="text">
         	<column name="[namePublishedInYear]" />
         </property>
-        <property name="higherClassification" type="string">
+        <property name="higherClassification" type="text">
             <column name="[higherClassification]" />
         </property>
-        <property name="kingdom" type="string">
+        <property name="kingdom" type="text">
             <column name="[kingdom]" />
         </property>
-        <property name="phylum" type="string">
+        <property name="phylum" type="text">
             <column name="[phylum]" />
         </property>
-        <property name="class_" type="string">
+        <property name="class_" type="text">
             <column name="[class]" />
         </property>
-        <property name="order" type="string">
+        <property name="order" type="text">
             <column name="[order]" />
         </property>
-        <property name="family" type="string">
+        <property name="family" type="text">
             <column name="[family]" />
         </property>
-        <property name="genus" type="string">
+        <property name="genus" type="text">
             <column name="[genus]" />
         </property>
-        <property name="subgenus" type="string">
+        <property name="subgenus" type="text">
             <column name="[subgenus]" />
         </property>
-        <property name="specificEpithet" type="string">
+        <property name="specificEpithet" type="text">
             <column name="[specificEpithet]" />
         </property>
-        <property name="infraspecificEpithet" type="string">
+        <property name="infraspecificEpithet" type="text">
             <column name="[infraspecificEpithet]" />
         </property>
-        <property name="taxonRank" type="string">
+        <property name="taxonRank" type="text">
             <column name="[taxonRank]" />
         </property>
-        <property name="verbatimTaxonRank" type="string">
+        <property name="verbatimTaxonRank" type="text">
             <column name="[verbatimTaxonRank]" />
         </property>
-        <property name="scientificNameAuthorship" type="string">
+        <property name="scientificNameAuthorship" type="text">
             <column name="[scientificNameAuthorship]" />
         </property>
-        <property name="vernacularName" type="string">
+        <property name="vernacularName" type="text">
             <column name="[vernacularName]" />
         </property>
-        <property name="nomenclaturalCode" type="string">
+        <property name="nomenclaturalCode" type="text">
             <column name="[nomenclaturalCode]" />
         </property>
-        <property name="taxonomicStatus" type="string">
+        <property name="taxonomicStatus" type="text">
             <column name="[taxonomicStatus]" />
         </property>
-        <property name="nomenclaturalStatus" type="string">
+        <property name="nomenclaturalStatus" type="text">
             <column name="[nomenclaturalStatus]" />
         </property>
-        <property name="taxonRemarks" type="string">
+        <property name="taxonRemarks" type="text">
             <column name="[taxonRemarks]" />
         </property>
     </class>

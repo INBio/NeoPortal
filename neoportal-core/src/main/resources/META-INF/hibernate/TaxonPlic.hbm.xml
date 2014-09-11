@@ -11,232 +11,232 @@
         <property name="version" type="big_decimal">
             <column name="version" precision="10" scale="0" />
         </property>
-        <property name="scientificName" type="string">
+        <property name="scientificName" type="text">
             <column name="scientific_name" length="4000" />
         </property>
-        <property name="scientificNameAuthorship" type="string">
+        <property name="scientificNameAuthorship" type="text">
             <column name="scientific_name_authorship" length="1000" />
         </property>
-        <property name="namePublishedInYear" type="string">
+        <property name="namePublishedInYear" type="text">
             <column name="name_published_in_year" length="1000" />
         </property>
-        <property name="individualName" type="string">
+        <property name="individualName" type="text">
             <column name="individual_name" length="1000" />
         </property>
-        <property name="dateIssued" type="string">
+        <property name="dateIssued" type="text">
             <column name="date_issued" length="100" />
         </property>
-        <property name="commonNamesUnstructured" type="string">
+        <property name="commonNamesUnstructured" type="text">
             <column name="common_names_unstructured" length="2000" />
         </property>
-        <property name="synonyms" type="string">
+        <property name="synonyms" type="text">
             <column name="synonyms" />
         </property>
-        <property name="typeLocality" type="string">
+        <property name="typeLocality" type="text">
             <column name="type_locality" length="2000" />
         </property>
-        <property name="typeDepository" type="string">
+        <property name="typeDepository" type="text">
             <column name="type_depository" length="2000" />
         </property>
-        <property name="fullDescriptionUnstructured" type="string">
+        <property name="fullDescriptionUnstructured" type="text">
             <column name="full_description_unstructured" />
         </property>
-        <property name="molecularDataUnstructure" type="string">
+        <property name="molecularDataUnstructure" type="text">
             <column name="molecular_data_unstructure" />
         </property>
-        <property name="crDistribution" type="string">
+        <property name="crDistribution" type="text">
             <column name="cr_distribution" />
         </property>
-        <property name="regionalDistribution" type="string">
+        <property name="regionalDistribution" type="text">
             <column name="regional_distribution" length="4000" />
         </property>
-        <property name="annualCyclesUnstructure" type="string">
+        <property name="annualCyclesUnstructure" type="text">
             <column name="annual_cycles_unstructure" length="4000" />
         </property>
-        <property name="collectingMethod" type="string">
+        <property name="collectingMethod" type="text">
             <column name="collecting_method" length="4000" />
         </property>
-        <property name="usesUnstructure" type="string">
+        <property name="usesUnstructure" type="text">
             <column name="uses_unstructure" length="4000" />
         </property>
-        <property name="myths" type="string">
+        <property name="myths" type="text">
             <column name="myths" length="4000" />
         </property>
-        <property name="lifeCycleUnstructure" type="string">
+        <property name="lifeCycleUnstructure" type="text">
             <column name="life_cycle_unstructure" length="4000" />
         </property>
-        <property name="interactionUnstructure" type="string">
+        <property name="interactionUnstructure" type="text">
             <column name="interaction_unstructure" length="4000" />
         </property>
-        <property name="lifeFormUnstructure" type="string">
+        <property name="lifeFormUnstructure" type="text">
             <column name="life_form_unstructure" length="4000" />
         </property>
-        <property name="reproductionUnstructure" type="string">
+        <property name="reproductionUnstructure" type="text">
             <column name="reproduction_unstructure" />
         </property>
-        <property name="populationBiologyUnstructure" type="string">
+        <property name="populationBiologyUnstructure" type="text">
             <column name="population_biology_unstructure" length="4000" />
         </property>
-        <property name="demographyUnstructure" type="string">
+        <property name="demographyUnstructure" type="text">
             <column name="demography_unstructure" length="4000" />
         </property>
-        <property name="threatUnstructure" type="string">
+        <property name="threatUnstructure" type="text">
             <column name="threat_unstructure" length="4000" />
         </property>
-        <property name="references" type="string">
+        <property name="references" type="text">
             <column name="[references]" />
         </property>
-        <property name="urlfigure1" type="string">
+        <property name="urlfigure1" type="text">
             <column name="urlfigure1" length="4000" />
         </property>
-        <property name="urldescriptionfigure" type="string">
+        <property name="urldescriptionfigure" type="text">
             <column name="urldescriptionfigure" length="4000" />
         </property>
-        <property name="published" type="string">
+        <property name="published" type="text">
             <column name="published" length="100" />
         </property>
-        <property name="urldistributionmap" type="string">
+        <property name="urldistributionmap" type="text">
             <column name="urldistributionmap" length="4000" />
         </property>
-        <property name="urlfigure2" type="string">
+        <property name="urlfigure2" type="text">
             <column name="urlfigure2" length="4000" />
         </property>
-        <property name="urlfigure3" type="string">
+        <property name="urlfigure3" type="text">
             <column name="urlfigure3" length="4000" />
         </property>
-        <property name="captiondescriptionfigure" type="string">
+        <property name="captiondescriptionfigure" type="text">
             <column name="captiondescriptionfigure" length="1000" />
         </property>
-        <property name="idversionanterior" type="string">
+        <property name="idversionanterior" type="text">
             <column name="idversionanterior" length="4000" />
         </property>
-        <property name="hasversion" type="string">
+        <property name="hasversion" type="text">
             <column name="hasversion" length="100" />
         </property>
-        <property name="colaborator1" type="string">
+        <property name="colaborator1" type="text">
             <column name="colaborator1" length="1000" />
         </property>
-        <property name="colaborator2" type="string">
+        <property name="colaborator2" type="text">
             <column name="colaborator2" length="1000" />
         </property>
-        <property name="captionfigure1" type="string">
+        <property name="captionfigure1" type="text">
             <column name="captionfigure1" length="1000" />
         </property>
-        <property name="captionfigure2" type="string">
+        <property name="captionfigure2" type="text">
             <column name="captionfigure2" length="1000" />
         </property>
-        <property name="captionfigure3" type="string">
+        <property name="captionfigure3" type="text">
             <column name="captionfigure3" length="1000" />
         </property>
-        <property name="family" type="string">
+        <property name="family" type="text">
             <column name="family" length="500" />
         </property>
-        <property name="genus" type="string">
+        <property name="genus" type="text">
             <column name="genus" length="500" />
         </property>
-        <property name="order" type="string">
+        <property name="order" type="text">
             <column name="[order]" length="500" />
         </property>
-        <property name="publishedin" type="string">
+        <property name="publishedin" type="text">
             <column name="publishedin" length="4000" />
         </property>
-        <property name="typecollector" type="string">
+        <property name="typecollector" type="text">
             <column name="typecollector" length="4000" />
         </property>
-        <property name="habitatUnstructure" type="string">
+        <property name="habitatUnstructure" type="text">
             <column name="habitat_unstructure" length="4000" />
         </property>
-        <property name="territoryUnstructure" type="string">
+        <property name="territoryUnstructure" type="text">
             <column name="territory_unstructure" length="4000" />
         </property>
-        <property name="feedingUnstructure" type="string">
+        <property name="feedingUnstructure" type="text">
             <column name="feeding_unstructure" />
         </property>
-        <property name="captiondistributionmap" type="string">
+        <property name="captiondistributionmap" type="text">
             <column name="captiondistributionmap" length="1000" />
         </property>
-        <property name="phenologyUnstructure" type="string">
+        <property name="phenologyUnstructure" type="text">
             <column name="phenology_unstructure" length="4000" />
         </property>
-        <property name="conservationareadistribution" type="string">
+        <property name="conservationareadistribution" type="text">
             <column name="conservationareadistribution" length="4000" />
         </property>
-        <property name="visible" type="string">
+        <property name="visible" type="text">
             <column name="visible" length="100" />
         </property>
-        <property name="coauthor1" type="string">
+        <property name="coauthor1" type="text">
             <column name="coauthor1" length="1000" />
         </property>
-        <property name="coauthor2" type="string">
+        <property name="coauthor2" type="text">
             <column name="coauthor2" length="1000" />
         </property>
-        <property name="emailauthor" type="string">
+        <property name="emailauthor" type="text">
             <column name="emailauthor" length="1000" />
         </property>
-        <property name="behaviorUnstructure" type="string">
+        <property name="behaviorUnstructure" type="text">
             <column name="behavior_unstructure" length="4000" />
         </property>
-        <property name="urlthumbnail" type="string">
+        <property name="urlthumbnail" type="text">
             <column name="urlthumbnail" length="4000" />
         </property>
-        <property name="creationdate" type="string">
+        <property name="creationdate" type="text">
             <column name="creationdate" length="100" />
         </property>
-        <property name="modificationdate" type="string">
+        <property name="modificationdate" type="text">
             <column name="modificationdate" length="100" />
         </property>
-        <property name="createdby" type="string">
+        <property name="createdby" type="text">
             <column name="createdby" length="100" />
         </property>
-        <property name="lastmodificationby" type="string">
+        <property name="lastmodificationby" type="text">
             <column name="lastmodificationby" length="100" />
         </property>
-        <property name="threatStatus" type="string">
+        <property name="threatStatus" type="text">
             <column name="threat_status" length="2000" />
         </property>
-        <property name="recordurl" type="string">
+        <property name="recordurl" type="text">
             <column name="recordurl" length="4000" />
         </property>
-        <property name="urllogo1" type="string">
+        <property name="urllogo1" type="text">
             <column name="urllogo1" length="4000" />
         </property>
-        <property name="urllogo2" type="string">
+        <property name="urllogo2" type="text">
             <column name="urllogo2" length="4000" />
         </property>
-        <property name="speciesrecordstatus" type="string">
+        <property name="speciesrecordstatus" type="text">
             <column name="speciesrecordstatus" length="200" />
         </property>
-        <property name="philologist" type="string">
+        <property name="philologist" type="text">
             <column name="philologist" length="1000" />
         </property>
-        <property name="subfamily" type="string">
+        <property name="subfamily" type="text">
             <column name="subfamily" length="100" />
         </property>
-        <property name="language" type="string">
+        <property name="language" type="text">
             <column name="language" length="100" />
         </property>
-        <property name="esMetaDescriptors" type="string">
+        <property name="esMetaDescriptors" type="text">
             <column name="es_meta_descriptors" length="2000" />
         </property>
-        <property name="enMetaDescriptors" type="string">
+        <property name="enMetaDescriptors" type="text">
             <column name="en_meta_descriptors" length="2000" />
         </property>
-        <property name="species" type="string">
+        <property name="species" type="text">
             <column name="species" length="200" />
         </property>
-        <property name="citesThreatStatus" type="string">
+        <property name="citesThreatStatus" type="text">
             <column name="cites_threat_status" length="1000" />
         </property>
-        <property name="uicnThreatStatus" type="string">
+        <property name="uicnThreatStatus" type="text">
             <column name="uicn_threat_status" length="1000" />
         </property>
-        <property name="wildProtectedAreaDistribution" type="string">
+        <property name="wildProtectedAreaDistribution" type="text">
             <column name="wild_protected_area_distribution" length="4000" />
         </property>
-        <property name="etymology" type="string">
+        <property name="etymology" type="text">
             <column name="etymology" length="1000" />
         </property>
-        <property name="urlvideo" type="string">
+        <property name="urlvideo" type="text">
             <column name="urlvideo" length="4000" />
         </property>
         <many-to-one name="taxon" class="org.inbio.neoportal.core.entity.Taxon" fetch="join" column="taxon_id" />
