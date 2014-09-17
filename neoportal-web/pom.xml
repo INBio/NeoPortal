@@ -176,7 +176,12 @@
 			<artifactId>spring-test</artifactId>
 			<version>${spring.framework.version}</version>
 			<scope>test</scope>
-		</dependency>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.tomcat</groupId>
+          <artifactId>tomcat-jdbc</artifactId>
+            <version>7.0.19</version>
+          </dependency>
 	</dependencies>
 	<repositories>
 		<repository>
