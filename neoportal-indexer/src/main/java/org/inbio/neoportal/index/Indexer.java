@@ -129,10 +129,24 @@ public class Indexer {
             .withDescription(
                 "Index an entity (all|Taxon|CommonName|TaxonDescription|GeoFeature|Location|Occurrences)")
             .create("index"));
-    options.addOption(OptionBuilder.withArgName("csvFile").hasArgs(1)
-        .withDescription("Import and index taxonomy").create("t"));
-    options.addOption(OptionBuilder.withArgName("csvFile").hasArgs(1).withDescription("Import and index occurrences")
-        .create("o"));
+    options
+        .addOption(OptionBuilder
+            .withArgName("csvFile")
+            .hasArgs(1)
+            .withDescription("Import and index taxonomy")
+            .create("t"));
+    options
+        .addOption(OptionBuilder
+            .withArgName("csvFile")
+            .hasArgs(1)
+            .withDescription("Import and index occurrences")
+            .create("o"));
+    options
+        .addOption(OptionBuilder
+            .isRequired(false)
+            .withDescription("Just insert records, do not run indexer")
+            .withLongOpt("insert-only")
+            .create());
 
     try {
       CommandLineParser parser = new org.apache.commons.cli.GnuParser();
@@ -146,7 +160,8 @@ public class Indexer {
       } else if (cmd.hasOption("t")) {
         String csvFile = cmd.getOptionValue("t");
         importer.importTaxonomy(csvFile);
-        createIndex("Taxon");
+        if(!cmd.hasOption("insert-only"))
+            createIndex("Taxon");
         // System.out.println("option t");
       } else if (cmd.hasOption("o")) {
         String csvFile = cmd.getOptionValue("o");
