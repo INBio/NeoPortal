@@ -241,7 +241,7 @@ public class Taxon
     @DocumentId
      private BigDecimal taxonId;
      private Taxon taxonBySinonymTaxonId;
-     private Taxon taxonByAncestorTaxonId;
+     private Taxon ancestorTaxonId;
 
      @Field
      private BigDecimal taxonomicalRangeId;
@@ -351,7 +351,7 @@ public class Taxon
     }
     
 	public Taxon(BigDecimal taxonId, Taxon taxonBySinonymTaxonId,
-			Taxon taxonByAncestorTaxonId, BigDecimal taxonomicalRangeId,
+			Taxon ancestorTaxonId, BigDecimal taxonomicalRangeId,
 			String defaultName, String kingdom, String phylum, String class_,
 			String order, String family, String genus, String species,
 			String subDivision, String subClass, String subOrder,
@@ -375,7 +375,7 @@ public class Taxon
 			Set<Image> images) {
 		this.taxonId = taxonId;
 		this.taxonBySinonymTaxonId = taxonBySinonymTaxonId;
-		this.taxonByAncestorTaxonId = taxonByAncestorTaxonId;
+		this.ancestorTaxonId = ancestorTaxonId;
 		this.taxonomicalRangeId = taxonomicalRangeId;
 		this.defaultName = defaultName;
 		this.kingdom = kingdom;
@@ -448,12 +448,12 @@ public class Taxon
     public void setTaxonBySinonymTaxonId(Taxon taxonBySinonymTaxonId) {
         this.taxonBySinonymTaxonId = taxonBySinonymTaxonId;
     }
-    public Taxon getTaxonByAncestorTaxonId() {
-        return this.taxonByAncestorTaxonId;
+    public Taxon getAncestorTaxonId() {
+        return this.ancestorTaxonId;
     }
     
-    public void setTaxonByAncestorTaxonId(Taxon taxonByAncestorTaxonId) {
-        this.taxonByAncestorTaxonId = taxonByAncestorTaxonId;
+    public void setAncestorTaxonId(Taxon taxonByAncestorTaxonId) {
+        this.ancestorTaxonId = taxonByAncestorTaxonId;
     }
     public BigDecimal getTaxonomicalRangeId() {
         return this.taxonomicalRangeId;
