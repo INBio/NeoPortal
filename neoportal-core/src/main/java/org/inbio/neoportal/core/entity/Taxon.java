@@ -172,6 +172,62 @@ public class Taxon
         map.put("section", "section");
         columnToProperty = Collections.unmodifiableMap(map);
     }
+    
+    public static final Map<String, String> customNameToProperty;
+    static {
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("taxon_id","taxonId");
+        map.put("ancestor_id", "ancestorTaxonId");
+        map.put("sinonym_taxon_id", "sinonymTaxonId");
+        map.put("taxonomical_range_id", "taxonomicalRangeId");
+        map.put("default_name", "defaultName");
+        map.put("kingdom_taxon_name", "kingdom");
+        map.put("phylum_division_taxon_name", "phylum");
+        map.put("class_taxon_name", "class_");
+        map.put("order_taxon_name", "order");
+        map.put("family_taxon_name", "family");
+        map.put("genus_taxon_name", "genus");
+        map.put("species_taxon_name", "species");
+        map.put("dominium_id", "dominiumId");
+        map.put("kingdom_taxon_id", "kingdomId");
+        map.put("phylum_division_taxon_id", "phylumId");
+        map.put("subphylum_subdiv_taxon_id", "subdivisionId");
+        map.put("class_taxon_id", "classId");
+        map.put("subclass_taxon_id", "subclassId");
+        map.put("order_taxon_id", "orderId");
+        map.put("suborder_taxon_id", "subOrderId");
+        map.put("superfamily_taxon_id", "superFamilyId");
+        map.put("family_taxon_id", "familyId");
+        map.put("subfamily_taxon_id", "subFamilyId");
+        map.put("tribe_taxon_id", "tribeId");
+        map.put("subtribe_taxon_id", "subTribeId");
+        map.put("genus_taxon_id", "genusId");
+        map.put("subgenus_taxon_id", "subGenusId");
+        map.put("section_taxon_id", "sectionId");
+        map.put("subsection_taxon_id", "subSectionId");
+        map.put("race_id", "raceId");
+        map.put("species_taxon_id", "speciesId");
+        map.put("subspecies_taxon_id", "subSpeciesId");
+        map.put("variety_taxon_id", "varietyId");
+        map.put("form_taxon_id", "formId");
+        map.put("domain", "domain");
+        map.put("image_url", "imageUrl");
+        map.put("subphylum_subdiv_taxon_name", "subDivision");
+        map.put("subclass_taxon_name", "subClass");
+        map.put("suborder_taxon_name", "subOrder");
+        map.put("superfamily_taxon_name", "superFamily");
+        map.put("subfamily_taxon_name", "subFamily");
+        map.put("tribe_taxon_name", "tribe");
+        map.put("subtribe_taxon_name", "subTribe");
+        map.put("subgenus_taxon_name", "subGenus");
+        map.put("subsection_taxon_name", "subSection");
+        map.put("race", "race");
+        map.put("subspecies_taxon_name", "subSpecies");
+        map.put("variety_taxon_name", "variety");
+        map.put("form_taxon_name", "form");
+        map.put("section_taxon_name", "section");
+        customNameToProperty = Collections.unmodifiableMap(map);
+    }
 
 	/**
 	 * 

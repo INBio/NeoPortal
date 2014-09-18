@@ -837,7 +837,7 @@ public class Importer {
 			// match header db columns with entity names
 			Map<String, Integer> columnProperties = new HashMap<String, Integer>();
 			for (int i=0; i < header.length; i++) {
-				columnProperties.put(Taxon.columnToProperty.get(header[i].toLowerCase()), i);
+				columnProperties.put(Taxon.customNameToProperty.get(header[i].toLowerCase()), i);
 			}
 			
 			while ((nextLine = reader.readNext()) != null) {
