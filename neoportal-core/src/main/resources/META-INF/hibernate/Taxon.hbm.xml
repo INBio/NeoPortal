@@ -12,9 +12,9 @@
         <many-to-one name="taxonBySinonymTaxonId" class="org.inbio.neoportal.core.entity.Taxon" fetch="select">
             <column name="sinonym_taxon_id" precision="10" scale="0" />
         </many-to-one>
-        <property name="ancestorTaxonId" type="big_decimal">
+        <many-to-one name="ancestorTaxonId" class="org.inbio.neoportal.core.entity.Taxon" fetch="select">
             <column name="ancestor_taxon_id" precision="10" scale="0" />
-        </property>
+        </many-to-one>
         <property name="taxonomicalRangeId" type="big_decimal">
             <column name="taxonomical_range_id" precision="10" scale="0" />
         </property>

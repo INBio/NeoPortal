@@ -822,7 +822,8 @@ public class Importer {
     	Taxon taxon;
     	boolean update;
 		int batch = 0;
-    	
+		String [] nextLine = null;
+		
     	try {
     		// start transaction
             DefaultTransactionDefinition transaction = new DefaultTransactionDefinition();
@@ -832,7 +833,7 @@ public class Importer {
             // read csv file
 			CSVReader reader = new CSVReader(new FileReader(csvFile));
 			String [] header = reader.readNext();
-			String [] nextLine;
+			
 			
 			// match header db columns with entity names
 			Map<String, Integer> columnProperties = new HashMap<String, Integer>();
@@ -857,7 +858,13 @@ public class Importer {
 				for (String indexKey : columnProperties.keySet()) {
 					if(indexKey == null)
 						continue;
-					taxonAccessor.setPropertyValue(indexKey, nextLine[columnProperties.get(indexKey)]);
+					if(indexKey.equals("ancestorTaxonId")){
+					  String ancestorTaxonId = nextLine[columnProperties.get(indexKey)];
+					  Taxon ancestorTaxon = taxonNewDAO.findById(new BigDecimal(ancestorTaxonId));
+					  taxon.setAncestorTaxonId(ancestorTaxon);
+					}
+					else
+					  taxonAccessor.setPropertyValue(indexKey, nextLine[columnProperties.get(indexKey)]);
 				}
 				
 				if(update)
@@ -893,7 +900,19 @@ public class Importer {
 			Logger.getLogger(Importer.class.getName()).log
             (Level.SEVERE, "NumberFormatException batch {0} ", new Object[]{batch });
 			e.printStackTrace();
-		}
+		} catch (NumberFormatException e) {
+		  Logger.getLogger(Importer.class.getName()).log
+          (Level.SEVERE, "NumberFormatException batch {0} ", new Object[]{batch });
+		  String line = null;
+		  for (String string : nextLine) {
+            line += string + ",";
+          }
+		  // remove las comma
+		  line = line.substring(0, line.length() - 2);
+		  Logger.getLogger(Importer.class.getName()).log
+          (Level.SEVERE, "line: {0} ", new Object[]{ line });
+          e.printStackTrace();
+        }
         
 	
     }
