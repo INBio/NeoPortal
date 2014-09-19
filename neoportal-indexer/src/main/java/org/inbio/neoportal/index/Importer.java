@@ -816,13 +816,13 @@ public class Importer {
      * @param csvFile the absolute root for the csvFile 
      * @author avargas
      */
-    @SuppressWarnings("static-access")
-	public void importTaxonomy(String csvFile){
+    public void importTaxonomy(String csvFile){
 
     	Taxon taxon;
     	boolean update;
 		int batch = 0;
 		String [] nextLine = null;
+		CSVReader reader = null;
 		
     	try {
     		// start transaction
@@ -831,9 +831,9 @@ public class Importer {
             Session session = transactionManager.getSessionFactory().getCurrentSession();
 
             // read csv file
-			CSVReader reader = new CSVReader(new FileReader(csvFile));
+			reader = new CSVReader(new FileReader(csvFile));
 			String [] header = reader.readNext();
-			
+			int totalColumns = header.length;    // use for validation of lines
 			
 			// match header db columns with entity names
 			Map<String, Integer> columnProperties = new HashMap<String, Integer>();
@@ -843,6 +843,13 @@ public class Importer {
 			
 			while ((nextLine = reader.readNext()) != null) {
 				String taxonId = nextLine[columnProperties.get("taxonId")];
+				
+				// check the number of lines against header fields
+				if (totalColumns != nextLine.length){
+				  Logger.getLogger(Importer.class.getName()).log
+                  (Level.WARNING, "Wrong line with taxon id {0} with batch number {1}", new Object[]{ taxonId, batch });
+				  continue;
+				}
 				
 				taxon = taxonNewDAO.findById(new BigDecimal(taxonId));
 				
@@ -913,6 +920,16 @@ public class Importer {
           (Level.SEVERE, "line: {0} ", new Object[]{ line });
           e.printStackTrace();
         }
+    	finally {
+    	  if (reader != null){
+    	    try {
+            reader.close();
+          } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+    	  }
+    	}
         
 	
     }
