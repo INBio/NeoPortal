@@ -21,20 +21,23 @@ package org.inbio.neoportal.web.controller;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.apache.lucene.queryParser.ParseException;
-import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
 import org.inbio.neoportal.service.dto.occurrences.OccurrenceLiteSDTO;
 import org.inbio.neoportal.service.dto.species.SpeciesLiteSDTO;
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionLiteSDTO;
 import org.inbio.neoportal.service.manager.SearchManager;
-import org.inbio.neoportal.web.dto.SpeciesLiteWDTO;
 import org.inbio.neoportal.web.dto.OccurrenceLiteWDTO;
+import org.inbio.neoportal.web.dto.SpeciesLiteWDTO;
 import org.inbio.neoportal.web.dto.TaxonDescriptionLiteWDTO;
 import org.inbio.neoportal.web.dto.wrapper.XMLCountWrapper;
 import org.inbio.neoportal.web.dto.wrapper.XMLSpeciesWrapper;
 import org.inbio.neoportal.web.dto.wrapper.XMLSpecimenWrapper;
 import org.inbio.neoportal.web.dto.wrapper.XMLTaxonDescriptionWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -246,9 +249,11 @@ public class SearchController {
     public Object searchTaxonAutocomplete (
         @RequestParam (value = "term", required=true) String term
        ) throws ParseException{
-                
-        
-        return searchManager.taxonSuggestions(term);
+      
+      List<String> data = searchManager.taxonSuggestions(term); 
+      HttpHeaders headers = new HttpHeaders();
+      headers.add("Access-Control-Allow-Origin", "*");
+        return new ResponseEntity<List<String>>(data, headers, HttpStatus.OK);
     }
     
     public SearchManager getSearchManagerImpl() {
