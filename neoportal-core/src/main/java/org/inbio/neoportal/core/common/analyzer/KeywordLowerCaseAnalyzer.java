@@ -16,55 +16,27 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.common.dto;
+package org.inbio.neoportal.core.common.analyzer;
 
-import java.io.Serializable;
+import java.io.Reader;
+import org.apache.lucene.analysis.KeywordTokenizer;
+import org.apache.lucene.analysis.LowerCaseFilter;
+import org.apache.lucene.analysis.ReusableAnalyzerBase;
+import org.apache.lucene.analysis.Tokenizer;
+import org.inbio.neoportal.core.NeoportalCoreConstants;
 
 /**
- * All DTO's should extend this base!
- * 
- * @author jgutierrez
+ * Keyword analyzer that include lowercase terms to the index
+ * @author avargas
  *
  */
-public class BaseDTO 
-    implements Serializable {
+public class KeywordLowerCaseAnalyzer extends ReusableAnalyzerBase {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	//log value
-	private String username;
-	private String logCreationDate;
-
-	/**
-	 * @return the username
-	 */
-	public String getUsername() {
-		return username;
+	@Override
+	protected TokenStreamComponents createComponents(String fieldName,
+			Reader reader) {
+		final Tokenizer source = new KeywordTokenizer(reader);
+	    return new TokenStreamComponents(source, new LowerCaseFilter(NeoportalCoreConstants.LuceneVersion, source));
 	}
-
-	/**
-	 * @param username the username to set
-	 */
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	/**
-	 * @return the logCreationDate
-	 */
-	public String getLogCreationDate() {
-		return logCreationDate;
-	}
-
-	/**
-	 * @param logCreationDate the logCreationDate to set
-	 */
-	public void setLogCreationDate(String logCreationDate) {
-		this.logCreationDate = logCreationDate;
-	}
-	
 
 }

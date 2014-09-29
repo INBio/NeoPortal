@@ -20,7 +20,7 @@ package org.inbio.neoportal.core.dto.taxon;
 
 import java.util.ArrayList;
 
-import org.inbio.neoportal.common.dto.BaseDTO;
+import org.inbio.neoportal.core.common.dto.BaseDTO;
 import org.inbio.neoportal.core.entity.Taxon;
 
 /**

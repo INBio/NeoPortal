@@ -19,7 +19,8 @@
 package org.inbio.neoportal.service.dto.advancedSearch;
 
 import java.util.HashMap;
-import org.inbio.neoportal.common.dto.BaseDTO;
+
+import org.inbio.neoportal.core.common.dto.BaseDTO;
 
 /**
  * Based on org.inbio.neoportal.core.dto.occurrence.OccurrenceCDTO

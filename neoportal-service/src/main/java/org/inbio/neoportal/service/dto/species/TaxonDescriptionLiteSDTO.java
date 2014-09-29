@@ -18,7 +18,7 @@
  */
 package org.inbio.neoportal.service.dto.species;
 
-import org.inbio.neoportal.common.dto.*;
+import org.inbio.neoportal.core.common.dto.*;
 
 /**
  * A subset of the data hold by the taxon entity

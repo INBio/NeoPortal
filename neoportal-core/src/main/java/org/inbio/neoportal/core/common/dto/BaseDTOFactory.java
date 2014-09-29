@@ -16,32 +16,38 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.service.dto.advancedSearch;
+package org.inbio.neoportal.core.common.dto;
 
+
+import java.util.ArrayList;
 import java.util.List;
+import org.inbio.neoportal.core.entity.LogGenericEntity;
 
-import org.inbio.neoportal.core.common.dto.BaseDTO;
-import org.inbio.neoportal.service.entity.AdvancedSearchData;
 
 /**
- * Para pasar los filtros seleccionados por el usuario de 
- * el Controller a el Manager
- * @author avargas
+ *
+ * @author jgutierrez
+ *
+ * Based on dmartin code, in the GBIF customizable portal.
  */
-public class FilterSDTO
-        extends BaseDTO{
-    
-    private List<AdvancedSearchData> filterGroups;
+public abstract class 
+    BaseDTOFactory<E extends LogGenericEntity, D extends BaseDTO> 
+        implements DTOFactory<E,D> {
 
-    public FilterSDTO() {
-    }
 
-    public List<AdvancedSearchData> getFilterGroups() {
-        return filterGroups;
-    }
-
-    public void setFilterGroups(List<AdvancedSearchData> filterGroups) {
-        this.filterGroups = filterGroups;
-    }
+    /**
+     * 
+     * @param entitiesList
+     * @return
+     */
+    @Override
+	public List<D> createDTOList(List<E> entitiesList) {
+		if(entitiesList==null)
+			return null;
+		List<D> dtoList = new ArrayList<D>();
+		for (E entity: entitiesList)
+			dtoList.add(createDTO(entity));
+		return dtoList;
+	}
 
 }

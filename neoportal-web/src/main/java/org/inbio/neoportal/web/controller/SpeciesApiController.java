@@ -29,6 +29,7 @@ import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO;
 import org.inbio.neoportal.service.manager.AdvancedSearchManager;
 import org.inbio.neoportal.service.manager.SpeciesManager;
+import org.inbio.neoportal.web.common.Wrapper;
 import org.inbio.neoportal.web.dto.TaxonDescriptionFullWDTO;
 import org.inbio.neoportal.web.dto.wrapper.XMLTaxonDescriptionWrapper;
 import org.inbio.neoportal.web.view.CSVview;
@@ -214,84 +215,96 @@ public class SpeciesApiController {
     }
     
     @RequestMapping (
-            value = "/{scientificName}",
-            method = RequestMethod.GET)
-    public @ResponseBody XMLTaxonDescriptionWrapper getTaxonDescription (
-            @PathVariable(value = "scientificName") String scientificName) {
-        
-        List<TaxonDescriptionFullSDTO> taxonDescription = null;
-        
-        XMLTaxonDescriptionWrapper tdw = new XMLTaxonDescriptionWrapper();
-        
-        try {
-            
-            scientificName = scientificName.replace('_', ' ');
-            
-            taxonDescription = 
-                    speciesManager.taxonDescription(scientificName);
-            
-            for(TaxonDescriptionFullSDTO tdsdto : taxonDescription) {
-                tdw.addElement(new TaxonDescriptionFullWDTO (
-                        tdsdto.getScientificName(),
-                        tdsdto.getInstitutionCode(),
-                        tdsdto.getDateLastModified(),
-                        tdsdto.getTaxonRecordId(),
-                        tdsdto.getLanguage(),
-                        tdsdto.getCreators(),
-                        tdsdto.getDistribution(),
-                        tdsdto.getAbstract_(),
-                        tdsdto.getKingdomTaxon(),
-                        tdsdto.getPhylumTaxon(),
-                        tdsdto.getClassTaxon(),
-                        tdsdto.getOrderTaxon(),
-                        tdsdto.getFamilyTaxon(),
-                        tdsdto.getGenusTaxon(),
-                        tdsdto.getSynonyms(),
-                        tdsdto.getAuthorYearOfScientificName(),
-                        tdsdto.getSpeciesPublicationReference(),
-                        tdsdto.getCommonNames(),
-                        tdsdto.getTypification(),
-                        tdsdto.getContributors(),
-                        tdsdto.getDateCreated(),
-                        tdsdto.getHabit(),
-                        tdsdto.getLifeCycle(),
-                        tdsdto.getReproduction(),
-                        tdsdto.getAnnualCycle(),
-                        tdsdto.getScientificDescription(),
-                        tdsdto.getBriefDescription(),
-                        tdsdto.getFeeding(),
-                        tdsdto.getBehavior(),
-                        tdsdto.getInteractions(),
-                        tdsdto.getChromosomicNumberN(),
-                        tdsdto.getMolecularData(),
-                        tdsdto.getPopulationBiology(),
-                        tdsdto.getThreatStatus(),
-                        tdsdto.getLegislation(),
-                        tdsdto.getHabitat(),
-                        tdsdto.getTerritory(),
-                        tdsdto.getEndemicity(),
-                        tdsdto.getTheUses(),
-                        tdsdto.getTheManagement(),
-                        tdsdto.getFolklore(),
-                        tdsdto.getTheReferences(),
-                        tdsdto.getUnstructuredDocumentation(),
-                        tdsdto.getOtherInformationSources(),
-                        tdsdto.getPapers(),
-                        tdsdto.getIdentificationKeys(),
-                        tdsdto.getMigratoryData(),
-                        tdsdto.getEcologicalSignificance(),
-                        tdsdto.getUnstructuredNaturalHistory(),
-                        tdsdto.getInvasivenessData(),
-                        tdsdto.getTargetAudiences()));
-            }
-            
-        } catch (Exception e) {
-            Logger.getLogger(
-                SpeciesController.class.getName()).log(Level.SEVERE, null, e);
-        }
-        
-        return tdw;
+              value = "/{scientificName}",
+              method = RequestMethod.GET,
+              produces = {"application/xml", "application/json"})
+    @ResponseBody
+    public Wrapper<TaxonDescriptionFullSDTO> getTaxonDescription (
+            @PathVariable( value = "scientificName" ) String scientificName) {
+      scientificName = scientificName.replace('_', ' ');
+      return new Wrapper<TaxonDescriptionFullSDTO>(
+          speciesManager.taxonDescription(scientificName));
     }
+    
+//    @RequestMapping (
+//            value = "/{scientificName}",
+//            method = RequestMethod.GET)
+//    public @ResponseBody XMLTaxonDescriptionWrapper getTaxonDescription (
+//            @PathVariable(value = "scientificName") String scientificName) {
+//        
+//        List<TaxonDescriptionFullSDTO> taxonDescription = null;
+//        
+//        XMLTaxonDescriptionWrapper tdw = new XMLTaxonDescriptionWrapper();
+//        
+//        try {
+//            
+//            scientificName = scientificName.replace('_', ' ');
+//            
+//            taxonDescription = 
+//                    speciesManager.taxonDescription(scientificName);
+//            
+//            for(TaxonDescriptionFullSDTO tdsdto : taxonDescription) {
+//                tdw.addElement(new TaxonDescriptionFullWDTO (
+//                        tdsdto.getScientificName(),
+//                        tdsdto.getInstitutionCode(),
+//                        tdsdto.getDateLastModified(),
+//                        tdsdto.getTaxonRecordId(),
+//                        tdsdto.getLanguage(),
+//                        tdsdto.getCreators(),
+//                        tdsdto.getDistribution(),
+//                        tdsdto.getAbstract_(),
+//                        tdsdto.getKingdomTaxon(),
+//                        tdsdto.getPhylumTaxon(),
+//                        tdsdto.getClassTaxon(),
+//                        tdsdto.getOrderTaxon(),
+//                        tdsdto.getFamilyTaxon(),
+//                        tdsdto.getGenusTaxon(),
+//                        tdsdto.getSynonyms(),
+//                        tdsdto.getAuthorYearOfScientificName(),
+//                        tdsdto.getSpeciesPublicationReference(),
+//                        tdsdto.getCommonNames(),
+//                        tdsdto.getTypification(),
+//                        tdsdto.getContributors(),
+//                        tdsdto.getDateCreated(),
+//                        tdsdto.getHabit(),
+//                        tdsdto.getLifeCycle(),
+//                        tdsdto.getReproduction(),
+//                        tdsdto.getAnnualCycle(),
+//                        tdsdto.getScientificDescription(),
+//                        tdsdto.getBriefDescription(),
+//                        tdsdto.getFeeding(),
+//                        tdsdto.getBehavior(),
+//                        tdsdto.getInteractions(),
+//                        tdsdto.getChromosomicNumberN(),
+//                        tdsdto.getMolecularData(),
+//                        tdsdto.getPopulationBiology(),
+//                        tdsdto.getThreatStatus(),
+//                        tdsdto.getLegislation(),
+//                        tdsdto.getHabitat(),
+//                        tdsdto.getTerritory(),
+//                        tdsdto.getEndemicity(),
+//                        tdsdto.getTheUses(),
+//                        tdsdto.getTheManagement(),
+//                        tdsdto.getFolklore(),
+//                        tdsdto.getTheReferences(),
+//                        tdsdto.getUnstructuredDocumentation(),
+//                        tdsdto.getOtherInformationSources(),
+//                        tdsdto.getPapers(),
+//                        tdsdto.getIdentificationKeys(),
+//                        tdsdto.getMigratoryData(),
+//                        tdsdto.getEcologicalSignificance(),
+//                        tdsdto.getUnstructuredNaturalHistory(),
+//                        tdsdto.getInvasivenessData(),
+//                        tdsdto.getTargetAudiences()));
+//            }
+//            
+//        } catch (Exception e) {
+//            Logger.getLogger(
+//                SpeciesController.class.getName()).log(Level.SEVERE, null, e);
+//        }
+//        
+//        return tdw;
+//    }
     
     @RequestMapping(
             value="/{scientificName}/images",

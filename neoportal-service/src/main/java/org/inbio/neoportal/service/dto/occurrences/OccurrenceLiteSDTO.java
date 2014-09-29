@@ -18,7 +18,7 @@
  */
 package org.inbio.neoportal.service.dto.occurrences;
 
-import org.inbio.neoportal.common.dto.BaseDTO;
+import org.inbio.neoportal.core.common.dto.BaseDTO;
 
 /**
  *

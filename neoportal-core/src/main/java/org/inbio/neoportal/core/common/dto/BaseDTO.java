@@ -16,38 +16,55 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.common.dto;
+package org.inbio.neoportal.core.common.dto;
 
-
-import java.util.ArrayList;
-import java.util.List;
-import org.inbio.neoportal.core.entity.LogGenericEntity;
-
+import java.io.Serializable;
 
 /**
- *
+ * All DTO's should extend this base!
+ * 
  * @author jgutierrez
  *
- * Based on dmartin code, in the GBIF customizable portal.
  */
-public abstract class 
-    BaseDTOFactory<E extends LogGenericEntity, D extends BaseDTO> 
-        implements DTOFactory<E,D> {
+public class BaseDTO 
+    implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	//log value
+	private String username;
+	private String logCreationDate;
 
-    /**
-     * 
-     * @param entitiesList
-     * @return
-     */
-    @Override
-	public List<D> createDTOList(List<E> entitiesList) {
-		if(entitiesList==null)
-			return null;
-		List<D> dtoList = new ArrayList<D>();
-		for (E entity: entitiesList)
-			dtoList.add(createDTO(entity));
-		return dtoList;
+	/**
+	 * @return the username
+	 */
+	public String getUsername() {
+		return username;
 	}
+
+	/**
+	 * @param username the username to set
+	 */
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	/**
+	 * @return the logCreationDate
+	 */
+	public String getLogCreationDate() {
+		return logCreationDate;
+	}
+
+	/**
+	 * @param logCreationDate the logCreationDate to set
+	 */
+	public void setLogCreationDate(String logCreationDate) {
+		this.logCreationDate = logCreationDate;
+	}
+	
 
 }

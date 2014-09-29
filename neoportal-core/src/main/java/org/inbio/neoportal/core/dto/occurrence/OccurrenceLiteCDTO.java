@@ -19,7 +19,8 @@
 package org.inbio.neoportal.core.dto.occurrence;
 
 import java.util.ArrayList;
-import org.inbio.neoportal.common.dto.*;
+
+import org.inbio.neoportal.core.common.dto.*;
 
 /**
  * A subset of the data hold by the taxon entity

@@ -3,16 +3,49 @@
     xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	xmlns:oxm="http://www.springframework.org/schema/oxm"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+       http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm-3.2.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	<!-- Scans the classpath of this application for @Components to deploy as beans -->
-	<context:component-scan base-package="org.inbio.neoportal.web" />
+	<context:component-scan 
+		base-package="org.inbio.neoportal.web, 
+					org.inbio.neoportal.service.dto,
+					org.inbio.neoportal.core.common.dto" />
 
+	<!--
+        Setup a simple strategy: 
+           1. Take all /api the defaults.
+           2. Return json by default when not sure. 
+       -->
+  <beans:bean id="contentNegotiationManager"
+             class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+       <beans:property name="defaultContentType" value="application/json" />
+       <beans:property name="ignoreAcceptHeader" value="false" />
+       <beans:property name="mediaTypes">
+            <beans:map>
+                <beans:entry key="json" value="application/json" />
+                <beans:entry key="xml" value="application/xml" />
+            </beans:map>
+        </beans:property>
+  </beans:bean>
 	<!-- Enables the Spring MVC @Controller programming model -->
-	<mvc:annotation-driven />
+	<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager">
+		<mvc:message-converters>
+	        <beans:bean class="org.springframework.http.converter.xml.MarshallingHttpMessageConverter">
+	            <beans:property name="marshaller" ref="marshaller" />
+	            <beans:property name="unmarshaller" ref="marshaller" />
+	        </beans:bean>
+	    </mvc:message-converters>
+	</mvc:annotation-driven>
+	
+	<oxm:jaxb2-marshaller id="marshaller" >
+		<oxm:class-to-be-bound name="org.inbio.neoportal.web.common.Wrapper"/>
+		<oxm:class-to-be-bound name="org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO"/>
+	</oxm:jaxb2-marshaller>
 	
 <!-- 	revisar!!!! -->
 	<mvc:interceptors>

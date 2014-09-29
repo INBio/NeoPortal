@@ -6,7 +6,7 @@ package org.inbio.neoportal.core.dto.advancedsearch;
 
 import java.math.BigDecimal;
 
-import org.inbio.neoportal.common.dto.BaseDTO;
+import org.inbio.neoportal.core.common.dto.BaseDTO;
 
 /**
  *

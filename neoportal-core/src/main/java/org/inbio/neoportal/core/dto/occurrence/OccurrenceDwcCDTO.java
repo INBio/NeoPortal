@@ -21,7 +21,7 @@ package org.inbio.neoportal.core.dto.occurrence;
 import java.util.HashMap;
 
 import org.hibernate.search.annotations.IndexedEmbedded;
-import org.inbio.neoportal.common.dto.*;
+import org.inbio.neoportal.core.common.dto.*;
 import org.inbio.neoportal.core.dto.LocationCDTO;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.entity.DataProvider;

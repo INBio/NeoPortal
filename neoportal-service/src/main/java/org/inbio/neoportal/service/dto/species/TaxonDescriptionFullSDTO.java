@@ -18,11 +18,18 @@
  */
 package org.inbio.neoportal.service.dto.species;
 
-import org.inbio.neoportal.common.dto.*;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.inbio.neoportal.core.common.dto.BaseDTO;
 /**
  *
  * @author avargas
  */
+@XmlRootElement(name="taxonDescription")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class TaxonDescriptionFullSDTO
     extends BaseDTO 
         implements Comparable {

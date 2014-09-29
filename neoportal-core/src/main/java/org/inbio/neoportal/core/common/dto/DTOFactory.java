@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.common.dto;
+package org.inbio.neoportal.core.common.dto;
 
 import java.util.List;
 import org.inbio.neoportal.core.entity.LogGenericEntity;

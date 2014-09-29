@@ -59,6 +59,10 @@
 	<logger name="org.springframework.web">
 		<level value="info" />
 	</logger>
+	
+	<logger name="org.springframework.http">
+		<level value="info" />
+	</logger>
 
 	<logger name="org.hibernate">
 		<level value="info" />

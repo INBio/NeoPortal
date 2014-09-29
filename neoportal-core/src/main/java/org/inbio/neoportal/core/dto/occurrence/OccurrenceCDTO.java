@@ -18,7 +18,7 @@
  */
 package org.inbio.neoportal.core.dto.occurrence;
 
-import org.inbio.neoportal.common.dto.*;
+import org.inbio.neoportal.core.common.dto.*;
 import org.inbio.neoportal.core.dto.LocationCDTO;
 
 /**

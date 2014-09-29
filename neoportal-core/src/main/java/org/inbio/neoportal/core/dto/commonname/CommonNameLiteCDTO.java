@@ -19,7 +19,8 @@
 package org.inbio.neoportal.core.dto.commonname;
 
 import java.math.BigDecimal;
-import org.inbio.neoportal.common.dto.BaseDTO;
+
+import org.inbio.neoportal.core.common.dto.BaseDTO;
 
 /**
  * A subset of the data hold by the CommonName entity

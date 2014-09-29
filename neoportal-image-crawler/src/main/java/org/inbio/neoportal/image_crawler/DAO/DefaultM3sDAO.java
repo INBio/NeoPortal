@@ -55,7 +55,6 @@ public class DefaultM3sDAO implements M3sDAO {
   /* (non-Javadoc)
    * @see org.inbio.neoportal.image_crawler.DAO.M3sDAO#getImages(int, int)
    */
-  @Override
   public List<Map<String,Object>> getImages(int offset, int quantity) {
     Session session = sessionFactoryM3s.getCurrentSession();
     

@@ -2,7 +2,7 @@ package org.inbio.neoportal.core.dto.groupnav;
 
 import java.util.List;
 
-import org.inbio.neoportal.common.dto.BaseDTO;
+import org.inbio.neoportal.core.common.dto.BaseDTO;
 import org.inbio.neoportal.core.dto.taxon.TaxonCDTO;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
 

@@ -40,6 +40,7 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooJavaBean
 @RooToString
 @XmlRootElement(name="neoportal-response")
+@Deprecated
 public class XMLTaxonDescriptionWrapper {
 
 	@XmlElementWrapper(name="response-elements", nillable=true)

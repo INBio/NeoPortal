@@ -16,27 +16,32 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.inbio.neoportal.common.analyzer;
+package org.inbio.neoportal.web.common;
 
-import java.io.Reader;
-import org.apache.lucene.analysis.KeywordTokenizer;
-import org.apache.lucene.analysis.LowerCaseFilter;
-import org.apache.lucene.analysis.ReusableAnalyzerBase;
-import org.apache.lucene.analysis.Tokenizer;
-import org.inbio.neoportal.core.NeoportalCoreConstants;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Keyword analyzer that include lowercase terms to the index
  * @author avargas
  *
  */
-public class KeywordLowerCaseAnalyzer extends ReusableAnalyzerBase {
+@XmlRootElement
+public class Wrapper<T> {
+  private List<T> items;
+  
+  public Wrapper() {
+      items = new ArrayList<T>();
+  }
 
-	@Override
-	protected TokenStreamComponents createComponents(String fieldName,
-			Reader reader) {
-		final Tokenizer source = new KeywordTokenizer(reader);
-	    return new TokenStreamComponents(source, new LowerCaseFilter(NeoportalCoreConstants.LuceneVersion, source));
-	}
+  public Wrapper(List<T> items) {
+      this.items = items;
+  }
 
+  @XmlAnyElement(lax=true)
+  public List<T> getItems() {
+      return items;
+  }
 }

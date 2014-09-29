@@ -18,7 +18,7 @@
  */
 package org.inbio.neoportal.core.dto.occurrence;
 
-import org.inbio.neoportal.common.dto.BaseDTO;
+import org.inbio.neoportal.core.common.dto.BaseDTO;
 
 /**
  * A subset of the data hold by the taxon entity
