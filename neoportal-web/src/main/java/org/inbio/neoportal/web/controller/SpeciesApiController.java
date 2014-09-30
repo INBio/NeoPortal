@@ -26,10 +26,10 @@ import java.util.logging.Logger;
 
 import org.inbio.neoportal.core.dto.advancedsearch.SearchColumnCDTO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
+import org.inbio.neoportal.core.entity.TaxonPlic;
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO;
 import org.inbio.neoportal.service.manager.AdvancedSearchManager;
 import org.inbio.neoportal.service.manager.SpeciesManager;
-import org.inbio.neoportal.web.common.Wrapper;
 import org.inbio.neoportal.web.dto.TaxonDescriptionFullWDTO;
 import org.inbio.neoportal.web.dto.wrapper.XMLTaxonDescriptionWrapper;
 import org.inbio.neoportal.web.view.CSVview;
@@ -225,11 +225,10 @@ public class SpeciesApiController {
     public Object getTaxonDescription (
             @PathVariable( value = "scientificName" ) String scientificName) {
       scientificName = scientificName.replace('_', ' ');
-      Wrapper<TaxonDescriptionFullSDTO> wrapper = 
-          new Wrapper<TaxonDescriptionFullSDTO>(speciesManager.taxonDescription(scientificName));
+      TaxonPlic taxonPlic = speciesManager.getTaxonPLicByDefaultName(scientificName);
       HttpHeaders headers = new HttpHeaders();
       headers.add("Access-Control-Allow-Origin", "*");
-      return new ResponseEntity<Wrapper<TaxonDescriptionFullSDTO>>(wrapper, headers, HttpStatus.OK);
+      return new ResponseEntity<TaxonPlic>(taxonPlic, headers, HttpStatus.OK);
     }
     
 //    @RequestMapping (

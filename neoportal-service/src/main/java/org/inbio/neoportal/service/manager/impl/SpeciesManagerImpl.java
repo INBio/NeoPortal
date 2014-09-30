@@ -412,8 +412,11 @@ public class SpeciesManagerImpl
     List<TaxonPlic> taxonPlicList = taxonPlicDAO.getByTaxonId(taxon.getTaxonId());
     if (taxonPlicList.size() == 0)
       return null;
-    else
-      return taxonPlicList.get(0);
+    else {
+      TaxonPlic taxonPlic = taxonPlicList.get(0);
+
+      return taxonPlic;
+    }
   }
 	
 }

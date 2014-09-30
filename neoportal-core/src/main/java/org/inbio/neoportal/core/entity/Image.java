@@ -99,6 +99,20 @@ public class Image
 		return url;
     }
     
+    public String getBigUrl(Image image) {
+      String url = "";
+      if (image.getSource().equalsIgnoreCase("flickr")){
+          url += "http://farm" + image.getFarm();
+          url += ".staticflickr.com/" + image.getServer();
+          url += "/" + image.getExternalImageId() + "_" + image.getSecret();
+          url += "_b.jpg";
+      }
+      else
+          url = "http://multimedia.inbio.ac.cr/m3sINBio/getImage?size=big&id=" + image.getExternalImageId();
+      
+      return url;
+    }
+    
     
     
     public Image() {
@@ -289,5 +303,32 @@ public class Image
 		this.tags = tags;
 	}
     
-    
+	public ImagesCDTO getImageCDTO(){
+	  ImagesCDTO imageCDTO = new ImagesCDTO();
+	  imageCDTO.setAccuracy(this.getAccuracy());
+	  imageCDTO.setAuthor(this.getAuthor());
+	  imageCDTO.setBigUrl(this.getBigUrl(this));
+	  imageCDTO.setDateAdded(this.getDateAdded() == null ? "" : this.getDateAdded().toString());
+	  imageCDTO.setDateTaken(this.getDateTaken() == null ? "" : this.getDateTaken().toString());
+	  imageCDTO.setDateUpload(this.getDateUpload() == null ? "" : this.getDateUpload().toString());
+	  imageCDTO.setDescription(this.getDescription());
+	  imageCDTO.setExternalImageId(this.getExternalImageId() == null ? "" : this.getExternalImageId().toString());
+	  imageCDTO.setFarm(String.valueOf(this.getFarm()));
+	  imageCDTO.setImageId(this.getImageId().toString());
+	  imageCDTO.setLastUpdate(this.getLastUpdate() == null ? "" : this.getLastUpdate().toString());
+	  imageCDTO.setLatitude(this.getLatitude());
+	  imageCDTO.setLongitude(this.getLongitude());
+//	  imageCDTO.setMediumUrl(this.get)
+//	  imageCDTO.setOccurrenceId(this.geto)
+	  imageCDTO.setOriginalFormat(this.getOriginalFormat());
+	  imageCDTO.setOriginalSecret(this.getOriginalSecret());
+	  imageCDTO.setRights(this.getRights());
+	  imageCDTO.setSecret(this.getSecret());
+	  imageCDTO.setServer(String.valueOf(this.getServer()));
+	  imageCDTO.setSource(this.getSource());
+	  imageCDTO.setTags(this.getTags());
+	  imageCDTO.setTitle(this.getTitle());
+	  
+	  return imageCDTO;
+	}
 }

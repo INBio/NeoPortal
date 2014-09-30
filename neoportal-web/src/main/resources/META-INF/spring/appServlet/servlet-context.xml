@@ -12,9 +12,7 @@
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	<!-- Scans the classpath of this application for @Components to deploy as beans -->
 	<context:component-scan 
-		base-package="org.inbio.neoportal.web, 
-					org.inbio.neoportal.service.dto,
-					org.inbio.neoportal.core.common.dto" />
+		base-package="org.inbio.neoportal.web" />
 
 	<!--
         Setup a simple strategy: 
@@ -45,6 +43,8 @@
 	<oxm:jaxb2-marshaller id="marshaller" >
 		<oxm:class-to-be-bound name="org.inbio.neoportal.web.common.Wrapper"/>
 		<oxm:class-to-be-bound name="org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO"/>
+		<oxm:class-to-be-bound name="org.inbio.neoportal.core.entity.Taxon"/>
+		<oxm:class-to-be-bound name="org.inbio.neoportal.core.entity.TaxonPlic"/>
 	</oxm:jaxb2-marshaller>
 	
 <!-- 	revisar!!!! -->

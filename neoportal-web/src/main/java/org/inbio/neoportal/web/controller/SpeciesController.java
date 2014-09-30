@@ -26,7 +26,6 @@ import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
 import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
 import org.inbio.neoportal.core.entity.Taxon;
 import org.inbio.neoportal.core.entity.TaxonPlic;
-import org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO;
 import org.inbio.neoportal.service.manager.SpeciesManager;
 import org.inbio.neoportal.web.model.PaginationModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,17 +54,19 @@ public class SpeciesController {
     	String taxonUrl = request.getContextPath() + "/species/" + defaultName;
         
     	// get taxon description
-        TaxonPlic taxonDescription = null;
+        TaxonPlic taxonPlic = null;
         
         defaultName = defaultName.replace('_', ' ');
         
-        taxonDescription = 
-                speciesManager.getTaxonPLicByDefaultName(defaultName);
+//        TaxonPlicSDTO taxonPlicSDTO = 
+//            speciesManager.getTaxonPLicByDefaultName(defaultName);
         
-        model.addAttribute("taxonDescription", taxonDescription);
+        taxonPlic = speciesManager.getTaxonPLicByDefaultName(defaultName);
+        
+        model.addAttribute("taxonDescription", taxonPlic);
         
         // get taxon hierarchy 
-        Taxon taxon = speciesManager.getTaxonByDefaultName(defaultName);
+        Taxon taxon = taxonPlic.getTaxon();
 
         // get some images
         List<ImagesCDTO> images = speciesManager.getImagesByDefaultName(defaultName, 0, 4);
