@@ -34,6 +34,9 @@ import org.inbio.neoportal.web.dto.TaxonDescriptionFullWDTO;
 import org.inbio.neoportal.web.dto.wrapper.XMLTaxonDescriptionWrapper;
 import org.inbio.neoportal.web.view.CSVview;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -219,11 +222,14 @@ public class SpeciesApiController {
               method = RequestMethod.GET,
               produces = {"application/xml", "application/json"})
     @ResponseBody
-    public Wrapper<TaxonDescriptionFullSDTO> getTaxonDescription (
+    public Object getTaxonDescription (
             @PathVariable( value = "scientificName" ) String scientificName) {
       scientificName = scientificName.replace('_', ' ');
-      return new Wrapper<TaxonDescriptionFullSDTO>(
-          speciesManager.taxonDescription(scientificName));
+      Wrapper<TaxonDescriptionFullSDTO> wrapper = 
+          new Wrapper<TaxonDescriptionFullSDTO>(speciesManager.taxonDescription(scientificName));
+      HttpHeaders headers = new HttpHeaders();
+      headers.add("Access-Control-Allow-Origin", "*");
+      return new ResponseEntity<Wrapper<TaxonDescriptionFullSDTO>>(wrapper, headers, HttpStatus.OK);
     }
     
 //    @RequestMapping (
