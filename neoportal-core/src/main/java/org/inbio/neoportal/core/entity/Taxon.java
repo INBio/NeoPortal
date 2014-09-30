@@ -28,15 +28,17 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.OneToMany;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.ContainedIn;
 import org.hibernate.search.annotations.DocumentId;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Fields;
-import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.Store;
 import org.inbio.neoportal.core.common.analyzer.KeywordLowerCaseAnalyzer;
 
@@ -45,6 +47,8 @@ import org.inbio.neoportal.core.common.analyzer.KeywordLowerCaseAnalyzer;
  * @author asanabria
  */
 @Indexed
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Taxon  
     implements java.io.Serializable {
 
@@ -327,6 +331,7 @@ public class Taxon
      private Set<TaxonDescription> taxonDescriptions = new HashSet<TaxonDescription>(0);
 
      @ContainedIn
+     @XmlTransient
      private Set<OccurrenceDwc> occurrences = new HashSet<OccurrenceDwc>(0);
 
 
@@ -337,6 +342,7 @@ public class Taxon
          = new HashSet<TaxonHasAssociatedAttribute>(0);
      
      @ContainedIn
+     @XmlTransient
      private Set<Image> images = new HashSet<Image>(0);
      
     // Constructors
@@ -839,6 +845,7 @@ public class Taxon
     public void setTaxonsForSinonymTaxonId(Set taxonsForSinonymTaxonId) {
         this.taxonsForSinonymTaxonId = taxonsForSinonymTaxonId;
     }
+    @XmlTransient
     public Set getOccurrences() {
         return this.occurrences;
     }
@@ -881,6 +888,7 @@ public class Taxon
         this.commonNames = commonNames;
     }
 
+    @XmlTransient
     public Set<Image> getImages() {
         return images;
     }
