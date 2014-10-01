@@ -71,6 +71,10 @@
 	    		<h4><fmt:message key="taxonDes.distribution"/></h4>
 	    		<div>${taxonDescription.crDistribution}</div>
 	    	</c:if>
+	    	<c:if test="${not empty taxonDescription.crDistribution }">
+	    		<h4><fmt:message key="taxonDes.regionalDistribution"/></h4>
+	    		<div>${taxonDescription.regionalDistribution}</div>
+	    	</c:if>
 	    	
 		</div>
 		
