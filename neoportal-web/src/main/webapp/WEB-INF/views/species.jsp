@@ -59,6 +59,9 @@
 			</c:if>
 			<c:if test="${taxon.taxonomicalRangeId >= 13}">
 			<h2 class="scientific-name">${taxon.defaultName}</h2>
+			<c:if test="${not empty taxon.commonNames}">
+			<p class="common-names">${taxon.commonNames}</p>
+			</c:if>
 			</c:if>
 			
 			<nav><ul>
