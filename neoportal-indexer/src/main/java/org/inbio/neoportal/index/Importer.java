@@ -831,7 +831,7 @@ public class Importer {
             Session session = transactionManager.getSessionFactory().getCurrentSession();
 
             // read csv file
-			reader = new CSVReader(new FileReader(csvFile));
+			reader = new CSVReader(new FileReader(csvFile),',','"','\\');
 			String [] header = reader.readNext();
 			int totalColumns = header.length;    // use for validation of lines
 			
