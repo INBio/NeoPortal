@@ -486,5 +486,11 @@
         <property name="taxonRemarks" type="text">
             <column name="[taxonRemarks]" />
         </property>
+        <property name="taxonCategoryID" type="text">
+            <column name="[taxonCategoryID]" />
+        </property>
+        <property name="oldTaxonID" type="text">
+            <column name="[oldTaxonID]" />
+        </property>
     </class>
 </hibernate-mapping>
