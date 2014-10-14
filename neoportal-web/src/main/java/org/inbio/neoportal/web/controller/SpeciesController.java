@@ -66,7 +66,11 @@ public class SpeciesController {
         model.addAttribute("taxonDescription", taxonPlic);
         
         // get taxon hierarchy 
-        Taxon taxon = taxonPlic.getTaxon();
+        Taxon taxon = null;
+        if(taxonPlic != null)
+          taxon = taxonPlic.getTaxon();
+        else
+          taxon = speciesManager.getTaxonByDefaultName(defaultName);
 
         // get some images
         List<ImagesCDTO> images = speciesManager.getImagesByDefaultName(defaultName, 0, 4);
