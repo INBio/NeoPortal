@@ -256,6 +256,9 @@ public class SpeciesManagerImpl
     	long imageCount;
     	long occurrenceCount;
     	
+    	if(defaultName.isEmpty())
+    	  return null;
+    	
     	List<Taxon> taxonList = taxonDAO.findByDefaultName(defaultName);
     	
     	if (taxonList.size() == 0)
