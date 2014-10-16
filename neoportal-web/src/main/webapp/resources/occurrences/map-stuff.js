@@ -1,9 +1,11 @@
-//Use a proxy for GeoServer requesting
-OpenLayers.ProxyHost = "cgi-bin/proxy.cgi/?url=";
-//Pink tile avoidance
-OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
-//Make OL compute scale according to WMS spec
-OpenLayers.DOTS_PER_INCH = 25.4 / 0.28;
+if (typeof OpenLayers !== "undefined") {
+    //Use a proxy for GeoServer requesting
+    OpenLayers.ProxyHost = "cgi-bin/proxy.cgi/?url=";
+    //Pink tile avoidance
+    OpenLayers.IMAGE_RELOAD_ATTEMPTS = 5;
+    //Make OL compute scale according to WMS spec
+    OpenLayers.DOTS_PER_INCH = 25.4 / 0.28;
+}
 //GLOBAL VARIABLES DECLARATION
 var map;
 //Control to manage pop ups on the map
