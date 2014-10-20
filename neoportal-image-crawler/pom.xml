@@ -48,4 +48,21 @@
 		<version>4.2.5.Final</version>
 	</dependency>
   </dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>appassembler-maven-plugin</artifactId>
+				<configuration>
+					<programs>
+						<program>
+							<mainClass>org.inbio.neoportal.image_crawler.ImageCrawler</mainClass>
+							<name>neoportal-image-crawler</name>
+						</program>
+					</programs>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
