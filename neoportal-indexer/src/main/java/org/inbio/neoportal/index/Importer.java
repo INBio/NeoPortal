@@ -838,7 +838,10 @@ public class Importer {
 			// match header db columns with entity names
 			Map<String, Integer> columnProperties = new HashMap<String, Integer>();
 			for (int i=0; i < header.length; i++) {
-				columnProperties.put(Taxon.customNameToProperty.get(header[i].toLowerCase()), i);
+			  String headerName = header[i];
+			  headerName = headerName.replace("\"", "");
+			  headerName = headerName.trim().toLowerCase();
+				columnProperties.put(Taxon.customNameToProperty.get(headerName), i);
 			}
 			
 			while ((nextLine = reader.readNext()) != null) {
@@ -870,8 +873,11 @@ public class Importer {
 					  Taxon ancestorTaxon = taxonNewDAO.findById(new BigDecimal(ancestorTaxonId));
 					  taxon.setAncestorTaxonId(ancestorTaxon);
 					}
-					else
-					  taxonAccessor.setPropertyValue(indexKey, nextLine[columnProperties.get(indexKey)]);
+					else {
+					  String value = nextLine[columnProperties.get(indexKey)];
+					  value = value.trim();
+					  taxonAccessor.setPropertyValue(indexKey, value);
+					}
 				}
 				
 				if(update)
