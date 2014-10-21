@@ -37,7 +37,7 @@
             <column name="family" />
         </property>
         <property name="genus" type="string">
-            <column name="genus" />
+            <column name="genus" not-null="true" default="" />
         </property>
         <property name="species" type="string">
             <column name="species" />
