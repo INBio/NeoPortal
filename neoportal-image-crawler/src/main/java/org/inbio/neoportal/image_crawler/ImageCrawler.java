@@ -74,5 +74,6 @@ public class ImageCrawler
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
+        System.exit(0);
     }
 }
