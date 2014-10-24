@@ -7,7 +7,7 @@
     <class name="org.inbio.neoportal.core.entity.ImportDwc" table="import_dwc" schema="public">
         <id name="id" type="long">
             <column name="[id]" />
-            <generator class="assigned" />
+            <generator class="identity" />
         </id>
         <property name="type" type="text">
             <column name="[type]" />

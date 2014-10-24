@@ -144,6 +144,12 @@ public class Indexer {
     options
         .addOption(OptionBuilder
             .isRequired(false)
+            .withDescription("Index occurrences from import_dwc table")
+            .withLongOpt("dwc-index")
+            .create());
+    options
+        .addOption(OptionBuilder
+            .isRequired(false)
             .withDescription("Just insert records, do not run indexer")
             .withLongOpt("insert-only")
             .create());
@@ -167,6 +173,8 @@ public class Indexer {
         String csvFile = cmd.getOptionValue("o");
 //        importer.importIndexOccurrences(csvFile);
         importer.importDwcOccurrences(csvFile);
+        importer.indexOccurrences();
+      } else if (cmd.hasOption("dwc-index")) {
         importer.indexOccurrences();
       } else {
         // automatically generate the help statement

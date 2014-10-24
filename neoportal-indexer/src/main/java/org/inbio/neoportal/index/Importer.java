@@ -436,7 +436,7 @@ public class Importer {
                     Logger.getLogger(Importer.class.getName()).log
                         (Level.SEVERE, 
                             "NumberFormatException occurrenceId {0}", 
-                            new Object[]{ importDwc.getId() });
+                            new Object[]{ importDwc.getCatalogNumber() });
                     ex.printStackTrace();
                     
                     System.exit(-1);
