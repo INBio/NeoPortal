@@ -72,18 +72,16 @@
 		<level value="info" />
 	</logger>
 	
-	<logger name="org.hibernate.sql">
+	<logger name="org.hibernate.SQL">
 		<level value="info" />
 	</logger>
 	
 	<logger name="org.hibernate.search">
 		<level value="info" />
-		<appender-ref ref="console" />
 	</logger>
 	
 	<logger name="org.apache.lucene">
 		<level value="info" />
-		<appender-ref ref="console" />
 	</logger>
 	<!-- Root Logger -->
 	<root>

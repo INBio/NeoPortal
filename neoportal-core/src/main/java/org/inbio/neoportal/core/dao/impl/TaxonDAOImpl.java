@@ -21,8 +21,11 @@ package org.inbio.neoportal.core.dao.impl;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,6 +40,7 @@ import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.apache.lucene.util.Version;
 import org.hibernate.Session;
+import org.hibernate.criterion.CriteriaQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
@@ -45,6 +49,7 @@ import org.inbio.neoportal.core.dao.TaxonDAO;
 import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.dto.transformers.TaxonLiteTransformer;
 import org.inbio.neoportal.core.entity.Taxon;
+import org.springframework.orm.jpa.EntityManagerFactoryAccessor;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -316,6 +321,86 @@ public class TaxonDAOImpl
 		
 		return super.search(resultTransformer, fields, searchText, "", offset, quantity);
 	}
+
+  /* (non-Javadoc)
+   * @see org.inbio.neoportal.core.dao.TaxonDAO#getSpeciesByTaxonList(java.util.List)
+   */
+  @Override
+  public List<Taxon> getSpeciesByTaxonList(List<Taxon> taxonList, int offset, int quantity) {
+    
+    String whereClause = getWhereFromTaxonList(taxonList);
+    Session session = getSessionFactory().getCurrentSession();
+    
+    org.hibernate.Query query = session.createQuery(
+      "from Taxon" +
+      " where " + whereClause +
+      " order by default_name");
+
+    query.setFirstResult(offset);
+    query.setMaxResults(quantity);
+    query.setCacheable(true);
+    
+  
+    return query.list();
+  }
+  
+  
+  @Override
+  public Long getSpeciesByTaxonListCount(List<Taxon> taxonList) {
+    String whereClause = getWhereFromTaxonList(taxonList);
+    Session session = getSessionFactory().getCurrentSession();
+    
+    org.hibernate.Query query = session.createQuery(
+      "select count(*) from Taxon" +
+      " where " + whereClause);
+    query.setCacheable(true);
+    
+    return (Long) query.uniqueResult();
+  }
+
+  /**
+   * Create a string containing the where clause of multiple fields in (ids, ids, ...)
+   * @param taxonList
+   * @return
+   */
+  private String getWhereFromTaxonList(List<Taxon> taxonList) {
+ // build the query
+    Map<String, StringBuilder> preQuery = new HashMap<String, StringBuilder>();
+    // map taxonomicalRange to improve performance
+    Map<BigDecimal, String>     taxonomicalRangeMap = new HashMap<BigDecimal, String>();
+    for (Taxon taxon : taxonList) {
+      String column = taxonomicalRangeMap.get(taxon.getTaxonomicalRangeId());
+      if ( column == null ) {
+        column = Taxon.TaxonomicalRange.getById(taxon.getTaxonomicalRangeId().longValue()).toString().toLowerCase();
+        taxonomicalRangeMap.put(taxon.getTaxonomicalRangeId(), column);
+      }
+      StringBuilder value = preQuery.get(column);
+      if (value == null) {
+        value = new StringBuilder();
+      }
+      value.append(taxon.getTaxonId().toString());
+      value.append(",");
+      preQuery.put(column, value);
+    }
+
+    String whereClause = "";
+    // iterate to delete every "," at the end
+    Iterator it = preQuery.entrySet().iterator();
+    while (it.hasNext()) {
+      Map.Entry pairs = (Map.Entry) it.next();
+      StringBuilder value = (StringBuilder)pairs.getValue();
+      value = value.deleteCharAt(value.length() - 1);
+      
+      whereClause += " " + pairs.getKey().toString() + "Id";
+      whereClause += " IN (" + value + ") OR";
+    }
+    
+    whereClause = whereClause.substring(0, whereClause.length() - 3);
+    // select only species
+    whereClause += " AND taxonomicalRangeId >= " + Taxon.TaxonomicalRange.SPECIES.getId().toString();
+    
+    return whereClause;
+  }
 	
 	
 }

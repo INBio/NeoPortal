@@ -8,10 +8,14 @@ import org.apache.lucene.queryParser.ParseException;
 import org.inbio.neoportal.core.dao.GroupNavDAO;
 import org.inbio.neoportal.core.dao.TaxonDAO;
 import org.inbio.neoportal.core.dto.groupnav.GroupNavCDTO;
+import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
 import org.inbio.neoportal.core.dto.taxon.TaxonCDTO;
+import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.entity.GroupNav;
+import org.inbio.neoportal.core.entity.Image;
 import org.inbio.neoportal.core.entity.Taxon;
 import org.inbio.neoportal.service.dto.Response;
+import org.inbio.neoportal.service.dto.species.SpeciesLiteSDTO;
 import org.inbio.neoportal.service.manager.GroupNavManager;
 import org.inbio.neoportal.service.manager.SearchManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,25 +87,36 @@ public class GroupNavManagerImpl
 		//get taxon list
 		List<Taxon> taxonList = getTaxonList(gn);
 		
-		//create query for lucene based on taxon
-		String query = taxonListToQuery(taxonList);
-		if(query.length() > 0){
-			query = "(" + query + ")" + 
-					" AND (taxonomicalRangeId:" + Taxon.TaxonomicalRange.SPECIES.getId() +
-					" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.SUBSPECIES.getId() +
-					" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.VARIETY.getId() +
-					" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.FORM.getId() +
-					" OR taxonomicalRangeId:" + Taxon.TaxonomicalRange.DOMAIN.getId() +
-					")";
-			
-			//retrieve species list...
-			try {
-				response.setTotal(searchManager.taxonSearchCount(query));
-				response.setResult(searchManager.taxonPaginatedSearch(query, offset, quantity));
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		if(taxonList.size() > 0) {
+          // retrieve species list...
+		  List<Taxon> taxonSpeciesList = taxonDAO.getSpeciesByTaxonList(taxonList, offset, quantity);
+		  List<SpeciesLiteSDTO> speciesList = new ArrayList<SpeciesLiteSDTO>();
+		  SpeciesLiteSDTO sp = null;
+		  
+		  for (Taxon taxon: taxonSpeciesList ){
+            
+            sp = new SpeciesLiteSDTO();
+             
+             sp.setCommonName(taxon.getCommonNames());
+             sp.setScientificName(taxon.getDefaultName());
+             
+             if(taxon.getImageUrl() != null){
+                 sp.setImageURL(taxon.getImageUrl());
+             }
+             else if(taxon.getImages().size() > 0){
+               Image image = taxon.getImages().iterator().next();
+                ImagesCDTO imagesCDTO = image.getImageCDTO();  
+                 
+                sp.setImageURL(Image.getSmallUrl(imagesCDTO));
+             }
+             else
+                 //sp.setImageURL("http://pulsatrix.inbio.ac.cr/projects/atta2/chrome/site/header.png");
+                 sp.setImageURL("");
+             
+             speciesList.add(sp);
+        }
+              response.setResult(speciesList);
+              response.setTotal(taxonDAO.getSpeciesByTaxonListCount(taxonList));
 		}
 		else
 		{

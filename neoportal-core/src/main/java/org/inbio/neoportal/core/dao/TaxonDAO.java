@@ -129,4 +129,21 @@ public interface TaxonDAO
     		ResultTransformer resultTransformer
     		);
     
+    /**
+     * Return species associated with any Taxon in taxonList
+     * @param taxonList list of taxon to search in...
+     * @return
+     */
+    public List<Taxon> getSpeciesByTaxonList(
+      List<Taxon> taxonList,
+      int offset, 
+      int quantity);
+    
+    /**
+     * 
+     * @param taxonList
+     * @return
+     */
+    public Long getSpeciesByTaxonListCount(List<Taxon> taxonList);
+    
 }
