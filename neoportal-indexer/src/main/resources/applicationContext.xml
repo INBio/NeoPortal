@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx">
+    <description>Example configuration to get you started.</description>
+
+	<!-- Root Context: defines shared resources visible to all other components -->
+	<context:annotation-config />
+    <context:component-scan base-package="org.inbio.neoportal" />
+    
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+      <value>file:/opt/neoportal/database.properties</value>
+		</property>
+		<property name="searchSystemEnvironment" value="true" />
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+	</bean>
+    
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${jdbc.driverClassName}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+		<property name="user" value="${jdbc.username}"/>
+    	<property name="password" value="${jdbc.password}"/>
+    	
+    	<property name="acquireIncrement"                       value="5"/>
+        <property name="acquireRetryAttempts"                   value="30"/>
+        <property name="acquireRetryDelay"                      value="1000"/>
+        <property name="autoCommitOnClose"                      value="false"/>
+        <property name="debugUnreturnedConnectionStackTraces"   value="true"/>
+        <property name="idleConnectionTestPeriod"               value="100"/>
+        <property name="initialPoolSize"                        value="5"/>
+        <property name="maxConnectionAge"                       value="1000"/>
+        <property name="maxIdleTime"                            value="200"/>
+        <property name="maxIdleTimeExcessConnections"           value="3600"/>
+        <property name="maxPoolSize"                            value="30"/>
+        <property name="minPoolSize"                            value="5"/>
+        <property name="preferredTestQuery"                     value="select 1"/>
+        <property name="testConnectionOnCheckin"                value="false"/>
+        <property name="unreturnedConnectionTimeout"            value="0"/>
+        <property name="maxStatements"                          value="50"/>
+        <property name="maxStatementsPerConnection"             value="10"/>
+    </bean>
+
+    <!-- spring / hibernate configuration	-->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="mappingLocations">
+        	<list>
+        		<value>classpath:META-INF/hibernate/*.hbm.xml</value>
+        	</list>
+        </property>
+        <property name="hibernateProperties">
+        	<props>
+        	    <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+				
+				<prop key="hibernate.order_inserts">true</prop>
+				<prop key="hibernate.order_updates">true</prop>
+				<prop key="hibernate.jdbc.batch_size">30</prop>
+				<prop key="hibernate.id.new_generator_mappings">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			    <!-- Hibernate search configuration -->
+			    <prop key="hibernate.search.default.directory_provider">filesystem</prop>
+          <prop key="hibernate.search.default.indexBase">${lucene_index}</prop>
+			    <prop key="hibernate.search.default.exclusive_index_use">true</prop>
+			    <prop key="hibernate.search.lucene_version">LUCENE_36</prop>
+			    <prop key="hibernate.cache.use_second_level_cache">false</prop>
+        	</props>
+        </property>
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
+    <tx:annotation-driven transaction-manager="transactionManager" />
+    <!-- end spring / hibernate conf   -->
+    
+    <bean id="log4jInitializer" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">  
+       <property name="staticMethod" value="org.springframework.util.Log4jConfigurer.initLogging" />  
+       <property name="arguments">  
+          <list>  
+             <value>classpath:log4j.properties</value>  
+          </list>  
+       </property>  
+    </bean>  
+
+</beans>

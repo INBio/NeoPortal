@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<!DOCTYPE hibernate-configuration PUBLIC 
+    "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
   <session-factory>
     <!-- Hibernate specific configuration -->
-    <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-    <property name="hibernate.hbm2ddl.auto">update</property>
-    <!-- Hibernate search configuration -->
-    <property name="hibernate.search.default.directory_provider">filesystem</property>
-	<property name="hibernate.search.default.indexBase">/var/LuceneIndex/</property>
-	<property name="hibernate.search.default.exclusive_index_use">false</property>
+
+    <!--  Disable auto indexing  -->
+<!--     <property name="hibernate.search.indexing_strategy">manual</property> -->
     <!-- Mappings -->
     <mapping resource="META-INF/hibernate/TaxonHasAssociatedAttribute.hbm.xml"/>
     <mapping resource="META-INF/hibernate/ReferenceElement.hbm.xml"/>
@@ -17,8 +16,8 @@
     <mapping resource="META-INF/hibernate/DataProvider.hbm.xml"/>
     <mapping resource="META-INF/hibernate/TaxonHasReferenceElement.hbm.xml"/>
     <mapping resource="META-INF/hibernate/OccurrenceCuratorialExtension.hbm.xml"/>
-    <!-- Deprecated   -->
-    <!--    <mapping resource="META-INF/hibernate/OccurrenceGeospatialExtension.hbm.xml"/>-->
+<!--  Deprecated  -->
+<!--    <mapping resource="META-INF/hibernate/OccurrenceGeospatialExtension.hbm.xml"/>-->
     <mapping resource="META-INF/hibernate/TaxonDescription.hbm.xml"/>
     <mapping resource="META-INF/hibernate/AssociatedAttribute.hbm.xml"/>
     <mapping resource="META-INF/hibernate/Service.hbm.xml"/>
@@ -38,6 +37,5 @@
     <mapping resource="META-INF/hibernate/GroupNav.hbm.xml"/>
     <mapping resource="META-INF/hibernate/SearchFilterValue.hbm.xml"/>
     <mapping resource="META-INF/hibernate/OccurrenceDwc.hbm.xml"/>
-    <mapping resource="META-INF/hibernate/TaxonPlic.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>
