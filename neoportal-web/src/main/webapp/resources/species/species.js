@@ -17,7 +17,7 @@ $(document).ready(function(){
 	        // el código al darle click a la vista 'Mapa'
 	        if(map)
 	            map.updateSize();
-	    });
+	    }, "xml" );
     }
 
     if($("div.grid-layout").length > 0) {

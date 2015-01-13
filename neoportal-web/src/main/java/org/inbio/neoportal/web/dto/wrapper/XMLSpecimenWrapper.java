@@ -46,7 +46,7 @@ public class XMLSpecimenWrapper {
 	@XmlElement(name="element")
 	private List<OccurrenceLiteWDTO> elements = new ArrayList<OccurrenceLiteWDTO>();
 
-    @XmlElementWrapper(name="response-elements", nillable=true)
+    //@XmlElementWrapper(name="response-elements", nillable=true)
 	@XmlElement(name="count")
 	private Long count;
 	/**

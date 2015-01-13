@@ -23,7 +23,8 @@ var clusterMaxLenght;
 function initMap2(divId){
     map = new OpenLayers.Map( {
         div: divId,
-        projection: new OpenLayers.Projection("EPSG:900913")
+        projection: new OpenLayers.Projection("EPSG:900913"),
+        theme:  "/neoportal-web/resources/openlayers/style.css"
     });
     
     var googleLayer = new OpenLayers.Layer.Google('Google Hybrid', {
