@@ -1,13 +1,14 @@
 package org.inbio.neoportal.core.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  *
  * @author avargas
  */
 public class ImportDwc implements Serializable {
-    
+
 	//Record-level terms
     private String type;
     private String modified;
@@ -177,7 +178,7 @@ public class ImportDwc implements Serializable {
     private String taxonCategoryID;
     private String oldTaxonID;
 
-    private Long id;
+    private BigDecimal id;
 
     public ImportDwc() {
     }
@@ -232,7 +233,7 @@ public class ImportDwc implements Serializable {
         String specificEpithet, String infraspecificEpithet, String taxonRank,
         String verbatimTaxonRank, String scientificNameAuthorship, String vernacularName,
         String nomenclaturalCode, String taxonomicStatus, String nomenclaturalStatus,
-        String taxonRemarks, String taxonCategoryID, String oldTaxonID, Long id) {
+        String taxonRemarks, String taxonCategoryID, String oldTaxonID, BigDecimal id) {
       super();
       this.type = type;
       this.modified = modified;
@@ -3270,7 +3271,7 @@ public class ImportDwc implements Serializable {
 	/**
 	 * @return the id
 	 */
-	public Long getId() {
+	public BigDecimal getId() {
 		return id;
 	}
 
@@ -3279,7 +3280,7 @@ public class ImportDwc implements Serializable {
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(Long id) {
+	public void setId(BigDecimal id) {
 		this.id = id;
 	}
 
@@ -3345,5 +3346,5 @@ public class ImportDwc implements Serializable {
     public String toString() {
         return "org.inbio.neoportal.core.entity.ImportDwc[ id=" + id + " ]";
     }
-    
+
 }

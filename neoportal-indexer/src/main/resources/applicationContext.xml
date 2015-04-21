@@ -60,12 +60,16 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 				<prop key="hibernate.jdbc.batch_size">30</prop>
 				<prop key="hibernate.id.new_generator_mappings">true</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
+<!-- 				<prop key="hibernate.show_sql">true</prop> -->
+<!-- 				<prop key="hibernate.format_sql">true</prop> -->
+				
 			    <!-- Hibernate search configuration -->
 			    <prop key="hibernate.search.default.directory_provider">filesystem</prop>
           <prop key="hibernate.search.default.indexBase">${lucene_index}</prop>
 			    <prop key="hibernate.search.default.exclusive_index_use">true</prop>
 			    <prop key="hibernate.search.lucene_version">LUCENE_36</prop>
 			    <prop key="hibernate.cache.use_second_level_cache">false</prop>
+			    <prop key="hibernate.search.indexing_strategy">manual</prop>
         	</props>
         </property>
     </bean>
@@ -82,7 +86,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        <property name="staticMethod" value="org.springframework.util.Log4jConfigurer.initLogging" />  
        <property name="arguments">  
           <list>  
-             <value>classpath:log4j.properties</value>  
+             <value>/opt/neoportal/indexer-log4j.properties</value>  
           </list>  
        </property>  
     </bean>  

@@ -37,13 +37,12 @@ import java.util.logging.Logger;
 
 import org.hibernate.CacheMode;
 import org.hibernate.FlushMode;
+import org.hibernate.NonUniqueResultException;
 import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.search.FullTextSession;
-import org.hibernate.search.Search;
+import org.hibernate.stat.SessionStatistics;
 import org.inbio.neoportal.core.dao.DataProviderDAO;
 import org.inbio.neoportal.core.dao.GenericBaseDAO;
 import org.inbio.neoportal.core.dao.ImportDwcDAO;
@@ -82,6 +81,8 @@ public class Importer {
     private static final int BATCH_SIZE = 30;
 
 	static int maxResults = 1000;
+	
+	private org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(Importer.class.getName());
     
     @Autowired
     private HibernateTransactionManager transactionManager;
@@ -143,8 +144,6 @@ public class Importer {
     @Transactional
     public void indexOccurrences(){
       
-      org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(Importer.class.getName());
-      
       Session session = sessionFactory.getCurrentSession();
 //      FullTextSession fullTextSession = Search.getFullTextSession(session);
 
@@ -182,21 +181,18 @@ public class Importer {
         while(scroll.next()){
         	batch++;
         	rowsCounter++;
-        	    
+
             ImportDwc importDwc = (ImportDwc) scroll.get(0);
             logger.trace("ImportDwc after scroll.get");
             
-                try{
+              try{
                 
                 //avoid repeated occurrenceId
-                OccurrenceDwc occurrence = occurrenceDAO.findByCatalogNumber(
+                OccurrenceDwc occurrence = occurrenceDAO.findByCatalogNumberHql(
                         importDwc.getCatalogNumber().replace("\"", ""));
                 logger.trace("OccurrenceDwc after findByCatalogNumber " + importDwc.getCatalogNumber().replace("\"", ""));
                 
                 if(occurrence != null){
-//                    Logger.getLogger(Importer.class.getName()).log
-//                        (Level.INFO, "OccurrenceId {0} already exist!", 
-//                                new BigDecimal(importDwc.getCatalogNumber().replace("\"", "")));
             
                     update = true;
 //                    continue;
@@ -205,8 +201,6 @@ public class Importer {
                 	update = false;
                     occurrence = new OccurrenceDwc();
                 }
-                
-//                OccurrenceDwc occurrence = new OccurrenceDwc();
                 
                Taxon taxon = null;
                //check if taxonId is empty (unidentify specimens)
@@ -247,10 +241,6 @@ public class Importer {
              //find or create location
                Location location = locationDAO.findById(new BigDecimal(importDwc.getLocationId()));
                logger.trace("Location after findById");
-//            		   (Location)
-//                       genericBaseDAO.findById(
-//                           Location.class, 
-//                           new BigDecimal(importDwc.getLocationId()));
 
                if(location == null){
                    location = new Location(
@@ -283,8 +273,10 @@ public class Importer {
                    location.setVerbatimLongitude(importDwc.getVerbatimLongitude());
                    location.setVerbatimCoordinateSystem(importDwc.getVerbatimCoordinateSystem());
                    location.setVerbatimSRS(importDwc.getVerbatimSRS());
-                   location.setDecimalLatitude(Double.valueOf(importDwc.getDecimalLatitude()));
-                   location.setDecimalLongitude(Double.valueOf(importDwc.getDecimalLongitude()));
+                   if (!importDwc.getDecimalLatitude().isEmpty())
+                     location.setDecimalLatitude(Double.valueOf(importDwc.getDecimalLatitude()));
+                   if (!importDwc.getDecimalLongitude().isEmpty())
+                     location.setDecimalLongitude(Double.valueOf(importDwc.getDecimalLongitude()));
                    location.setGeodeticDatum(importDwc.getGeodeticDatum());
                    location.setCoordinateUncertaintyInMeters(importDwc.getCoordinateUncertaintyInMeters());
                    location.setCoordinatePrecision(importDwc.getCoordinatePrecision());
@@ -430,40 +422,59 @@ public class Importer {
                if(!update)
                  occurrenceDAO.create(occurrence);
                else
-            	   occurrenceDAO.update(occurrence);
+            	 occurrenceDAO.update(occurrence);
+               
+               
+               // clear objects 
+               occurrence.setImages(null);
+               occurrence = null;
+               taxon = null;
+               location = null;
             	   
-                }catch(NumberFormatException ex){
-                    Logger.getLogger(Importer.class.getName()).log
-                        (Level.SEVERE, 
-                            "NumberFormatException occurrenceId {0}", 
-                            new Object[]{ importDwc.getCatalogNumber() });
+                } catch (NonUniqueResultException ex) {
+                  logger.warn("NonUniqueResultException occurrenceId " + importDwc.getCatalogNumber());
+                  
+                }
+                catch(NumberFormatException ex){
+                  logger.error("NumberFormatException occurrenceId " + importDwc.getCatalogNumber());
                     ex.printStackTrace();
                     
                     System.exit(-1);
                 } catch (ParseException e) {
-//					Logger.getLogger(Importer.class.getName()).log
-//                        (Level.SEVERE, 
-//                            "ParseException occurrenceId {0} {1}", 
-//                            new Object[]{importDwc.getId(),e.});
                 	e.printStackTrace();
 				}
 //            } // end for, 1000 importDwc rows
             
             session.evict(importDwc);
-                
-            if(batch == BATCH_SIZE){
+            
+            if(batch >= BATCH_SIZE){
             	batch = 0;
+            	
+            	SessionStatistics statistics = session.getStatistics();
+            	logger.trace("Entities before flush: " + String.valueOf(statistics.getEntityCount()));
+            	
 	            session.flush();
+	            
+	            logger.trace("Entities before clear: " + String.valueOf(statistics.getEntityCount()));
+              
 //	            fullTextSession.flushToIndexes();
 	            session.clear();
+	            
+	            logger.trace("Entities after clear: " + String.valueOf(statistics.getEntityCount()));
+	            
+	            
 //	            System.exit(1);
             }
 	    
             if(rowsCounter % maxResults == 0){
 //              fullTextSession.flushToIndexes();
-            	Logger.getLogger(Importer.class.getName()).log
-                (Level.INFO, 
-                		"Occurrences added " + rowsCounter);
+            	logger.info("Occurrences added " + rowsCounter);
+            	
+            	SessionStatistics statistics = session.getStatistics();
+                logger.debug("Entities: " + String.valueOf(statistics.getEntityCount()));
+
+                logger.debug("Collections: " + String.valueOf(statistics.getCollectionCount()));
+                
             }
             
             // ******* for debug only ***********
@@ -486,9 +497,7 @@ public class Importer {
         session.flush();
         session.clear();
         
-        Logger.getLogger(Importer.class.getName()).log
-        (Level.INFO, 
-                "Total occurrences processed " + rowsCounter);
+        logger.info("Total occurrences processed " + rowsCounter);
 //        session.getTransaction().commit();
 //        session.close();
     }
@@ -499,7 +508,6 @@ public class Importer {
      */
     @Transactional
     public void importDwcOccurrences(String csvFile) {
-      org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(Importer.class.getName());
       // clear and load new records to import_dwc table
       BufferedReader bReader;
       try {

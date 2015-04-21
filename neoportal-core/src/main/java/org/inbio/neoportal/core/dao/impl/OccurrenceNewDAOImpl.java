@@ -57,4 +57,17 @@ public class OccurrenceNewDAOImpl
       
       return (OccurrenceDwc)hQuery.uniqueResult();
   }
+
+  /* (non-Javadoc)
+   * @see org.inbio.neoportal.core.dao.OccurrenceNewDAO#findByCatalogNumberHql(java.lang.String)
+   */
+  @Override
+  public OccurrenceDwc findByCatalogNumberHql(String catalogNumber) {
+    Session session = getSessionFactory().getCurrentSession();
+    org.hibernate.Query query = session.createQuery("from OccurrenceDwc " +
+            "where catalogNumber = :catalogNumber ");
+    query.setParameter("catalogNumber", catalogNumber);
+    
+    return (OccurrenceDwc) query.uniqueResult();
+  }
 }

@@ -115,6 +115,7 @@
 								<name>neoportal-indexer</name>
 							</program>
 						</programs>
+					<extraJvmArguments>-Dlog4j.configuration=file:/opt/neoportal/indexer-log4j.properties</extraJvmArguments>
 					</configuration>
 				</plugin>
 			</plugins>

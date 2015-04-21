@@ -5,9 +5,11 @@
 <!-- Generated 26/04/2012 11:26:47 AM by Hibernate Tools 3.2.1.GA -->
 <hibernate-mapping>
     <class name="org.inbio.neoportal.core.entity.ImportDwc" table="import_dwc" schema="public">
-        <id name="id" type="long">
-            <column name="[id]" />
-            <generator class="identity" />
+        <id name="id" type="big_decimal" >
+            <column name="[id]" default="nextval('import_dwc_id_seq')"/>
+            <generator class="sequence" >
+                <param name="sequence">import_dwc_id_seq</param>
+            </generator>
         </id>
         <property name="type" type="text">
             <column name="[type]" />

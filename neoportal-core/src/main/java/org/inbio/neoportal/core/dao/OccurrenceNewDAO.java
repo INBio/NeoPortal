@@ -30,4 +30,6 @@ public interface OccurrenceNewDAO
 	extends GenericDAO<OccurrenceDwc, BigDecimal> {
 
   public OccurrenceDwc findByCatalogNumber(final String catalogNumber);
+  
+  public OccurrenceDwc findByCatalogNumberHql(final String catalogNumber);
 }
