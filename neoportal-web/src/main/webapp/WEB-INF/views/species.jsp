@@ -3,8 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib prefix="n" tagdir="/WEB-INF/tags" %>
 <n:base>
-	<jsp:attribute name="head">
-	            
+	<jsp:attribute name="head">      
         <!-- Open Layers and Google Maps API-->
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.8&sensor=false"></script>
         <link rel="stylesheet" type="text/css" href="<c:url value="/resources/openlayers/style.css"/>">
@@ -48,8 +47,9 @@
         <script type="text/javascript" src="<c:url value="/resources/species/home.js" />"></script>
         
         <script type="text/javascript" src="<c:url value="/resources/species/species.js" />"></script>
-                	
+        <title>INBio - ${taxon.defaultName}</title>
 	</jsp:attribute>
+	      
 	<jsp:body>
         
         <div class="data_wrapper species_page">
