@@ -15,7 +15,6 @@
 		    <li><a href="#usesManagement"><fmt:message key="taxonDes.usesManagement"/></a></li>
 		    <li><a href="#description"><fmt:message key="taxonDes.description"/></a></li>
 		    <li><a href="#information"><fmt:message key="taxonDes.information"/></a></li>
-		    <li><a href="#externalSource"><fmt:message key="taxonDes.externalSource"/></a></li>
 		</ul>
 	</nav>
 	</c:if>
@@ -56,6 +55,18 @@
 	    		<div>${taxonDescription.lifeCycleUnstructure}</div>
 	    	</c:if>
 	    	
+	    	<c:if test="${not empty taxonDescription.phenologyUnstructure
+						|| not empty taxonDescription.lifeFormUnstructure}">
+				<!-- 	   Fenoligia -->	
+			    <h3><fmt:message key="taxonDes.naturalHistory"/></h3>
+	    		<h4><fmt:message key="taxonDes.phenologyUnstructure"/></h4>
+	    		<div>${taxonDescription.phenologyUnstructure}</div>
+	    		
+	    		<!-- 	   Habito -->	
+	    		<h4><fmt:message key="taxonDes.lifeFormUnstructure"/></h4>
+	    		<div>${taxonDescription.lifeFormUnstructure}</div>
+	    		
+	    	</c:if>    	
 		</div>
 		
 		<div id="habitatDistribution">
@@ -74,8 +85,18 @@
 	    	<c:if test="${not empty taxonDescription.crDistribution }">
 	    		<h4><fmt:message key="taxonDes.regionalDistribution"/></h4>
 	    		<div>${taxonDescription.regionalDistribution}</div>
+	    	</c:if>	    	
+	    	<!-- 	    info de del area de conservacion -->			
+			<c:if test="${not empty taxonDescription.conservationareadistribution}">
+	    		<h4><fmt:message key="taxonDes.conservationAreaDistribution"/></h4>
+	    		<div>${taxonDescription.conservationareadistribution}</div>
 	    	</c:if>
-	    	
+
+ 	 		    	<!-- 	  url del video-->			
+			<c:if test="${not empty taxonDescription.urlvideo}">
+				<h4><fmt:message key="taxonDes.Video"/></h4>
+	    		<h4><a href= "${taxonDescription.urlvideo}">${taxonDescription.urlvideo}</a></h4>
+	    	</c:if>	    	
 		</div>
 		
 		<div id="usesManagement">
@@ -120,8 +141,22 @@
 		</div>
 		
 		<c:if test="${not empty taxon }">
-		<n:taxonomy taxon="${taxon}"></n:taxonomy>
+		<n:taxonomy taxon="${taxon}"></n:taxonomy>		
+		<!-- 	    info de publicacion -->			
+			<c:if test="${not empty taxonDescription.namePublishedInYear}">
+	    		<fmt:message key="taxonDes.namePublishedInYear"/>: ${taxonDescription.namePublishedInYear}
+	    	</c:if>
+	    	<!-- 	    sinonimos -->			
+			<c:if test="${not empty taxonDescription.synonyms}">
+	    		<fmt:message key="taxonDes.synonyms"/>: ${taxonDescription.synonyms}
+	    	</c:if>
+	    	<!-- 	   tipo de localidad -->			
+			<c:if test="${not empty taxonDescription.typeLocality}">
+	    		<fmt:message key="taxonDes.typeLocality"/>: ${taxonDescription.typeLocality} <br></br>
+	    	</c:if>
 		</c:if>
+		
+		
 		
 		<c:if test="${not empty taxonDescription}">
 		<div id="information">
@@ -156,17 +191,14 @@
 	   			<strong><fmt:message key="taxonDes.dateCreated"/></strong>: ${taxonDescription.creationdate}
 			</p>
 	    	</c:if>
+	    		<!-- 	  Fecha de publicacion -->			
+			<c:if test="${not empty taxonDescription.dateIssued}">
+				<p>	    		
+	    			<strong><fmt:message key="taxonDes.dateIssued"/></strong>: ${taxonDescription.dateIssued}
+	    		</p>
+	    	</c:if>
 		</div>
 		</c:if>
-		
-<!-- 		<div id="externalSource"> -->
-<%-- 		    TODO: get external sources from database --%>
-<%-- 		    <h3><fmt:message key="taxonDes.externalSource"/></h3> --%>
-<%-- 		    <p><a href="http://www.biodiversitylibrary.org/name/${scientificName}">BHL</a></p> --%>
-<%-- 		    <p><a href="http://ara.inbio.ac.cr/SSTN-IABIN/search/${scientificName}">IABIN</a></p> --%>
-<%-- 		    <p><a href="http://cro.ots.ac.cr/rdmcnfs/datasets/exsrch.phtml?words=${scientificName}&ds=binabitrop">OET Binabitrop</a></p> --%>
-<%-- 		    <p><a href="http://species.wikimedia.org/wiki/${scientificName}">Wikispecies</a></p> --%>
-<%-- 		    <p><a href="http://www.boldsystems.org/views/taxbrowser.php?taxon=${scientificName}">Barcode of life data systems</a></p> --%>
-<!-- 		</div> -->
+
 	</div> <!-- close #taxonDescription -->
 </div>
