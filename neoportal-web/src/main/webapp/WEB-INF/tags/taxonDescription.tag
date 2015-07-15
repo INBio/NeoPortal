@@ -199,6 +199,5 @@
 	    	</c:if>
 		</div>
 		</c:if>
-
 	</div> <!-- close #taxonDescription -->
 </div>
