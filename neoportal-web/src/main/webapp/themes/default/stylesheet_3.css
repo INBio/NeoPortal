@@ -728,7 +728,7 @@ div#map {
     height: 420px;
 }
 
-a.menu_selection:link
+a.menu_selection
 {
 	text-decoration: underline; 
 	color: #0404B4;
