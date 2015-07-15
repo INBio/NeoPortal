@@ -10,7 +10,7 @@
 <html>
 	<head>
         <meta charset="utf-8">
-        <title><fmt:message key="app_name"/></title>
+        
 
         <!-- neoportal js and css -->
         <link rel="stylesheet" type="text/css" href="<c:out value="${pageContext.request.contextPath}"/><spring:theme code="styleSheet_3"/>" />
@@ -23,6 +23,8 @@
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.inbPaginate-0.1.js" />" ></script>
 		
 		<jsp:invoke fragment="head"/>
+		
+		<title><fmt:message key="app_name"/></title>
 
         <script>
           (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
