@@ -25,6 +25,11 @@
 		        <fmt:message key="footer_text"/>
 		        <a href="http://www.gnu.org/licenses/gpl.txt"><fmt:message key="license_text"/></a> - <fmt:message key="software_version"/>
 	        </p>
+	        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/">
+	        <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/3.0/us/88x31.png" />
+	        </a>
+	        <br/><fmt:message key="licence_CreativeCommons1"/> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/3.0/us/"><fmt:message key="licence_CreativeCommons2"/></a>.
+	        
 	        <p class="light"><fmt:message key="copyrights"></fmt:message>
 	        <div class="logos">
 	        	<img alt="" src="<c:out value="${pageContext.request.contextPath}"/><spring:theme code='images_path'/>logos/banco_mundial.png">
