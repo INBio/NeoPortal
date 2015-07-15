@@ -9,6 +9,7 @@
     <property name="hibernate.search.default.directory_provider">filesystem</property>
 	<property name="hibernate.search.default.indexBase">/var/LuceneIndex/</property>
 	<property name="hibernate.search.default.exclusive_index_use">false</property>
+	<property name="hibernate.search.indexing_strategy">manual</property>
     <!-- Mappings -->
     <mapping resource="META-INF/hibernate/TaxonHasAssociatedAttribute.hbm.xml"/>
     <mapping resource="META-INF/hibernate/ReferenceElement.hbm.xml"/>
