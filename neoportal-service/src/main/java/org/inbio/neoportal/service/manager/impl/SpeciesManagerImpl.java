@@ -4,28 +4,53 @@
  */
 package org.inbio.neoportal.service.manager.impl;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
+
+
+
+
+
+
+
+import org.codehaus.jackson.impl.JsonReadContext;
+import org.hibernate.service.config.spi.ConfigurationService.Converter;
 import org.inbio.neoportal.core.dao.ImageDAO;
 import org.inbio.neoportal.core.dao.OccurrenceDAO;
 import org.inbio.neoportal.core.dao.TaxonDAO;
 import org.inbio.neoportal.core.dao.TaxonDescriptionDAO;
+import org.inbio.neoportal.core.dao.TaxonPlicBooksDAO;
 import org.inbio.neoportal.core.dao.TaxonPlicDAO;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
 import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
 import org.inbio.neoportal.core.dto.taxondescription.TaxonDescriptionFullCDTO;
 import org.inbio.neoportal.core.dto.transformers.ImagesTransformer;
 import org.inbio.neoportal.core.dto.transformers.OccurrenceDWCTransformer;
+import org.inbio.neoportal.core.entity.Book;
 import org.inbio.neoportal.core.entity.Image;
 import org.inbio.neoportal.core.entity.Taxon;
 import org.inbio.neoportal.core.entity.TaxonPlic;
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO;
 import org.inbio.neoportal.service.dto.species.TaxonFeatureDTO;
 import org.inbio.neoportal.service.manager.SpeciesManager;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 /**
  *
@@ -50,6 +75,9 @@ public class SpeciesManagerImpl
     
     @Autowired
     private TaxonPlicDAO taxonPlicDAO;
+    
+    @Autowired
+    private TaxonPlicBooksDAO taxonPlicBooksDAO;
     
     @Override
     public List<TaxonDescriptionFullSDTO> taxonDescriptionByProvider
@@ -115,6 +143,7 @@ public class SpeciesManagerImpl
             td.setUnstructuredDocumentation(tfdto.getUnstructuredDocumentation());
             td.setUnstructuredNaturalHistory(tfdto.getUnstructuredNaturalHistory());
             td.setUsername(tfdto.getUsername());
+
             
             result.add(td);
         }
@@ -134,6 +163,9 @@ public class SpeciesManagerImpl
             TaxonDescriptionFullSDTO td = new TaxonDescriptionFullSDTO();
             
             td.setAnnualCycle(tfdto.getAnnualCycle());
+            
+           
+            
             td.setAuthorYearOfScientificName(tfdto.getAuthorYearOfScientificName());
             td.setBehavior(tfdto.getBehavior());
             td.setBriefDescription(tfdto.getBriefDescription());
@@ -184,6 +216,7 @@ public class SpeciesManagerImpl
             td.setUnstructuredDocumentation(tfdto.getUnstructuredDocumentation());
             td.setUnstructuredNaturalHistory(tfdto.getUnstructuredNaturalHistory());
             td.setUsername(tfdto.getUsername());
+
             
             result.add(td);
         }
@@ -345,7 +378,8 @@ public class SpeciesManagerImpl
 	}
 
 	@Override
-	public Taxon getTaxonByDefaultName(String defaultName) {
+	public Taxon getTaxonByDefaultName(String defaultName) 
+	{
 		// field used for exact match query
 		String[] fields = {"defaultName_keyword"};
 		
@@ -353,7 +387,10 @@ public class SpeciesManagerImpl
 		Taxon taxon;
     	
     	if (taxonList.size() == 0)
+    	{
     		return null;
+    	}
+    		
     	
     	taxon = taxonList.get(0);
     	
@@ -395,12 +432,12 @@ public class SpeciesManagerImpl
 		
 		return luceneQuery;
 	}
-
+	
   /* (non-Javadoc)
    * @see org.inbio.neoportal.service.manager.SpeciesManager#getTaxonPLicByDefaultName(java.lang.String)
    */
   @Override
-  public TaxonPlic getTaxonPLicByDefaultName(String defaultName) {
+  public TaxonPlic getTaxonPLicByDefaultName(String defaultName,String language) {
  // field used for exact match query
     String[] fields = {"defaultName_keyword"};
     
@@ -408,18 +445,102 @@ public class SpeciesManagerImpl
     Taxon taxon;
     
     if (taxonList.size() == 0)
+    {
         return null;
-    
-    taxon = taxonList.get(0);
+    }
+    else
+    {
+    	taxon = taxonList.get(0);
+    }
     
     List<TaxonPlic> taxonPlicList = taxonPlicDAO.getByTaxonId(taxon.getTaxonId());
-    if (taxonPlicList.size() == 0)
-      return null;
-    else {
-      TaxonPlic taxonPlic = taxonPlicList.get(0);
-
-      return taxonPlic;
+    
+    if(taxonPlicList.size() == 0 )
+    {
+    	return null;
+    }
+    else if (taxonPlicList.size() > 0)
+    {
+    	TaxonPlic list;
+    	for(int i = 0; i <= taxonPlicList.size(); i++)
+    	{
+    		list = taxonPlicList.get(i);
+    		
+    		if(list.getLanguage().toString().equals(language) == true)
+    		{
+    			return list;
+    		}
+    	}
+	    return null;
+    }
+    else 
+    {
+       TaxonPlic taxonPlic = taxonPlicList.get(0);
+       return taxonPlic;
     }
   }
-	
+  /**
+   * 
+   * @param defaultName
+   * @return 
+   */
+  public List<TaxonPlic> getTaxonListLanguaje(String defaultName)
+  {
+	  List<Taxon> taxonList = taxonDAO.findByDefaultName(defaultName);	    
+	  Taxon taxon;
+	  
+	  if (taxonList.size() == 0)
+	  {
+		  return null;
+	  }
+	  else
+	  {
+		  taxon = taxonList.get(0);
+	  }
+	        
+	  List<TaxonPlic> taxonPlicList = taxonPlicDAO.getByTaxonId(taxon.getTaxonId());
+	  
+	  return taxonPlicList;  
+  }	
+  
+  
+
+  public List<Book> getBook(String defaultName,String language)
+  {
+	 
+  // field used for exact match query
+     String[] fields = {"defaultName_keyword"};
+     
+     List<Taxon> taxonList = taxonDAO.findByDefaultName(defaultName);
+     Taxon taxon;
+     
+     if (taxonList.size() == 0)
+         return null;
+     
+     taxon = taxonList.get(0);
+     
+     List<TaxonPlic> taxonPlicList = taxonPlicDAO.getByTaxonId(taxon.getTaxonId());
+     
+     if (taxonPlicList.size() > 0)
+     {
+     	TaxonPlic list;
+     	for(int i = 0; i <= taxonPlicList.size(); i++)
+     	{
+     		list = taxonPlicList.get(i);
+     		
+     		if(list.getLanguage().toString().equals(language) == true)
+     		{  			
+     			List<Book> booksList = taxonPlicBooksDAO.getByTaxonPlicId(taxonPlicList.get(i).getTaxonRecordId());
+     			return booksList;
+     		}	
+     	}
+ 	    return null;
+     }
+     else 
+     {
+        TaxonPlic taxonPlic = taxonPlicList.get(0);
+		List<Book> booksList = taxonPlicBooksDAO.getByTaxonPlicId(taxonPlicList.get(0).getTaxonRecordId());
+		return booksList;     
+     }  
+  }	  
 }

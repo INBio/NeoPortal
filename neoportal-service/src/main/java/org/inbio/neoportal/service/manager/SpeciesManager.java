@@ -18,15 +18,21 @@
  */
 package org.inbio.neoportal.service.manager;
 
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.lucene.queryParser.ParseException;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
 import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
+import org.inbio.neoportal.core.entity.Book;
 import org.inbio.neoportal.core.entity.Taxon;
 import org.inbio.neoportal.core.entity.TaxonPlic;
 import org.inbio.neoportal.service.dto.species.TaxonDescriptionFullSDTO;
 import org.inbio.neoportal.service.dto.species.TaxonFeatureDTO;
+import org.json.JSONException;
+
 
 /**
  *
@@ -40,6 +46,10 @@ public interface SpeciesManager {
     public List<TaxonDescriptionFullSDTO> taxonDescription(String scientificName);
     
     public List<ImagesCDTO> getImagesByDefaultName(String defaultName, int offset, int quantity);
+    
+    public List<TaxonPlic> getTaxonListLanguaje(String defaultName);
+    
+    public List<Book> getBook(String defaultName,String language);
     
     public Long countImagesByDefaultName(String defaultName);
     
@@ -78,6 +88,9 @@ public interface SpeciesManager {
      * @param defaultName
      * @return
      */
-    public TaxonPlic getTaxonPLicByDefaultName(String defaultName);
+    public TaxonPlic getTaxonPLicByDefaultName(String defaultName,String language);
+
+	
     
+
 }
