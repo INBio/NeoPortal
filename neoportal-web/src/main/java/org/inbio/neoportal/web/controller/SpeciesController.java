@@ -18,18 +18,26 @@
  */
 package org.inbio.neoportal.web.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.IOUtils;
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
 import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
+import org.inbio.neoportal.core.entity.Book;
 import org.inbio.neoportal.core.entity.Taxon;
 import org.inbio.neoportal.core.entity.TaxonPlic;
 import org.inbio.neoportal.service.manager.SpeciesManager;
 import org.inbio.neoportal.web.model.PaginationModel;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,33 +52,39 @@ public class SpeciesController {
     private SpeciesManager speciesManager;
     
     @RequestMapping (
-            value = "/{defaultName}",
-            method = RequestMethod.GET)
-    public String getTaxonDescription (
+    		value = {"/{defaultName}/{language}"}, 
+            method = RequestMethod.GET)   
+    public String getTaxonDescriptionLanguage (
             Model model,
-            @PathVariable(value = "defaultName") String defaultName,
-	        HttpServletRequest request) {
+            @PathVariable(value = "defaultName") String defaultName, 
+            @PathVariable(value = "language" ) String language,
+	        HttpServletRequest request){
     	
     	String taxonUrl = request.getContextPath() + "/species/" + defaultName;
         
     	// get taxon description
         TaxonPlic taxonPlic = null;
         
-        defaultName = defaultName.replace('_', ' ');
+        defaultName = defaultName.replace('_', ' ');       
         
-//        TaxonPlicSDTO taxonPlicSDTO = 
-//            speciesManager.getTaxonPLicByDefaultName(defaultName);
+        taxonPlic = speciesManager.getTaxonPLicByDefaultName(defaultName,language);
         
-        taxonPlic = speciesManager.getTaxonPLicByDefaultName(defaultName);
-        
-        model.addAttribute("taxonDescription", taxonPlic);
+        List<TaxonPlic> taxonPlicListLanguaje = speciesManager.getTaxonListLanguaje(defaultName);
         
         // get taxon hierarchy 
         Taxon taxon = null;
         if(taxonPlic != null)
+        {
           taxon = taxonPlic.getTaxon();
+          List<Book> taxonBooks = new ArrayList<Book>(taxonPlic.getBooks());
+          model.addAttribute("taxonDescription", taxonPlic);
+          model.addAttribute("taxonBooks",taxonBooks);
+          model.addAttribute("listLanguaje",taxonPlicListLanguaje);   
+        }
         else
+        {
           taxon = speciesManager.getTaxonByDefaultName(defaultName);
+        }
 
         // get some images
         List<ImagesCDTO> images = speciesManager.getImagesByDefaultName(defaultName, 0, 4);
@@ -82,6 +96,51 @@ public class SpeciesController {
         
         return "species";
     }
+    ///////////////////
+    @RequestMapping (
+  		value = {"/{defaultName}"}, 
+          method = RequestMethod.GET)   
+  public String getTaxonDescription (
+          Model model,
+          @PathVariable(value = "defaultName") String defaultName, 
+	        HttpServletRequest request)  {
+  	
+  	String taxonUrl = request.getContextPath() + "/species/" + defaultName;
+      
+  	// get taxon description
+      TaxonPlic taxonPlic = null;     
+      
+      defaultName = defaultName.replace('_', ' ');
+   
+      taxonPlic = speciesManager.getTaxonPLicByDefaultName(defaultName,"Español");
+      
+      List<TaxonPlic> taxonPlicListLanguaje = speciesManager.getTaxonListLanguaje(defaultName);
+        
+      // get taxon hierarchy 
+      Taxon taxon = null;
+      if(taxonPlic != null)
+      {
+        taxon = taxonPlic.getTaxon();
+        List<Book> taxonBooks = new ArrayList<Book>(taxonPlic.getBooks());
+      	model.addAttribute("taxonDescription", taxonPlic);
+        model.addAttribute("taxonBooks",taxonBooks);
+        model.addAttribute("listLanguaje",taxonPlicListLanguaje);
+  	  }
+      else
+      {
+        taxon = speciesManager.getTaxonByDefaultName(defaultName);
+      }
+      // get some images
+      List<ImagesCDTO> images = speciesManager.getImagesByDefaultName(defaultName, 0, 4);
+      
+      
+      model.addAttribute("taxon", taxon);
+      model.addAttribute("context", "taxonDescription");
+      model.addAttribute("taxonUrl", taxonUrl);
+      model.addAttribute("images", images);
+      
+      return "species";
+  }
     
     @RequestMapping (
             value = "/{defaultName}/images",
@@ -225,6 +284,29 @@ public class SpeciesController {
       
       return "species";
     }
+    
+    //BHL
+    
+    @RequestMapping (value = "/{defaultName}/BHL",method = RequestMethod.GET)
+    public String getTaxonBHl
+    (
+      Model model,
+      @PathVariable (value = "defaultName") String defaultName,
+      HttpServletRequest request) 
+	    {
+    	
+           String taxonUrl = request.getContextPath() + "/species/" + defaultName;
+        
+           // get taxon hierarchy 
+           Taxon taxon = speciesManager.getTaxonByDefaultName(defaultName);
+           //mardar el atributo del xml
+           model.addAttribute("context","BHL");
+           model.addAttribute("taxonUrl", taxonUrl);
+           model.addAttribute("scientificName", defaultName);
+           model.addAttribute("taxon", taxon);
+    	
+	       return "species";
+	    }
     
 }
 

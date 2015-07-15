@@ -159,6 +159,18 @@
 		</div>
 		</c:if>
 		
+		<!-- 				Libros de las especies -->
+				<c:forEach var="taxonBooks" items="${taxonBooks}">	
+					<c:if test="${not empty taxonBooks.link}">		
+						<p>
+							Books
+						</p>	
+						<p>
+							<a href="${taxonBooks.link}">${taxonBooks.title} - ${taxonBooks.service}</a>
+						</p>	
+					</c:if>	    
+				</c:forEach>
+		
 <!-- 		<div id="externalSource"> -->
 <%-- 		    TODO: get external sources from database --%>
 <%-- 		    <h3><fmt:message key="taxonDes.externalSource"/></h3> --%>
