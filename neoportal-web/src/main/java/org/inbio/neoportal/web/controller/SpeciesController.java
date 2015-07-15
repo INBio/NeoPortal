@@ -42,6 +42,50 @@ public class SpeciesController {
 	
 	@Autowired
     private SpeciesManager speciesManager;
+	
+	@RequestMapping (
+    		value = {"/{defaultName}/{language}"}, 
+            method = RequestMethod.GET)   
+    public String getTaxonDescriptionLanguage (
+            Model model,
+            @PathVariable(value = "defaultName") String defaultName, 
+            @PathVariable(value = "language" ) String language,
+	        HttpServletRequest request){
+    	
+    	String taxonUrl = request.getContextPath() + "/species/" + defaultName;
+        
+    	// get taxon description
+        TaxonPlic taxonPlic = null;
+        
+        defaultName = defaultName.replace('_', ' ');       
+        
+        taxonPlic = speciesManager.getTaxonPLicByDefaultName(defaultName,language);
+        
+        List<TaxonPlic> taxonPlicListLanguaje = speciesManager.getTaxonListLanguaje(defaultName);
+        
+        // get taxon hierarchy 
+        Taxon taxon = null;
+        if(taxonPlic != null)
+        {
+          taxon = taxonPlic.getTaxon();
+          model.addAttribute("taxonDescription", taxonPlic);
+          model.addAttribute("listLanguaje",taxonPlicListLanguaje);   
+        }
+        else
+        {
+          taxon = speciesManager.getTaxonByDefaultName(defaultName);
+        }
+
+        // get some images
+        List<ImagesCDTO> images = speciesManager.getImagesByDefaultName(defaultName, 0, 4);
+        
+        model.addAttribute("taxon", taxon);
+        model.addAttribute("context", "taxonDescription");
+        model.addAttribute("taxonUrl", taxonUrl);
+        model.addAttribute("images", images);
+        
+        return "species";
+    }
     
     @RequestMapping (
             value = "/{defaultName}",
@@ -61,16 +105,22 @@ public class SpeciesController {
 //        TaxonPlicSDTO taxonPlicSDTO = 
 //            speciesManager.getTaxonPLicByDefaultName(defaultName);
         
-        taxonPlic = speciesManager.getTaxonPLicByDefaultName(defaultName);
+        taxonPlic = speciesManager.getTaxonPLicByDefaultName(defaultName,"Español");
         
-        model.addAttribute("taxonDescription", taxonPlic);
+        List<TaxonPlic> taxonPlicListLanguaje = speciesManager.getTaxonListLanguaje(defaultName);
         
         // get taxon hierarchy 
         Taxon taxon = null;
         if(taxonPlic != null)
+        {
           taxon = taxonPlic.getTaxon();
+          model.addAttribute("taxonDescription", taxonPlic);
+          model.addAttribute("listLanguaje",taxonPlicListLanguaje);
+        }
         else
+        {
           taxon = speciesManager.getTaxonByDefaultName(defaultName);
+        }
 
         // get some images
         List<ImagesCDTO> images = speciesManager.getImagesByDefaultName(defaultName, 0, 4);

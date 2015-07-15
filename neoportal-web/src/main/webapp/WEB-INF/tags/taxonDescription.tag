@@ -1,6 +1,7 @@
 <%@ tag description="Generate the taxon description home page" language="java" 
 	pageEncoding="utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@taglib prefix="n" tagdir="/WEB-INF/tags" %>
@@ -159,6 +160,26 @@
 		</div>
 		</c:if>
 		
+			    	
+	    	
+<!-- 	    	Idioma del contenido -->
+			<c:if test="${not empty listLanguaje && fn:length(listLanguaje) > 1  }">
+				<p>
+				<h3><fmt:message key="languageContent"/></h3>
+		    	<c:forEach var="listLanguaje" items="${listLanguaje}">
+					<p>
+						<c:choose>
+							<c:when test="${listLanguaje.language == 'Español' }">
+								<a href="${taxonUrl}">${listLanguaje.language}</a>
+							</c:when>
+							<c:otherwise>
+								<a href="${taxonUrl}/${listLanguaje.language}">${listLanguaje.language}</a>
+							</c:otherwise>
+						</c:choose>					
+					</p>
+				</c:forEach>			
+	    		</p>
+			</c:if>
 <!-- 		<div id="externalSource"> -->
 <%-- 		    TODO: get external sources from database --%>
 <%-- 		    <h3><fmt:message key="taxonDes.externalSource"/></h3> --%>
