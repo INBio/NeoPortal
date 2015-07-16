@@ -47,11 +47,12 @@
         <script type="text/javascript" src="<c:url value="/resources/species/home.js" />"></script>
         
         <script type="text/javascript" src="<c:url value="/resources/species/species.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/species/conservationStatus.js" />"></script>
         <title>INBio - ${taxon.defaultName}</title>
 	</jsp:attribute>
 	      
 	<jsp:body>
-        
+        <script>RL("${taxon.defaultName}");</script>
         <div class="data_wrapper species_page">
         	
         	<c:if test="${taxon.taxonomicalRangeId < 13}">

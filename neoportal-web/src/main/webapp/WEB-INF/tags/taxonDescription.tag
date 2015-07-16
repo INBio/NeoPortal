@@ -159,6 +159,17 @@
 		</div>
 		</c:if>
 		
+		<p>
+			<!--     		Red List Endemico -->
+			<h3><fmt:message key="ConservationStatus"/></h3>	
+
+			<a>
+				<input type="image"  onclick="RLPage('${taxon.defaultName}')" alt="" src="<c:out value="${pageContext.request.contextPath}"/><spring:theme code='images_path'/>logos/IUCN.jpg" >							
+				<output id="specie_category" onclick="RLPage('${taxon.defaultName}')" ><fmt:message key="notInfo"/></output>			
+			</a>
+	
+		</p>
+		
 <!-- 		<div id="externalSource"> -->
 <%-- 		    TODO: get external sources from database --%>
 <%-- 		    <h3><fmt:message key="taxonDes.externalSource"/></h3> --%>
