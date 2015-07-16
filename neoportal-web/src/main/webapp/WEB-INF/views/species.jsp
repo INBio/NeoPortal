@@ -48,6 +48,12 @@
         
         <script type="text/javascript" src="<c:url value="/resources/species/species.js" />"></script>
         <title>INBio - ${taxon.defaultName}</title>
+
+        <!-- meta description -->
+        <c:if test="${(context == 'taxonDescription') && (not empty taxonDescription.fullDescriptionUnstructured )}">
+        <meta name="description" content="<c:out value="${taxonDescription.fullDescriptionUnstructured}" />">
+        </c:if>
+
 	</jsp:attribute>
 	      
 	<jsp:body>
