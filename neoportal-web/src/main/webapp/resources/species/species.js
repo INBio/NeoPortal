@@ -28,7 +28,7 @@ $(document).ready(function(){
         	});
     	}); 
     	
-    	$("div.image-item a").lightBox({
+    	$("div.image-item a.image-main").lightBox({
             imageLoading: $(homeUrl).attr("href") + "/resources/plugins/jquery-lightbox-0.5/images/lightbox-ico-loading.gif",
             imageBtnClose: $(homeUrl).attr("href") + "/resources/plugins/jquery-lightbox-0.5/images/lightbox-btn-close.gif",
             imageBtnPrev: $(homeUrl).attr("href") + "/resources/plugins/jquery-lightbox-0.5/images/lightbox-btn-prev.gif",
