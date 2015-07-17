@@ -68,8 +68,6 @@ public class SpeciesController {
         
         taxonPlic = speciesManager.getTaxonPLicByDefaultName(defaultName,language);
         
-        List<TaxonPlic> taxonPlicListLanguaje = speciesManager.getTaxonListLanguaje(defaultName);
-        
         // get taxon hierarchy 
         Taxon taxon = null;
         if(taxonPlic != null)
@@ -77,8 +75,7 @@ public class SpeciesController {
           taxon = taxonPlic.getTaxon();
           List<Book> taxonBooks = new ArrayList<Book>(taxonPlic.getBooks());
           model.addAttribute("taxonDescription", taxonPlic);
-          model.addAttribute("taxonBooks",taxonBooks);
-          model.addAttribute("listLanguaje",taxonPlicListLanguaje);   
+          model.addAttribute("taxonBooks",taxonBooks);  
         }
         else
         {
@@ -111,9 +108,7 @@ public class SpeciesController {
       
       defaultName = defaultName.replace('_', ' ');
    
-      taxonPlic = speciesManager.getTaxonPLicByDefaultName(defaultName,"Español");
-      
-      List<TaxonPlic> taxonPlicListLanguaje = speciesManager.getTaxonListLanguaje(defaultName);
+      taxonPlic = speciesManager.getTaxonPLicByDefaultName(defaultName,"Español");   
         
       // get taxon hierarchy 
       Taxon taxon = null;
@@ -123,7 +118,6 @@ public class SpeciesController {
         List<Book> taxonBooks = new ArrayList<Book>(taxonPlic.getBooks());
       	model.addAttribute("taxonDescription", taxonPlic);
         model.addAttribute("taxonBooks",taxonBooks);
-        model.addAttribute("listLanguaje",taxonPlicListLanguaje);
   	  }
       else
       {
@@ -283,29 +277,6 @@ public class SpeciesController {
       
       return "species";
     }
-    
-    //BHL
-    
-    @RequestMapping (value = "/{defaultName}/BHL",method = RequestMethod.GET)
-    public String getTaxonBHl
-    (
-      Model model,
-      @PathVariable (value = "defaultName") String defaultName,
-      HttpServletRequest request) 
-	    {
-    	
-           String taxonUrl = request.getContextPath() + "/species/" + defaultName;
-        
-           // get taxon hierarchy 
-           Taxon taxon = speciesManager.getTaxonByDefaultName(defaultName);
-           //mardar el atributo del xml
-           model.addAttribute("context","BHL");
-           model.addAttribute("taxonUrl", taxonUrl);
-           model.addAttribute("scientificName", defaultName);
-           model.addAttribute("taxon", taxon);
-    	
-	       return "species";
-	    }
     
 }
 
