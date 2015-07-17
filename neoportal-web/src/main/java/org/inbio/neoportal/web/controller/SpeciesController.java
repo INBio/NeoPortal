@@ -226,5 +226,28 @@ public class SpeciesController {
       return "species";
     }
     
+ //BHL
+    
+    @RequestMapping (value = "/{defaultName}/BHL",method = RequestMethod.GET)
+    public String getTaxonBHl
+    (
+      Model model,
+      @PathVariable (value = "defaultName") String defaultName,
+      HttpServletRequest request) 
+	    {
+    	
+           String taxonUrl = request.getContextPath() + "/species/" + defaultName;
+        
+           // get taxon hierarchy 
+           Taxon taxon = speciesManager.getTaxonByDefaultName(defaultName);
+           //mardar el atributo del xml
+           model.addAttribute("context","BHL");
+           model.addAttribute("taxonUrl", taxonUrl);
+           model.addAttribute("scientificName", defaultName);
+           model.addAttribute("taxon", taxon);
+    	
+	       return "species";
+	    }
+    
 }
 

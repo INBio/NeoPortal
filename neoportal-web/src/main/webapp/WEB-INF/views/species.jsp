@@ -69,6 +69,8 @@
 				<li><a href="${taxonUrl}/images"><fmt:message key="tab_images" /></a></li>
 				<li><a href="${taxonUrl}/occurrences"><fmt:message key="tab_occurrences" /></a></li>
 				<li><a href="${taxonUrl}/map"><fmt:message key="tab_map" /></a></li>
+				<!--BHL -->
+				<li><a href="${taxonUrl}/BHL"><fmt:message key="tab_bhl" /></a></li>
 			</ul></nav>
 			
 			<div>
@@ -103,6 +105,11 @@
 					<p><fmt:message key="noMapFeature" /></p>
 					</c:otherwise>
 				</c:choose>
+				</c:when>
+				<c:when test="${context == 'BHL'}">
+				
+					<n:BHLTable></n:BHLTable> 				
+			
 				</c:when>
 			</c:choose>
 				
