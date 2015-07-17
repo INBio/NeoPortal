@@ -38,19 +38,22 @@ function initMap2(divId){
     
     //estilo del mapa para uso de clusters
     var style = new OpenLayers.Style({
-        pointRadius: "10",
+        pointRadius: 3,
+//        strokeColor: '#5858FA',
         fillColor: "${fillColor}",
         fillOpacity: 0.7,
-        strokeOpacity: 0,
+        strokeOpacity: 8,
+        stokeWeight: 2,
         label: "${label}",
-        fontColor: "#555"
+        fontColor: "#FF8000"
+//        fontColor: "#555"
         },
         {
             context: {
                 /*radius: function(feature){
                     return Math.min(feature.attributes.count, 16) + 8;
                 },*/
-                fillColor: "#0000ff",
+                fillColor: "#FF8000",
 //                	function(feature) {
 //
 //                    var r = Math.round( 255 * feature.cluster.length / clusterMaxLenght);
@@ -164,7 +167,8 @@ function onFeatureSelect(feature) {
 /*
  * When ocurrence is selected from table insted of map
  */
-function onFeatureSelectFromTable(feature) {
+function onFeatureSelectFromTable(feature) 
+{
     popup = new OpenLayers.Popup.FramedCloud("point",
     feature.geometry.getBounds().getCenterLonLat(),
     null,

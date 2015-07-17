@@ -30,9 +30,8 @@ import org.inbio.neoportal.core.common.dto.BaseDTO;
  */
 @XmlRootElement(name="taxonDescription")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TaxonDescriptionFullSDTO
-    extends BaseDTO 
-        implements Comparable {
+public class TaxonDescriptionFullSDTO extends BaseDTO implements Comparable 
+{
     
     private String scientificName;
 
@@ -96,8 +95,11 @@ public class TaxonDescriptionFullSDTO
     private String unstructuredNaturalHistory;
     private String invasivenessData;
     private String targetAudiences;
+    
+    private String ConservationAreaDistribution;
 
-    public TaxonDescriptionFullSDTO() {
+    public TaxonDescriptionFullSDTO() 
+    {
     
     }
 
@@ -151,7 +153,8 @@ public class TaxonDescriptionFullSDTO
         String ecologicalSignificance, 
         String unstructuredNaturalHistory, 
         String invasivenessData, 
-        String targetAudiences) {
+        String targetAudiences,
+        String conservationAreaDistribution) {
         
         this.scientificName = scientificName;
         this.institutionCode = institutionCode;
@@ -204,10 +207,20 @@ public class TaxonDescriptionFullSDTO
         this.unstructuredNaturalHistory = unstructuredNaturalHistory;
         this.invasivenessData = invasivenessData;
         this.targetAudiences = targetAudiences;
+        
+        this.ConservationAreaDistribution = conservationAreaDistribution;
     }
     
      
-    /**
+    public String getConservationAreaDistribution() {
+		return ConservationAreaDistribution;
+	}
+
+	public void setConservationAreaDistribution(String conservationAreaDistribution) {
+		ConservationAreaDistribution = conservationAreaDistribution;
+	}
+
+	/**
      * Make posible the search only different species method on SearchManager
      * @return
      */

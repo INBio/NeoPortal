@@ -685,7 +685,7 @@ div.image-item {
 	border: 1px solid #aaa;
 	padding: 5px;
 }
-div.image-item img{
+a.image-main img{
 	width: 100%;
 }
 div.image-item p{
@@ -726,4 +726,10 @@ div#map {
 	margin: 0;
     width: 100%;
     height: 420px;
+}
+
+a.menu_selection
+{
+	text-decoration: underline; 
+	color: #0404B4;
 }

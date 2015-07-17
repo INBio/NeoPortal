@@ -71,10 +71,10 @@
 			</c:if>
 			
 			<nav><ul>
-				<li><a href="${taxonUrl}"><fmt:message key="tab_taxonDescription" /></a></li>
-				<li><a href="${taxonUrl}/images"><fmt:message key="tab_images" /></a></li>
-				<li><a href="${taxonUrl}/occurrences"><fmt:message key="tab_occurrences" /></a></li>
-				<li><a href="${taxonUrl}/map"><fmt:message key="tab_map" /></a></li>
+				<li><a href="${taxonUrl}" class="menu_selection"><fmt:message key="tab_taxonDescription" /></a></li>
+				<li><a href="${taxonUrl}/images" class="menu_selection"><fmt:message key="tab_images" /></a></li>
+				<li><a href="${taxonUrl}/occurrences" class="menu_selection"><fmt:message key="tab_occurrences" /></a>
+				<li><a href="${taxonUrl}/map" class="menu_selection"><fmt:message key="tab_map" /></a></li>
 			</ul></nav>
 			
 			<div>
