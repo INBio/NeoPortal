@@ -23,6 +23,12 @@
 <!-- 	<div id="species_images"></div> -->
 	<n:imageGallery images="${images }"></n:imageGallery>
 	
+    		<!-- 	  url del video-->			
+			<c:if test="${not empty taxonDescription.urlvideo}">
+				<h4><fmt:message key="taxonDes.Video"/></h4>
+	    		<h4><a href= "${taxonDescription.urlvideo}">${taxonDescription.urlvideo}</a></h4>
+	    	</c:if>	   
+	    	
 	<div id="taxonDescription">
 		<div id="naturalHistory">
 			<c:if test="${ 
@@ -91,12 +97,7 @@
 	    		<h4><fmt:message key="taxonDes.conservationAreaDistribution"/></h4>
 	    		<div>${taxonDescription.conservationareadistribution}</div>
 	    	</c:if>
-
- 	 		    	<!-- 	  url del video-->			
-			<c:if test="${not empty taxonDescription.urlvideo}">
-				<h4><fmt:message key="taxonDes.Video"/></h4>
-	    		<h4><a href= "${taxonDescription.urlvideo}">${taxonDescription.urlvideo}</a></h4>
-	    	</c:if>	    	
+ 	
 		</div>
 		
 		<div id="usesManagement">
@@ -146,14 +147,18 @@
 			<c:if test="${not empty taxonDescription.namePublishedInYear}">
 	    		<fmt:message key="taxonDes.namePublishedInYear"/>: ${taxonDescription.namePublishedInYear}
 	    	</c:if>
+	    	<p>
 	    	<!-- 	    sinonimos -->			
 			<c:if test="${not empty taxonDescription.synonyms}">
 	    		<fmt:message key="taxonDes.synonyms"/>: ${taxonDescription.synonyms}
 	    	</c:if>
+	    	</p>
+	    	<p>
 	    	<!-- 	   tipo de localidad -->			
 			<c:if test="${not empty taxonDescription.typeLocality}">
 	    		<fmt:message key="taxonDes.typeLocality"/>: ${taxonDescription.typeLocality} <br></br>
 	    	</c:if>
+	    	</p>
 		</c:if>
 		
 		
