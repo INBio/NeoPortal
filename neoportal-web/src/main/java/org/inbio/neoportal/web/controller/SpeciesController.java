@@ -164,8 +164,10 @@ public class SpeciesController {
 		int totalOccurrences = 0;
 
         List<OccurrenceDwcCDTO> occurrences = speciesManager.getOccurrencesByDefaultName(defaultName, startIndex, itemsPerPage);
-        totalOccurrences = speciesManager.countOccurrencesByDefaultName(defaultName).intValue();
-		
+        Long longOccurrences = speciesManager.countOccurrencesByDefaultName(defaultName);
+
+        if (longOccurrences != null)
+            totalOccurrences = longOccurrences.intValue();		
 		//prepare pagination
 		requestUrl = request.getRequestURL().toString();
 		requestUrl += "?itemsPerPage=" + itemsPerPage;
