@@ -11,16 +11,13 @@
             {                 
                   var output="<div class=\"bs-example\"> <div class=\"list-group\"> ";
                   for (var i in data.Result.Titles) 
-                  {
-                     output+="<a href="+ data.Result.Titles[0].Items[0].ItemUrl  +" class=\"list-group-item\">";   
-                     output+="<h4 class=\"list-group-item-heading\">"+ data.Result.Titles[i].ShortTitle +"</h4>";
-                     
-
-                     output+="<p class=\"list-group-item-text\" > <a href="+ data.Result.Titles[0].Items[0].Pages[0].PageUrl+ "> <img src="+ data.Result.Titles[0].Items[0].Pages[0].ThumbnailUrl +" width=\"60px\" height=\"100px\" > </a> </p>";                    
-
-                     
-                     output+="</a>";  
-                                            
+                  {               
+            		  output+="<a href="+ data.Result.Titles[i].Items[0].ItemUrl  +" class=\"list-group-item\">";                  		  
+            		  output+="<h4 class=\"list-group-item-heading\">"+ data.Result.Titles[i].ShortTitle +"</h4>"; 
+            		  output+="<p class=\"list-group-item-text\">"+ data.Result.Titles[i].Items[0].Contributor +"</p>"; 
+            		  output+="<p class=\"list-group-item-text\">"+ data.Result.Titles[i].PublicationDate +"</p>"; 
+//            		  output+="<a href="+ data.Result.Titles[i].Items[0].Pages[0].PageUrl+ "> <img src="+ data.Result.Titles[i].Items[0].Pages[0].ThumbnailUrl +" width=\"60px\" height=\"100px\" > </a> ";                          
+            		  output+="</a>";                                              
                   }
                   output+="</div> </div>";
                   $("#BHLInfo").get(0).innerHTML=output;
