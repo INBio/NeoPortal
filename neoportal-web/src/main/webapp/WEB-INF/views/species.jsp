@@ -3,21 +3,16 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@taglib prefix="n" tagdir="/WEB-INF/tags" %>
 <n:base>
-	<jsp:attribute name="head">      
-        <!-- Open Layers and Google Maps API-->
+	<jsp:attribute name="head">  
+	 
+		        <!-- Open Layers and Google Maps API-->
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?v=3.8&sensor=false"></script>
         <link rel="stylesheet" type="text/css" href="<c:url value="/resources/openlayers/style.css"/>">
         <script type="text/JavaScript" src="<c:url value="/resources/openlayers/OpenLayers.js" />"></script>
         
-        <!-- jquery -->
-        <script type="text/javascript" src="<c:url value="/resources/js/jquery-1.6.1.min.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui-1.8.13.custom.min.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/js/jquery.dataTables.min.js" />" ></script>
-        <script type="text/javascript" src="<c:url value="/resources/js/jquery.xslt.js" />" ></script>
-
         <!--   jQuery LightBox     -->
         <script type="text/javascript" src="<c:url value="/resources/plugins/jquery-lightbox-0.5/js/jquery.lightbox-0.5.min.js" />"></script>
-        <link rel="stylesheet" type="text/css" href="<c:url value="/resources/plugins/jquery-lightbox-0.5/css/jquery.lightbox-0.5.css"/>"/>
+   		<link rel="stylesheet" type="text/css" href="<c:url value="/resources/plugins/jquery-lightbox-0.5/css/jquery.lightbox-0.5.css"/>"/>
         
         <!--   jQuery Masonry plugin - dynamic layout for images  -->
         <script type="text/javascript" src="<c:url value="/resources/plugins/jquery.masonry.min.js" />"></script>
@@ -40,18 +35,36 @@
             var longitudeT = '<fmt:message key="longitude"/>';
                 
             var noDataFound = '<fmt:message key="noDataFound"/>';
+
+// 			$(document).ready(function()
+// 			{
+	            $('#menu > ul.nav-tabs li').click(function(e) 
+	            {
+	                $('.nav li.active').removeClass('active')
+	                var $this = $(this);
+	                $this.addClass('active');
+	                e.preventDefault();
+	            });
+// 			});
+            
         </script>
         
         <script type="text/javascript" src="<c:url value="/resources/occurrences/map-stuff.js" />"></script>
                 	
-        <!-- 	FIXME: change home.js for a basic search script -->
-        <script type="text/javascript" src="<c:url value="/resources/species/home.js" />"></script>
         
         <script type="text/javascript" src="<c:url value="/resources/species/species.js" />"></script>
         <title>INBio - ${taxon.defaultName}</title>
+        
+
+        
 	</jsp:attribute>
 	      
 	<jsp:body>
+	
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<!--     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script type="text/javascript" src="<c:url value="/themes/bootstrap/js/bootstrap.min.js" />"></script>
         
         <div class="data_wrapper species_page">
         	
@@ -65,14 +78,15 @@
 			</c:if>
 			</c:if>
 			
-			<nav><ul>
-				<li><a href="${taxonUrl}"><fmt:message key="tab_taxonDescription" /></a></li>
-				<li><a href="${taxonUrl}/images"><fmt:message key="tab_images" /></a></li>
-				<li><a href="${taxonUrl}/occurrences"><fmt:message key="tab_occurrences" /></a></li>
-				<li><a href="${taxonUrl}/map"><fmt:message key="tab_map" /></a></li>
-				<!--BHL -->
-				<li><a href="${taxonUrl}/BHL"><fmt:message key="tab_bhl" /></a></li>
-			</ul></nav>
+			<div id="menu">
+			<ul class="nav nav-tabs" role="tablist">
+		        <li role="presentation" <c:if test="${context == 'taxonDescription'}">class="active"</c:if> ><a href="${taxonUrl}"><fmt:message key="tab_taxonDescription" /></a></li>
+				<li role="presentation" <c:if test="${context == 'images'}">class="active"</c:if> ><a href="${taxonUrl}/images"><fmt:message key="tab_images" /></a></li>
+				<li role="presentation" <c:if test="${context == 'occurrences'}">class="active"</c:if> ><a href="${taxonUrl}/occurrences"><fmt:message key="tab_occurrences" /></a></li>
+				<li role="presentation" <c:if test="${context == 'map'}">class="active"</c:if> ><a href="${taxonUrl}/map"><fmt:message key="tab_map" /></a></li>
+				<li role="presentation" <c:if test="${context == 'BHL'}">class="active"</c:if> ><a href="${taxonUrl}/BHL"><fmt:message key="tab_bhl" /></a></li>
+      		</ul>
+      		</div>
 			
 			<div>
 			<c:choose>
