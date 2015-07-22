@@ -21,6 +21,7 @@
         
         <!--   jQuery Masonry plugin - dynamic layout for images  -->
         <script type="text/javascript" src="<c:url value="/resources/plugins/jquery.masonry.min.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/species/getbooksBHL.js" />"></script>
         
         <!-- Util javaScript -->
         <script type="text/javascript" >
@@ -106,10 +107,8 @@
 					</c:otherwise>
 				</c:choose>
 				</c:when>
-				<c:when test="${context == 'BHL'}">
-				
-					<n:BHLTable></n:BHLTable> 				
-			
+				<c:when test="${context == 'BHL'}">			
+					<n:BHLTable></n:BHLTable> 						
 				</c:when>
 			</c:choose>
 				
