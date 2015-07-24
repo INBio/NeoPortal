@@ -37,11 +37,30 @@ function initSearch(context){
         window.location = newUrl;
     });
     
-    // configure autocomplete
-    $("#searchInput").autocomplete({
-    	source: appUrl() + "api/search/taxon",
-    	minLength: 2
-    });
+    var bestPictures = new Bloodhound({
+        datumTokenizer: function(d) {
+                  return Bloodhound.tokenizers.whitespace(d.value);
+                      },
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: { 
+            url: appUrl() + 'api/search/taxon?term=%QUERY',
+            wildcard: '%QUERY',
+            transform: function(response) {
+                return $.map(response, function(str) { return { value: str }; });
+            }
+        }  
+      });
+
+      $('#searchInput').typeahead({
+        hint: true,
+        highlight: true,
+        minLength: 2
+        }, {
+        display: "value",
+        source: bestPictures 
+
+      });
+    
 }
 
 /** 

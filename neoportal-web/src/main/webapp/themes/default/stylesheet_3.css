@@ -322,15 +322,17 @@ h2{
 }
 h3{
 	font-size: 2rem;
+	margin-top: 20px;
 }
 h4{
 	font-size: 1.5rem;
 	font-weight: bold;
 }
+/*
 a{
 	color: #333;
 }
-
+*/
 .scientific-name {
 	font-style: italic;	
 }
@@ -428,11 +430,12 @@ footer div.logos img{
 }
 /* ---- basic search panel ----- */
 div#searchPanel input#searchInput{
-	width: 300px;
+	/*width: 300px;
 	font-size: 1em;
 	border: 1px solid grey;
 	border-radius: 3px;
 	-moz-border-radius: 3px;
+	*/
 }
 div#searchPanel a#simple{
 	background-color: #4D90FE;
@@ -442,6 +445,84 @@ div#searchPanel a#simple{
 	border-radius: 3px;
 	-moz-border-radius: 3px;
 }
+
+////
+.typeahead,
+.tt-query,
+.tt-hint {
+  width: 396px;
+  height: 30px;
+  padding: 8px 12px;
+  font-size: 24px;
+  line-height: 30px;
+  border: 2px solid #ccc;
+  -webkit-border-radius: 8px;
+     -moz-border-radius: 8px;
+          border-radius: 8px;
+  outline: none;
+}
+
+.typeahead {
+  background-color: #fff;
+}
+
+.typeahead:focus {
+  border: 2px solid #0097cf;
+}
+
+.tt-query {
+/*  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);*/
+          box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+}
+
+.tt-hint {
+  color: #999
+}
+
+.tt-menu {
+  width: 422px;
+  margin: 12px 0;
+  padding: 8px 0;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  -webkit-border-radius: 8px;
+     -moz-border-radius: 8px;
+          border-radius: 8px;
+  -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+     -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+          box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+
+.tt-suggestion {
+  padding: 3px 20px;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.tt-suggestion:hover {
+  cursor: pointer;
+  color: #fff;
+  background-color: #0097cf;
+}
+
+.tt-suggestion.tt-cursor {
+  color: #fff;
+  background-color: #0097cf;
+
+}
+
+.tt-suggestion p {
+  margin: 0;
+}
+
+///
+
+
+
 /* ------------ FEATURE TAXON ------------------ */
 #feature {
 	border: 1px solid #999;
@@ -726,4 +807,16 @@ div#map {
 	margin: 0;
     width: 100%;
     height: 420px;
+}
+
+.nav-tabs {
+  border-bottom: 1px solid #aaa;
+}
+
+.nav-tabs>li.active>a, 
+.nav-tabs>li.active>a:focus, 
+.nav-tabs>li.active>a:hover
+{
+  border: 1px solid #aaa;
+  border-bottom-color: transparent;
 }

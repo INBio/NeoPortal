@@ -10,17 +10,23 @@
 <html>
 	<head>
         <meta charset="utf-8">
-        
 
         <!-- neoportal js and css -->
+         <link rel="stylesheet" type="text/css" href="<c:url value="/themes/bootstrap/css/bootstrap.min.css" /> "/>
         <link rel="stylesheet" type="text/css" href="<c:out value="${pageContext.request.contextPath}"/><spring:theme code="styleSheet_3"/>" />
         <link rel="stylesheet" type="text/css" href="<c:out value="${pageContext.request.contextPath}"/><spring:theme code='jquery-ui'/>" />
         
         <!-- jquery -->
-        <script type="text/javascript" src="<c:url value="/resources/js/jquery-1.6.1.min.js" />"></script>
-        <script type="text/javascript" src="<c:url value="/resources/js/jquery-ui-1.8.13.custom.min.js" />"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.dataTables.min.js" />" ></script>
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.inbPaginate-0.1.js" />" ></script>
+        
+        <!-- jquery -->
+        <script type="text/javascript" src="<c:url value="/resources/js/jquery.xslt.js" />" ></script>	
+		<script type="text/javascript" src="<c:url value="/themes/bootstrap/js/typeahead.bundle.js" />"></script>
+		
+		<!-- 	FIXME: change home.js for a basic search script -->
+        <script type="text/javascript" src="<c:url value="/resources/species/home.js" />"></script>
 		
 		<jsp:invoke fragment="head"/>
 		
