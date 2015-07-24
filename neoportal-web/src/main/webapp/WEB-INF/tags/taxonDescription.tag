@@ -7,16 +7,65 @@
 <%@taglib prefix="n" tagdir="/WEB-INF/tags" %>
 
 <div id="info-taxon" class="taxon-content">
+	
+	
+	 <!--Idioma del contenido -->
+	<c:if test="${not empty listLanguaje && fn:length(listLanguaje) > 1  }">		
+    	<c:forEach var="listLanguaje" items="${listLanguaje}">
+				<c:choose>
+					<c:when test="${listLanguaje.language == 'Español' }">
+						<a href="${taxonUrl}" class="btn btn-info" role="button">Version ${listLanguaje.version}</a>
+					</c:when>
+					<c:otherwise>
+						<a href="${taxonUrl}/${listLanguaje.language}" class="btn btn-info" role="button">Version ${listLanguaje.version}</a>
+					</c:otherwise>
+				</c:choose>					
+		</c:forEach>			
+	</c:if>
+
+	
 	<c:if test="${not empty taxonDescription }">
 	<nav>
 		<ul>
-		    <li><a href="#naturalHistory"><fmt:message key="taxonDes.naturalHistory"/></a></li>
+			<c:if test="${ 
+				not empty taxonDescription.reproductionUnstructure ||
+				not empty taxonDescription.feedingUnstructure ||
+				not empty taxonDescription.behaviorUnstructure ||
+				not empty taxonDescription.annualCyclesUnstructure ||
+				not empty taxonDescription.lifeCycleUnstructure 
+			}">
+	    	<li><a href="#naturalHistory"><fmt:message key="taxonDes.naturalHistory"/></a></li>
+	    	</c:if>
+	    	
+ 			<c:if test="${not empty taxonDescription.habitatUnstructure ||
+						  not empty taxonDescription.crDistribution ||
+						  not empty taxonDescription.regionalDistribution
+			}">
 		    <li><a href="#habitatDistribution"><fmt:message key="taxonDes.habitatDistribution"/></a></li>
-		    <li><a href="#demographyConservation"><fmt:message key="taxonDes.demographyConservation"/></a></li>
+		    </c:if>
+		    
+		    <c:if test="${not empty taxonDescription.usesUnstructure }">
 		    <li><a href="#usesManagement"><fmt:message key="taxonDes.usesManagement"/></a></li>
-		    <li><a href="#description"><fmt:message key="taxonDes.description"/></a></li>
-		    <li><a href="#information"><fmt:message key="taxonDes.information"/></a></li>
-		    <li><a href="#externalSource"><fmt:message key="taxonDes.externalSource"/></a></li>
+		    </c:if>
+		    
+   		    <c:if test="${not empty taxonDescription.threatUnstructure ||
+				    	  not empty taxonDescription.territoryUnstructure ||
+				    	  not empty taxonDescription.populationBiologyUnstructure 
+    	     }">
+		    <li><a href="#demographyConservation"><fmt:message key="taxonDes.demographyConservation"/></a></li>
+		    </c:if>
+		    
+		    <c:if test="${not empty taxonDescription.fullDescriptionUnstructured }">
+	    		<li><a href="#description"><fmt:message key="taxonDes.description"/></a></li>
+	    	</c:if>
+		    
+		    <c:if test="${not empty taxon }">
+				<li><a href="#Taxonomic"><fmt:message key="taxonDes.taxonomy"/></a></li>	
+			</c:if>
+		    
+		    <c:if test="${not empty taxonDescription}">
+			    <li><a href="#information"><fmt:message key="taxonDes.information"/></a></li>	
+		    </c:if>
 		</ul>
 	</nav>
 	</c:if>
@@ -61,7 +110,9 @@
 		
 		<div id="habitatDistribution">
 			<c:if test="${not empty taxonDescription.habitatUnstructure ||
-				not empty taxonDescription.crDistribution }">
+						  not empty taxonDescription.crDistribution ||
+						  not empty taxonDescription.regionalDistribution
+			}">
 		    <h3><fmt:message key="taxonDes.habitatDistribution"/></h3>
 		    </c:if>
 		    <c:if test="${not empty taxonDescription.habitatUnstructure }">
@@ -72,7 +123,7 @@
 	    		<h4><fmt:message key="taxonDes.distribution"/></h4>
 	    		<div>${taxonDescription.crDistribution}</div>
 	    	</c:if>
-	    	<c:if test="${not empty taxonDescription.crDistribution }">
+	    	<c:if test="${not empty taxonDescription.regionalDistribution }">
 	    		<h4><fmt:message key="taxonDes.regionalDistribution"/></h4>
 	    		<div>${taxonDescription.regionalDistribution}</div>
 	    	</c:if>
@@ -120,66 +171,50 @@
 	    	
 		</div>
 		
-		<c:if test="${not empty taxon }">
-		<n:taxonomy taxon="${taxon}"></n:taxonomy>
-		</c:if>
-		
-		<c:if test="${not empty taxonDescription}">
-		<div id="information">
-		    <h3><fmt:message key="taxonDes.information"/></h3>
-		    <c:if test="${not empty taxonDescription.language }">
-		    <p>
-	    		<strong><fmt:message key="taxonDes.language"/></strong>: ${taxonDescription.language}
-	   		</p>
-	    	</c:if>
-	    	<c:if test="${not empty taxonDescription.individualName }">
-	   		<p>
-	   			<strong><fmt:message key="taxonDes.author"/></strong>: ${taxonDescription.individualName}
-	 		</p>
-	    	</c:if>
-	    	<c:if test="${not empty taxonDescription.colaborator1 }">
-	    	<p>
-	   			<strong><fmt:message key="taxonDes.contributors"/></strong>: ${taxonDescription.colaborator1}
-			</p>
-	    	</c:if>
-	    	<c:if test="${not empty taxonDescription.taxonRecordId }">
-	    	<p>
-	   			<strong><fmt:message key="taxonDes.taxonRecordId"/></strong>: ${taxonDescription.taxonRecordId}
-	   		</p>
-	    	</c:if>
-	    	<c:if test="${not empty taxonDescription.modificationdate }">
-	    	<p>
-	   			<strong><fmt:message key="taxonDes.dateLastModified"/></strong>: ${taxonDescription.modificationdate}
-			</p>
-	    	</c:if>
-	    	<c:if test="${not empty taxonDescription.creationdate }">
-	    	<p>
-	   			<strong><fmt:message key="taxonDes.dateCreated"/></strong>: ${taxonDescription.creationdate}
-			</p>
-	    	</c:if>
-		</div>
-		</c:if>
-		
-			    	
-	    	
-<!-- 	    	Idioma del contenido -->
-			<c:if test="${not empty listLanguaje && fn:length(listLanguaje) > 1  }">
-				<p>
-				<h3><fmt:message key="languageContent"/></h3>
-		    	<c:forEach var="listLanguaje" items="${listLanguaje}">
-					<p>
-						<c:choose>
-							<c:when test="${listLanguaje.language == 'Español' }">
-								<a href="${taxonUrl}">${listLanguaje.language}</a>
-							</c:when>
-							<c:otherwise>
-								<a href="${taxonUrl}/${listLanguaje.language}">${listLanguaje.language}</a>
-							</c:otherwise>
-						</c:choose>					
-					</p>
-				</c:forEach>			
-	    		</p>
+		<div id="Taxonomic">
+			<c:if test="${not empty taxon }">
+				<n:taxonomy taxon="${taxon}"></n:taxonomy>
 			</c:if>
+		</div>
+
+		<div id="information">
+			<c:if test="${not empty taxonDescription}">
+			    <h3><fmt:message key="taxonDes.information"/></h3>			    
+   	    	
+			    <c:if test="${not empty taxonDescription.language }">
+			    <p>
+		    		<strong><fmt:message key="taxonDes.language"/></strong>: ${taxonDescription.language}
+		   		</p>
+		    	</c:if>
+		    	<c:if test="${not empty taxonDescription.individualName }">
+		   		<p>
+		   			<strong><fmt:message key="taxonDes.author"/></strong>: ${taxonDescription.individualName}
+		 		</p>
+		    	</c:if>
+		    	<c:if test="${not empty taxonDescription.colaborator1 }">
+		    	<p>
+		   			<strong><fmt:message key="taxonDes.contributors"/></strong>: ${taxonDescription.colaborator1}
+				</p>
+		    	</c:if>
+		    	<c:if test="${not empty taxonDescription.taxonRecordId }">
+		    	<p>
+		   			<strong><fmt:message key="taxonDes.taxonRecordId"/></strong>: ${taxonDescription.taxonRecordId}
+		   		</p>
+		    	</c:if>
+		    	<c:if test="${not empty taxonDescription.modificationdate }">
+		    	<p>
+		   			<strong><fmt:message key="taxonDes.dateLastModified"/></strong>: ${taxonDescription.modificationdate}
+				</p>
+		    	</c:if>
+		    	<c:if test="${not empty taxonDescription.creationdate }">
+		    	<p>
+		   			<strong><fmt:message key="taxonDes.dateCreated"/></strong>: ${taxonDescription.creationdate}
+				</p>
+		    	</c:if>  
+		    </c:if>  	
+		</div>
+	
+		
 <!-- 		<div id="externalSource"> -->
 <%-- 		    TODO: get external sources from database --%>
 <%-- 		    <h3><fmt:message key="taxonDes.externalSource"/></h3> --%>
