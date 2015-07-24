@@ -23,6 +23,7 @@
         
         <!-- jquery -->
         <script type="text/javascript" src="<c:url value="/resources/js/jquery.xslt.js" />" ></script>	
+         <link  type="text/javascript" href="<c:url value="/themes/bootstrap/js/bootstrap.min.js" /> "/>
 		<script type="text/javascript" src="<c:url value="/themes/bootstrap/js/typeahead.bundle.js" />"></script>
 		
 		<!-- 	FIXME: change home.js for a basic search script -->

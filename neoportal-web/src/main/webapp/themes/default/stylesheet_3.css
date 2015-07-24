@@ -569,7 +569,7 @@ ul.taxon_list li{
 }
 
 /* ---------------- PAGINATION -----------------*/
-.pagination{
+.paginationSpecie{
 	text-align: center;
 	margin: 8px;
 	font-size: 0.9em;
@@ -831,3 +831,35 @@ div#map {
   border: 1px solid #aaa;
   border-bottom-color: transparent;
 }
+
+
+.spinner {
+    display: inline-block;
+    opacity: 0;
+    width: 0;
+    -webkit-transition: opacity 0.25s, width 0.25s;
+    -moz-transition: opacity 0.25s, width 0.25s;
+    -o-transition: opacity 0.25s, width 0.25s;
+    transition: opacity 0.25s, width 0.25s;
+}
+
+.has-spinner.active {
+    cursor:progress;
+}
+
+.has-spinner.active .spinner {
+    opacity: 1;
+    width: auto;
+}
+
+.has-spinner.btn.active .spinner {
+    min-width: 20px;
+}
+.center
+{
+	margin:1.5em;
+	padding:1em;
+	text-align:center;
+}
+
+

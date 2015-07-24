@@ -5,32 +5,14 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <%@taglib prefix="n" tagdir="/WEB-INF/tags" %>
 
-	
+<!-- <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>	 -->
 <div class="BHLTable">
 
-<div class="modal fade bs-example-modal-sm" id="myPleaseWait" tabindex="-1"
-    role="dialog" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">
-                    <span class="glyphicon glyphicon-time">
-                    </span>Please Wait
-                 </h4>
-            </div>
-            <div class="modal-body">
-                <div class="progress">
-                    <div class="progress-bar progress-bar-info
-                    progress-bar-striped active"
-                    style="width: 100%">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
+<p class="center">
+<a class="btn btn-warning has-spinner">Button4</a>
+<p>
 <script>BHL('${scientificName}');</script>
-<div id=BHLInfo></div>
-	
+<h3><fmt:message key="referencesFound"/></h3>
+<div id=BHLInfo></div>	
+
 </div>
