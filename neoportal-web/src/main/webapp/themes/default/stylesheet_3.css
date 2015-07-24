@@ -569,7 +569,7 @@ ul.taxon_list li{
 }
 
 /* ---------------- PAGINATION -----------------*/
-.pagination{
+.paginationSpecie{
 	text-align: center;
 	margin: 8px;
 	font-size: 0.9em;
