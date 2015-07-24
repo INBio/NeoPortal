@@ -2,7 +2,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <!-- Search panel -->
-<div id="searchPanel" class="data_wrapper">
-    <input id="searchInput" type="search" results=5>
+<!-- <div id="searchInput"> -->
+<!--     <input class="typeahead" type="text" placeholder="specie"> -->
+<%--     <a id="simple" class="searchButton" href="#"><fmt:message key="search"/></a> --%>
+<!-- </div> -->
+
+
+<div id="searchPanel" >
+    <input id="searchInput" type="text" class="typeahead">
     <a id="simple" class="searchButton" href="#"><fmt:message key="search"/></a>
 </div>

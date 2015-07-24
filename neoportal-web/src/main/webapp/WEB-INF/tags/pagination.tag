@@ -6,7 +6,7 @@
 <%@taglib prefix="n" tagdir="/WEB-INF/tags" %>
 
 <c:if test="${pagination.totalPages > 1 }">
-	<div class="pagination">
+	<div class="paginationSpecie">
 		<p><fmt:message key="pagination.info">
 			<fmt:param value="${pagination.currentPage}" />
 			<fmt:param value="${pagination.totalPages}" />
