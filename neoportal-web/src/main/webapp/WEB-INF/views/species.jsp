@@ -34,18 +34,7 @@
             var longitudeT = '<fmt:message key="longitude"/>';
                 
             var noDataFound = '<fmt:message key="noDataFound"/>';
-
- 			$(document).ready(function()
- 			{
-	            $('#menu > ul.nav-tabs li').click(function(e) 
-	            {
-	                $('.nav li.active').removeClass('active')
-	                var $this = $(this);
-	                $this.addClass('active');
-	                e.preventDefault();
-	            });
- 			});
-            
+           
         </script>
         
         <script type="text/javascript" src="<c:url value="/resources/occurrences/map-stuff.js" />"></script>
