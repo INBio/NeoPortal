@@ -3,6 +3,7 @@ package org.inbio.neoportal.core.entity;
 
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -841,7 +842,23 @@ public class TaxonPlic implements java.io.Serializable {
   public void setTaxon(Taxon taxon) {
     this.taxon = taxon;
   }
-
-
+  
+  public static class CompDate implements Comparator<TaxonPlic>
+  {
+	  private int mod = 1;
+	  public CompDate(boolean desc)
+	  {
+		  if(desc) mod =-1;
+	  }
+	@Override
+	public int compare(TaxonPlic o1, TaxonPlic o2) 
+	{
+		return mod*o1.dateIssued.compareTo(o2.dateIssued);
+	}
+	  
+  }
 
 }
+
+
+

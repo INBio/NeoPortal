@@ -68,6 +68,7 @@ public class SpeciesController {
         if(taxonPlic != null)
         {
           taxon = taxonPlic.getTaxon();
+          model.addAttribute("action", taxonPlic.getVersion());
           model.addAttribute("taxonDescription", taxonPlic);
           model.addAttribute("listLanguaje",taxonPlicListLanguaje);   
         }
@@ -105,15 +106,28 @@ public class SpeciesController {
 //        TaxonPlicSDTO taxonPlicSDTO = 
 //            speciesManager.getTaxonPLicByDefaultName(defaultName);
         
-        taxonPlic = speciesManager.getTaxonPLicByDefaultName(defaultName,"Español");
-        
         List<TaxonPlic> taxonPlicListLanguaje = speciesManager.getTaxonListLanguaje(defaultName);
         
+        TaxonPlic list;
+        if (taxonPlicListLanguaje.size() != 0)
+        {
+	    	for(int i = 0; i <= taxonPlicListLanguaje.size(); i++)
+	    	{
+	    		list = taxonPlicListLanguaje.get(i);
+	    		
+	    		if(list.getLanguage().toString().equals("Español") == true )
+	    		{
+	    			taxonPlic = speciesManager.getTaxonPLicByDefaultName(defaultName,taxonPlicListLanguaje.get(i).getVersion().toString());
+	    			break;
+	    		}
+	    	}      
+        }
         // get taxon hierarchy 
         Taxon taxon = null;
         if(taxonPlic != null)
         {
           taxon = taxonPlic.getTaxon();
+          model.addAttribute("action", taxonPlic.getVersion());
           model.addAttribute("taxonDescription", taxonPlic);
           model.addAttribute("listLanguaje",taxonPlicListLanguaje);
         }

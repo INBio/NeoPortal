@@ -5,8 +5,12 @@
 package org.inbio.neoportal.service.manager.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import org.apache.lucene.search.Sort;
+import org.hibernate.mapping.Collection;
 import org.inbio.neoportal.core.dao.ImageDAO;
 import org.inbio.neoportal.core.dao.OccurrenceDAO;
 import org.inbio.neoportal.core.dao.TaxonDAO;
@@ -429,7 +433,7 @@ public class SpeciesManagerImpl
 	    	{
 	    		list = taxonPlicList.get(i);
 	    		
-	    		if(list.getLanguage().toString().equals(language) == true)
+	    		if(list.getVersion().toString().equals(language) == true )
 	    		{
 	    			return list;
 	    		}
@@ -463,8 +467,16 @@ public class SpeciesManagerImpl
 	  }
 	        
 	  List<TaxonPlic> taxonPlicList = taxonPlicDAO.getByTaxonId(taxon.getTaxonId());
-	  
-	  return taxonPlicList;  
+
+	  Collections.sort(taxonPlicList, new TaxonPlic.CompDate(false));
+	  	  
+	  return taxonPlicList;
+			   
   }	
-	
+
+
+
 }
+
+
+

@@ -7,20 +7,47 @@
 <%@taglib prefix="n" tagdir="/WEB-INF/tags" %>
 
 <div id="info-taxon" class="taxon-content">
-	
-	
+
 	 <!--Idioma del contenido -->
-	<c:if test="${not empty listLanguaje && fn:length(listLanguaje) > 1  }">		
-    	<c:forEach var="listLanguaje" items="${listLanguaje}">
-				<c:choose>
-					<c:when test="${listLanguaje.language == 'Español' }">
-						<a href="${taxonUrl}" class="btn btn-info" role="button">Version ${listLanguaje.version}</a>
-					</c:when>
-					<c:otherwise>
-						<a href="${taxonUrl}/${listLanguaje.language}" class="btn btn-info" role="button">Version ${listLanguaje.version}</a>
-					</c:otherwise>
-				</c:choose>					
-		</c:forEach>			
+	<c:if test="${not empty listLanguaje && fn:length(listLanguaje) > 1  }">
+	<h3><fmt:message key="versions"/></h3>		
+	<div class="container">
+	<div class="row">	
+    	<c:forEach var="listLanguaje" items="${listLanguaje}">						
+			  <div class="col-md-4">
+			  <div class="thumbnail">		
+			  <div class="caption">    
+	        		<c:if test="${not empty listLanguaje.language }">
+				    <p>
+			    		<strong><fmt:message key="taxonDes.language"/></strong>: ${listLanguaje.language}
+			   		</p>
+			    	</c:if>
+			    	<c:if test="${not empty listLanguaje.individualName }">
+			   		<p>
+			   			<strong><fmt:message key="taxonDes.author"/></strong>: ${listLanguaje.individualName}
+			 		</p>
+			    	</c:if>
+			    	<c:if test="${not empty listLanguaje.dateIssued }">
+			    	<p>
+			   			<strong><fmt:message key="taxonDes.dateCreated"/></strong>: ${listLanguaje.dateIssued}
+					</p>
+			    	</c:if>  
+			  		<c:if test="${not empty listLanguaje.version }">
+			  			<c:choose>
+			  				<c:when test="${action == listLanguaje.version}">
+			  						<p><a href="${taxonUrl}/${listLanguaje.version}" class="btn btn-primary">Version ${listLanguaje.version}</a></p>
+			  				</c:when>
+			  				<c:otherwise>
+			  						<p><a href="${taxonUrl}/${listLanguaje.version}" class="btn">Version ${listLanguaje.version}</a></p>
+			  				</c:otherwise>
+			  			</c:choose>
+			  		</c:if>
+			  </div>
+			  </div>	
+			  </div>  	
+		</c:forEach>
+	</div>	
+	</div>		
 	</c:if>
 
 	
