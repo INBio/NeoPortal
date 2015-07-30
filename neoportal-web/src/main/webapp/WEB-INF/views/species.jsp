@@ -39,6 +39,16 @@
             var longitudeT = '<fmt:message key="longitude"/>';
                 
             var noDataFound = '<fmt:message key="noDataFound"/>';
+
+            var ne = '<fmt:message key="NotEvaluated"/>';
+            var dd = '<fmt:message key="DataDeficient"/>';
+            var lc = '<fmt:message key="LeastConcern"/>';
+            var nt = '<fmt:message key="NearThreatened"/>';
+            var vu = '<fmt:message key="Vulneable"/>';
+            var en = '<fmt:message key="Endangered"/>';
+            var cr = '<fmt:message key="CriticallyEndangered"/>';
+            var ew = '<fmt:message key="Extinctinthewild"/>';
+            var ex = '<fmt:message key="Extinct"/>';
         </script>
         
         <script type="text/javascript" src="<c:url value="/resources/occurrences/map-stuff.js" />"></script>
@@ -52,7 +62,7 @@
 	</jsp:attribute>
 	      
 	<jsp:body>
-        <script>RL("${taxon.defaultName}");</script>
+        <script>RL("${taxon.defaultName}",ne,dd,lc,nt,vu,en,cr,ew,ex);</script>
         <div class="data_wrapper species_page">
         	
         	<c:if test="${taxon.taxonomicalRangeId < 13}">

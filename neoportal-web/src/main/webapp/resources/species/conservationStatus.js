@@ -2,7 +2,7 @@
  * 
  */
 
-function RL(species)
+function RL(species,ne,dd,lc,nt,vu,en,cr,ew,ex)
  	      {
 	         var id = 1;
 		    species = species.replace(' ','-');
@@ -13,60 +13,43 @@ function RL(species)
 				 id = row[0].species_id	
 				 
 				 if(row[0].category == "NE")
-				 {
-					 $("#specie_category").get(0).innerHTML = "Not Evaluated";	
+				 {						 
+					 $("#specie_category").get(0).innerHTML = ne;	
+					
 				 }
 				 if(row[0].category == "DD")
-				 {
-					 $("#specie_category").get(0).innerHTML = "Data Deficient";	
+				 {					 
+					 $("#specie_category").get(0).innerHTML = dd;	
 				 }
 				 if(row[0].category == "LC")
 				 {
-					 $("#specie_category").get(0).innerHTML = "Least Concern";	
+					 $("#specie_category").get(0).innerHTML = lc;	
 				 }
 				 if(row[0].category == "NT")
 				 {
-					 $("#specie_category").get(0).innerHTML = "Near Threatened";	
+					 $("#specie_category").get(0).innerHTML = nt;						
 				 }
 				 if(row[0].category == "VU")
 				 {
-					 $("#specie_category").get(0).innerHTML = "Vulneable";	
+					 $("#specie_category").get(0).innerHTML = vu;	 
 				 }
 				 if(row[0].category == "EN")
 				 {
-					 $("#specie_category").get(0).innerHTML = "Endangered";	
+					 $("#specie_category").get(0).innerHTML = en;
 				 }
 				 if(row[0].category == "CR")
 				 {
-					 $("#specie_category").get(0).innerHTML = "Critically Endangered";	
+					 $("#specie_category").get(0).innerHTML = cr;
 				 }
 				 if(row[0].category == "EW")
 				 {
-					 $("#specie_category").get(0).innerHTML = "Extinct in tge wild";	
+					 $("#specie_category").get(0).innerHTML = ew;
 				 }
 				 if(row[0].category == "EX")
 				 {
-					 $("#specie_category").get(0).innerHTML = "Extinct";	
+					 $("#specie_category").get(0).innerHTML = ex;
 				 }
-				 $("#RL").get(0).innerHTML = 'http://www.iucnredlist.org/details/'+id+"/0";                                        
-			  },
-			  failure: function () {
-			    alert("No species found.");
-				$("#result").get(0).innerHTML = "---";
-			  }
-			});
- 	      }
- 
- 	      function RLPage(species)
- 	      {
-	         var id = 1;
-		    species = species.replace(' ','-');
-			$.ajax({
-			  dataType: "jsonp",
-			  url: 'http://api.iucnredlist.org/index/species/'+species+".js",
-			  success: function (row) {
-				 id = row[0].species_id				                      
-				 window.location = 'http://www.iucnredlist.org/details/'+id+"/0";                  
+				 $("#specie_category").get(0).href = 'http://www.iucnredlist.org/details/'+id+"/0";                                        
 			  },
 			  failure: function () {
 			    alert("No species found.");

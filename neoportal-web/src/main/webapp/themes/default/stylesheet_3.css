@@ -727,3 +727,16 @@ div#map {
     width: 100%;
     height: 420px;
 }
+
+.iucn
+{
+	line-height: 39px;
+}
+
+.imgIUCN 
+{
+	float: left;
+	width: 44px;
+	height: 39px; 
+	padding-right: 10px;
+}

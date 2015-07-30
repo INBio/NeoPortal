@@ -159,16 +159,29 @@
 		</div>
 		</c:if>
 		
-		<p>
-			<!--     		Red List Endemico -->
-			<h3><fmt:message key="ConservationStatus"/></h3>	
+		
 
-			<a>
-				<input type="image"  onclick="RLPage('${taxon.defaultName}')" alt="" src="<c:out value="${pageContext.request.contextPath}"/><spring:theme code='images_path'/>logos/IUCN.jpg" >							
-				<output id="specie_category" onclick="RLPage('${taxon.defaultName}')" ><fmt:message key="notInfo"/></output>			
-			</a>
-	
-		</p>
+			<p>
+				<!--  Red List Endemico -->
+				<h3><fmt:message key="ConservationStatus"/></h3>	
+			
+				<img class="imgIUCN" alt="" src="<c:out value="${pageContext.request.contextPath}"/><spring:theme code='images_path'/>logos/IUCN.jpg" >
+				<a id="specie_category" target="_blank" class="iucn" ><fmt:message key="notInfo"/></a>	
+			</p>
+			<p>
+			<img class="imgIUCN" alt="" src="<c:out value="${pageContext.request.contextPath}"/><spring:theme code='images_path'/>logos/CostaRica.jpg" >
+			
+			<c:choose>
+			<c:when test="${not empty taxonDescription.threatStatus}">
+				<a class="iucn">taxonDescription.threatStatus</a>	
+			</c:when>
+			<c:otherwise>
+				<a class="iucn"><fmt:message key="notInfo"/></a>	
+			</c:otherwise>
+			</c:choose>
+
+			</p>
+		
 		
 <!-- 		<div id="externalSource"> -->
 <%-- 		    TODO: get external sources from database --%>
