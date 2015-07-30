@@ -173,7 +173,7 @@
 			
 			<c:choose>
 			<c:when test="${not empty taxonDescription.threatStatus}">
-				<a class="iucn">taxonDescription.threatStatus</a>	
+				<a class="iucn">${taxonDescription.threatStatus}</a>	
 			</c:when>
 			<c:otherwise>
 				<a class="iucn"><fmt:message key="notInfo"/></a>	
