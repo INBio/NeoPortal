@@ -160,7 +160,8 @@
 		</c:if>
 		
 		
-
+		<c:if test="${status != 'kingdom'}">
+	
 			<p>
 				<!--  Red List Endemico -->
 				<h3><fmt:message key="ConservationStatus"/></h3>	
@@ -182,7 +183,7 @@
 
 			</p>
 		
-		
+			</c:if>
 <!-- 		<div id="externalSource"> -->
 <%-- 		    TODO: get external sources from database --%>
 <%-- 		    <h3><fmt:message key="taxonDes.externalSource"/></h3> --%>
