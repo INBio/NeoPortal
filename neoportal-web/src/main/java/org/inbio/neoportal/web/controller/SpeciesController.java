@@ -118,6 +118,7 @@ public class SpeciesController {
         List<Book> taxonBooks = new ArrayList<Book>(taxonPlic.getBooks());
       	model.addAttribute("taxonDescription", taxonPlic);
         model.addAttribute("taxonBooks",taxonBooks);
+        model.addAttribute("books","books");
   	  }
       else
       {

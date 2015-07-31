@@ -16,6 +16,7 @@ public class Book implements java.io.Serializable
 	private String service;
 	private String link;
 	private String title;
+	private String externalId;
 	private Set <TaxonPlic> taxonPlic = new HashSet<TaxonPlic>(0);
 	
 	public Book()
@@ -23,12 +24,13 @@ public class Book implements java.io.Serializable
 		
 	}
 	
-	public Book(BigDecimal idBook, String service, String link,String title, Set<TaxonPlic> taxonPlic) 
+	public Book(BigDecimal idBook, String service, String link,String title,String externalId , Set<TaxonPlic> taxonPlic) 
 	{
 		this.idBook = idBook;
 		this.service = service;
 		this.link = link;
 		this.title = title;
+		this.externalId = externalId;
 		this.taxonPlic = taxonPlic;
 	}
 	
@@ -38,6 +40,14 @@ public class Book implements java.io.Serializable
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getExternalId() {
+		return externalId;
+	}
+
+	public void setExternalId(String externalId) {
+		this.externalId = externalId;
 	}
 
 	public Set<TaxonPlic> getTaxonPlic() {
@@ -71,5 +81,7 @@ public class Book implements java.io.Serializable
 	public void setLink(String link) {
 		this.link = link;
 	}
+
+
 	
 }
