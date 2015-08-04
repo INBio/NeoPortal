@@ -218,18 +218,23 @@ public class SpeciesApiController {
     }
     
     @RequestMapping (
-              value = "/{scientificName}",
+    		value = {"/{defaultName}"}, 
               method = RequestMethod.GET,
               produces = {"application/xml", "application/json"})
     @ResponseBody
     public Object getTaxonDescription (
-            @PathVariable( value = "scientificName" ) String scientificName) {
+            @PathVariable(value = "defaultName") String scientificName )
+             {
       scientificName = scientificName.replace('_', ' ');
-      TaxonPlic taxonPlic = speciesManager.getTaxonPLicByDefaultName(scientificName);
+      TaxonPlic taxonPlic ;
+      
+      taxonPlic = speciesManager.getTaxonPLicByDefaultName(scientificName,"Español"); 
+    
       HttpHeaders headers = new HttpHeaders();
       headers.add("Access-Control-Allow-Origin", "*");
       return new ResponseEntity<TaxonPlic>(taxonPlic, headers, HttpStatus.OK);
     }
+
     
 //    @RequestMapping (
 //            value = "/{scientificName}",

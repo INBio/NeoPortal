@@ -39,6 +39,8 @@ public interface SpeciesManager {
     
     public List<TaxonDescriptionFullSDTO> taxonDescription(String scientificName);
     
+    public List<TaxonPlic> getTaxonListLanguaje(String defaultName);
+    
     public List<ImagesCDTO> getImagesByDefaultName(String defaultName, int offset, int quantity);
     
     public Long countImagesByDefaultName(String defaultName);
@@ -78,6 +80,8 @@ public interface SpeciesManager {
      * @param defaultName
      * @return
      */
-    public TaxonPlic getTaxonPLicByDefaultName(String defaultName);
+    public TaxonPlic getTaxonPLicByDefaultName(String defaultName,String language);
+
+
     
 }

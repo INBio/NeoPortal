@@ -5,8 +5,12 @@
 package org.inbio.neoportal.service.manager.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import org.apache.lucene.search.Sort;
+import org.hibernate.mapping.Collection;
 import org.inbio.neoportal.core.dao.ImageDAO;
 import org.inbio.neoportal.core.dao.OccurrenceDAO;
 import org.inbio.neoportal.core.dao.TaxonDAO;
@@ -399,27 +403,80 @@ public class SpeciesManagerImpl
   /* (non-Javadoc)
    * @see org.inbio.neoportal.service.manager.SpeciesManager#getTaxonPLicByDefaultName(java.lang.String)
    */
-  @Override
-  public TaxonPlic getTaxonPLicByDefaultName(String defaultName) {
- // field used for exact match query
-    String[] fields = {"defaultName_keyword"};
-    
-    List<Taxon> taxonList = taxonDAO.findByDefaultName(defaultName);
-    Taxon taxon;
-    
-    if (taxonList.size() == 0)
-        return null;
-    
-    taxon = taxonList.get(0);
-    
-    List<TaxonPlic> taxonPlicList = taxonPlicDAO.getByTaxonId(taxon.getTaxonId());
-    if (taxonPlicList.size() == 0)
-      return null;
-    else {
-      TaxonPlic taxonPlic = taxonPlicList.get(0);
+	@Override
+	  public TaxonPlic getTaxonPLicByDefaultName(String defaultName,String language) {
+	 // field used for exact match query
+	    String[] fields = {"defaultName_keyword"};
+	    
+	    List<Taxon> taxonList = taxonDAO.findByDefaultName(defaultName);
+	    Taxon taxon;
+	    
+	    if (taxonList.size() == 0)
+	    {
+	        return null;
+	    }
+	    else
+	    {
+	    	taxon = taxonList.get(0);
+	    }
+	    
+	    List<TaxonPlic> taxonPlicList = taxonPlicDAO.getByTaxonId(taxon.getTaxonId());
+	    
+	    if(taxonPlicList.size() == 0 )
+	    {
+	    	return null;
+	    }
+	    else if (taxonPlicList.size() > 0)
+	    {
+	    	TaxonPlic list;
+	    	for(int i = 0; i <= taxonPlicList.size(); i++)
+	    	{
+	    		list = taxonPlicList.get(i);
+	    		
+	    		if(list.getVersion().toString().equals(language) == true )
+	    		{
+	    			return list;
+	    		}
+	    	}
+		    return null;
+	    }
+	    else 
+	    {
+	       TaxonPlic taxonPlic = taxonPlicList.get(0);
+	       return taxonPlic;
+	    }
+	}
+  
+  /**
+   * 
+   * @param defaultName
+   * @return 
+   */
+  public List<TaxonPlic> getTaxonListLanguaje(String defaultName)
+  {
+	  List<Taxon> taxonList = taxonDAO.findByDefaultName(defaultName);	    
+	  Taxon taxon;
+	  
+	  if (taxonList.size() == 0)
+	  {
+		  return null;
+	  }
+	  else
+	  {
+		  taxon = taxonList.get(0);
+	  }
+	        
+	  List<TaxonPlic> taxonPlicList = taxonPlicDAO.getByTaxonId(taxon.getTaxonId());
 
-      return taxonPlic;
-    }
-  }
-	
+	  Collections.sort(taxonPlicList, new TaxonPlic.CompDate(false));
+	  	  
+	  return taxonPlicList;
+			   
+  }	
+
+
+
 }
+
+
+
