@@ -18,7 +18,7 @@
 			  		<c:if test="${not empty listLanguaje.version }">
 			  			<c:choose>
 			  				<c:when test="${action == listLanguaje.version}">
-	  							  	<div class="thumbnail1">		
+	  							  	<div class="thumbnail-active thumbnail">		
 			  						<div class="caption">   
 					        		<c:if test="${not empty listLanguaje.language }">
 								    <p>
