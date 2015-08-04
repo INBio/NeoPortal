@@ -468,7 +468,7 @@ public class SpeciesManagerImpl
 	        
 	  List<TaxonPlic> taxonPlicList = taxonPlicDAO.getByTaxonId(taxon.getTaxonId());
 
-	  Collections.sort(taxonPlicList, new TaxonPlic.CompDate(false));
+	  Collections.sort(taxonPlicList, new TaxonPlic.CompDate(true));
 	  	  
 	  return taxonPlicList;
 			   
