@@ -50,8 +50,6 @@
 	</jsp:attribute>
 	      
 	<jsp:body>
-	
-    <script type="text/javascript" src="<c:url value="/themes/bootstrap/js/bootstrap.min.js" />"></script>
         
         <div class="data_wrapper species_page">
         	
