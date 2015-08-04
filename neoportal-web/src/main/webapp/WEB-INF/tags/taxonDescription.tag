@@ -24,6 +24,31 @@
 <!-- 	<div id="species_images"></div> -->
 	<n:imageGallery images="${images }"></n:imageGallery>
 	
+			<c:if test="${taxon.taxonomicalRangeId >= 19}">
+	<div id="conservation">
+			<p>
+				<!--  Red List Endemico -->
+				<h3><fmt:message key="ConservationStatus"/></h3>	
+			
+				<img class="imgIUCN" alt="" src="<c:out value="${pageContext.request.contextPath}"/><spring:theme code='images_path'/>logos/IUCN.jpg" >
+				<a id="specie_category" target="_blank" class="iucn" ><fmt:message key="notInfo"/></a>	
+			</p>
+			<p>
+			<img class="imgIUCN" alt="" src="<c:out value="${pageContext.request.contextPath}"/><spring:theme code='images_path'/>logos/CostaRica.jpg" >
+			
+			<c:choose>
+			<c:when test="${not empty taxonDescription.threatStatus}">
+				<a class="iucn">${taxonDescription.threatStatus}</a>	
+			</c:when>
+			<c:otherwise>
+				<a class="iucn"><fmt:message key="notInfo"/></a>	
+			</c:otherwise>
+			</c:choose>
+
+			</p>
+		</div>
+			</c:if>
+	
 	<div id="taxonDescription">
 		<div id="naturalHistory">
 			<c:if test="${ 
@@ -160,38 +185,7 @@
 		</c:if>
 		
 		
-		<c:if test="${status != 'kingdom'}">
-	
-			<p>
-				<!--  Red List Endemico -->
-				<h3><fmt:message key="ConservationStatus"/></h3>	
-			
-				<img class="imgIUCN" alt="" src="<c:out value="${pageContext.request.contextPath}"/><spring:theme code='images_path'/>logos/IUCN.jpg" >
-				<a id="specie_category" target="_blank" class="iucn" ><fmt:message key="notInfo"/></a>	
-			</p>
-			<p>
-			<img class="imgIUCN" alt="" src="<c:out value="${pageContext.request.contextPath}"/><spring:theme code='images_path'/>logos/CostaRica.jpg" >
-			
-			<c:choose>
-			<c:when test="${not empty taxonDescription.threatStatus}">
-				<a class="iucn">${taxonDescription.threatStatus}</a>	
-			</c:when>
-			<c:otherwise>
-				<a class="iucn"><fmt:message key="notInfo"/></a>	
-			</c:otherwise>
-			</c:choose>
 
-			</p>
-		
-			</c:if>
-<!-- 		<div id="externalSource"> -->
-<%-- 		    TODO: get external sources from database --%>
-<%-- 		    <h3><fmt:message key="taxonDes.externalSource"/></h3> --%>
-<%-- 		    <p><a href="http://www.biodiversitylibrary.org/name/${scientificName}">BHL</a></p> --%>
-<%-- 		    <p><a href="http://ara.inbio.ac.cr/SSTN-IABIN/search/${scientificName}">IABIN</a></p> --%>
-<%-- 		    <p><a href="http://cro.ots.ac.cr/rdmcnfs/datasets/exsrch.phtml?words=${scientificName}&ds=binabitrop">OET Binabitrop</a></p> --%>
-<%-- 		    <p><a href="http://species.wikimedia.org/wiki/${scientificName}">Wikispecies</a></p> --%>
-<%-- 		    <p><a href="http://www.boldsystems.org/views/taxbrowser.php?taxon=${scientificName}">Barcode of life data systems</a></p> --%>
-<!-- 		</div> -->
+
 	</div> <!-- close #taxonDescription -->
 </div>

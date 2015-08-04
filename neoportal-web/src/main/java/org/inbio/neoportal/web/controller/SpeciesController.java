@@ -73,8 +73,7 @@ public class SpeciesController {
         }
         else
         {
-          taxon = speciesManager.getTaxonByDefaultName(defaultName);
-          model.addAttribute("status", "kingdom");
+          taxon = speciesManager.getTaxonByDefaultName(defaultName);         
         }
 
         // get some images
