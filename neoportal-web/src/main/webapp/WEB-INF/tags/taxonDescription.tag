@@ -32,7 +32,7 @@
 							    	</c:if>
 							    	<c:if test="${not empty listLanguaje.dateIssued }">
 							    	<p>
-							   			<strong><fmt:message key="taxonDes.dateCreated"/></strong>: ${listLanguaje.dateIssued}
+							   			<strong><fmt:message key="taxonDes.dateIssued"/></strong>: ${listLanguaje.dateIssued}
 									</p>
 							    	</c:if>  
 			  						<p><a href="${taxonUrl}/${listLanguaje.version}" class="btn btn-default disabled" role="button" >Version ${listLanguaje.version}</a></p>
@@ -54,7 +54,7 @@
 							    	</c:if>
 							    	<c:if test="${not empty listLanguaje.dateIssued }">
 							    	<p>
-							   			<strong><fmt:message key="taxonDes.dateCreated"/></strong>: ${listLanguaje.dateIssued}
+							   			<strong><fmt:message key="taxonDes.dateIssued"/></strong>: ${listLanguaje.dateIssued}
 									</p>
 							    	</c:if>  
 			  						<p><a href="${taxonUrl}/${listLanguaje.version}" class="btn btn-primary">Version ${listLanguaje.version}</a></p>
@@ -283,6 +283,11 @@
 		   			<strong><fmt:message key="taxonDes.dateCreated"/></strong>: ${taxonDescription.creationdate}
 				</p>
 		    	</c:if>  
+		    	<c:if test="${not empty taxonDescription.dateIssued }">
+		    	<p>
+		   			<strong><fmt:message key="taxonDes.dateIssued"/></strong>: ${taxonDescription.dateIssued}
+				</p>
+		    	</c:if> 
 		    </c:if>  	
 		</div>
 	
