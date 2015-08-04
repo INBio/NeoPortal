@@ -109,7 +109,7 @@ public class SpeciesController {
         List<TaxonPlic> taxonPlicListLanguaje = speciesManager.getTaxonListLanguaje(defaultName);
         
         TaxonPlic list;
-        if (taxonPlicListLanguaje.size() != 0)
+        if (taxonPlicListLanguaje != null && taxonPlicListLanguaje.size() != 0)
         {
 	    	for(int i = 0; i <= taxonPlicListLanguaje.size(); i++)
 	    	{
