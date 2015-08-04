@@ -111,11 +111,11 @@ public class SpeciesController {
         TaxonPlic list;
         if (taxonPlicListLanguaje != null && taxonPlicListLanguaje.size() != 0)
         {
-	    	for(int i = 0; i <= taxonPlicListLanguaje.size(); i++)
+	    	for(int i = 0; i < taxonPlicListLanguaje.size(); i++)
 	    	{
 	    		list = taxonPlicListLanguaje.get(i);
 	    		
-	    		if(list.getLanguage().toString().equals("Español") == true )
+	    		if(list.getLanguage() != null && list.getLanguage().toString().equals("Español") == true )
 	    		{
 	    			taxonPlic = speciesManager.getTaxonPLicByDefaultName(defaultName,taxonPlicListLanguaje.get(i).getVersion().toString());
 	    			break;
