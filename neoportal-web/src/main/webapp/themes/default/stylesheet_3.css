@@ -806,3 +806,16 @@ div#map {
   box-shadow: 3px 3px 10px #aaa;
 }
 
+.iucn
+{
+	line-height: 39px;
+}
+
+.imgIUCN 
+{
+	float: left;
+	width: 44px;
+	height: 39px; 
+	padding-right: 10px;
+}
+

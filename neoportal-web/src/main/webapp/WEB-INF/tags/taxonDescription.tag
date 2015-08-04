@@ -123,12 +123,36 @@
 <!-- 	<div id="species_images"></div> -->
 	<n:imageGallery images="${images }"></n:imageGallery>
 	
-    		<!-- 	  url del video-->			
+			<c:if test="${taxon.taxonomicalRangeId >= 19}">
+	<div id="conservation">
+			<p>
+				<!--  Red List Endemico -->
+				<h3><fmt:message key="ConservationStatus"/></h3>	
+			
+				<img class="imgIUCN" alt="" src="<c:out value="${pageContext.request.contextPath}"/><spring:theme code='images_path'/>logos/IUCN.jpg" >
+				<a id="specie_category" target="_blank" class="iucn" ><fmt:message key="notInfo"/></a>	
+			</p>
+			<p>
+			<img class="imgIUCN" alt="" src="<c:out value="${pageContext.request.contextPath}"/><spring:theme code='images_path'/>logos/CostaRica.jpg" >
+			
+			<c:choose>
+			<c:when test="${not empty taxonDescription.threatStatus}">
+				<a class="iucn">${taxonDescription.threatStatus}</a>	
+			</c:when>
+			<c:otherwise>
+				<a class="iucn"><fmt:message key="notInfo"/></a>	
+			</c:otherwise>
+			</c:choose>
+
+			</p>
+		</div>
+			</c:if>
+	
+	    		<!-- 	  url del video-->			
 			<c:if test="${not empty taxonDescription.urlvideo}">
 				<h4><fmt:message key="taxonDes.Video"/></h4>
 	    		<h4><a href= "${taxonDescription.urlvideo}">${taxonDescription.urlvideo}</a></h4>
 	    	</c:if>	   
-	    	
 	<div id="taxonDescription">
 		<div id="naturalHistory">
 			<c:if test="${ 
@@ -290,6 +314,5 @@
 		    	</c:if> 
 		    </c:if>  	
 		</div>
-	
 	</div> <!-- close #taxonDescription -->
 </div>
