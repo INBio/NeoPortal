@@ -14,36 +14,55 @@
 	<div class="container">
 	<div class="row">	
     	<c:forEach var="listLanguaje" items="${listLanguaje}">						
-			  <div class="col-md-4">
-			  <div class="thumbnail">		
-			  <div class="caption">    
-	        		<c:if test="${not empty listLanguaje.language }">
-				    <p>
-			    		<strong><fmt:message key="taxonDes.language"/></strong>: ${listLanguaje.language}
-			   		</p>
-			    	</c:if>
-			    	<c:if test="${not empty listLanguaje.individualName }">
-			   		<p>
-			   			<strong><fmt:message key="taxonDes.author"/></strong>: ${listLanguaje.individualName}
-			 		</p>
-			    	</c:if>
-			    	<c:if test="${not empty listLanguaje.dateIssued }">
-			    	<p>
-			   			<strong><fmt:message key="taxonDes.dateCreated"/></strong>: ${listLanguaje.dateIssued}
-					</p>
-			    	</c:if>  
+			  <div class="col-xs-6 col-sm-3">
 			  		<c:if test="${not empty listLanguaje.version }">
 			  			<c:choose>
 			  				<c:when test="${action == listLanguaje.version}">
-			  						<p><a href="${taxonUrl}/${listLanguaje.version}" class="btn btn-primary">Version ${listLanguaje.version}</a></p>
+	  							  	<div class="thumbnail1">		
+			  						<div class="caption">   
+					        		<c:if test="${not empty listLanguaje.language }">
+								    <p>
+							    		<strong><fmt:message key="taxonDes.language"/></strong>: ${listLanguaje.language}
+							   		</p>
+							    	</c:if>
+							    	<c:if test="${not empty listLanguaje.individualName }">
+							   		<p>
+							   			<strong><fmt:message key="taxonDes.author"/></strong>: ${listLanguaje.individualName}
+							 		</p>
+							    	</c:if>
+							    	<c:if test="${not empty listLanguaje.dateIssued }">
+							    	<p>
+							   			<strong><fmt:message key="taxonDes.dateCreated"/></strong>: ${listLanguaje.dateIssued}
+									</p>
+							    	</c:if>  
+			  						<p><a href="${taxonUrl}/${listLanguaje.version}" class="btn btn-default disabled" role="button" >Version ${listLanguaje.version}</a></p>
+					  				  </div>
+			  				  		  </div>	
 			  				</c:when>
 			  				<c:otherwise>
-			  						<p><a href="${taxonUrl}/${listLanguaje.version}" class="btn">Version ${listLanguaje.version}</a></p>
+			  						<div class="thumbnail">		
+			  						<div class="caption">  
+					        		<c:if test="${not empty listLanguaje.language }">
+								    <p>
+							    		<strong><fmt:message key="taxonDes.language"/></strong>: ${listLanguaje.language}
+							   		</p>
+							    	</c:if>
+							    	<c:if test="${not empty listLanguaje.individualName }">
+							   		<p>
+							   			<strong><fmt:message key="taxonDes.author"/></strong>: ${listLanguaje.individualName}
+							 		</p>
+							    	</c:if>
+							    	<c:if test="${not empty listLanguaje.dateIssued }">
+							    	<p>
+							   			<strong><fmt:message key="taxonDes.dateCreated"/></strong>: ${listLanguaje.dateIssued}
+									</p>
+							    	</c:if>  
+			  						<p><a href="${taxonUrl}/${listLanguaje.version}" class="btn btn-primary">Version ${listLanguaje.version}</a></p>
+				  				  	 </div>
+			  				 		 </div>	
 			  				</c:otherwise>
 			  			</c:choose>
-			  		</c:if>
-			  </div>
-			  </div>	
+			  		</c:if>	
 			  </div>  	
 		</c:forEach>
 	</div>	
@@ -97,6 +116,9 @@
 	</nav>
 	</c:if>
 	
+	<c:if test="${not empty taxonDescription.version}">
+	<h3><fmt:message key="Version"/> ${taxonDescription.version}</h3>
+	</c:if>
 	<div id="shareThis"></div>
 <!-- 	<div id="species_images"></div> -->
 	<n:imageGallery images="${images }"></n:imageGallery>
