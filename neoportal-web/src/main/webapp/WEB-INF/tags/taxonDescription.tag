@@ -116,7 +116,7 @@
 	</nav>
 	</c:if>
 	
-	<c:if test="${not empty taxonDescription.version}">
+	<c:if test="${fn:length(listLanguaje) > 1}">
 	<h3><fmt:message key="Version"/> ${taxonDescription.version}</h3>
 	</c:if>
 	<div id="shareThis"></div>
