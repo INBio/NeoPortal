@@ -312,7 +312,12 @@
 		   			<strong><fmt:message key="taxonDes.dateIssued"/></strong>: ${taxonDescription.dateIssued}
 				</p>
 		    	</c:if> 
-		    </c:if>  	
+			   	<c:if test="${not empty taxonDescription.references }">
+		    	<p>
+		   			<strong><fmt:message key="taxonDes.references"/></strong>: ${taxonDescription.references}
+				</p>
+		    	</c:if> 
+	    </c:if>  	
 		</div>
 	</div> <!-- close #taxonDescription -->
 </div>
