@@ -11,6 +11,7 @@
 	<head>
         <meta charset="utf-8">
 
+        <link rel="shortcut icon" href="<c:url value="/themes/default/images/favicon.ico" />" />
         <!-- neoportal js and css -->
          <link rel="stylesheet" type="text/css" href="<c:url value="/themes/bootstrap/css/bootstrap.min.css" /> "/>
         <link rel="stylesheet" type="text/css" href="<c:out value="${pageContext.request.contextPath}"/><spring:theme code="styleSheet_3"/>" />
