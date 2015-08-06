@@ -40,6 +40,8 @@ public class TaxonFeatureDTO extends BaseDTO {
 	private String defaultName;
 	private String briefDescription;
 	private String taxonomicalRangeName;
+	private String taxonomicalRangeId;
+
 	private List<ImagesCDTO> featureImages;
 	private long imagesCount;
 	private long occurrencesCount;
@@ -96,4 +98,12 @@ public class TaxonFeatureDTO extends BaseDTO {
 		this.occurrencesCount = occurrencesCount;
 	}
 	
+	public String getTaxonomicalRangeId() {
+		return taxonomicalRangeId;
+	}
+
+	public void setTaxonomicalRangeId(String taxonomicalRangeId) {
+		this.taxonomicalRangeId = taxonomicalRangeId;
+	}
+
 }

@@ -280,6 +280,7 @@ public class SpeciesManagerImpl
     					taxon.getTaxonomicalRangeId().longValue())
     					.getTaxonomicalRangeName());
     	
+    	taxonFeature.setTaxonomicalRangeId(taxon.getTaxonomicalRangeId().toString());
     	// get feature images
     	field = "taxon." + taxonFeature.getTaxonomicalRangeName();
     	
