@@ -89,7 +89,7 @@ public class SpeciesController {
     }
     
     @RequestMapping (
-            value = "/{defaultName}",
+            value = "/{defaultName:.+}",
             method = RequestMethod.GET)
     public String getTaxonDescription (
             Model model,
