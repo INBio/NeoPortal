@@ -150,8 +150,12 @@
 	
 	    		<!-- 	  url del video-->			
 			<c:if test="${not empty taxonDescription.urlvideo}">
-				<h4><fmt:message key="taxonDes.Video"/></h4>
-	    		<h4><a href= "${taxonDescription.urlvideo}">${taxonDescription.urlvideo}</a></h4>
+				<h3><fmt:message key="taxonDes.Video"/></h3>
+
+			<c:set var="urlArray" value="${fn:split(taxonDescription.urlvideo,'=')}"/> 
+            <c:set var="youtubeId" value="${urlArray[1]}"/> 
+
+				<iframe width="560" height="315" src="<c:url value="https://www.youtube.com/embed/${youtubeId}"/>" frameborder="0" allowfullscreen/></iframe>
 	    	</c:if>	   
 	<div id="taxonDescription">
 		<div id="naturalHistory">
