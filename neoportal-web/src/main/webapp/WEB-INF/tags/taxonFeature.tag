@@ -11,7 +11,7 @@
 	<div id="feature">
 		<a href="<c:out value="${pageContext.request.contextPath}"/>/species/${taxonFeature.defaultName}">
 		<c:choose>
-			<c:when test="${taxonFeature.taxonomicalRangeName == 'species' }">
+			<c:when test="${taxonFeature.taxonomicalRangeId >= 19 }">
 				<h3 class="scientific-name">${taxonFeature.defaultName}</h3>
 			</c:when>
 		
