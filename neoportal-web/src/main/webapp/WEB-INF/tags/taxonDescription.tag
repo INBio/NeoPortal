@@ -206,7 +206,8 @@
 		<div id="habitatDistribution">
 			<c:if test="${not empty taxonDescription.habitatUnstructure ||
 						  not empty taxonDescription.crDistribution ||
-						  not empty taxonDescription.regionalDistribution
+						  not empty taxonDescription.regionalDistribution ||
+						  not empty taxonDescription.typeLocality
 			}">
 		    <h3><fmt:message key="taxonDes.habitatDistribution"/></h3>
 		    </c:if>
@@ -226,6 +227,11 @@
 			<c:if test="${not empty taxonDescription.conservationareadistribution}">
 	    		<h4><fmt:message key="taxonDes.conservationAreaDistribution"/></h4>
 	    		<div>${taxonDescription.conservationareadistribution}</div>
+	    	</c:if>
+	    	<!-- 	    info de tipo de localidad -->		
+			<c:if test="${not empty taxonDescription.typeLocality}">
+	    		<h4><fmt:message key="taxonDes.typeLocality"/></h4>
+	    		<div>${taxonDescription.typeLocality}</div>
 	    	</c:if>
  	
 		</div>
