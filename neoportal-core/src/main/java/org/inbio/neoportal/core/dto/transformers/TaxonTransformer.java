@@ -28,12 +28,14 @@ import org.inbio.neoportal.core.dto.taxon.TaxonLiteCDTO;
 import org.inbio.neoportal.core.entity.CommonName;
 import org.inbio.neoportal.core.entity.Image;
 import org.inbio.neoportal.core.entity.Taxon;
+import org.springframework.stereotype.Component;
 
 
 /**
  * Transfrom a list of Taxon entities to OccurrenceLiteDTO
  * @author avargas
  */
+@Component
 public class TaxonTransformer 
     implements ResultTransformer {
 
