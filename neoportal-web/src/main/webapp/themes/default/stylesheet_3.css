@@ -436,10 +436,9 @@ div#searchPanel a#simple{
 .typeahead,
 .tt-query,
 .tt-hint {
-  width: 396px;
+  width: 326px;
   height: 30px;
   padding: 8px 12px;
-  font-size: 24px;
   line-height: 30px;
   border: 2px solid #ccc;
   -webkit-border-radius: 8px;
@@ -574,7 +573,7 @@ ul.taxon_list li{
 	bottom: 0;
 	background: rgba(0,0,0);
 	background: rgba(0,0,0,.5);
-	width: 167px;
+	width: 170px;
 	padding: 2px 0px 2px 3px;
 	color: white;
 	line-height: 1.2;

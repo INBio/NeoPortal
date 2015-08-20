@@ -9,6 +9,6 @@
 
 
 <div id="searchPanel" >
-    <input id="searchInput" type="text" class="typeahead">
+    <input id="searchInput" type="text" class="typeahead" placeholder="<fmt:message key="search_placeholder"/>" >
     <a id="simple" class="searchButton" href="#"><fmt:message key="search"/></a>
 </div>
