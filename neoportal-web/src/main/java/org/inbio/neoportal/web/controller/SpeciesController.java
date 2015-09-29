@@ -91,7 +91,7 @@ public class SpeciesController {
     }
     
     @RequestMapping (
-  		value = {"/{defaultName}"}, 
+  		value = {"/{defaultName:.+}"}, 
           method = RequestMethod.GET)   
   public String getTaxonDescription (
           Model model,
@@ -134,7 +134,7 @@ public class SpeciesController {
   }
     
     @RequestMapping (
-            value = "/{defaultName}/images",
+            value = "/{defaultName:.+}/images",
             method = RequestMethod.GET)
     public String getTaxonImages (
             Model model,
@@ -194,7 +194,7 @@ public class SpeciesController {
     }
     
     @RequestMapping (
-            value = "/{defaultName}/occurrences",
+            value = "/{defaultName:.+}/occurrences",
             method = RequestMethod.GET)
     public String getTaxonOccurrences (
             Model model,
@@ -258,7 +258,7 @@ public class SpeciesController {
     }
     
     @RequestMapping (
-      value = "/{defaultName}/map",
+      value = "/{defaultName:.+}/map",
       method = RequestMethod.GET)
     public String getTaxonMap(
       Model model,
