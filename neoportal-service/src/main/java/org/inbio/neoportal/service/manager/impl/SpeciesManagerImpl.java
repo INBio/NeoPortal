@@ -418,52 +418,6 @@ public class SpeciesManagerImpl
 		return luceneQuery;
 	}
 	
-  /* (non-Javadoc)
-   * @see org.inbio.neoportal.service.manager.SpeciesManager#getTaxonPLicByDefaultName(java.lang.String)
-   */
-  @Override
-  public TaxonPlic getTaxonPLicByDefaultName(String defaultName,String language) {
- // field used for exact match query
-    String[] fields = {"defaultName_keyword"};
-    
-    List<Taxon> taxonList = taxonDAO.findByDefaultName(defaultName);
-    Taxon taxon;
-    
-    if (taxonList.size() == 0)
-    {
-        return null;
-    }
-    else
-    {
-    	taxon = taxonList.get(0);
-    }
-    
-    List<TaxonPlic> taxonPlicList = taxonPlicDAO.getByTaxonId(taxon.getTaxonId());
-    
-    if(taxonPlicList.size() == 0 )
-    {
-    	return null;
-    }
-    else if (taxonPlicList.size() > 0)
-    {
-    	TaxonPlic list;
-    	for(int i = 0; i <= taxonPlicList.size(); i++)
-    	{
-    		list = taxonPlicList.get(i);
-    		
-    		if(list.getLanguage().toString().equals(language) == true)
-    		{
-    			return list;
-    		}
-    	}
-	    return null;
-    }
-    else 
-    {
-       TaxonPlic taxonPlic = taxonPlicList.get(0);
-       return taxonPlic;
-    }
-  }
 
   /**
    * 

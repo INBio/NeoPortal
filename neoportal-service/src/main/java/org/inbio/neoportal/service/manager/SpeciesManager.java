@@ -79,11 +79,4 @@ public interface SpeciesManager {
      */
     public Taxon getTaxonByDefaultName(String defaultName);
     
-    /**
-     * 
-     * @param defaultName
-     * @return
-     */
-    public TaxonPlic getTaxonPLicByDefaultName(String defaultName,String language);
-
 }

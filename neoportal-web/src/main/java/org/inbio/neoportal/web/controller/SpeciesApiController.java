@@ -226,10 +226,16 @@ public class SpeciesApiController {
             @PathVariable(value = "defaultName") String scientificName ,
             @PathVariable(value = "language") String language) {
       scientificName = scientificName.replace('_', ' ');
-      TaxonPlic taxonPlic ;
+      TaxonPlic taxonPlic = null;
+    
+      List<TaxonPlic> taxonPlicList = speciesManager.getTaxonListLanguaje(scientificName);
      
-      taxonPlic = speciesManager.getTaxonPLicByDefaultName(scientificName,language); 
-      
+      for (int i = 0; i < taxonPlicList.size(); i++) {
+        taxonPlic = taxonPlicList.get(i);
+        if (taxonPlic.getVersion().toString().equals(language) == true)
+            break;
+      }
+
       HttpHeaders headers = new HttpHeaders();
       headers.add("Access-Control-Allow-Origin", "*");
       return new ResponseEntity<TaxonPlic>(taxonPlic, headers, HttpStatus.OK);
@@ -245,10 +251,16 @@ public class SpeciesApiController {
             @PathVariable(value = "defaultName") String scientificName )
              {
       scientificName = scientificName.replace('_', ' ');
-      TaxonPlic taxonPlic ;
-      
-      taxonPlic = speciesManager.getTaxonPLicByDefaultName(scientificName,"Español"); 
+      TaxonPlic taxonPlic = null;
     
+      List<TaxonPlic> taxonPlicList = speciesManager.getTaxonListLanguaje(scientificName);
+     
+      for (int i = 0; i < taxonPlicList.size(); i++) {
+        taxonPlic = taxonPlicList.get(i);
+        if (taxonPlic.getVersion().toString().equals("Español") == true)
+            break;
+      }
+      
       HttpHeaders headers = new HttpHeaders();
       headers.add("Access-Control-Allow-Origin", "*");
       return new ResponseEntity<TaxonPlic>(taxonPlic, headers, HttpStatus.OK);

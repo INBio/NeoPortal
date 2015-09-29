@@ -61,18 +61,26 @@ public class SpeciesController {
         
         defaultName = defaultName.replace('_', ' ');       
         
-        taxonPlic = speciesManager.getTaxonPLicByDefaultName(defaultName,language);
-        
         List<TaxonPlic> taxonPlicListLanguaje = speciesManager.getTaxonListLanguaje(defaultName);
         
+        for(int i = 0; i < taxonPlicListLanguaje.size(); i++) {
+            taxonPlic = taxonPlicListLanguaje.get(i);
+            if ( taxonPlic.getVersion().toString().equals(language) == true)
+                break;
+        }
+
         // get taxon hierarchy 
         Taxon taxon = null;
         if(taxonPlic != null)
         {
-          taxon = taxonPlic.getTaxon();
-          model.addAttribute("action", taxonPlic.getVersion());
-          model.addAttribute("taxonDescription", taxonPlic);
-          model.addAttribute("listLanguaje",taxonPlicListLanguaje);   
+            taxon = taxonPlic.getTaxon();
+            List<Book> taxonBooks = new ArrayList<Book>(taxonPlic.getBooks());
+            model.addAttribute("action", taxonPlic.getVersion());
+            model.addAttribute("taxonDescription", taxonPlic);
+            model.addAttribute("listLanguaje",taxonPlicListLanguaje);   
+            model.addAttribute("taxonBooks",taxonBooks);
+            model.addAttribute("books","books");
+
         }
         else
         {
@@ -105,15 +113,29 @@ public class SpeciesController {
       
       defaultName = defaultName.replace('_', ' ');
    
-      taxonPlic = speciesManager.getTaxonPLicByDefaultName(defaultName,"Español");   
-        
+      List<TaxonPlic> taxonPlicListLanguaje = speciesManager.getTaxonListLanguaje(defaultName);
+
+      if (taxonPlicListLanguaje.size() != 0)
+      {
+          for(int i = 0; i < taxonPlicListLanguaje.size(); i++)
+          {
+              taxonPlic = taxonPlicListLanguaje.get(i);
+
+              if(taxonPlic.getLanguage().toString().equals("Español") == true )
+              {
+                  break;
+              }
+          }      
+      }
       // get taxon hierarchy 
       Taxon taxon = null;
       if(taxonPlic != null)
       {
         taxon = taxonPlic.getTaxon();
         List<Book> taxonBooks = new ArrayList<Book>(taxonPlic.getBooks());
-      	model.addAttribute("taxonDescription", taxonPlic);
+      	model.addAttribute("action", taxonPlic.getVersion());
+        model.addAttribute("taxonDescription", taxonPlic);
+        model.addAttribute("listLanguaje",taxonPlicListLanguaje);   
         model.addAttribute("taxonBooks",taxonBooks);
         model.addAttribute("books","books");
   	  }
