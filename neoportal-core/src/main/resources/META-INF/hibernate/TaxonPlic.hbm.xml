@@ -240,5 +240,10 @@
             <column name="urlvideo" length="4000" />
         </property>
         <many-to-one name="taxon" class="org.inbio.neoportal.core.entity.Taxon" fetch="join" column="taxon_id" />
+        
+         <set name="books" table="taxon_plic_books" lazy="false">
+	        <key column="taxon_record_id"/>
+	        <many-to-many class="org.inbio.neoportal.core.entity.Book" column="book_id"/>
+	    </set>
     </class>
 </hibernate-mapping>

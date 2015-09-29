@@ -4,6 +4,8 @@ package org.inbio.neoportal.core.entity;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -24,12 +26,12 @@ public class TaxonPlic implements java.io.Serializable {
   private BigDecimal version;
   private String scientificName;
   private String scientificNameAuthorship;
-  private String namePublishedInYear;
+  private String namePublishedInYear; // publicacion
   private String individualName;
   private String dateIssued;
   private String commonNamesUnstructured;
-  private String synonyms;
-  private String typeLocality;
+  private String synonyms;// sinonimo
+  private String typeLocality;// localidad
   private String typeDepository;
   private String fullDescriptionUnstructured;
   private String molecularDataUnstructure;
@@ -98,6 +100,9 @@ public class TaxonPlic implements java.io.Serializable {
   private String wildProtectedAreaDistribution;
   private String etymology;
   private String urlvideo;
+  private Set <Book> books = new HashSet<Book>(0);
+  
+ 
   @JsonIgnore
   private Taxon  taxon;
 
@@ -129,7 +134,7 @@ public class TaxonPlic implements java.io.Serializable {
       String recordurl, String urllogo1, String urllogo2, String speciesrecordstatus,
       String philologist, String subfamily, String language, String esMetaDescriptors,
       String enMetaDescriptors, String species, String citesThreatStatus, String uicnThreatStatus,
-      String wildProtectedAreaDistribution, String etymology, String urlvideo, Taxon taxon) {
+      String wildProtectedAreaDistribution, String etymology, String urlvideo, Taxon taxon, String ConservationAreaDistribution , Set<Book> books) {
     this.taxonRecordId = taxonRecordId;
     this.scientificName = scientificName;
     this.scientificNameAuthorship = scientificNameAuthorship;
@@ -208,6 +213,8 @@ public class TaxonPlic implements java.io.Serializable {
     this.etymology = etymology;
     this.urlvideo = urlvideo;
     this.taxon = taxon;
+    this.books = books;
+
   }
 
   public BigDecimal getTaxonRecordId() {
@@ -858,6 +865,16 @@ public class TaxonPlic implements java.io.Serializable {
 	  
   }
 
+}
+
+
+public Set<Book> getBooks() {
+	return books;
+}
+
+
+public void setBooks(Set<Book> books) {
+	this.books = books;
 }
 
 

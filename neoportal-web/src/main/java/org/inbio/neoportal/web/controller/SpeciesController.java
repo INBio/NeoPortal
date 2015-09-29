@@ -18,12 +18,14 @@
  */
 package org.inbio.neoportal.web.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.inbio.neoportal.core.dto.occurrence.OccurrenceDwcCDTO;
 import org.inbio.neoportal.core.dto.taxon.ImagesCDTO;
+import org.inbio.neoportal.core.entity.Book;
 import org.inbio.neoportal.core.entity.Taxon;
 import org.inbio.neoportal.core.entity.TaxonPlic;
 import org.inbio.neoportal.service.manager.SpeciesManager;
@@ -44,7 +46,7 @@ public class SpeciesController {
     private SpeciesManager speciesManager;
 	
 	@RequestMapping (
-    		value = {"/{defaultName}/{language}"}, 
+    		value = {"/{defaultName:.+}/{language}"}, 
             method = RequestMethod.GET)   
     public String getTaxonDescriptionLanguage (
             Model model,
@@ -89,63 +91,47 @@ public class SpeciesController {
     }
     
     @RequestMapping (
-            value = "/{defaultName:.+}",
-            method = RequestMethod.GET)
-    public String getTaxonDescription (
-            Model model,
-            @PathVariable(value = "defaultName") String defaultName,
-	        HttpServletRequest request) {
-    	
-    	String taxonUrl = request.getContextPath() + "/species/" + defaultName;
+  		value = {"/{defaultName}"}, 
+          method = RequestMethod.GET)   
+  public String getTaxonDescription (
+          Model model,
+          @PathVariable(value = "defaultName") String defaultName, 
+	        HttpServletRequest request)  {
+  	
+  	String taxonUrl = request.getContextPath() + "/species/" + defaultName;
+      
+  	// get taxon description
+      TaxonPlic taxonPlic = null;     
+      
+      defaultName = defaultName.replace('_', ' ');
+   
+      taxonPlic = speciesManager.getTaxonPLicByDefaultName(defaultName,"Español");   
         
-    	// get taxon description
-        TaxonPlic taxonPlic = null;
-        
-        defaultName = defaultName.replace('_', ' ');
-        
-//        TaxonPlicSDTO taxonPlicSDTO = 
-//            speciesManager.getTaxonPLicByDefaultName(defaultName);
-        
-        List<TaxonPlic> taxonPlicListLanguaje = speciesManager.getTaxonListLanguaje(defaultName);
-        
-        TaxonPlic list;
-        if (taxonPlicListLanguaje != null && taxonPlicListLanguaje.size() != 0)
-        {
-	    	for(int i = 0; i < taxonPlicListLanguaje.size(); i++)
-	    	{
-	    		list = taxonPlicListLanguaje.get(i);
-	    		taxonPlic = list;
-	    		if(list.getLanguage() != null && list.getLanguage().toString().equals("Español") == true )
-	    		{
-	    			//taxonPlic = list;//speciesManager.getTaxonPLicByDefaultName(defaultName,taxonPlicListLanguaje.get(i).getVersion().toString());
-	    			break;
-	    		}
-	    	}      
-        }
-        // get taxon hierarchy 
-        Taxon taxon = null;
-        if(taxonPlic != null)
-        {
-          taxon = taxonPlic.getTaxon();
-          model.addAttribute("action", taxonPlic.getVersion());
-          model.addAttribute("taxonDescription", taxonPlic);
-          model.addAttribute("listLanguaje",taxonPlicListLanguaje);
-        }
-        else
-        {
-          taxon = speciesManager.getTaxonByDefaultName(defaultName);
-        }
-
-        // get some images
-        List<ImagesCDTO> images = speciesManager.getImagesByDefaultName(defaultName, 0, 4);
-        
-        model.addAttribute("taxon", taxon);
-        model.addAttribute("context", "taxonDescription");
-        model.addAttribute("taxonUrl", taxonUrl);
-        model.addAttribute("images", images);
-        
-        return "species";
-    }
+      // get taxon hierarchy 
+      Taxon taxon = null;
+      if(taxonPlic != null)
+      {
+        taxon = taxonPlic.getTaxon();
+        List<Book> taxonBooks = new ArrayList<Book>(taxonPlic.getBooks());
+      	model.addAttribute("taxonDescription", taxonPlic);
+        model.addAttribute("taxonBooks",taxonBooks);
+        model.addAttribute("books","books");
+  	  }
+      else
+      {
+        taxon = speciesManager.getTaxonByDefaultName(defaultName);
+      }
+      // get some images
+      List<ImagesCDTO> images = speciesManager.getImagesByDefaultName(defaultName, 0, 4);
+      
+      
+      model.addAttribute("taxon", taxon);
+      model.addAttribute("context", "taxonDescription");
+      model.addAttribute("taxonUrl", taxonUrl);
+      model.addAttribute("images", images);
+      
+      return "species";
+  }
     
     @RequestMapping (
             value = "/{defaultName}/images",

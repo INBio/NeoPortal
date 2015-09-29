@@ -326,5 +326,30 @@
 				</p>		    	
 		</div>
 		</c:if> 
+		
+		<c:if test="${ books == 'books'}">
+		<!-- externalId				Libros de las especies -->
+		<p>
+				<h3><fmt:message key="booksInformation"/></h3>
+				<c:forEach var="taxonBooks" items="${taxonBooks}">	
+					<c:if test="${not empty taxonBooks.externalId}">		
+						<p>
+							<a href="http://www.amazon.com/gp/product/${taxonBooks.externalId}" target="_blank"><img border="0" src="http://ws-na.amazon-adsystem.com/widgets/q?_encoding=UTF8&ASIN=${taxonBooks.externalId}&Format=_SL110_&ID=AsinImage&MarketPlace=US&ServiceVersion=20070822&WS=1" ></a><img src="http://ir-na.amazon-adsystem.com/e/ir?l=as2&o=1&a=${taxonBooks.externalId}" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />						
+						</p>	
+					</c:if>	    
+				</c:forEach>
+		</p>
+		</c:if>
+
+<!-- 		<div id="externalSource"> -->
+<%-- 		    TODO: get external sources from database --%>
+<%-- 		    <h3><fmt:message key="taxonDes.externalSource"/></h3> --%>
+<%-- 		    <p><a href="http://www.biodiversitylibrary.org/name/${scientificName}">BHL</a></p> --%>
+<%-- 		    <p><a href="http://ara.inbio.ac.cr/SSTN-IABIN/search/${scientificName}">IABIN</a></p> --%>
+<%-- 		    <p><a href="http://cro.ots.ac.cr/rdmcnfs/datasets/exsrch.phtml?words=${scientificName}&ds=binabitrop">OET Binabitrop</a></p> --%>
+<%-- 		    <p><a href="http://species.wikimedia.org/wiki/${scientificName}">Wikispecies</a></p> --%>
+<%-- 		    <p><a href="http://www.boldsystems.org/views/taxbrowser.php?taxon=${scientificName}">Barcode of life data systems</a></p> --%>
+<!-- 		</div> -->
+
 	</div> <!-- close #taxonDescription -->
 </div>

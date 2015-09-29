@@ -19,9 +19,11 @@
 package org.inbio.neoportal.core.dao;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.hibernate.transform.ResultTransformer;
+import org.inbio.neoportal.core.entity.Book;
 
 /**
  * @author avargas
@@ -94,4 +96,5 @@ public interface GenericDAO<E, ID extends Serializable> {
 	     */
 	    public Long searchCount(
 	        final String searchText);
+
 }

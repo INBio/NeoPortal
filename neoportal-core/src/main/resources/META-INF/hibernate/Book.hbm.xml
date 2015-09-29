@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 8, 2015 10:03:16 AM by Hibernate Tools 3.4.0.CR1 -->
+<hibernate-mapping>
+    <class name="org.inbio.neoportal.core.entity.Book" table="BOOK">
+        <id name="idBook" type="java.math.BigDecimal">
+            <column name="id_book" />
+            <generator class="assigned" />
+        </id>
+        <property name="service" type="java.lang.String">
+            <column name="service" />
+        </property>
+        <property name="link" type="java.lang.String">
+            <column name="link" />
+        </property>
+        <property name="title" type="java.lang.String" access="field">
+            <column name="title" />
+        </property>
+        <property name="externalId" type="java.lang.String" access="field">
+            <column name="externalId" />
+        </property>     
+        
+	    <set name="taxonPlic" table="taxon_plic_books" inverse="true" lazy="false" >
+	        <key column="book_id"/>
+	        <many-to-many class="org.inbio.neoportal.core.entity.TaxonPlic" column="taxon_record_id"/>
+	    </set>
+
+    </class>
+</hibernate-mapping>
