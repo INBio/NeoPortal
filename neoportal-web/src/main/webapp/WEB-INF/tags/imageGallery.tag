@@ -16,7 +16,7 @@
 <div class="item-list">
 <c:forEach var="image" items="${images}">
 	<div class="item">
-		<div class="image-item" about="${image.bigUrl}">
+		<div class="image-item">
 			<a class="image-main" href="${image.bigUrl}">
 				<img alt="${image.title}" src="${image.mediumUrl}" />
 			</a>
