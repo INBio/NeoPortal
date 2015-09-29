@@ -45,8 +45,6 @@ public interface SpeciesManager {
     
     public List<ImagesCDTO> getImagesByDefaultName(String defaultName, int offset, int quantity);
     
-    public List<TaxonPlic> getTaxonListLanguaje(String defaultName);
-    
     public List<Book> getBook(String defaultName,String language);
     
     public Long countImagesByDefaultName(String defaultName);

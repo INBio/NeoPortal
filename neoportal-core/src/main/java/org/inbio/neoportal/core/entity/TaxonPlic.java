@@ -849,7 +849,19 @@ public class TaxonPlic implements java.io.Serializable {
   public void setTaxon(Taxon taxon) {
     this.taxon = taxon;
   }
+
   
+  public Set<Book> getBooks() {
+      return this.books;
+  }
+
+
+  public void setBooks(Set<Book> books) {
+      this.books = books;
+  }
+
+
+
   public static class CompDate implements Comparator<TaxonPlic>
   {
 	  private int mod = 1;
@@ -866,16 +878,5 @@ public class TaxonPlic implements java.io.Serializable {
   }
 
 }
-
-
-public Set<Book> getBooks() {
-	return books;
-}
-
-
-public void setBooks(Set<Book> books) {
-	this.books = books;
-}
-
 
 

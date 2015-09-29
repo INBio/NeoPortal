@@ -327,7 +327,7 @@
 		</div>
 		</c:if> 
 		
-		<c:if test="${ books == 'books'}">
+		<c:if test="${fn:length(taxonBooks) > 0}">
 		<!-- externalId				Libros de las especies -->
 		<p>
 				<h3><fmt:message key="booksInformation"/></h3>
