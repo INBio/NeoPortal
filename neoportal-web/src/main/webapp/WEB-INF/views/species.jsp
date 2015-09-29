@@ -16,6 +16,7 @@
         
         <!--   jQuery Masonry plugin - dynamic layout for images  -->
         <script type="text/javascript" src="<c:url value="/resources/plugins/jquery.masonry.min.js" />"></script>
+        <script type="text/javascript" src="<c:url value="/resources/species/getbooksBHL.js" />"></script>
         
         <!-- Util javaScript -->
         <script type="text/javascript" >
@@ -79,10 +80,11 @@
 				<li role="presentation" <c:if test="${context == 'images'}">class="active"</c:if> ><a href="${taxonUrl}/images"><fmt:message key="tab_images" /></a></li>
 				<li role="presentation" <c:if test="${context == 'occurrences'}">class="active"</c:if> ><a href="${taxonUrl}/occurrences"><fmt:message key="tab_occurrences" /></a></li>
 				<li role="presentation" <c:if test="${context == 'map'}">class="active"</c:if> ><a href="${taxonUrl}/map"><fmt:message key="tab_map" /></a></li>
+				<li role="presentation" <c:if test="${context == 'BHL'}">class="active"</c:if> ><a href="${taxonUrl}/BHL"><fmt:message key="tab_bhl" /></a></li>
       		</ul>
       		</div>
 
-			<div>
+            <div>
 			<c:choose>
 				<c:when test="${context == 'taxonDescription'}">
 					<n:taxonDescription></n:taxonDescription>	
@@ -114,6 +116,9 @@
 					<p><fmt:message key="noMapFeature" /></p>
 					</c:otherwise>
 				</c:choose>
+				</c:when>
+				<c:when test="${context == 'BHL'}">			
+					<n:BHLTable></n:BHLTable> 						
 				</c:when>
 			</c:choose>
 				

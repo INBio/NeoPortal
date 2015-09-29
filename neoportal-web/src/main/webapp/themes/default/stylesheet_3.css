@@ -783,6 +783,17 @@ div#map {
     height: 420px;
 }
 
+
+.page-thumbnail {
+  float: left;
+  padding: 5px;
+  margin: 5px;
+  background: none repeat scroll 0 0 #f5f1ee;
+  width: 60px;
+  height: 100px;
+  border: 1px solid #C5CED3;
+  border-radius: 5px 5px 5px 5px;
+}
 .nav-tabs {
   border-bottom: 1px solid #aaa;
 }
@@ -816,5 +827,34 @@ div#map {
 	width: 44px;
 	height: 39px; 
 	padding-right: 10px;
+}
+
+.spinner {
+    display: inline-block;
+    opacity: 0;
+    width: 0;
+    -webkit-transition: opacity 0.25s, width 0.25s;
+    -moz-transition: opacity 0.25s, width 0.25s;
+    -o-transition: opacity 0.25s, width 0.25s;
+    transition: opacity 0.25s, width 0.25s;
+}
+
+.has-spinner.active {
+    cursor:progress;
+}
+
+.has-spinner.active .spinner {
+    opacity: 1;
+    width: auto;
+}
+
+.has-spinner.btn.active .spinner {
+    min-width: 20px;
+}
+.center
+{
+	margin:1.5em;
+	padding:1em;
+	text-align:center;
 }
 
