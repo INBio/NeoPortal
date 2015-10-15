@@ -121,7 +121,7 @@ public class SpeciesController {
           {
               taxonPlic = taxonPlicListLanguaje.get(i);
 
-              if(taxonPlic.getLanguage().toString().equals("Español") == true )
+              if(taxonPlic.getLanguage() != null && taxonPlic.getLanguage().toString().equals("Español") == true )
               {
                   break;
               }
